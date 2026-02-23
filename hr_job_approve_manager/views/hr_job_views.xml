@@ -12,7 +12,7 @@
                                 groups="hr_job_approve_manager.group_hr_job_user"
                         />  
                         </xpath>
-                        <xpath expr="//button[@name='214']" position="attributes"> 
+                        <xpath expr="//button[@name='547']" position="attributes"> 
                                 <attribute name="groups">hr_job_approve_manager.group_hr_job_manager</attribute>
                         </xpath>
                 

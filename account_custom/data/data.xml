@@ -1,0 +1,74 @@
+<odoo>
+    <data noupdate="1">
+        <record id="5" model="account.payment.method">
+            <field name="name">Checks</field>
+            <field name="code">check_printing</field>
+            <field name="payment_type">inbound</field>
+        </record>
+
+        <!-- noupdate="1"-->
+
+        <!-- TAGS FOR CASH FLOW STATEMENT InDIRECT METHOD -->
+
+        <record id="account_tag_asset_disposal" model="account.account.tag">
+            <field name="name">Assets Disposal</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_stock" model="account.account.tag">
+            <field name="name">Stock</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_purchase" model="account.account.tag">
+            <field name="name">Purchase</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_sales" model="account.account.tag">
+            <field name="name">Sales</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_interest_expense" model="account.account.tag">
+            <field name="name">Interest Expenses</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_tax" model="account.account.tag">
+            <field name="name">Taxes Expenses</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_zakat" model="account.account.tag">
+            <field name="name">Zakat Expenses</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_investment" model="account.account.tag">
+            <field name="name">Investment</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_long_loan" model="account.account.tag">
+            <field name="name">Long Loan</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_dividends" model="account.account.tag">
+            <field name="name">dividends</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_share_holder" model="account.account.tag">
+            <field name="name">Share Holder</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_capital" model="account.account.tag">
+            <field name="name">Capital</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_inventory" model="account.account.tag">
+            <field name="name">Inventory</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_fixed_asset" model="account.account.tag">
+            <field name="name">Fixed Assets</field>
+            <field name="applicability">accounts</field>
+        </record>
+        <record id="account_tag_profit" model="account.account.tag">
+            <field name="name">Accumalted profit / Loss</field>
+            <field name="applicability">accounts</field>
+        </record>
+    </data>
+</odoo>

@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='payment_method_line_id']" position="after">
-                <field name="bankak_transaction_number" invisible="payment_method_line_id.name != 'الدفع اليدوي'"/>
+                <field name="bankak_transaction_number" invisible="journal_id.type != 'البنك'"/>
             </xpath>
 
         </field>

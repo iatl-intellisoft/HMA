@@ -11,6 +11,8 @@
     'depends': ['product', 
                 'account'],
     'data': [   
+        'security/ir.model.access.csv',
+        'report/car_attachment.xml',
         'views/product_view.xml'
     ], 
 }

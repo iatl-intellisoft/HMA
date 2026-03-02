@@ -1,63 +1,47 @@
 from odoo import models, fields, api
+from datetime import date
 
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
-
+class ProducExchange(models.Model):
+    _name = 'product.exchange' 
+    
     old_exchange_rate = fields.Float(string='Old Exchange Rate')
     new_exchange_rate = fields.Float(string='New Exchange Rate')
     exchange_change_percent = fields.Float(
-        string='Exchange Change %',
-        compute='_compute_exchange_change',
+        string='Exchange Change %', 
         store=True
     )
-    previous_cost = fields.Float(
-            string='Previous Cost', 
-            store=True
-        )
     profit_margin = fields.Float(
         string='Profit Margin (%)',
         default=20
     )
-
-    new_cost = fields.Float(
-        string='New Cost',
-        compute='_compute_new_cost',
-        store=True
-    )
-
-    new_sale_price = fields.Float(
-        string='New Sale Price',
-        compute='_compute_new_sale_price',
-        store=True
-    )
-
-    @api.depends('old_exchange_rate', 'new_exchange_rate')
-    def _compute_exchange_change(self):
-        for rec in self:
-            if rec.old_exchange_rate:
-                rec.exchange_change_percent = (
-                    (rec.new_exchange_rate - rec.old_exchange_rate)
-                    / rec.old_exchange_rate
-                ) * 100
-            else:
-                rec.exchange_change_percent = 0
-
-    @api.depends('previous_cost', 'exchange_change_percent')
-    def _compute_new_cost(self):
-        for rec in self:
-            rec.new_cost = rec.previous_cost * (
-                1 + rec.exchange_change_percent / 100
-            )
-
-    @api.depends('new_cost', 'profit_margin')
-    def _compute_new_sale_price(self):
-        for rec in self:
-            rec.new_sale_price = rec.new_cost * (
-                1 + rec.profit_margin / 100
-            )
-             
+    state = fields.Selection(
+    [   ('draft','Draft'),
+        ('conferm','Conferm'),
+    ],default="draft"
+        )
+    date = fields.Date( string="Date", default = fields.Date.today ,readonly="1")
+   
     def action_apply_exchange_update(self):
-        for rec in self: 
-            rec.list_price = rec.new_sale_price
-            rec.standard_price = rec.new_cost
+        self.state = "conferm"
+        company = self.env.company
+        products = self.env['product.template'].search([])
 
+        for rec in self:
+
+            if not rec.old_exchange_rate:
+                return
+
+            rec.exchange_change_percent = (
+                (rec.new_exchange_rate - rec.old_exchange_rate)
+                / rec.old_exchange_rate
+            ) * 100
+
+            for product in products:
+                new_cost = product.standard_price * (
+                    1 + rec.exchange_change_percent / 100
+                )
+                new_sale_price = new_cost * (
+                    1 + (rec.profit_margin or 0.0) / 100
+                )
+                product.list_price = new_sale_price
+                

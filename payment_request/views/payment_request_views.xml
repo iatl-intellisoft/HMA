@@ -43,10 +43,10 @@
                         <!-- <button name="action_depart_manager_approve" string="Approve" class="oe_highlight"
                                 invisible="state != 'wait_department_manager'" type="object"
                                 groups="payment_request.group_payment_request_manager"/> -->
-                        <!-- <button name="action_financial_manager_approve" string="Approve" class="oe_highlight"
+                         <button name="action_financial_manager_approve" string="Approve" class="oe_highlight"
                                 invisible="state != 'wait_financial_manager'" type="object"
                                 groups="account_custom.group_account_financial_manager"/>
-                        <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
+                       <!-- <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
                                 invisible="state != 'wait_auditing'" type="object" groups="account.group_account_manager"/> -->
                         <!-- <button name="action_approve_gm" string="Approve" class="oe_highlight"
                        	invisible="state != 'wait_gm'" type="object" groups="account_custom.group_general_manager"/> -->

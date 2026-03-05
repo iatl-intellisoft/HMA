@@ -18,13 +18,13 @@
                                 </div>
                                 <div class="content-group">
                                     <div class="row mt16">
-                                        <label for="first_employee_id" class="col-lg-4 o_light_label"/>
-                                        <field name="first_employee_id" required="1"/>
+                                        <label for="first_employee_id_cu" class="col-lg-4 o_light_label"/>
+                                        <field name="first_employee_id_cu" required="1"/>
                                     </div>
 
                                     <div class="row mt16">
-                                        <label for="second_employee_id" class="col-lg-4 o_light_label"/>
-                                        <field name="second_employee_id" required="1"/>
+                                        <label for="second_employee_id_cu" class="col-lg-4 o_light_label"/>
+                                        <field name="second_employee_id_cu" required="1"/>
 
                                     </div>
                                 </div>

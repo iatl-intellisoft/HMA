@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_res_config_settings_form_inherit" model="ir.ui.view">
+            <field name="name">view.res.config.settings.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath  expr="//app[@name='hr']" position="inside">
+                    <div data-key='hr_report' id='hr_report'>
+                    <h2> Hr Report Templates</h2>
+                </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

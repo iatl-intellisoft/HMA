@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RTL have problem with ODOO v11  so we gonna use additional styles + IF-->
+<odoo>
+    <data>
+        <record id="salary_advance_template_id" model="mail.template">
+            <field name="name">hr loan : Salary Advance Template</field>
+            <field name="model_id" ref="hr_loan.model_hr_loan"/>
+            <field name="body_html" type="html">
+                <t t-call="web.html_container">
+                    <t t-set="data_report_margin_top" t-value="5"/>
+                    <t t-set="data_report_dpi" t-value="140"/>
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            
+                                    <font style="font-family:'serif';">
+                                        <div style="margin: 0px; padding: 0px;">
+
+                                            <center>
+                                                <table width='800'>
+                                                    <tbody>
+                                                        <tr style="border: 1px solid black;">
+                                                            <td class="text-left">
+                                                                <strong class="text-left">Employee Data</strong>
+                                                            </td>
+                                                            <td class="text-center">
+
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">بيانات الموظف</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Name</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.employee_id.name}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">الاسم</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Job Title</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.employee_id.job_title}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">المسمى الوظيفي</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Department/Section</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.employee_id.department_id.name}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">الادارة \ القسم</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Date of Join</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.employee_id.contract_id.date_start}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">بداية العمل</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Salary Advance Amount
+                                                                </strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.loan_amount}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">قيمة السلفية</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Signature</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ...........................
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">التوقيع</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Date</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ...........................
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">التاريخ</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr style="border: 1px solid black;">
+                                                            <td style="width:50%">
+                                                                <strong class="text-center">For HR Use</strong>
+                                                            </td>
+                                                            <td class="text-center">
+
+                                                            </td>
+                                                            <td style="width:50% " class="text-right">
+                                                                <strong class="text-right">لاستخدام الموارد البشرية
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Deduction Amount</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${object.loan_amount}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">قسط الاستقطاع الشهري</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Deduction period from
+                                                                </strong>
+                                                                ${object.payment_start_date}
+                                                                <strong>to</strong>
+                                                                ${object.payment_end_date}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <!-- <strong> to </strong>  ${object.payment_end_date}  <strong>الى</strong> -->
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">فترة الخصم من</strong>
+                                                                ${object.payment_start_date}
+                                                                <strong>الى</strong>
+                                                                ${object.payment_end_date}
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">HR Officer Signature
+                                                                </strong>
+                                                                ...................
+                                                                <br></br>
+                                                                Date ...................
+                                                            </td>
+                                                            <td class="text-center">
+                                                            </td>
+                                                            <td class="text-right">
+                                                                ...................
+                                                                <strong class="text-right">توقيع ضابط اول شؤون
+                                                                    العاملين
+                                                                </strong>
+                                                                <br></br>
+                                                                ................... التاريخ
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">AGHR Signature</strong>
+                                                                ...................
+                                                                <br></br>
+                                                                Date ...................
+                                                            </td>
+                                                            <td class="text-center">
+                                                            </td>
+                                                            <td class="text-right">
+                                                                ...................
+                                                                <strong class="text-right">توقيع نائب مدير شؤون
+                                                                    العاملين
+                                                                </strong>
+                                                                <br></br>
+                                                                ................... التاريخ
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr style="border: 1px solid black;">
+                                                            <td>
+                                                                <strong class="text-center">Approval</strong>
+                                                            </td>
+                                                            <td class="text-center">
+
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">التصديقات</strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">CFO</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ...........................
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">المدير المالي للمجموعة
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <strong class="text-center">Global HR head</strong>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ...........................
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="text-right">مدير الموارد البشرية
+                                                                    للمجموعة
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+
+                                            <br></br>
+
+                                            <table width='800'>
+                                                <tr>
+                                                    <td class="text-right">
+                                                        <p class="text-right">
+                                                            <b>ارشادات عامة</b>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <table width='800'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-right">
+                                                            يسلم الطلب لادارة الموارد البشرية بعد اليوم الخامس عشر من
+                                                            الشهر ، لاجراء اللازم خلال يوم عمل كامل
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <strong class="text-right">1</strong>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-right">
+                                                            لا يستحق العامل طلب سلفة على المرتب ما لم يسوي جميع السلف
+                                                            السابقة
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <strong class="text-right">2</strong>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-right">
+                                                            لا تتجاوز قيمة السلفة 30% من اجمالي الراتب
+                                                        </td>
+
+                                                        <td class="text-right">
+                                                            <strong class="text-right">3</strong>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </font>
+                             
+                        </div>
+                    </t>
+                </t>
+            </field>
+            <field name="report_template_ids" eval="[(6, 0, [ref('hr_loan.action_loan_requests_report')])]"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

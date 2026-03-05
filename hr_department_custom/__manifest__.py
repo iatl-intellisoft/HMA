@@ -8,10 +8,8 @@
     'description': """
     """,
 
-    'author': "IATL-intellisoft International",
-    'website': "http://www.iatl-intellisoft.com",
-    'version': '18.0',
-    'license': 'LGPL-3',
+    'author': "IATL International",
+    'website': "http://www.iatl-sd.com",
     'category': 'Human Resources',
     'depends': ['hr', 'analytic'],
     'data': [

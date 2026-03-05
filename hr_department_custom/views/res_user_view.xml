@@ -7,10 +7,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='access_rights']/group" position="after">
                     <group string="Allowed Departments" >
-                        <field name="department_id" string="Current Department"  />
+                        <field name="department_id" string="Current Department" readonly="0"/>
                         <field name="allowed_department_ids" widget="many2many_tags" options="{'no_create': True}"/>
                     </group>
-
                 </xpath>
                 
             </field>

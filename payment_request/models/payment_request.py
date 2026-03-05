@@ -62,6 +62,7 @@ class PaymentRequest(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('submit', 'Submit'),
+        ('wait_financial_manager', 'Waiting Financial Manager'),
         ('approve', 'Approved'),
         ('wait_payment', 'Waiting Payment'),
         ('paid', 'Paid'),
@@ -201,13 +202,13 @@ class PaymentRequest(models.Model):
         if not self.is_need_clearance and not self.line_ids and not self.is_purchase:
             raise ValidationError(
                 'Please inter details!')
-        self.write({'state': 'approve'})
+        self.write({'state': 'wait_financial_manager'})
 
     # def action_depart_manager_approve(self):
     #     self.write({'state': 'wait_financial_manager'})
 
-    # def action_financial_manager_approve(self):
-    #     self.write({'state': 'wait_auditing'})
+    def action_financial_manager_approve(self):
+        self.write({'state': 'approve'})
 
     # def action_wait_auditing_approve(self):
     #     self.write({'state': 'wait_gm'})

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_claim_document">
+        <t t-call="web.html_container"> 
+            <t t-call="web.external_layout"> 
+                <main class="page" >
+                <t t-foreach="docs" t-as="line">
+
+    <!-- بيانات الأب -->
+    <p>رقم المطالبة: <t t-esc="line.claim_id.name"/></p>
+
+    <!-- بيانات السطر -->
+    <p>تفاصيل قطع الغيار: <t t-esc="line.spare_parts_costs"/></p>
+    <p>ناقص الاستهلاك: <t t-esc="line.less_consumption"/></p>
+
+</t>
+                     <t t-foreach="docs" t-as="line">
+                        <div class="page" style=" direction: rtl;font-size:12px;"> 
+                        <div style="border: 1px solid #000; padding:10px;">
+                        <table class="table-borderless">
+                            <tr> 
+                                <td class="p-1" style=" text-align: right;"><b>تقرير مطالبة</b></td>                      
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>التاريخ</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.company_id.name"/></td>                      
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>نوع التامين الرئيسي</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.company_id.name"/></td>                      
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>نوع التامين الفرعي</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.company_id.name"/></td>                      
+                            </tr>
+                        </table>
+                        </div>
+                        <div style="border: 1px solid #000; padding:10px;">
+                        <table class="table-borderless"  >
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>الفرع</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.company_id.name"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>رقم المطالبة</b></td>
+                                <td class="p-1" style="">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.claim_bills"/></td> 
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>تاريخ الحدث</b></td>
+                                <td class="p-1" style="">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.date_of_accident"/></td> 
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>تاريخ الإخطار</b></td>
+                                <td class="p-1" style="">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.claim_date"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>رقم الوثيقة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.insurance_id.insurance_number"/></td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>مبلغ التأمين</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.policy_premiums_amount"/></td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>رقم تقرير الشرطة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.police_report_number"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>المؤمن له</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+
+                                <td class="p-1" style="text-align: right;"> 
+                                    <!-- <t t-if="line.claim_id.is_insurance_candidate"> -->
+                                        <t t-esc="line.claim_id.first_eneficiary.name"/>
+                                        / In favor of
+                                        <t t-esc="line.claim_id.policy_holder_id.name"/>
+                                    <!-- </t> -->
+                                </td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>نوع العربة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.insurance_id.vehicle_model.name"/></td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>سنة التصنيع</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.insurance_id.year"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>فترة التأمين</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.insurance_id.issue_date"/> الى <t t-esc="line.claim_id.insurance_id.expiry_date"/></td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>رقم الشاسي</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.chassis_number"/></td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>رقم اللوحة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.plate_number"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>السائق</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.driver"/></td>                        
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>المستفيد الاول</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;">
+                                    <!-- <t t-if="line.claim_id.is_insurance_candidate"> -->
+                                        <t t-esc="line.claim_id.first_eneficiary.name"/>
+                                        / لصالح
+                                        <t t-esc="line.claim_id.policy_holder_id.name"/>
+                                    <!-- </t> -->
+                                </td> 
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>قيمة التعويض</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;"><t t-esc="line.claim_id.claim_fee_amount"/></td>                         
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style="text-align: right;"><b>المستفيد الثاني</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style="text-align: right;">
+                                    <!-- <t t-if="line.claim_id.is_insurance_candidate"> -->
+                                        <t t-esc="line.claim_id.policy_holder_id.name"/>
+                                        / In favor of
+                                        <t t-esc="line.claim_id.policy_holder_id.name"/>
+                                    <!-- </t> -->
+                                </td>                          
+                            </tr>
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>اسم المهندس</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.engineer_name.name"/></td> 
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>تاريخ المعاينة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.claim_date"/></td>                        
+                            </tr>
+                            
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>طبيعة الحادث</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.nature_accident"/></td> 
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>حالة المطالبة</b></td>
+                                <td class="p-1" style="width: 1%;">:</td>
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.activity_state"/></td>                        
+                            </tr>
+                        </table>
+                        <table class="table-borderless" >
+                            <tr>
+                                <td class="p-1 fw-bold" style=" text-align: right;"><b>نوع او ملخص تفاصيل الحادث :</b></td>                        
+                            </tr>
+                            <tr> 
+                                <td class="p-1" style=" text-align: right;"><t t-esc="line.claim_id.type_summary_acciden"/></td>                        
+                            </tr>
+                            <t t-if="line.claim_id.refundable_type == 'refundable'">
+                                <tr>
+                                    <td style="text-align: right;"><b>مستردة</b></td>
+                                    <td class="p-1 fw-bold" style=" text-align: right;"><b>جهة الاستيراد :<t t-esc="line.claim_id.refundable_entity"/></b></td>  
+                                </tr>
+                            </t>
+                            <t t-elif="line.claim_id.refundable_type == 'ron_refundable'">
+                                <tr>
+                                    <td style="text-align: right;"><b>غير مستردة</b></td>
+                                </tr>
+                            </t>
+                          
+                            <!-- <tr> 
+                                <td class="p-1" style=" text-align: right;"> <t t-esc="line.claim_id.policy_holder_id.name"/></td>                        
+                            </tr> -->
+                        </table>
+                        </div>
+
+                        <div style="border: 1px solid #000; padding:10px;">
+
+                        <table class="table-borderless">
+                            <t t-if="line.damage_death > 0 ">
+                               <tr>
+                                    <td class="p-1 fw-bold" style=" text-align: right;"><b>تفاصيل اضرار الوفاة </b></td>                        
+                                </tr>
+                            </t>
+                            <t t-elif="line.damage_death == 0">
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" text-align: right;"><b>تفاصيل الاضرار للعربة المؤمنة</b></td>                        
+                                </tr>
+                            </t>
+                            
+                        </table>
+                        <table class="table-borderless" >
+                            <t t-elif="line.damage_death == 0">                           
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>تفاصيل قطع الغيار</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.spare_parts_costs"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>ناقصا الاستهلاك</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.less_consumption"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>زائدا اخرى</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>زائد تكاليف المصنعيات</b></td> 
+                                    <td class="p-1" style="width: 1%;">:</td>                       
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.plus_manufacturing_costs"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>الجملة</b></td>     
+                                    <td class="p-1" style="width: 1%;">:</td>                   
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.net_due"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>شرط النسبية</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.relativity_police"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>حادث ضد مجهول</b></td>
+                                    <td class="p-1" style="width: 1%;">:</td>                        
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.accident_unknown"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>ناق التحمل</b></td>     
+                                    <td class="p-1" style="width: 1%;">:</td>                   
+                                    <td class="p-1" style=" text-align: right;"></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>ناقص الحطام</b></td>    
+                                    <td class="p-1" style="width: 1%;">:</td>                    
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.missing_debris"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>زائدا رسوم المسح</b></td> 
+                                    <td class="p-1" style="width: 1%;">:</td>                       
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.plus_survey_fees"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>صافي الاستحقاق</b></td>     
+                                    <td class="p-1" style="width: 1%;">:</td>                   
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.net_other_amount"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>الملاحظات او التسويات</b></td>  
+                                    <td class="p-1" style="width: 1%;">:</td>                      
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.summary_details"/></td>                        
+                                </tr>
+                            </t>
+                            <t t-elif="line.damage_death > 0">                           
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>التفاصيل </b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.summary_details"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>مبلغ ضرر الوفاة</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.damage_death_amount"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>نسبة الخطاء</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.error_rate"/></td>                        
+                                </tr>
+                                <tr>
+                                    <td class="p-1 fw-bold" style=" width: 20%; text-align: right;"><b>صافي مبلغ ضرر الوفاة</b></td>   
+                                    <td class="p-1" style="width: 1%;">:</td>                     
+                                    <td class="p-1" style=" text-align: right;"><t t-esc="line.net_damage_death_amount"/></td>                        
+                                </tr>
+                            </t>
+                        </table>
+                        </div>
+
+                        <div style="border: 1px solid #000; padding:10px;">
+
+                        <table class="table-borderless" style="width: 100%; text-align: left;" >
+                            <tr style="width: 100%; text-align: left;">
+                                <td class="p-1 fw-bold" style=" width: 20%;text-align: left;"><b>راجعه</b></td>  
+                                <td class="p-1" style="width: 1%;">:</td>                      
+                                <td class="p-1 fw-bold" style=" width: 29%;text-align: left;"></td>
+                                <td class="p-1 fw-bold" style=" width: 20%;text-align: left;"><b>اعدت بواسطة</b></td>    
+                                <td class="p-1" style="width: 1%;">:</td>         
+                                <td class="p-1 fw-bold" style=" width: 29%;text-align: right;"><t t-esc="line.claim_id.create_uid.name" style=" width: 30%;"/></td>  
+                                                                
+                            </tr>
+                        </table>
+                    </div> 
+                    </div> 
+                </t>                
+                </main>
+            </t>
+        </t>  
+    </template>
+
+     <record id="action_print_claim_information_ids_report" model="ir.actions.report">
+        <field name="name">Claim Report</field>
+        <field name="model">claim.information.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">insurance_reports_custom.report_claim_document</field>
+        <field name="report_file">insurance_reports_custom.report_claim_document</field>
+        <field name="binding_model_id" ref="tk_insurance_management.model_claim_information"/>
+        <field name="binding_type">report</field>
+    </record>  
+</odoo>

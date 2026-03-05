@@ -2,7 +2,7 @@
     <data>
 
         <record id="action_account_request_payment" model="ir.actions.act_window">
-            <field name="name">Register Payment</field>
+            <field name="name">Register Payment</field> 
             <field name="res_model">account.payment</field>
             <field name="view_id" ref="payment_request.view_account_payment_request_form"/>
             <field name="context">{'default_payment_request_id': [active_id]}</field>

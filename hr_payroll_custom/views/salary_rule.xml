@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_salary_rule_form_inherit" model="ir.ui.view">
+            <field name="name">view.hr.salary.rule.inherit</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position="before">
+                    <field name='required_partner'/>
+                    <field name="use_type"/>
+                </xpath>
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="net_rule"/>
+                </xpath>
+                <!-- <xpath expr="//notebook/page[@name='general']/group/field[@name='quantity']" position='replace'> -->
+                <xpath expr="//field[@name='quantity']" position="replace">
+                    <field name="quantity"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_salary_rule_tree_inherit" model="ir.ui.view">
+            <field name="name">hr salary rule</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="net_rule"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_grade_form_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.structure.form</field>
+            <field name="model">hr.payroll.structure</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='country_id']" position="after">
+                    <field name="partner_id"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_hr_payslip_line_filter_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.line.select</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='slip_id']" position="after">
+                    <separator/>
+                    <filter string="Net Salary Rule" name="net_rule" domain="[('salary_rule_id.net_rule','=',True)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

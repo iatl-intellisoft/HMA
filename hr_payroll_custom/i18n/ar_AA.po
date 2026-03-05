@@ -1,0 +1,177 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_payroll_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-13 18:57+0000\n"
+"PO-Revision-Date: 2019-11-13 18:57+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_payroll_custom
+#: model:ir.model.fields,help:hr_payroll_custom.field_hr_payslip_line__required_partner
+#: model:ir.model.fields,help:hr_payroll_custom.field_hr_salary_rule__required_partner
+msgid " Total amount in this rule needed to be distributed by partner "
+msgstr ""
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.run,state:0
+msgid "Close"
+msgstr "إقفال"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.hr_payslip_run_form_inherit
+msgid "Compute"
+msgstr "حساب"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.run,state:0
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.hr_payslip_run_form_inherit
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.run,state:0
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.view_payslip_line_filter
+msgid "Employees"
+msgstr "الموظفون"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "General"
+msgstr "عام"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.view_payslip_line_filter
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: hr_payroll_custom
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip_line__required_partner
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_salary_rule__required_partner
+msgid "Need Partner"
+msgstr ""
+
+#. module: hr_payroll_custom
+#: code:addons/hr_payroll_custom/models/payslip.py:35
+#, python-format
+msgid "Not all payslip are done!"
+msgstr "ليس كل المرتباتجاهزة"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "Over Time"
+msgstr "ساعات عمل اضافية"
+
+#. module: hr_payroll_custom
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip_line__partner_id
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: hr_payroll_custom
+#: model:ir.model,name:hr_payroll_custom.model_hr_payslip
+msgid "Pay Slip"
+msgstr "قسيمة المرتب"
+
+#. module: hr_payroll_custom
+#: model:ir.model,name:hr_payroll_custom.model_hr_payslip_run
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip__payslip_run_id
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip_line__payslip_run_id
+msgid "Payslip Batches"
+msgstr "دفعات المرتب"
+
+#. module: hr_payroll_custom
+#: model:ir.model,name:hr_payroll_custom.model_hr_payslip_line
+msgid "Payslip Line"
+msgstr "بنود المرتب"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.view_hr_payslip_form_inherit
+msgid "ROLLBACK"
+msgstr "تراجع"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.hr_payslip_run_form_inherit
+msgid "Rollback"
+msgstr "تراحع"
+
+#. module: hr_payroll_custom
+#: model:ir.model,name:hr_payroll_custom.model_hr_salary_rule
+msgid "Salary Rule"
+msgstr "قاعدة مرتبات"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.hr_payslip_run_form_inherit
+msgid "Set To Draft"
+msgstr "وضع كمسودة"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "Special"
+msgstr "خاص"
+
+#. module: hr_payroll_custom
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip_run__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: hr_payroll_custom
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "Termination"
+msgstr "نهاية"
+
+#. module: hr_payroll_custom
+#: code:addons/hr_payroll_custom/models/hr_salary_rule.py:33
+#, python-format
+msgid "There is no running contract for this Employee %s."
+msgstr "لا يوجد عقد لهذا الموظف"
+
+#. module: hr_payroll_custom
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_payslip_line__use_type
+#: model:ir.model.fields,field_description:hr_payroll_custom.field_hr_salary_rule__use_type
+msgid "Use Type"
+msgstr "نوع الاستخدام"
+
+#. module: hr_payroll_custom
+#: code:addons/hr_payroll_custom/models/payslip.py:221
+#, python-format
+msgid "You can not  create two payslip the same period for same employee!"
+msgstr "لا يمكنك إنشاء اثنين من كشوف المرتبات في نفس الفترة لنفس الموظف"
+
+#. module: hr_payroll_custom
+#: code:addons/hr_payroll_custom/models/payslip.py:227
+#, python-format
+msgid "You can not delete record not in draft state."
+msgstr "لا يمكنك حذف السجل ليس في حالة المسودة"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.view_hr_payslip_line_pivot
+msgid "payslip"
+msgstr "كشوف مرتبات"
+
+#. module: hr_payroll_custom
+#: model:ir.actions.act_window,name:hr_payroll_custom.action_payslip_line_pivot
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.hr_payslip_run_form_inherit
+msgid "payslip Details"
+msgstr "تفاصيل كشوف المرتبات"
+
+#. module: hr_payroll_custom
+#: model_terms:ir.ui.view,arch_db:hr_payroll_custom.payslip_line_report_pivot
+msgid "payslip Line Analysis"
+msgstr ""
+

@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <record id="view_mail_activity_inherit" model="ir.ui.view">
+            <field name="name">mail activity form</field>
+            <field name="model">mail.activity</field>
+            <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='summary']" position="after">
+            <field name="create_throw_system"/>
+            </xpath>
+            </field>
+    </record>
+    </data>
+
+  </odoo>
+

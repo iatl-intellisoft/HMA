@@ -1,0 +1,32 @@
+<odoo>
+ <record id="view__contract_res_config_setting_form" model="ir.ui.view">
+            <field name="name">hr_contract_res_config_settings_view_form</field>
+            <field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="hr.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+            <xpath  expr="//app[@name='hr']" position="inside">
+                    <h2> Hr Group</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_right_pane">
+                                 <span class="o_form_label"> Hr Group</span>
+                                 <div class="text-muted">
+                                            Select  Hr Group 
+                                        </div>
+                                 <div class="content-group">
+                                            <div class="mt16" groups="base.group_no_one">
+                                                <label for="hr_group_id" string="Hr Group" class="col-3 col-lg-3 o_light_label"/>
+                                                <field name="hr_group_id" class="oe_inline"/>
+
+                                                
+                                            </div>
+
+                                 </div>
+                             </div>
+
+                        </div>
+                    </div>
+</xpath>
+			</field>
+		</record>
+</odoo>

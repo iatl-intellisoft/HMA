@@ -1,0 +1,85 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify  Employee Contract Form-->
+        <record id="view_hr_contract_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr_contract_view_form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="replace">
+                    <header >
+                        <button string="set to Draft" name="action_draft" invisible="state not in ('offer','cancel')" type="object" class="oe_highlight"/>
+                        <button string="Offer" name="action_offer" invisible="state != 'draft'"  type="object" class="oe_highlight"/>
+                        <button string="Open" name="action_open" invisible="state not in ('pending','offer')" type="object" class="oe_highlight"/>
+                        <!-- <button string="To Renew" name="action_pending" states="close" type="object" class="oe_highlight"/> -->
+                        <button string="Close" name="action_close" invisible="state != 'open'" type="object" class="oe_highlight"/>
+                        <button string="Cancel" name="action_cancel" invisible="state not in ('draft','offer')" type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,offer,open,close,cancel"/>
+                    </header>
+                </xpath>
+
+                <xpath expr="//field[@name='hr_responsible_id']" position="before">
+                    <field name="joining_date"  required="1" readonly="state not in ('draft','offer')"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <xpath expr="//group[@name='yearly_benefits']" position="before">
+                    <field name="hour_wage"/>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <xpath expr="//field[@name='department_id']" position="attributes">
+                    <attribute name="readonly">state not in ('draft') </attribute>
+                </xpath>
+                <xpath expr="//field[@name='job_id']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+          
+                <xpath expr="//field[@name='date_start']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_end']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <!-- <xpath expr="//field[@name='trial_date_end']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','not in',['draft'])]} </attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <xpath expr="//field[@name='wage']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="attributes">
+                    <attribute name="readonly">state not in ('draft')</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='date_end']" position="after">
+                    <field name='service_years' />
+                </xpath>
+            </field>
+        </record>
+
+   
+         <record model="ir.ui.view" id="contract_pivot">
+            <field name="name">contract.pivot</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <pivot string="Contract Pivot" display_quantity="True">
+                    <field name="department_id" type="row"/>
+                    <field name="state" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record id="hr_contract.action_hr_contract" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">hr.contract</field>
+            <field name="view_mode">kanban,list,form,activity,pivot</field>
+            <field name="context">{'search_default_current':0, 'search_default_group_by_state': 0}</field>
+        </record>
+    </data>
+</odoo>

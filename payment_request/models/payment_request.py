@@ -76,6 +76,23 @@ class PaymentRequest(models.Model):
     on_time = fields.Boolean(string='On Time', compute='_compute_on_time')
     can_reset_to_draft = fields.Boolean(compute='_compute_can_reset_to_draft')
 
+    req_amount = fields.Float('Required Amount ', store=True)
+    @api.onchange('maintenance_id')
+    def _onchange_maintenance(self):
+        if self.maintenance_id:
+            self.req_amount = self.maintenance_id.maintenance_cost
+
+    maintenance_id = fields.Many2one(
+        'maintenance.request',
+        string="Maintenance Request",
+        domain="[('stage_id.name','=','طلب جديد')]"
+    )
+    vehicle_id = fields.Many2one(
+        'fleet.vehicle',
+        related='maintenance_id.vehicle_id',
+        store=True,
+        string="Truck"
+    )
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -352,3 +369,13 @@ class PaymentRequestLine(models.Model):
             self.price_unit = self.product_id.standard_price
             self.expense_account_id = self.product_id.property_account_expense_id.id or self.product_id.categ_id.property_account_expense_categ_id.id
         return result
+class MaintenanceRequest(models.Model):
+    _inherit = 'maintenance.request'
+
+    vehicle_id = fields.Many2one(
+        'fleet.vehicle',
+        string="Truck"
+    )
+    maintenance_cost = fields.Float(
+        string="Maintenance Cost"
+    )

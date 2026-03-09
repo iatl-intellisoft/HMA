@@ -40,4 +40,19 @@
         </record>
 
     </data>
+    
+    <record id="maintenance_request_form_inherit_vehicle" model="ir.ui.view">
+        <field name="name">maintenance.request.form.vehicle</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='equipment_id']" position="after">
+                <field name="vehicle_id"/>
+                <field name="maintenance_cost"/>
+            </xpath>
+
+        </field>
+    </record>
 </odoo>
+

@@ -93,14 +93,13 @@
                                 <field name="employee_id" readonly="state != 'draft'" required="1"/>
                                 <field name="department_id" readonly="state != 'draft'"/>
                                 <field name="creator" invisible="1"/>
-
-                                <field name="currency_id" readonly="state != 'draft' and is_purchase == True"/>
+                                <field name="maintenance_id"/>
+                                <field name="vehicle_id"/>
+                                <field name="req_amount"  />
                                 <field name="invoice_id" invisible="invoice_id != True"/>
                                 <field name="is_need_clearance" invisible="1"/>
                                 <field name="is_renewable" invisible="is_need_clearance != True"/>
                             </group>
-
-
                             <group>
                                 <field name="date" readonly="state != 'draft'"/>
                                 <field name="company_id"/>
@@ -110,12 +109,13 @@
                                        readonly="state != 'draft'"/>
                                 <field name="clearance_days" invisible="is_need_clearance != True"
                                        readonly="state != 'draft'"/>
-                                <field name="date_clearance" invisible="1"/>
+                                <field name="date_clearance" invisible="1"/> 
                                 <field name="amount" invisible="is_need_clearance != True"
                                        readonly="state != 'draft' or is_need_clearance != True"/>
                                 <field name="balance" invisible="is_need_clearance != True"/>
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
+                                <field name="currency_id" readonly="state != 'draft' and is_purchase == True"/>
                             </group>
                         </group>
                         <notebook>

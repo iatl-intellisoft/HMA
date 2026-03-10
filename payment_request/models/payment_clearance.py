@@ -59,8 +59,10 @@ class CustodyClearance(models.Model):
 
     # j2 = fields.Many2one('account.journal', string='Clearance Journal',
     #                      related='company_id.clearance_journal')
-    payment_amount = fields.Float(related='request_id.balance', string="Payment Amount",
+    payment_amount = fields.Float(related='total_amount', string="Payment Amount",
                                   tracking=True)
+    request_remaining_amount = fields.Float(related='request_id.remaining_amount', string="Remaining Amount",
+    tracking=True) 
     move_id = fields.Many2one(
         'account.move', string='Move', tracking=True)
 
@@ -71,38 +73,15 @@ class CustodyClearance(models.Model):
     move_created = fields.Boolean(string='move created', default=True)
     currency_id = fields.Many2one('res.currency', string="Currency", compute="set_currency_request", required=True, )
 
+ 
 
-
-
-
-
-    custody_type = fields.Selection([
-            ('fuel', 'Fuel'),
-            ('maintenance', 'Maintenance')
-        ],string='Custody Type', default='fuel'
-        )
-    vehicle_id = fields.Many2one(
-        'fleet.vehicle',
-        string='Vehicle'
-    )
-
-    @api.onchange('employee_id')
-    def _onchange_employee_vehicle(self):
-        if self.employee_id:
-            vehicle = self.env['fleet.vehicle'].search(
-                [('driver_id', '=', self.employee_id.id)],
-                limit=1
-            )
-            self.vehicle_id = vehicle
-    driver_id = fields.Many2one(
-        'res.partner',
-        string="Driver",
-        related="vehicle_id.driver_id",
-        store=True, 
-    ) 
-   
-
-   
+    @api.constrains('payment_ids')
+    def _check_clearance_amount(self):
+        for rec in self:
+            if rec.total_clearance > rec.custody_amount:
+                raise ValidationError(
+                    "لا يمكن أن تكون التصفية أكبر من مبلغ المتبقي من العهدة."
+                )   
 
 
     @api.depends('request_id')
@@ -127,20 +106,27 @@ class CustodyClearance(models.Model):
         return super(CustodyClearance, self).create(vals_list)
 
 
+    @api.depends('amount')
+    def _compute_remaining(self):
+        for rec in self:
+            rec.remaining_amount = rec.amount - rec.total_clearance 
+
     def action_draft(self):
         self.write({'state': 'draft'})
 
-    def action_submit(self):
-        # if not self.attachment_ids:
-        #     raise ValidationError(_('Please upload attachments for this clearance'))
+    def action_submit(self):        
+        if  self.request_id.remaining_amount < self.total_amount:
+            raise ValidationError("عذرا لا يمكن أن تكون التصفية أكبر من مبلغ العهدة")
         if not self.custody_line_ids:
             raise ValidationError('Please enter clearance details first!')
          
-        if self.custody_type =='fuel':
-            self.write({'state': 'approve'})
-            
-        if self.custody_type =='maintenance':
-            self.write({'state': 'submit'})
+       
+        self.write({'state': 'approve'})
+        self.request_id.remaining_amount = self.request_id.remaining_amount - self.total_amount 
+        if  self.request_id.remaining_amount == 0:
+            self.request_id.state = 'close'
+
+             
 
     # def action_confirm(self):
     #     self.write({'state': 'confirm'})
@@ -159,58 +145,58 @@ class CustodyClearance(models.Model):
         date = fields.Date.today()
         if not self.account_id:
             raise ValidationError(_('Entered payment request account'))
-        if self.currency_id == self.company_id.currency_id:
-            move_line_ids = ({
-                'partner_id': self.partner_id.id,
-                'account_id': self.account_id.id,
-                'currency_id': self.request_id.currency_id.id,
-                'debit': 0.0,
-                'credit': self.total_amount,
-                'move_id': move.id, })
-        else:
-            balance = self.currency_id._convert(self.total_amount, self.company_id.currency_id, self.company_id, date)
-            move_line_ids = ({
-                'partner_id': self.partner_id.id,
-                'account_id': self.account_id.id,
-                'currency_id': self.request_id.currency_id.id,
-                'amount_currency': - self.total_amount,
-                'debit': 0.0,
-                'credit': balance,
-                'move_id': move.id, })
+        # if self.currency_id == self.company_id.currency_id:
+        move_line_ids = ({
+            'partner_id': self.partner_id.id,
+            'account_id': self.account_id.id,
+            'currency_id': self.request_id.currency_id.id,
+            'debit': 0.0,
+            'credit': self.total_amount,
+            'move_id': move.id, })
+        # else:
+        #     balance = self.currency_id._convert(self.total_amount, self.company_id.currency_id, self.company_id, date)
+        #     move_line_ids = ({
+        #         'partner_id': self.partner_id.id,
+        #         'account_id': self.account_id.id,
+        #         'currency_id': self.request_id.currency_id.id,
+        #         'amount_currency': - self.total_amount,
+        #         'debit': 0.0,
+        #         'credit': balance,
+        #         'move_id': move.id, })
 
         return move_line_ids
 
     def create_clearance_move_line(self, move):
         date = fields.Date.today()
         for line in self.custody_line_ids:
-            if self.currency_id == self.company_id.currency_id:
-                vals = {
-                    'account_id': line.account_id.id,
-                    'currency_id': self.request_id.currency_id.id,
-                    'debit': line.amount,
-                    'credit': 0.0,
-                    'move_id': move.id,
+            # if self.currency_id == self.company_id.currency_id:
+            vals = {
+                'account_id': line.account_id.id,
+                'currency_id': self.request_id.currency_id.id,
+                'debit': line.amount,
+                'credit': 0.0,
+                'move_id': move.id,
+            }
+
+            if line.analytic_account_id:
+                vals['analytic_distribution'] = {
+                    str(line.analytic_account_id.id): 100
                 }
-
-                if line.analytic_account_id:
-                    vals['analytic_distribution'] = {
-                        str(line.analytic_account_id.id): 100
-                    }
-            else:
-                balance = self.currency_id._convert(line.amount, self.company_id.currency_id, self.company_id, date)
-                vals = {'account_id': line.account_id.id,
-                        'currency_id': self.request_id.currency_id.id,
-                        'amount_currency': line.amount,
+            # else:
+            #     balance = self.currency_id._convert(line.amount, self.company_id.currency_id, self.company_id, date)
+            #     vals = {'account_id': line.account_id.id,
+            #             'currency_id': self.request_id.currency_id.id,
+            #             'amount_currency': line.amount,
                        
-                        # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)] if line.analytic_tag_ids else False,
+            #             # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)] if line.analytic_tag_ids else False,
 
-                        'debit': balance,
-                        'credit': 0.0,
-                        'move_id': move.id,}
-                if line.analytic_account_id:
-                    vals['analytic_distribution'] = {
-                        str(line.analytic_account_id.id): 100
-                    }
+            #             'debit': balance,
+            #             'credit': 0.0,
+            #             'move_id': move.id,}
+            #     if line.analytic_account_id:
+            #         vals['analytic_distribution'] = {
+            #             str(line.analytic_account_id.id): 100
+            #         }
                     
             self.env['account.move.line'].with_context(
                 check_move_validity=False).create(vals)

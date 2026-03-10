@@ -226,14 +226,14 @@ class CustodyClearance(models.Model):
             lines_to_reconcile.reconcile()
             self.write({'move_id': move_id.id, 'move_created': False})
 
-            if not self.is_renewable:
-                if self.payment_amount == 0.0:
-                    self.write({'state': 'done'})
-                    self.request_id.write({'state': 'close'})
-            else:
-                if self.payment_amount == 0.0:
-                    self.write({'state': 'done'})
-                    self.request_id.write({'state': 'approve'})
+            # if not self.is_renewable:
+            #     if self.payment_amount == 0.0:
+            #         self.write({'state': 'done'})
+            #         self.request_id.write({'state': 'close'})
+            # else:
+            #     if self.payment_amount == 0.0:
+            self.write({'state': 'done'})
+            self.request_id.write({'state': 'approve'})
         # else:
         #     raise ValidationError(_("The payment cann!"))
 

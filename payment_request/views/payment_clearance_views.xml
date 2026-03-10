@@ -60,10 +60,9 @@
                                 <field name="partner_id" readonly="1"/>
                                 <field name="employee_id" readonly="1"/>
                                 <field name="creator" invisible="1"/>
-                                <field name="department_id" readonly="0"/>
-                                 <field name="custody_type" readonly="0"/>
-                                 <field name="vehicle_id" readonly="0"/>  
-                                 <field name="driver_id" readonly="0"/> 
+                                <field name="department_id" invisible="1"/>
+                                 <field name="custody_amount"/> 
+                                <field name="request_remaining_amount"  readonly="1"/>
                                 <field name="is_renewable" readonly="1"/>
                             </group>
                             <group>
@@ -76,7 +75,7 @@
                                        required="state == 'approve'"/>
                                 <field name="payment_amount" readonly="1"
                                        invisible="is_renewable != False or move_id != True"/>
-                                <field name="custody_amount"/>
+                               
                                 <field name="total_amount" readonly="1"/>
                                 <field name="currency_id"/>
 
@@ -90,7 +89,7 @@
                                     <list string="Clearance Details" editable="bottom">
                                         <field name="account_id" required="1"/>
                                         <field name="company_id" column_invisible="1"/>
-                                        <field name="analytic_account_id"/>
+                                        <field name="analytic_account_id" column_invisible="1"/>
                                         <field name="desc" required="1"/>
                                         <field name="quantity" required="1"/> 
                                         <field name="price_unit" required="1" />

@@ -34,7 +34,7 @@ class PaymentRequest(models.Model):
     currency_id = fields.Many2one('res.currency', string="Currency", required=True,
                                   default=lambda self: self.env.company.currency_id)
     balance = fields.Float(
-        'Balance', tracking=True, compute='_balance_compute', )
+        'Balance', tracking=True, compute='_balance_compute', store=True )
     is_purchase = fields.Boolean(string="Is Purchase", readonly=True)
     invoice_id = fields.Many2one("account.move", string="Invoice", required=False, )
     amount = fields.Float('Amount', tracking=True)
@@ -76,23 +76,55 @@ class PaymentRequest(models.Model):
     on_time = fields.Boolean(string='On Time', compute='_compute_on_time')
     can_reset_to_draft = fields.Boolean(compute='_compute_can_reset_to_draft')
 
-    req_amount = fields.Float('Required Amount ', store=True)
-    @api.onchange('maintenance_id')
-    def _onchange_maintenance(self):
-        if self.maintenance_id:
-            self.req_amount = self.maintenance_id.maintenance_cost
+   
 
+    remaining_amount = fields.Float(
+    string="Remaining", 
+    store=True
+    )
+
+
+    req_amount = fields.Float('Required Amount ', store=True)
     maintenance_id = fields.Many2one(
         'maintenance.request',
         string="Maintenance Request",
-        domain="[('stage_id.name','=','طلب جديد')]"
+        domain="[('stage_id.name','=','طلب جديد')]",
+        store=True,
     )
+
     vehicle_id = fields.Many2one(
         'fleet.vehicle',
-        related='maintenance_id.vehicle_id',
         store=True,
         string="Truck"
     )
+
+    driver_id = fields.Many2one(
+        'res.partner',
+        related="vehicle_id.driver_id",
+        store=True,
+        string="Driver"
+    )
+
+    custody_type = fields.Selection([
+        ('fuel', 'Fuel'),
+        ('maintenance', 'Maintenance')
+    ], string='Type', store=True, default='fuel')
+
+  
+    @api.onchange('maintenance_id')
+    def _onchange_maintenance(self):
+        if self.custody_type == 'maintenance' and self.maintenance_id:
+            self.vehicle_id = self.maintenance_id.vehicle_id
+            self.driver_id = self.maintenance_id.vehicle_id.driver_id
+            self.req_amount = self.maintenance_id.maintenance_cost
+
+  
+    @api.onchange('vehicle_id')
+    def _onchange_vehicle(self):
+        if self.custody_type == 'fuel' and self.vehicle_id:
+            self.driver_id = self.vehicle_id.driver_id
+
+            
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -219,7 +251,8 @@ class PaymentRequest(models.Model):
         if not self.is_need_clearance and not self.line_ids and not self.is_purchase:
             raise ValidationError(
                 'Please inter details!')
-        self.write({'state': 'wait_financial_manager'})
+        self.write({'state': 'wait_financial_manager',
+                    'remaining_amount': self.amount})
 
     # def action_depart_manager_approve(self):
     #     self.write({'state': 'wait_financial_manager'})

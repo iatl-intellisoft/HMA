@@ -2,7 +2,7 @@
     <data>
 
         <record id="action_account_request_payment" model="ir.actions.act_window">
-            <field name="name">Register Payment</field> 
+            <field name="name">Register Payment</field>
             <field name="res_model">account.payment</field>
             <field name="view_id" ref="payment_request.view_account_payment_request_form"/>
             <field name="context">{'default_payment_request_id': [active_id]}</field>
@@ -46,7 +46,7 @@
                          <button name="action_financial_manager_approve" string="Approve" class="oe_highlight"
                                 invisible="state != 'wait_financial_manager'" type="object"
                                 groups="account_custom.group_account_financial_manager"/>
-                       <!-- <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
+                      <!--  <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
                                 invisible="state != 'wait_auditing'" type="object" groups="account.group_account_manager"/> -->
                         <!-- <button name="action_approve_gm" string="Approve" class="oe_highlight"
                        	invisible="state != 'wait_gm'" type="object" groups="account_custom.group_general_manager"/> -->
@@ -91,15 +91,21 @@
                                        readonly="state != 'draft' and is_purchase == True"
                                        required="state == 'approve' or is_need_clearance == True"/>
                                 <field name="employee_id" readonly="state != 'draft'" required="1"/>
-                                <field name="department_id" readonly="state != 'draft'"/>
+                                <field name="department_id" invisible="1" readonly="state != 'draft'"/>
                                 <field name="creator" invisible="1"/>
-                                <field name="maintenance_id"/>
-                                <field name="vehicle_id"/>
-                                <field name="req_amount"  />
+                                <field name="custody_type"  readonly="state != 'draft'"/>
+                                <field name="maintenance_id"  readonly="state != 'draft'"
+                                    invisible="custody_type != 'maintenance'"/>
+                                <field name="vehicle_id"  readonly="state != 'draft'"
+                                    invisible="custody_type != 'fuel'"/>
+                                <field name="driver_id" readonly="1" /> 
+                                <field name="req_amount"  invisible="custody_type != 'maintenance'"/>
                                 <field name="invoice_id" invisible="invoice_id != True"/>
                                 <field name="is_need_clearance" invisible="1"/>
-                                <field name="is_renewable" invisible="is_need_clearance != True"/>
+                                <field name="is_renewable" invisible="is_need_clearance != True"/>                                 
                             </group>
+
+
                             <group>
                                 <field name="date" readonly="state != 'draft'"/>
                                 <field name="company_id"/>
@@ -116,6 +122,8 @@
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
                                 <field name="currency_id" readonly="state != 'draft' and is_purchase == True"/>
+                                <field name="remaining_amount" invisible="custody_type != 'fuel'" readonly="1" />
+
                             </group>
                         </group>
                         <notebook>

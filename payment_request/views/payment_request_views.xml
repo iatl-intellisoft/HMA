@@ -1,0 +1,229 @@
+<odoo>
+    <data>
+
+        <record id="action_account_request_payment" model="ir.actions.act_window">
+            <field name="name">Register Payment</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_id" ref="payment_request.view_account_payment_request_form"/>
+            <field name="context">{'default_payment_request_id': [active_id]}</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--Tree View : Payment Request -->
+        <record id="view_payment_request_tree" model="ir.ui.view">
+            <field name="name">Financial Approval</field>
+            <field name="model">payment.request</field>
+            <field name="arch" type="xml">
+                <list string="Financel Approval" decoration-danger="on_time==False">
+                    <field name="on_time" column_invisible="1"/>
+                    <field name="name"/>
+                    <field name="date"/> 
+                    <field name="employee_id"/>
+                    <field name="vehicle_id"/>
+                    <field name="driver_id"/>
+                    <field name="amount"/>
+                    <field name="remaining_amount"/>                  
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!--Form View : Payment Request -->
+        <record id="view_payment_request_form_abuelf" model="ir.ui.view">
+            <field name="name">Financial Approval Form</field>
+            <field name="model">payment.request</field>
+            <field name="arch" type="xml">
+                <form string="Financial Approval">
+                    <header>
+                        <button name="action_submit" string="Submit" class="oe_highlight"
+                                invisible="state != 'draft'" type="object"/>
+
+                        <!-- <button name="action_depart_manager_approve" string="Approve" class="oe_highlight"
+                                invisible="state != 'wait_department_manager'" type="object"
+                                groups="payment_request.group_payment_request_manager"/> -->
+                         <!-- <button name="action_financial_manager_approve" string="Approve" class="oe_highlight"
+                                invisible="state != 'wait_financial_manager'" type="object"
+                                groups="account_custom.group_account_financial_manager"/> -->
+                      <!--  <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
+                                invisible="state != 'wait_auditing'" type="object" groups="account.group_account_manager"/> -->
+                        <!-- <button name="action_approve_gm" string="Approve" class="oe_highlight"
+                       	invisible="state != 'wait_gm'" type="object" groups="account_custom.group_general_manager"/> -->
+                        <button name="%(payment_request.action_account_request_payment)d"
+                                id="account_custody_payment_btn" type="action"
+                                invisible="state != 'wait_payment'"
+                                string="Register Payment"
+                                groups="account_custom.group_accountant_payable" class="oe_highlight"/>
+                        <button name="action_cancel" type="object" string="Cancel"
+                                invisible="state not in ['submit', 'wait_department_manager', 'wait_financial_manager', 'wait_auditing', 'wait_gm', 'wait_payment', 'approve']"
+                                groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"/>
+                        <button name="action_close" id="close_btn" type="object" string="Close"
+                                                               invisible="1"
+                                class="oe_highlight"/>
+                        <button name="reset_to_draft" id="reset_to_draft_button" type="object" string="Reset to draft"
+                                                                invisible="can_reset_to_draft == False" groups="payment_request.group_payment_request_manager"/>
+                        <field name="clearance_ids" invisible="1"/>
+                        <field name="can_reset_to_draft" invisible="1"/>
+<!--                        <button name="action_set_to_draft" class="oe_highlight" type="object" string="Set To Draft"-->
+<!--                                states="cancel"/>-->
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,wait_department_manager,wait_financial_manager"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action"
+                                    name="%(payment_request.act_res_partner_2_custody)d"
+                                    groups="account.group_account_user" icon="fa-usd" string="Custody's Payments"
+                                    invisible="payment_ids == False"/>
+                            <field name="payment_ids" invisible="1"/>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="......"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="on_time" invisible="1"/>
+                                
+                                <field name="custody_type"  invisible="is_need_clearance != False" readonly="state != 'draft'"/>
+                                <field name="employee_id" readonly="state != 'draft'" required="1"/>
+                                <field name="partner_id"
+                                       readonly="state != 'draft' and is_purchase == True"
+                                       required="state == 'approve' or is_need_clearance == True"/>
+                                <field name="department_id" invisible="1"  readonly="state != 'draft'"/>
+                                <field name="creator" invisible="1"/>
+                                <field name="maintenance_id"  readonly="state != 'draft'"
+                                    invisible=" custody_type != 'maintenance'"
+                                       required="custody_type == 'maintenance'"/> 
+                                <field name="vehicle_id"  readonly="state != 'draft'"
+                                    invisible="is_need_clearance != False"
+                                    required="is_need_clearance == False"/>
+                                <field name="driver_id" readonly="1" invisible="is_need_clearance != False" /> 
+                                <field name="req_amount" invisible=" custody_type != 'maintenance'"/>
+                                <field name="base_amount" invisible="1"  /> 
+                                <field name="invoice_id" invisible="invoice_id != True"/>
+                                <field name="is_need_clearance" invisible="1"/>
+                                <field name="amount" invisible="is_need_clearance != True"
+                                    readonly="state != 'draft' or is_need_clearance != True"/>
+                                <field name="remaining_amount" invisible="is_need_clearance != True" readonly="1" />
+                                <field name="is_renewable" invisible="1"/>                                 
+                            </group>
+
+
+                            <group>
+                                <field name="date" readonly="state != 'draft'"/>
+                                <field name="company_id"/>
+                                <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"
+                                       readonly="state in ['wait_Payment', 'close']" required="1"/>
+                                <field name="account_id" invisible="is_need_clearance != True"
+                                       readonly="state != 'draft'"/>
+                                <field name="clearance_days" invisible="is_need_clearance != True"
+                                       readonly="state != 'draft'"/>
+                                <field name="date_clearance" invisible="1"/> 
+                            
+                                <field name="balance" invisible="is_need_clearance != True"/>
+                                <field name="is_purchase" invisible="is_purchase != True"/>
+                                <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
+                                <!-- <field name="currency_id" readonly="state != 'draft' and is_purchase == True"/> -->
+                                
+
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Details" invisible="is_need_clearance == True">
+                                <field name="line_ids" readonly="state != 'draft'">
+                                    <list editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <field name="company_id"/>
+                                        <field name="expense_account_id" domain="[('deprecated', '=', False),
+                                                 ('account_type', 'not in', ('asset_receivable', 'liability_payable')),
+                                                     ('company_ids', 'parent_of', company_id),
+                                                     ('account_type', '!=', 'off_balance')]"/>
+                                        <field name="analytic_account_id"   />
+<!--                            <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>-->
+                                        <field name="partner_id" column_invisible="1"/>
+                                        <field name="quantity"/>
+                                        <field name="price_unit"/>
+                                        <field name="tax_ids" widget="many2many_tags"
+                                               invisible="parent.is_purchase != True"
+                                               domain="[('company_id', 'parent_of', company_id),('type_tax_use','=','purchase')]"
+                                               options="{'no_create': True}" optional="show"/>
+                                        <field name="price_subtotal"/>
+                                        <field name="price_tax" column_invisible="1"/>
+                                        <field name="price_total" column_invisible="1"/>
+                                    </list>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="amount_untaxed" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"
+                                           invisible="is_purchase != True"/>
+                                    <field name="amount_tax" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_amount"/>
+                                    </div>
+                                    <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator"
+                                           widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+
+                            <page string="Move Line" invisible="is_need_clearance != True">
+                                <field name="move_line_ids" readonly="1"/>
+                            </page>
+                            <page string="Notes" name="note">
+                                <field name="note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                     <chatter/>
+                    <!-- <chatter reload_on_follower="True"/> -->
+
+                </form>
+            </field>
+        </record>
+
+        <!--Search View : Payment Request -->
+        <record id="view_payment_request_search" model="ir.ui.view">
+            <field name="name">Financial Approval Search</field>
+            <field name="model">payment.request</field>
+            <field name="arch" type="xml">
+                <search string="Financial Approval">
+                    <field name="name" string="Name"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="employee_id" string="Employee"/>
+                    <field name="department_id" string="Department"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
+                        <filter name="group_by_department_id" string="Department"
+                                context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Action View : Payment Request -->
+        <record id="action_payment_request_view" model="ir.actions.act_window">
+            <field name="name">Financial Approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payment.request</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'default_is_need_clearance' : False}</field>
+            <field name="domain">[('is_need_clearance','=',False)]</field>
+        </record>
+
+        <!--Action View : Custody-->
+        <record id="action_fc_view" model="ir.actions.act_window">
+            <field name="name">Custody Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payment.request</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'default_is_need_clearance' : True}</field>
+            <field name="domain">[('is_need_clearance','=',True)]</field>
+        </record>
+    </data>
+</odoo>

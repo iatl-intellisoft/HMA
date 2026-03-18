@@ -1,11 +1,9 @@
 import base64
 from io import BytesIO
 from locale import currency
-
 import xlwt
 from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
-
 
 class PerformanceReport(models.TransientModel): 
     _name = 'performance.report'
@@ -69,15 +67,6 @@ class PerformanceReport(models.TransientModel):
 
         # Write header
         sheet.write_merge(0, 0, 0, 1, 'التقرير الشهري لعهدة الوقود  ', main_heading)
-        # sheet.write(1, 0, "التاريخ", heading)
-        # sheet.write(1, 1, "رقم العهدة", heading)
-        # sheet.write(1, 2, "اسم المستلم", heading)
-        # sheet.write(1, 3, "المبلغ المسلم(العهدة)", heading)
-        # sheet.write(1, 4, "المبلغ المصروف", heading)
-        # sheet.write(1, 5, "الرصيد المتبقي", heading)
-        # sheet.write(1, 6, "نوع الحركة", heading)
-        # sheet.write(1, 7, "المرجع", heading)
-        # sheet.write(1, 8, "البيان", heading)
         truck_odometer={}
         for rec in truck_odometers:
             # if rec.state == "paid":    
@@ -134,58 +123,11 @@ class PerformanceReport(models.TransientModel):
                     else:
                         ref="تجديد العهدة"
                     custodys.append(rec.request_id)
-                    # sheet.row(row).height = 400
-                    # sheet.write(row, 0, rec.date.strftime('%d/%m/%Y'), content_format)
-                    # sheet.write(row, 1, rec.request_id.name, content_format)
-                    # sheet.write(row, 2, rec.employee_id.name, content_format)
-                    # sheet.write(row, 3, rec.custody_amount, content_format)
-                    # sheet.write(row, 4, "-", content_format)
-                    # sheet.write(row, 5, rec.request_id.base_amount, content_format)
-                    # sheet.write(row, 6, "استلام", content_format1)
-                    # sheet.write(row, 7, "" , content_format)
-                    # sheet.write(row, 8, ref, content_format)
                     custody_amount +=rec.custody_amount
                     # row += 1
-                # sheet.row(row).height = 400
-                # sheet.write(row, 0, rec.date.strftime('%d/%m/%Y'), content_format)
-                # sheet.write(row, 1, rec.request_id.name, content_format)
-                # sheet.write(row, 2, rec.employee_id.name, content_format)
-                # sheet.write(row, 3, "-", content_format)
-                # sheet.write(row, 4, rec.total_amount, content_format)
-                # sheet.write(row, 5, rec.request_remaining_amount, content_format)
-                # sheet.write(row, 6, "صرف", content_format2)
-                # sheet.write(row, 7,  rec.custody_line_ids.clearance_type, content_format)
-                # sheet.write(row, 8, rec.custody_line_ids.desc, content_format)
                 expenses_amount += rec.total_amount
-                # row += 1
-                # new_row= row
                 rema_amount = custody_amount - expenses_amount
  
-        # sheet.row(new_row).height = 400
-        # sheet.write(new_row, 0, "المجموع", heading)
-        # sheet.write(new_row, 1, "-", heading)
-        # sheet.write(new_row, 2, "-", heading)
-        # sheet.write(new_row, 3, custody_amount, heading)
-        # sheet.write(new_row, 4, expenses_amount, heading)
-        # sheet.write(new_row, 5, "-", heading)
-        # sheet.write(new_row, 6, row-2, heading)
-        # sheet.write(new_row, 7, row-2, heading)
-        # sheet.write(new_row, 8, "-", heading)
-        # new_row+= 1
-        # # Save to stream and encode
-        # sheet.row(new_row).height = 400
-        # sheet.write(new_row, 0,)
-        # sheet.write(new_row, 1,)
-        # sheet.write(new_row, 2,)
-        # sheet.write(new_row, 3, rema_amount, content_format3)
-        # sheet.write(new_row, 4, "", content_format3)
-        # sheet.write(new_row, 5,)
-        # sheet.write(new_row, 6,)
-        # sheet.write(new_row, 7,)
-        # sheet.write(new_row, 8,)
-
-        # new_row+= 3
-
         sheet.row(row).height = 400
         sheet.write(row, 0, "البيان", heading)
         sheet.write(row, 1, "المبلغ(جنيه)", heading) 
@@ -206,7 +148,6 @@ class PerformanceReport(models.TransientModel):
         row+= 3 
         sheet.write_merge(9, 9, 0, 9, f'مؤشرات تقييم الاداء الشهري لحركة وتشغيل الدفارات للفترة ({self.start_date}) الي({self.end_date}) (KPIs)', main_heading)
  
-        # sheet.write_merge(0, 9, row, 8, 'مؤشرات تقييم الاداء الشهري لخركة وتشغيل الدفارات للفترة', main_heading)
         row+=1
         
         sheet.row(row).height = 1200 
@@ -235,8 +176,11 @@ class PerformanceReport(models.TransientModel):
         for vehicle, data in vehicles.items():  
             num_row+=1
             license_plate=str(data['license_plate'])
-            name = data['name']
-            distance=truck_odometer[license_plate]['distance']  
+            name = data['name']            
+            if license_plate in truck_odometer :
+                distance=truck_odometer[license_plate]['distance']  
+            else:
+                distance = 0
             sheet.write(row, 0, data['license_plate'], content_format)
             sheet.write(row, 1, data['driver'], content_format)
             sheet.write(row, 2, data['fuel'], content_format)

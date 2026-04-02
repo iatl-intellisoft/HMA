@@ -12,6 +12,8 @@
                 invisible="state != 'sale'"/>              
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after"> 
+                <field name="truck_id"/>
+                <field name="driver_id"/> 
                 <field name="shipping_office_name"/>
                 <field name="shipping_office_number"/>
                 <field name="shipping_destination"/> 
@@ -23,9 +25,12 @@
         <field name="name">stock.picking.shipping.receipt</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet/group" position="inside">
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='location_id']" position="after"> 
+
                 <div class="o_row">
+                    <label for="truck_id"/><field name="truck_id" />
+                    <label for="driver_id"/><field name="driver_id" />
                     <label for="shipping_receipt"/><field name="shipping_receipt" filename="shipping_receipt_name"/>
                 </div>
             </xpath>

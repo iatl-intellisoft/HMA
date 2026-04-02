@@ -26,13 +26,10 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml"> 
-            <xpath expr="//field[@name='location_id']" position="after"> 
-
-                <div class="o_row">
-                    <label for="truck_id"/><field name="truck_id" />
-                    <label for="driver_id"/><field name="driver_id" />
-                    <label for="shipping_receipt"/><field name="shipping_receipt" filename="shipping_receipt_name"/>
-                </div>
+             <xpath expr="//field[@name='location_id']" position="after"> 
+                    <field name="truck_id" />
+                    <field name="driver_id" /> 
+                   <field name="shipping_receipt" filename="shipping_receipt_name"/>
             </xpath>
          </field>
     </record>

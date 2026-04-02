@@ -8,6 +8,7 @@ class ShippingDestination(models.Model):
     code = fields.Integer(string="Code")
     name = fields.Char(string="City Name")
 
+   
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     truck_id = fields.Many2one('fleet.vehicle', string="Truck")
@@ -22,6 +23,7 @@ class SaleOrder(models.Model):
     shipping_office_number = fields.Char(string="رقم مكتب الشحن", store=True)
     shipping_destination = fields.Many2one('shipping.destination', string="مكان ارسال البضاعة", store=True)
 
+   
     def action_confirm(self):
         res = super().action_confirm()
 
@@ -31,7 +33,31 @@ class SaleOrder(models.Model):
                 invoice.action_post()
 
         return res
+    def action_register_payment(self):
+        self.ensure_one()
 
+         
+        invoices = self.invoice_ids.filtered(
+            lambda inv: inv.state == 'posted' and inv.payment_state != 'paid'
+        )
+
+        if not invoices:
+            raise UserError("لا توجد فواتير متاحة للسداد (قد تكون مدفوعة أو قيد التسوية)")
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Register Payment',
+            'res_model': 'account.payment.register',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'active_model': 'account.move',
+                'active_ids': invoices.ids,
+            },
+        }
+
+
+  
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     truck_id = fields.Many2one('fleet.vehicle' ,related='sale_id.truck_id', string="Truck" , readonly="1")

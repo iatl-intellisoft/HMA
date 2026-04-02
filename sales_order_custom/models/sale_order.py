@@ -6,7 +6,7 @@ class ShippingDestination(models.Model):
     _description = 'shipping destination'
      
     code = fields.Integer(string="Code")
-    name = fields.Char(string="City Name")
+    name = fields.Char(string="City Name") 
 
    
 class SaleOrder(models.Model):

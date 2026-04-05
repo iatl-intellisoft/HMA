@@ -6,7 +6,7 @@ class ShippingDestination(models.Model):
     _description = 'shipping destination'
      
     code = fields.Integer(string="Code")
-    name = fields.Char(string="City Name") 
+    name = fields.Char(string="City Name")
 
    
 class SaleOrder(models.Model):
@@ -69,16 +69,16 @@ class StockPicking(models.Model):
             readonly=True
         )
     shipping_office_name = fields.Char(related='sale_id.shipping_office_name', store=True)
-    shipping_office_number = fields.Char(related='sale_id.shipping_office_number', store=True)
-    shipping_destination = fields.Many2one('shipping.destination', string="مكان ارسال البضاعة", store=True)
+    shipping_office_number = fields.Char(related='sale_id.shipping_office_number' , store=True)
+    shipping_destination = fields.Many2one('shipping.destination', related='sale_id.shipping_destination', string="مكان ارسال البضاعة", store=True)
     shipping_receipt = fields.Binary(string="ايصال الشحن")
     shipping_receipt_name = fields.Char(string="اسم الملف")
 
-    @api.model
-    def create(self, vals):
-        if vals.get('sale_id'):
-            sale = self.env['sale.order'].browse(vals['sale_id'])
-            if sale.driver_id:
-                vals['driver_id'] = sale.driver_id.id
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('sale_id'):
+    #         sale = self.env['sale.order'].browse(vals['sale_id'])
+    #         if sale.driver_id:
+    #             vals['driver_id'] = sale.driver_id.id 
 
-        return super().create(vals) 
+    #     return super().create(vals) 

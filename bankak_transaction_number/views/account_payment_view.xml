@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='payment_method_line_id']" position="after">
-                    <field name="bankak_transaction_number" invisible="not show_partner_bank_account or payment_type == 'outbound'" required="require_partner_bank_account"/>
+                    <field name="bankak_transaction_number" invisible="not show_partner_bank_account or required="require_partner_bank_account"/>
             </xpath>
 
         </field>

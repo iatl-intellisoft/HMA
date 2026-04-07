@@ -5,7 +5,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     bankak_transaction_number = fields.Char(
-        string="Bankak Transaction Number",
+        string="رقم العملية ( بنكك )",
         copy=False
     )
 

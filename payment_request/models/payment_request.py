@@ -62,6 +62,8 @@ class PaymentRequest(models.Model):
     on_time = fields.Boolean(string='On Time', compute='_compute_on_time')
     can_reset_to_draft = fields.Boolean(compute='_compute_can_reset_to_draft')
 
+    niration = fields.Char(string='Niration')
+    total_amount = fields.Float('Total Amount ', store=True , required=True)
    
 
     remaining_amount = fields.Float(
@@ -334,10 +336,13 @@ class PaymentRequestLine(models.Model):
     _description = 'Payment Request Line'
 
     payment_id = fields.Many2one("payment.request", string="Payment", required=False, )
-    product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_id = fields.Many2one('product.product', string='Product')
     name = fields.Char(string='Label', required=True)
-    currency_id = fields.Many2one('res.currency', string="Currency", required=True,
+    currency_id = fields.Many2one('res.currency', string="Currency", 
                                   related='payment_id.currency_id')
+    
+    total_amount = fields.Float('Total Amount ', related='payment_id.total_amount')
+    niration = fields.Char(string='Niration' , related='payment_id.niration')
     quantity = fields.Float(string='Quantity',
                             default=1.0, digits='Product Unit of Measure',
                             help="The optional quantity expressed by this line, eg: number of product sold. "
@@ -345,7 +350,7 @@ class PaymentRequestLine(models.Model):
     price_unit = fields.Float(string='Unit Price', digits='Product Price', currency_field='currency_id')
     product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure',
                                      domain="[('category_id', '=', product_uom_category_id)]")
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True,
+    partner_id = fields.Many2one('res.partner', string="Partner",
                                  related='payment_id.partner_id')
     expense_account_id = fields.Many2one('account.account', string='Account', readonly=False, )
     tax_ids = fields.Many2many('account.tax', string='Taxes', help="Taxes that apply on the base amount",

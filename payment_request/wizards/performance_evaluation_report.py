@@ -279,7 +279,8 @@ class PerformanceReport(models.TransientModel):
             
             fuel_amount.append(data['amount'])
             sum_days += days
-            sum_days_income += result.get(truck, {}).get('all_amount', 0) / result_total * 100
+            if result_total != 0:
+                sum_days_income += result.get(truck, {}).get('all_amount', 0) / result_total * 100
             operation_cost_amount.append(operating_cost.get(license_plate, {}).get('cost', 0))
             sheet.write(row, 0, data['license_plate'], content_format)
             sheet.write(row, 1, data['driver'], content_format)

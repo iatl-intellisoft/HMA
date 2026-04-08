@@ -62,7 +62,7 @@ class MonthlyMovementReport(models.TransientModel):
             borders: left thin, right thin, top thin, bottom thin;
         """, num_format_str='#,##0.00') 
 
-        truck_odometers = self.env['truck.odometer'].search([
+        truck_odometers = self.env['fleet.vehicle.odometer'].search([
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
         ])
@@ -71,11 +71,11 @@ class MonthlyMovementReport(models.TransientModel):
 
         for rec in truck_odometers:
             month = rec.date.strftime('%Y-%m')
-            plate = rec.truck_id.license_plate
+            plate = rec.vehicle_id.license_plate
 
             data.setdefault(month, {})
             data[month].setdefault(plate, [])
-            data[month][plate].append(rec.odometer)
+            data[month][plate].append(rec.value)
  
         result = {}
         all_trucks = set()
@@ -109,8 +109,7 @@ class MonthlyMovementReport(models.TransientModel):
             col += 1
 
         sheet.write(3, col, 'اجمالي كل الشهر', header_style)
-
-        # ================== BODY ==================
+ 
         row = 4
         monthly_totals = {t: 0 for t in all_trucks}
         grand_total = 0
@@ -134,8 +133,7 @@ class MonthlyMovementReport(models.TransientModel):
             grand_total += month_total
 
             row += 1
-
-        # ================== TOTAL ROW ==================
+ 
         sheet.write(row, 0, 'اجمالي المسافة المقطوعة (كم)', header_style)
 
         col = 1

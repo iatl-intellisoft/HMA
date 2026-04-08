@@ -20,6 +20,5 @@ access_payment_request_clearance_line_billing_manger,payment_request_clearance_l
 access_payment_request_clearance_billing_manager,payment_request_clearance_billing_manager,model_custody_clearance,,1,1,1,1
 access_clearnce_report,clearnce_report,model_clearnce_report,,1,1,1,1
 access_performance_report,performance_report,model_performance_report,,1,1,1,1
-access_truck_odometer,truck_odometer,model_truck_odometer,,1,1,1,1
 access_monthly_movement_report,monthly_movement_report,model_monthly_movement_report,,1,1,1,1
 access_movement_operation_report,movement_operation_report,model_movement_operation_report,,1,1,1,1

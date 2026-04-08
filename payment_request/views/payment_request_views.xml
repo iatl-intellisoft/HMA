@@ -147,10 +147,7 @@
                                 </field> 
                             </page>
                                 
-
-                            </group>
-                        </group>
-                        <notebook>
+ 
                            
                             <page string="Move Line" invisible="is_need_clearance != True">
                                 <field name="move_line_ids" readonly="1"/>

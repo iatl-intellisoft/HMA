@@ -25,8 +25,7 @@
         'views/payment_clearance_views.xml',
         'views/payment_menuitem.xml',
         'views/payment_request_report_view.xml',
-        'views/custody_clearance_report_view.xml',
-        'views/truck_odometer_views.xml',
+        'views/custody_clearance_report_view.xml', 
     ],
     'license': 'LGPL-3',
 }

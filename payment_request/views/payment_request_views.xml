@@ -128,7 +128,24 @@
                                 <field name="total_amount" invisible="is_need_clearance != False"/>
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
-                                <!-- <field name="currency_id" readonly="state != 'draft' and is_purchase == True"/> -->
+                                <field name="niration" />  
+                                <field name="total_amount" />
+                                </group>
+                        </group>
+                        <notebook>
+                            <page string="Details" invisible="is_need_clearance == True">
+                                <field name="line_ids" readonly="state != 'paid'">
+                                    <list editable="bottom"> 
+                                        <field name="expense_account_id" domain="[('deprecated', '=', False),
+                                                 ('account_type', 'not in', ('asset_receivable', 'liability_payable')),
+                                                     ('company_ids', 'parent_of', company_id),
+                                                     ('account_type', '!=', 'off_balance')]"/>                                                     
+                                        <field name="niration"   />  
+                                        <field name="total_amount"   />
+                                                       
+                                    </list>
+                                </field> 
+                            </page>
                                 
 
                             </group>

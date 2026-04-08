@@ -33,7 +33,7 @@ class MovementOperationReport(models.TransientModel):
             # ('state', '==', 'paid'),
             # ('is_need_clearance', '==', False),
         ])
-        truck_odometers = self.env['truck.odometer'].search([
+        truck_odometers = self.env['fleet.vehicle.odometer'].search([
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
             # ('state', '==', 'paid'),
@@ -73,7 +73,7 @@ class MovementOperationReport(models.TransientModel):
         sheet.col(8).width = sheet.col(9).width = sheet.col(10).width = sheet.col(11).width = sheet.col(12).width = sheet.col(13).width = sheet.col(14).width = sheet.col(15).width =sheet.col(16).width =sheet.col(17).width =sheet.col(18).width=sheet.col(19).width = 5000
 
         # Write header
-        sheet.write_merge(0, 0, 0, 19,  '({self.start_date})/({self.end_date}) كشف متابعة حركو وتشغيل الدفارات للفترة ', main_heading)
+        sheet.write_merge(0, 0, 0, 19,  f'({self.start_date})/({self.end_date}) كشف متابعة حركو وتشغيل الدفارات للفترة ', main_heading)
         sheet.write(1, 0, "رقم الشاحنة", heading)
         sheet.write(1, 1, "اسم السائق", heading)
         sheet.write(1, 2, "تاريخ التعبئة", heading)

@@ -33,11 +33,9 @@ class ClearnceReport(models.TransientModel):
             # ('state', '==', 'paid'),
             # ('is_need_clearance', '==', False),
         ])
-        truck_odometers = self.env['truck.odometer'].search([
+        truck_odometers = self.env['fleet.vehicle.odometer'].search([
             ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date),
-            # ('state', '==', 'paid'),
-            # ('is_need_clearance', '==', False),
+            ('date', '<=', self.end_date), 
         ])
 
         workbook = xlwt.Workbook(encoding='utf-8')
@@ -73,7 +71,7 @@ class ClearnceReport(models.TransientModel):
         sheet.col(8).width = 5000
 
         # Write header
-        sheet.write_merge(0, 0, 0, 8, ' ({self.start_date})/({self.end_date}) Fuel Inventory (عهدة الوقود)', main_heading)
+        sheet.write_merge(0, 0, 0, 8, f'({self.start_date})/({self.end_date}) Fuel Inventory (عهدة الوقود)', main_heading)
         sheet.write(1, 0, "التاريخ", heading)
         sheet.write(1, 1, "رقم العهدة", heading)
         sheet.write(1, 2, "اسم المستلم", heading)
@@ -84,20 +82,22 @@ class ClearnceReport(models.TransientModel):
         sheet.write(1, 7, "المرجع", heading)
         sheet.write(1, 8, "البيان", heading)
         truck_odometer={}
-        for rec in truck_odometers:
-            # if rec.state == "paid":    
-            if rec.truck_id.license_plate not in truck_odometer:
-                truck_odometer[rec.truck_id.license_plate]={
-                            'license_plate': rec.truck_id.license_plate,
+        for rec in truck_odometers: 
+            if rec.vehicle_id.license_plate not in truck_odometer:
+                truck_odometer[rec.vehicle_id.license_plate]={
+                            'license_plate': rec.vehicle_id.license_plate,
                             'odometer':[],
-                            'distance' : 0
+                            'distance' : 0, 
+                            'days':[],
                     }
-            truck_odometer[rec.truck_id.license_plate]['odometer'].append(rec.odometer)
-            max_odometer = max(truck_odometer[rec.truck_id.license_plate]['odometer'])
-            min_odometer = min(truck_odometer[rec.truck_id.license_plate]['odometer'])
+            truck_odometer[rec.vehicle_id.license_plate]['odometer'].append(rec.value)
+            max_odometer = max(truck_odometer[rec.vehicle_id.license_plate]['odometer'])
+            min_odometer = min(truck_odometer[rec.vehicle_id.license_plate]['odometer'])
             distance = max_odometer - min_odometer
-            truck_odometer[rec.truck_id.license_plate]['distance'] = distance
-        print(truck_odometer)
+            if rec.date not in truck_odometer[rec.vehicle_id.license_plate]['days']:
+                truck_odometer[rec.vehicle_id.license_plate]['days'].append(rec.date)
+
+            truck_odometer[rec.vehicle_id.license_plate]['distance'] = distance 
         
 
                 

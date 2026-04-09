@@ -4,10 +4,8 @@ from odoo.exceptions import ValidationError
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    bankak_transaction_number = fields.Char(
-        string="رقم العملية ( بنكك )",
-        copy=False
-    )
+    bankak_transaction_number = fields.Char(string="رقم العملية", copy=False)
+    bank_transaction_notification = fields.Binary(string="اشعار العملية")
 
     @api.constrains('bankak_transaction_number')
     def _check_duplicate_bankak_number(self):

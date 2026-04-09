@@ -434,6 +434,8 @@ class AccountPayment(models.Model):
                                 else clearance_defaults[0].currency_id.id or False,
                             'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
                                 else clearance_defaults[0].partner_id.id or False,
+                             'bankak_transaction_number': self.bankak_transaction_number if self.bankak_transaction_number else False, 
+                            'bank_transaction_notification': self.bank_transaction_notification if self.bank_transaction_notification else False,
 
                             # 'department_id': custody_defaults[0].department_id.id if custody_defaults \
                             #     else clearance_defaults[0].department_id.id or False,
@@ -458,6 +460,9 @@ class AccountPayment(models.Model):
                                 else clearance_defaults[0].currency_id.id or False,
                             'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
                                 else clearance_defaults[0].partner_id.id or False,
+                             'bankak_transaction_number': self.bankak_transaction_number if self.bankak_transaction_number else False, 
+                            'bank_transaction_notification': self.bank_transaction_notification if self.bank_transaction_notification else False,
+
                             # 'department_id': custody_defaults[0].department_id.id if custody_defaults \
                             #     else clearance_defaults[0].department_id.id or False,
                             })

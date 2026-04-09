@@ -337,7 +337,7 @@ class PaymentRequestLine(models.Model):
 
     payment_id = fields.Many2one("payment.request", string="Payment", required=False, )
     product_id = fields.Many2one('product.product', string='Product')
-    name = fields.Char(string='Label', required=True)
+    name = fields.Char(string='Label' )
     currency_id = fields.Many2one('res.currency', string="Currency", 
                                   related='payment_id.currency_id')
     

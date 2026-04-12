@@ -16,7 +16,7 @@
 
         'security/check_security.xml',
         'security/ir.model.access.csv',
-        'data/data.xml',
+        # 'data/data.xml',
         #'data/sequence.xml',
         'data/schedule_action.xml',
         'wizard/check_replacement_wizard.xml',

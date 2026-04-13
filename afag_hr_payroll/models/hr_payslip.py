@@ -7,7 +7,7 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
     
     payment_type = fields.Selection([('bank', 'Bank'), ('cash', 'Cash')], related='contract_id.payment_type', store=True)
-    employer_id = fields.Many2one('res.partner', related='contract_id.employee_id.employer_id', store=True)
+    employer_id = fields.Many2one('res.partner', store=True)
 
     worked_days = fields.Float(string="Worked Days", compute="_compute_worked_days")
 

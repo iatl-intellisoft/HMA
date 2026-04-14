@@ -1,0 +1,66 @@
+<odoo>
+  <record id="view_account_payment_form_inherit_bankak23" model="ir.ui.view">
+        <field name="name">account.payment.form.bankak</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                <field name="bankak_transaction_number"/>                
+                <field name="bank_transaction_notification"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_account_payment_register_inherit_bank_fields237" model="ir.ui.view">
+    <field name="name">account.payment.register.inherit.bank.fields</field>
+    <field name="model">account.payment.register</field>
+    <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+    <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='payment_method_line_id']" position="after">
+            <field name="bankak_transaction_number"/>                
+            <field name="bank_transaction_notification"/> 
+        </xpath>
+
+    </field>
+</record>
+    <record id="sale_order_form_shipping" model="ir.ui.view">
+        <field name="name">sale.order.shipping</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_register_payment"
+                type="object"
+                string="سداد الفاتورة"
+                class="btn-primary"
+                invisible="state != 'sale'"/>              
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after"> 
+                <field name="truck_id"/> 
+                <field name="driver_id"/> 
+                <field name="shipping_office_name"/>
+                <field name="shipping_office_number"/>
+                <field name="shipping_destination"/> 
+            </xpath>
+
+        </field>
+    </record>  
+    <record id="stock_picking_shipping_receipt" model="ir.ui.view">
+        <field name="name">stock.picking.shipping.receipt</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='location_id']" position="after"> 
+                    <field name="delivery_amount"/>
+                    <field name="truck_id" />
+                    <field name="driver_id" /> 
+                    <field name="shipping_office_name" /> 
+                    <field name="shipping_office_number" />  
+                    <field name="shipping_destination" /> 
+                   <field name="shipping_receipt" filename="shipping_receipt_name"/>
+            </xpath>
+         </field>
+    </record>
+</odoo> 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -152,6 +150,8 @@ class AccountPayment(models.Model):
     #             'partner_bank_id': pay.partner_bank_id.id,
     #             'line_ids': line_ids_commands,
     #         })
+    
+    # return line_vals_list
     def _prepare_move_line_default_vals(
         self,
         write_off_line_vals=None,
@@ -165,25 +165,25 @@ class AccountPayment(models.Model):
             line_ids=line_ids,
             **kwargs
         )
-    
+
         result_lines = []
         write_off_line_vals = write_off_line_vals or {}
-    
+
         if self.payment_request_id and not self.payment_request_id.is_need_clearance and not self.payment_request_id.is_purchase:
             for res in line_vals_list:
                 acc_type = False
-    
+
                 if isinstance(res, dict) and res.get('account_id'):
                     acc = self.env['account.account'].browse(res['account_id'])
                     acc_type = acc.account_type
-    
+
                 res['payment_request_id'] = self.payment_request_id.id
                 result_lines.append(res)
-    
+
                 if acc_type in ('asset_receivable', 'liability_payable') or self.partner_id == self.company_id.partner_id:
-    
+
                     write_off_amount = write_off_line_vals.get('amount', 0.0)
-    
+
                     if self.payment_type == 'inbound':
                         counterpart_amount = -self.amount
                         write_off_amount *= -1
@@ -192,23 +192,23 @@ class AccountPayment(models.Model):
                     else:
                         counterpart_amount = 0.0
                         write_off_amount = 0.0
-    
+
                     write_off_balance = self.currency_id._convert(
                         write_off_amount,
                         self.company_id.currency_id,
                         self.company_id,
                         self.date
                     )
-    
+
                     total = sum(line.price_subtotal for line in self.payment_request_id.line_ids) or 1.0
-    
+
                     for line in self.payment_request_id.line_ids:
                         line_share = line.price_subtotal / total
                         line_write_off = write_off_balance * line_share
-    
+
                         debit = line_write_off if line_write_off > 0 else 0.0
                         credit = -line_write_off if line_write_off < 0 else 0.0
-    
+
                         result_lines.append({
                             'name': line.name,
                             'date_maturity': self.date,
@@ -221,10 +221,10 @@ class AccountPayment(models.Model):
                             'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
                             'payment_request_id': self.payment_request_id.id,
                         })
-    
+
             return result_lines
 
-    return line_vals_list
+        return line_vals_list
     # def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
     #     ''' inherit to do payment request Edit
     #     '''
@@ -290,8 +290,8 @@ class AccountPayment(models.Model):
     #                 new_line_vals_list.append(res)
     #         return new_line_vals_list
 
-        else:
-            return line_vals_list
+        # else:
+        #     return line_vals_list
 
     # def _prepare_move_line_default_vals(self, write_off_line_vals=None):
     #     ''' inherit to do payment request Edit

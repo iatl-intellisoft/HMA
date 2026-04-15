@@ -9,6 +9,8 @@ from odoo.osv import expression
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
+    bank_transaction_notification = fields.Binary(string="اشعار العملية") 
+    bankak_transaction_number = fields.Integer(string="رقم العملية") 
     payment_request_id = fields.Many2one(
         'payment.request', string="Payments", copy=False, )
     custody_clearance_id = fields.Many2one(

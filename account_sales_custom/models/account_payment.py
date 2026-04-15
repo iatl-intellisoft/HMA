@@ -19,8 +19,11 @@ class AccountPayment(models.Model):
             if rec.partner_id and rec.manual_account_id:
                 raise ValidationError("لا يمكن اختيار عميل وحساب يدوي في نفس الوقت")
 
-    def _prepare_move_line_default_vals(self, write_off_line_vals=None):
-        res = super()._prepare_move_line_default_vals(write_off_line_vals)
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
+        res = super()._prepare_move_line_default_vals(
+            write_off_line_vals=write_off_line_vals,
+            force_balance=force_balance
+        )
 
         if not self.partner_id and self.manual_account_id:
             for line in res:

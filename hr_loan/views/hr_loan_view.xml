@@ -51,7 +51,8 @@
                         <button name="action_confirm" type="object" class="oe_highlight" invisible="state != 'draft'" string="Confirm"
                               groups="base_custom.group_general_manager" />
 
-                        <button name="action_refuse" type="object" string="Refuse" invisible="state != 'wait_finance'" groups="base_custom.group_account_finacial_manager,base_custom.group_general_manager"/>
+                        <!-- <button name="action_refuse" type="object" string="Refuse" invisible="state != 'wait_finance'" groups="base_custom.group_account_finacial_manager,base_custom.group_general_manager"/> -->
+                        <button name="action_refuse" type="object" string="Refuse" invisible="state != 'wait_finance'" />
                         <button name="action_cancel" type="object" string="Cancel" invisible="state != 'approve'" groups="base_custom.group_general_manager"/>
 
                         <field name="state" widget="statusbar"/>

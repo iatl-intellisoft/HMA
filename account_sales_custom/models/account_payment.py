@@ -1,7 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
@@ -25,9 +24,10 @@ class AccountPayment(models.Model):
             force_balance=force_balance
         )
 
-        if not self.partner_id and self.manual_account_id:
-            for line in res:
-                if not line.get('partner_id'):
+        if not self.partner_id and self.manual_account_id: 
+            for line in res: 
+                if line.get('account_id') != self.journal_id.default_account_id.id:
                     line['account_id'] = self.manual_account_id.id
+                    break  # مهم جداً عشان ما يغير كل السطور
 
         return res

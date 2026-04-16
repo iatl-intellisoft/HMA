@@ -39,7 +39,7 @@
                         <button name="action_confirm_finance_manager" type="object" string="Finance Approve" class="oe_highlight"
                                  invisible="state != 'wait_finance'" groups="base_custom.group_general_manager"/>
                          <button name="action_approve" type="object" string="Approve" class="oe_highlight"
-                                groups="base_custom.group_general_manager"/>
+                                invisible="state != 'wait_gm'" groups="base_custom.group_general_manager"/>
                         <button name="action_approve" type="object" string="GM Approve" class="oe_highlight"
                           invisible="state != 'wait_gm'"  groups="base_custom.group_general_manager"   />
                         <button name="action_set_to_draft" 

@@ -1,0 +1,172 @@
+<!-- <odoo> -->
+<!-- <template id="report_loan_document" >
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o" >
+            <t t-call="web.external_layout">
+                <div class="header2">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class = "col">
+                                <div class="pull-right">
+                                    <h4 class="text-center"  attrs="{'invisible':[('salary_advance','=',False)]}"> Loan Requests</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/><br/>
+                <div class="page">
+                    <table  class="table table-condensed" style="width: 100">
+                        <h style="color:green">Employee Data</h>
+                        <tbody>
+                            <tr>
+                                <th class="left">Name : </th>
+                                <td>                <span t-field="docs.employee_id"/>
+                                </td>
+                            </tr><tr>
+                                <th>
+                                    <strong class = 'mid'> Job Title: </strong>
+                                </th><td>
+                                <span t-field="docs.job_id"/></td>
+                                </tr><tr>
+                                <th>
+                                    <strong> Department/Section: </strong>
+                                </th><td>
+                            <span t-field="docs.department_id"/></td></tr><tr>
+                                <th>
+                                    <strong> Date of Join: </strong>
+                                </th><td>
+                                <span t-field="docs.date"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+<!--                    <div class="page">-->
+<!-- <table  class="table table-condensed " style="width: 100">
+    <h style="color:green"> oan Details</h>L
+    <tbody>
+        <tr>
+            <th class="left" style="width: 100">Loan Amount : </th>
+            <td>                <span t-field="docs.loan_amount"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <strong class = 'mid'> Loan Purpose: </strong>
+            </th>
+            <td>
+
+    </td>
+
+        </tr><tr>
+        <th>
+            <strong> To Be Deducted in: </strong>
+        </th><td>
+
+        <p>________________________________________Month</p>
+    </td></tr><tr>
+        <th>
+            <strong> Signature: </strong>
+        </th><td>
+
+        <p></p>
+    </td></tr><tr>
+        <th>
+            <strong>Date: </strong>
+        </th><td>
+
+        <p></p>
+    </td></tr>
+    </tbody>
+</table> -->
+<!--                    </div>-->
+<!--  <br/><br/><br/>
+ <div class="page">
+     <table  class="table table-condensed table-bordered" style="width: 100" >
+         <h style="color:green"> HR Use</h>
+         <tbody>
+             <tr>
+                 <th class="left">Monthly Deduction Amount : </th>
+                <td>
+
+             <p></p>
+                </td></tr><tr>
+             <th>
+                 <strong> To Be Deducted in: </strong>
+             </th><td>
+             <p>________________________________________Month</p>
+         </td></tr><tr>
+             <th>
+                     <strong class = 'mid'> Deduction Period: </strong>
+             </th>
+         <td>
+             <p>Form</p>
+         </td><td>
+             <p>To</p>
+         </td>
+             </tr>
+             <tr>
+                 <th>
+                     <strong class = 'mid'> Date: </strong>
+                 </th>
+         <td>
+             <p></p>
+         </td>
+             </tr>
+             <tr>
+                 <th>
+                     <strong class = 'mid'> S.HR Officer Signature: </strong>
+                 </th>
+         <td>
+             <p></p>
+         </td>
+             </tr>
+         </tbody>
+     </table>
+ </div>
+<br></br>
+<div class="left">
+ <table>
+ <p> <strong> Global HR Head:___________________________________________________________</strong></p>
+ <p> <strong> CFO :_____________________________________________________________________</strong></p>
+ <p> <strong>  CEO :____________________________________________________________________</strong></p>
+</table>
+ General Instructions:
+ 1. Delivers demand for human resources management To search, check and then certify From the CEO
+ 2. The worker is entitled to a loan in cases of need To ward off a threat to life or property Worker or member of his or her family
+ 3. The loan value shall not exceed 5 months' salary It is deducted from the same month The loan was obtained
+ 4. Loan after granting certification From a specialized committee consisting of three members
+ 5. Financial ratification shall not be permitted Of the loan only after the signature of the employee On a written contract It includes all the relevant conditions
+</div>
+</t>
+</t>
+</t>
+</template> -->
+<!-- </odoo> -->
+
+
+<odoo>
+    <template id="report_loan_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="header2">
+                        <center>
+                            <strong>
+                                <h1 class="text-center">
+                                    <font style="font-family:'serif';">Loan Request طلب قرض</font>
+                                </h1>
+                            </strong>
+                        </center>
+                    </div>
+
+                    <div id="template_introduction" t-field="docs.loan_request_website_description" class='oe_no_empty'>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+

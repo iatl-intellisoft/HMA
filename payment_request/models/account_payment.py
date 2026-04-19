@@ -435,8 +435,9 @@ class AccountPayment(models.Model):
                             #     0].journal_id.id if clearance_defaults else False,
                             'currency_id': custody_defaults[0].currency_id.id if custody_defaults \
                                 else clearance_defaults[0].currency_id.id or False,
-                            'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
-                                else clearance_defaults[0].partner_id.id or False, 
+                            # 'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
+                            #     else clearance_defaults[0].partner_id.id or False,
+                            'partner_id': '', 
 
                             'bankak_transaction_number': self.bankak_transaction_number if self.bankak_transaction_number else False, 
                             'bank_transaction_notification': self.bank_transaction_notification if self.bank_transaction_notification else False,

@@ -1,3 +1,4 @@
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -24,10 +25,12 @@ class AccountPayment(models.Model):
             write_off_line_vals=write_off_line_vals,
             force_balance=force_balance
         )
-
         if not self.partner_id and self.manual_account_id:
-            for line in res:
-                if not line.get('partner_id'):
+            for line in res: 
+                if self.payment_type == 'outbound' and line.get('debit', 0) > 0:
                     line['account_id'] = self.manual_account_id.id
-
+                    break 
+                elif self.payment_type == 'inbound' and line.get('credit', 0) > 0:
+                    line['account_id'] = self.manual_account_id.id
+                    break
         return res

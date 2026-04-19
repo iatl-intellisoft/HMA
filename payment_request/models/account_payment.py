@@ -60,7 +60,7 @@ class AccountPayment(models.Model):
 
                         move_vals_to_write.update({
                             'currency_id': liquidity_lines.currency_id.id,
-                            'partner_id': liquidity_lines.partner_id.id,
+                            # 'partner_id': liquidity_lines.partner_id.id,
                         })
                         payment_vals_to_write.update({
                             'amount': abs(liquidity_amount),
@@ -68,7 +68,7 @@ class AccountPayment(models.Model):
                             'partner_type': partner_type,
                             'currency_id': liquidity_lines.currency_id.id,
                             'destination_account_id': rec.account_id.id,
-                            'partner_id': liquidity_lines.partner_id.id,
+                            # 'partner_id': liquidity_lines.partner_id.id,
                             # 'journal_id':pay.custody_clearance_id.journal_id.id
                         })
                 move.write(move._cleanup_write_orm_values(move, move_vals_to_write))
@@ -435,10 +435,8 @@ class AccountPayment(models.Model):
                             #     0].journal_id.id if clearance_defaults else False,
                             'currency_id': custody_defaults[0].currency_id.id if custody_defaults \
                                 else clearance_defaults[0].currency_id.id or False,
-                            # 'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
-                            #     else clearance_defaults[0].partner_id.id or False,
-                            'partner_id': '', 
-
+                            'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
+                                else clearance_defaults[0].partner_id.id or False,
                             'bankak_transaction_number': self.bankak_transaction_number if self.bankak_transaction_number else False, 
                             'bank_transaction_notification': self.bank_transaction_notification if self.bank_transaction_notification else False,
 

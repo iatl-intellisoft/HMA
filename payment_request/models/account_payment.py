@@ -211,7 +211,7 @@ class AccountPayment(models.Model):
                             'currency_id': currency_id,
                             'debit': debit,
                             'credit': credit,
-                            'partner_id': self.partner_id.id,
+                            'partner_id': '',
                             'account_id': line.expense_account_id.id,
                             'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
                             # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)] if line.analytic_tag_ids else False,

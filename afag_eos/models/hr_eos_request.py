@@ -216,22 +216,26 @@ class HREosRequest(models.Model):
             "second_year_ratio": second_year_ratio
         }
 
-    @api.depends('join_date', 'date', 'employee_id')
+   @api.depends('join_date', 'date', 'employee_id')
     def _get_unpaid_leaves(self):
         """ Helper to compute the unpaid leaves for the current employees
             :returns dict where the key is the employee id, and the value is the unpaid leaves
         """
         accumulated_unpaid_leave = 0
         for rec in self:
-            unpaid_holiday = self.env['hr.leave.type'].sudo().search([('company_id','=', rec.company_id.id)]).filtered(lambda l:
-                                                                                                                        l.work_entry_type_id.code =='LEAVE90')
+            unpaid_holiday = self.env['hr.leave.type'].sudo().search([
+                ('company_id', '=', rec.company_id.id)
+            ]).filtered(lambda l: l.work_entry_type_id.code == 'LEAVE90')
+            
             if rec.join_date and rec.date and unpaid_holiday:
                 first_year = rec.join_date.year
                 last_year = rec.date.year
-
-                leaves = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id), ('state', '=', 'validate'),
-                                                      ('holiday_status_id', '=', unpaid_holiday.id)])
-
+            
+                leaves = self.env['hr.leave'].search([
+                    ('employee_id', '=', rec.employee_id.id),
+                    ('state', '=', 'validate'),
+                    ('holiday_status_id', 'in', unpaid_holiday.ids)
+                ])
                 for year in range(first_year, last_year + 1):
                     unpaid_leave = 0
                     for leave in leaves.filtered(
@@ -245,5 +249,3 @@ class HREosRequest(models.Model):
                         accumulated_unpaid_leave += unpaid_leave
 
         self.unpaid_leave = accumulated_unpaid_leave
-
-

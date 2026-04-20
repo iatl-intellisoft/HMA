@@ -39,7 +39,7 @@ class HREosRequest(models.Model):
     remaining_leaves = fields.Float('Remaining Leaves', compute='_calc_remaining_leaves')
     leave_compensation = fields.Float('Leaves Compensation', compute='_calc_remaining_leaves')
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', ondelete='set null', copy=False)
-    eos_structure_id = fields.Many2one('hr.payroll.structure', compute='_compute_eos_structure')
+    eos_structure_id = fields.Many2one('hr.payroll.structure' )
     payslip_net_amount = fields.Float(compute="compute_payslip_net_amount")
     article_77 = fields.Boolean()
     article_77_compensation = fields.Float(compute="_compute_article_77_compensation", store=True)

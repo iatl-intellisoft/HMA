@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_account_payment_form_inherited_custom" model="ir.ui.view">
+            <field name="name">account.payment.form.inherited.custom</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account_check_printing.view_account_payment_form_inherited"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_amount_in_words']" position="after">
+                    <field name="amount_in_words_arabic"
+                           invisible="payment_method_code != 'check_printing'"
+                           readonly="state != 'draft'"/>
+                </xpath>
+
+                <xpath expr="//field[@name='check_number']" position='attributes'>
+                    <attribute name="invisible">payment_method_code != 'check_printing' or (check_number == 0 and
+                        partner_type == 'supplier')
+                    </attribute>
+                    <attribute name="readonly">partner_type != 'customer' or state != 'draft'</attribute>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="check_printing_reason_view" model="ir.ui.view">
+            <field name="name">check.printin.reason.form</field>
+            <field name="model">check.printing.reason</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"
+                                   required="1"
+                            />
+                            <field name="reprinting"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="check_printing_reason_tree" model="ir.ui.view">
+            <field name="name">check.printing.reason.tree</field>
+            <field name="model">check.printing.reason</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_check_printing_reason">
+            <field name="name">Check Printing Reason</field>
+            <field name="res_model">check.printing.reason</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="check_printing_reason_tree"/>
+        </record>
+
+
+        <menuitem action="action_check_printing_reason" id="check_printing_reason"
+                  parent="account.account_account_menu"/>
+
+    </data>
+</odoo>

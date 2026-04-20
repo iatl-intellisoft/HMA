@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="check_a4" model="ir.actions.report">
+            <field name="name">A4 Check Printing</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">check_printing_custom.a4_check_print_template</field>
+            <field name="report_file">check_printing_custom.a4_check_print_template</field>
+            <field name="print_report_name">'CHECK - %s' % (object.partner_id.name or '',)</field>
+            <field name="paperformat_id" ref="check_printing_custom.paperformat_check_printing_a4"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- A4 Cheque Template -->
+        <template id="a4_check_print_template">
+            <t t-call="web.html_container">
+                <t t-set="docs" t-value="docs.with_context(lang=docs.partner_id.lang)"/>
+                <div class="page">
+                    <div t-att-style="'width: 170mm;height: 85mm;font-size:'+ font_size + 'px;'">
+                        <div t-att-style="'position:absolute;left:' + x_amount_word + ';top:' + y_amount_word + ';width:' + money_text_width + ';height:' + money_text_height + ';'">
+                            <div><span style="font-family:courier;" t-esc="docs.check_amount_in_words"/></div>
+                        </div>
+
+                        <div t-att-style="'position:absolute;left:' + x_date + ';top:' + y_date + ';'">
+                            <div style="width:35mm;">
+                                <span t-esc="docs.date"/>
+                            </div>
+                        </div>
+
+                        <div t-att-style="'position:absolute;left:' + x_amount + ';top:' + y_amount + ';'">
+                            <div>#<span t-esc="'{:,}'.format(docs.amount)"/>#</div>
+                        </div>
+
+                        <div t-att-style="'position:absolute;left:' + x_partner + ';top:' + y_partner + ';width:' + account_holder_width + ';'">
+                            <div>
+                                <span t-esc="docs.beneficiary" style="font-family:courier;"/>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

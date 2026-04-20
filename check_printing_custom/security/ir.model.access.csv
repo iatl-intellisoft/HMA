@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+1,check_dimension_name,model_check_dimension,,1,1,1,0
+2,check_reason_name,model_check_printing_reason,,1,1,1,0
+3,check_log_name,model_check_printing_log,,1,1,1,0

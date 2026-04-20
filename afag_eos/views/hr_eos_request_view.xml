@@ -37,7 +37,7 @@
                         <field name="join_date" />
                         <field name="date" required="1"/>
                         <field name="reason_id" required="1"/>
-                        <field name="eos_structure_id" readonly="1"/>
+                        <field name="eos_structure_id"/>
                         <field name="contract_id"/>
                       </group>
                       <group name = "eos_compensation" string="EOS Compensation">

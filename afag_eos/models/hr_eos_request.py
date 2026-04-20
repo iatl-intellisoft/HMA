@@ -216,7 +216,7 @@ class HREosRequest(models.Model):
             "second_year_ratio": second_year_ratio
         }
 
-   @api.depends('join_date', 'date', 'employee_id')
+    @api.depends('join_date', 'date', 'employee_id')
     def _get_unpaid_leaves(self):
         """ Helper to compute the unpaid leaves for the current employees
             :returns dict where the key is the employee id, and the value is the unpaid leaves

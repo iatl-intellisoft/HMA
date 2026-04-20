@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
+
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
@@ -18,16 +19,17 @@ class AccountPayment(models.Model):
             if rec.partner_id and rec.manual_account_id:
                 raise ValidationError("لا يمكن اختيار عميل وحساب يدوي في نفس الوقت")
 
-    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
-        res = super()._prepare_move_line_default_vals(
-            write_off_line_vals=write_off_line_vals,
-            force_balance=force_balance
-        )
+    destination_account_id = fields.Many2one(
+        'account.account',
+        compute='_compute_destination_account_id',
+        store=True,
+        readonly=False
+    )
 
-        if not self.partner_id and self.manual_account_id: 
-            for line in res: 
-                if line.get('account_id') != self.journal_id.default_account_id.id:
-                    line['account_id'] = self.manual_account_id.id
-                    break  # مهم جداً عشان ما يغير كل السطور
+    @api.depends('partner_id', 'manual_account_id')
+    def _compute_destination_account_id(self):
+        super()._compute_destination_account_id()
 
-        return res
+        for rec in self:
+            if not rec.partner_id and rec.manual_account_id:
+                rec.destination_account_id = rec.manual_account_id

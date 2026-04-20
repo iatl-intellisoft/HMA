@@ -10,7 +10,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
     bank_transaction_notification = fields.Binary(string="اشعار العملية") 
-    bankak_transaction_number = fields.Integer(string="رقم العملية") 
+    bankak_transaction_number = fields.Char(string="رقم العملية") 
 
     payment_request_id = fields.Many2one(
         'payment.request', string="Payments", copy=False, )
@@ -60,7 +60,7 @@ class AccountPayment(models.Model):
 
                         move_vals_to_write.update({
                             'currency_id': liquidity_lines.currency_id.id,
-                            'partner_id': liquidity_lines.partner_id.id,
+                            # 'partner_id': liquidity_lines.partner_id.id,
                         })
                         payment_vals_to_write.update({
                             'amount': abs(liquidity_amount),
@@ -68,7 +68,7 @@ class AccountPayment(models.Model):
                             'partner_type': partner_type,
                             'currency_id': liquidity_lines.currency_id.id,
                             'destination_account_id': rec.account_id.id,
-                            'partner_id': liquidity_lines.partner_id.id,
+                            # 'partner_id': liquidity_lines.partner_id.id,
                             # 'journal_id':pay.custody_clearance_id.journal_id.id
                         })
                 move.write(move._cleanup_write_orm_values(move, move_vals_to_write))
@@ -211,7 +211,7 @@ class AccountPayment(models.Model):
                             'currency_id': currency_id,
                             'debit': debit,
                             'credit': credit,
-                            'partner_id': self.partner_id.id,
+                            'partner_id': '',
                             'account_id': line.expense_account_id.id,
                             'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
                             # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)] if line.analytic_tag_ids else False,
@@ -436,8 +436,7 @@ class AccountPayment(models.Model):
                             'currency_id': custody_defaults[0].currency_id.id if custody_defaults \
                                 else clearance_defaults[0].currency_id.id or False,
                             'partner_id': custody_defaults[0].partner_id.id if custody_defaults \
-                                else clearance_defaults[0].partner_id.id or False, 
-
+                                else clearance_defaults[0].partner_id.id or False,
                             'bankak_transaction_number': self.bankak_transaction_number if self.bankak_transaction_number else False, 
                             'bank_transaction_notification': self.bank_transaction_notification if self.bank_transaction_notification else False,
 

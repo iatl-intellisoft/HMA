@@ -22,7 +22,8 @@ class CustodyClearance(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', readonly=True)####
     # department_id = fields.Many2one('hr.department', string='Department',
     #                                 tracking=True, readonly=True)
-    partner_id = fields.Many2one('res.partner', string="Partner")
+    partner_id = fields.Many2one('res.partner', related='request_id.partner_id', string="Partner",
+                                 tracking=True,default=lambda self: self.env.user.partner_id.id)
     custody_amount = fields.Float(string="Custody Amount", related='request_id.amount')
 
     total_amount = fields.Float(

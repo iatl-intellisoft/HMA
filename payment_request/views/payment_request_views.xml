@@ -131,7 +131,7 @@
                                 </group>
                         </group>
                         <notebook>
-                            <page string="Details" invisible="is_need_clearance == True">
+                            <!-- <page string="Details" invisible="is_need_clearance == True">
                                 <field name="line_ids" readonly="state == 'paid'">
                                     <list editable="bottom"> 
                                         <field name="expense_account_id" domain="[('deprecated', '=', False),
@@ -143,7 +143,7 @@
                                                        
                                     </list>
                                 </field> 
-                            </page>
+                            </page> -->
                                 
  
                            

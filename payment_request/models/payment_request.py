@@ -26,9 +26,9 @@ class PaymentRequest(models.Model):
     date = fields.Date(string='Date', required=True, default=fields.Date.context_today)
     clearance_days = fields.Integer(string="Clearance Days", required=False, default='30')
     date_clearance = fields.Date(string='Date Clearance', compute='_compute_clearance_date')
-    account_id = fields.Many2one('account.account', string='Account',required=True, related='company_id.custody_account_id',
+    account_id = fields.Many2one('account.account', string='Account',related='company_id.custody_account_id',
                                  tracking=True, readonly=False, )
-    journal_id = fields.Many2one('account.journal', string='Journal', required=True, readonly=False, )
+    journal_id = fields.Many2one('account.journal', string='Journal', readonly=False, )
     company_id = fields.Many2one('res.company', string='Company', store=True, readonly=False, tracking=True,
                                  default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string="Currency", required=True,

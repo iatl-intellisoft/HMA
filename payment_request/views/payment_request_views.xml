@@ -116,8 +116,8 @@
                                 <field name="date" readonly="state != 'draft'"/>
                                 <field name="company_id"/>
                                 <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"
-                                       readonly="state in ['wait_Payment', 'close']" required="1"/>
-                                <field name="account_id" readonly="state != 'draft'"/>
+                                       readonly="state in ['paid', 'close']" required="state == 'wait_payment'" />
+                                <field name="account_id" readonly="state != 'paid'" required="state == 'wait_payment'" />
                                 <field name="clearance_days" invisible="is_need_clearance != True"
                                        readonly="state != 'draft'"/>
                                 <field name="date_clearance" invisible="1"/> 

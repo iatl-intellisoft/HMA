@@ -401,7 +401,8 @@ class AccountPayment(models.Model):
                 payment_type = 'outbound'
             else:
                 partner_type = 'customer'
-                payment_type = 'inbound'
+                # payment_type = 'inbound'
+                payment_type = 'outbound'
 
         elif active_model == 'payment.request':
             custody_defaults = self.env['payment.request'].browse(active_ids)

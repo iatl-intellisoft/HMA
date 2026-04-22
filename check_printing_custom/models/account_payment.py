@@ -15,10 +15,17 @@ class AccountPayment(models.Model):
 
     @api.depends('payment_method_id', 'amount', 'currency_id')
     def _onchange_amount(self):
+        from . import money_to_text_ar
+        from . import money_to_text_en
         for pay in self:
             if pay.currency_id and pay.payment_method_id.code == 'check_printing':
-                pay.amount_in_words_arabic = pay.currency_id.with_context(lang='ar_001').amount_to_text(
-            pay.amount) if pay.currency_id else False
+                '''pay.amount_in_words_arabic = pay.currency_id.with_context(lang='ar_SY').amount_to_text(
+                pay.amount)'''
+                pay.amount_in_words_arabic = money_to_text_ar.amount_to_text_arabic(pay.amount, pay.currency_id.name)
+                pay.check_amount_in_words = money_to_text_en.amount_to_text(pay.amount, pay.currency_id.name)
+            else:
+                pay.amount_in_words_arabic = "صفر" + pay.currency_id.name
+                pay.check_amount_in_words = "Zero " + money_to_text_en._get_currency_name_by_code(pay.currency_id.name)[0]
 
     @api.depends('partner_id')
     def _onchange_partner_id(self):

@@ -19,7 +19,6 @@
                 <xpath expr="//field[@name='next_check_number']" position="attributes">
                     <attribute name="readonly">reprinting == True</attribute>
                 </xpath>
-
             </field>
         </record>
     </data>

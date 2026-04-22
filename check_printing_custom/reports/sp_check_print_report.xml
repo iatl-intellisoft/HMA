@@ -2,16 +2,31 @@
 <odoo>
     <data>
 
+        <!-- SP Cheque Action -->
+        <!-- <report string="Small Check Printing"
+                id="check_special"
+                model="account.payment"
+                report_type="qweb-pdf"
+                name="check_printing_custom.sp_check_print_template"
+                file="check_printing_custom.sp_check_print_report"
+                print_report_name="'CHECK - %s' % (object.partner_id.name or '',)"
+                menu="False"/> -->
+
         <record id="check_special" model="ir.actions.report">
             <field name="name">Small Check Printing</field>
             <field name="model">account.payment</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">check_printing_custom.sp_check_print_template</field>
             <field name="report_file">check_printing_custom.sp_check_print_template</field>
-            <field name="print_report_name">'CHECK - %s' % (object.partner_id.name or '',)</field>
-            <field name="paperformat_id" ref="check_printing_custom.paperformat_check_printing_special"/>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="print_report_name">'CHECK - %s' % (object.partner_id.name or '',)</field> 
             <field name="binding_type">report</field>
         </record>
+
+        <!-- SP Cheque Report PaperFormat -->
+        <!-- <record id="check_special" model="ir.actions.report">
+            <field name="paperformat_id" ref="check_printing_custom.paperformat_check_printing_special"/>
+        </record> -->
 
         <!-- SP Cheque Template -->
         <template id="sp_check_print_template">
@@ -29,14 +44,19 @@
 
                         <div t-att-style="'position:absolute;left:' + x_date + ';top:' + y_date + ';'">
                             <div style="width:35mm;">
-                                <span t-esc="docs.date"/>
+
+                                <span t-esc="docs.date" t-options='{"widget": "date"}'/>
                             </div>
                         </div>
 
                         <div t-att-style="'position:absolute;left:' + x_amount + ';top:' + y_amount + ';'">
-                            <div>#<span t-esc="'{:,}'.format(docs.amount)"/>#</div>
+                            <div>***<span t-esc="'{:,}'.format(docs.amount)"/></div>
                         </div>
-
+                        <div t-att-style="'position:absolute;left:' + ac_payee_x + ';top:' + ac_payee_y + ';'">
+                            <div><t t-if="docs.ac_payee">
+                                <span >A/c payee</span>
+                            </t></div>
+                        </div>
                         <div t-att-style="'position:absolute;left:' + x_partner + ';top:' + y_partner + ';width:' + account_holder_width + ';'">
                             <div>
                                 <span t-esc="docs.beneficiary" style="font-family:courier;"/>

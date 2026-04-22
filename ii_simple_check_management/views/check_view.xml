@@ -24,8 +24,7 @@
             <field name="arch" type="xml">
                 <list create="0" decoration-danger="state in ('rdv','rdc')"
                       decoration-info="state in ('in_bank','withdrawal') " decoration-muted="state == 'cancel'">
-                    <field name="account_holder"
-                    />
+                    <field name="account_holder"/>
                     <field name="beneficiary_id"/>
                     <field name="Date"/>
                     <field name="deposit_date"/>
@@ -90,25 +89,26 @@
                             </group>
                             <group>
                                 <field name="beneficiary_id" options="{'no_create': True}"/>
-                                <field name="amount"/>
+                                <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                                 <field name="company_id" required="True" readonly="state != 'out_standing'"/>
                                 <field name="check_no" required="True" readonly="state != 'out_standing'"/>
                                 <!--                            <field name="bank_id" required="True" String="Bank" widget="selection"/>-->
                                 <filed name="communication" string="Memo"/>
                             </group>
-
-
                         </group>
 
-                        <field name="log_ids" String="Check Transactions">
-                            <!--                            <label for="log_ids" string="Check Follow up"/>-->
-                            <list>
-                                <field name="move_id" string="Move"/>
-                                <field name="payment_id"/>
-                                <field name="name"/>
-                                <field name="date"/>
-                            </list>
-                        </field>
+                        <notebook>
+                            <page string="Check Transactions">
+                                <field name="log_ids" String="Check Transactions">
+                                    <list>
+                                        <field name="move_id" string="Move"/>
+                                        <field name="payment_id"/>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -141,31 +141,39 @@
                                 <field name="name"/>
                             </h1>
                         </div>
-                        <group col="4" colspan="4">
-                            <field name="account_holder" options="{'no_create': True}"/>
-                            <field name="beneficiary_id" options="{'no_create': True}"/>
-                            <field name="Date" required="True" readonly="state != 'under_collection'"/>
-                            <field name="amount"/>
-                            <field name="currency_id" options="{'no_create': True, 'no_open': True}"
-                                   groups="base.group_multi_currency"/>
-                            <field name="check_no" required="True" readonly="state != 'under_collection'"/>
-                            <!--                            <field name="check_account_journal_id" String="Bank" widget="selection" readonly="1"/>-->
-                            <!--                            <field name="bank_id" String="Bank" widget="selection" attrs="{'readonly':[('state','!=','under_collection')]}"/>-->
-                            <field name="to_account_journal_id" String="Bank" widget="selection"
+                        <group>
+                            <group>
+                                <field name="account_holder" options="{'no_create': True}"/>
+                                <field name="Date" required="True" readonly="state != 'out_standing'"/>
+                                <field name="check_no" required="True" readonly="state != 'out_standing'"/>
+                                <field name="to_account_journal_id" String="Bank" widget="selection"
                                    readonly="state not in ('under_collection','rdc')"/>
-                            <field name="communication" string="Memo"/>
-                            <field name="deposit_date"/>
-                        </group>
+                                <field name="deposit_date"/>
 
-                        <field name="log_ids" String="Check Transactions">
-                            <!--                            <label for="log_ids" string="Check Follow up" />-->
-                            <list>
-                                <field name="move_id" string="Move"/>
-                                <field name="payment_id"/>
-                                <field name="name"/>
-                                <field name="date"/>
-                            </list>
-                        </field>
+                            </group>
+                            <group>
+                                <field name="beneficiary_id" options="{'no_create': True}"/>
+                                <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                       groups="base.group_multi_currency"/>
+                                <field name="company_id" required="True" readonly="state != 'out_standing'"/>
+                                <filed name="communication" string="Memo"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Check Transactions">
+                                <field name="log_ids" String="Check Transactions">
+                                    <list>
+                                        <field name="move_id" string="Move"/>
+                                        <field name="payment_id"/>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+
+
                     </sheet>
                 </form>
             </field>

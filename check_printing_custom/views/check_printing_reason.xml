@@ -59,9 +59,7 @@
             <field name="view_id" ref="check_printing_reason_tree"/>
         </record>
 
-
-        <menuitem action="action_check_printing_reason" id="check_printing_reason"
-                  parent="account.account_account_menu"/>
+        <menuitem action="action_check_printing_reason" id="check_printing_reason" parent="account.account_account_menu"/>
 
     </data>
 </odoo>

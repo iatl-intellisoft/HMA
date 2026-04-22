@@ -3,7 +3,6 @@ from odoo.exceptions import UserError, ValidationError
 from datetime import date
 import logging
 
-
 _logger = logging.getLogger(__name__)
 
 
@@ -29,15 +28,15 @@ class CheckFollowups(models.Model):
     payment_id = fields.Many2one('account.payment')
     # payment_line_id = fields.Many2one('account.payment.check.line')
     type = fields.Selection([('outbound', 'Vendor'), ('inbound', 'Customer'), ('transfer', 'Transfer')], string="Type")
-    Date = fields.Date('Date',readonly=True)
+    Date = fields.Date('Date', readonly=True)
     deposit_date = fields.Date('Deposit Check Date')
     amount = fields.Monetary('Amount', readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency')
     communication = fields.Char('Ref')
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company'])
     check_no = fields.Char('Check No',
-    readonly=True,
-    )
+                           readonly=True,
+                           )
     account_holder = fields.Many2one('res.partner', string='Account Holder', readonly=True, compute=_compute_partners)
     beneficiary_id = fields.Many2one('res.partner', string='Beneficiary', readonly=True, compute=_compute_partners)
     partner_id = fields.Many2one('res.partner', compute='_compute_partner', readonly=True)
@@ -80,7 +79,7 @@ class CheckFollowups(models.Model):
 
     @api.model
     def cron_checks_withdrawal(self):
-        records = self.env['check_followups.check_followups']\
+        records = self.env['check_followups.check_followups'] \
             .search([('state', 'in', ['under_collection', 'out_standing']), ('Date', '<=', fields.Date.today()),
                      ('payment_id.company_id.automate_check_withdrawal', '=', True)])
         for rec in records.filtered(lambda r: r.state == 'out_standing'):
@@ -104,7 +103,7 @@ class CheckFollowups(models.Model):
         payment_id = self.payment_id
         for line in payment_id.line_ids:
             for rec in line.matched_credit_ids:
-                payment_id.move_id.js_remove_outstanding_partial(rec.id)    
+                payment_id.move_id.js_remove_outstanding_partial(rec.id)
         self.Last_state = self.state
         self.write({'state': 'return_acv'})
         self.make_move()
@@ -115,10 +114,31 @@ class CheckFollowups(models.Model):
     def compute_reconciliation_status(self):
         self.payment_id._compute_reconciliation_status()
 
+    def reconcile_check_lines(self):
+        self.ensure_one()
+        if not self.payment_id or not self.payment_id.move_id:
+            return
+        outstanding_account = self.payment_id.outstanding_account_id
+
+        if not outstanding_account or not outstanding_account.reconcile:
+            return
+        payment_lines = self.payment_id.move_id.line_ids.filtered(
+            lambda l: l.account_id == outstanding_account and not l.reconciled
+        )
+        check_move_lines = self.env['account.move.line'].search([
+            ('move_id.ref', '=', self.name),
+            ('account_id', '=', outstanding_account.id),
+            ('reconciled', '=', False)
+        ])
+        if payment_lines and check_move_lines:
+            (payment_lines + check_move_lines).reconcile()
+            self.payment_id._compute_reconciliation_status()
+
     def action_donev(self):
+        self.ensure_one()
         self.Last_state = self.state
+        self.reconcile_check_lines()
         self.write({'state': 'donev'})
-        self.compute_reconciliation_status()
         return True
 
     def action_change_bank(self):
@@ -134,7 +154,7 @@ class CheckFollowups(models.Model):
     def action_submitted(self):
         self.Last_state = self.state
         self.write({'state': 'in_bank'})
-        
+
         if self.payment_id and self.payment_id.check_type == 'indirect':
             self.with_context(deposit_check=True).make_move()
         return True
@@ -147,13 +167,13 @@ class CheckFollowups(models.Model):
 
     def action_donec(self):
         self.Last_state = self.state
+        self.reconcile_check_lines()
         self.write({'state': 'donec'})
-        self.compute_reconciliation_status()
         return True
 
     def action_returnc(self, communication=''):
         payment_id = self.payment_id
-        for line in payment_id.line_ids:
+        for line in payment_id.move_id.line_ids:
             for rec in line.matched_debit_ids:
                 payment_id.move_id.js_remove_outstanding_partial(rec.id)
 
@@ -166,7 +186,7 @@ class CheckFollowups(models.Model):
 
     def make_move(self):
         for r in self:
-            #if r.payment_id and r.payment_id.check_type == 'indirect':
+            # if r.payment_id and r.payment_id.check_type == 'indirect':
             today_date = fields.Date.today()
             if self.env.context.get('deposit_check'):
                 today_date = self.deposit_date
@@ -183,13 +203,12 @@ class CheckFollowups(models.Model):
             lines.append((0, 0, r._get_move_line_vals(debit, credit, amount, currency_id, debit_account_id)))
             lines.append((0, 0, r._get_move_line_vals(credit, debit, amount, currency_id, credit_account_id)))
             move.write({'line_ids': lines})
-            move.post()
+            move.action_post()
             last_state_label = dict(r.fields_get(allfields=['state'])['state']['selection'])[r.Last_state]
             state_label = dict(r.fields_get(allfields=['state'])['state']['selection'])[r.state]
             description = "تم التحويل من " + last_state_label + " الي " + state_label
 
-            self.WriteLog(move.id, description, str(today_date))
-
+            self.WriteLog(description, move.id, str(today_date))
 
     def get_today_checks(self):
         self.send_notification()
@@ -213,7 +232,7 @@ class CheckFollowups(models.Model):
                             'model': self._name,
                             'res_id': self.id,
                             'partner_ids': [(6, 0, [user.partner_id.id])],
-                            'record_name':'Collect Checks' if check.payment_id.payment_type == 'inbound' else 'Pay Checks',
+                            'record_name': 'Collect Checks' if check.payment_id.payment_type == 'inbound' else 'Pay Checks',
                             'author_id': self.env.user.partner_id.id,
                         })
                         self.env['mail.notification'].create({
@@ -237,7 +256,8 @@ class CheckFollowups(models.Model):
                 'company_id': self.payment_id.company_id.id,
                 'journal_id': self.payment_id.journal_id.id,
                 'move_type': 'entry',
-                #'partner_id': self.payment_id.partner_id and self.payment_id.partner_id.id or False,
+                'currency_id': self.currency_id.id,
+                # 'partner_id': self.payment_id.partner_id and self.payment_id.partner_id.id or False,
             }
 
     def _get_move_line_vals(self, debit, credit, amount_currency, currency_id, account_id, name=''):
@@ -247,7 +267,7 @@ class CheckFollowups(models.Model):
             'credit': credit,
             'debit': debit,
             'account_id': account_id,
-            'currency_id': currency_id,
+            'currency_id': self.currency_id.id,
             'amount_currency': debit > 0 and amount_currency or -amount_currency,
             'partner_id': self.payment_id.partner_id.id,
         }
@@ -299,12 +319,13 @@ class CheckFollowups(models.Model):
         self.ensure_one()
         if self.type == 'inbound':
             # Customer part
+            debit_acc = self.payment_id.outstanding_account_id.id
             if self.state == 'in_bank' and self.Last_state == 'under_collection':
-                return self.to_account_journal_id.default_account_id.id, self.payment_id.journal_id.payment_debit_account_id.id
+                return self.to_account_journal_id.default_account_id.id, debit_acc
             if self.state == 'rdc' and self.Last_state == 'under_collection':
-                return self.payment_id.journal_id.rdc.id, self.payment_id.journal_id.payment_debit_account_id.id
+                return self.payment_id.journal_id.rdc.id, debit_acc
             elif self.state == 'under_collection' and self.Last_state == 'rdc':
-                return self.payment_id.journal_id.payment_debit_account_id.id, self.payment_id.journal_id.rdc.id
+                return debit_acc, self.payment_id.journal_id.rdc.id
             elif self.state == 'rdc' and self.Last_state == 'in_bank':
                 return self.payment_id.journal_id.rdc.id, self.to_account_journal_id.default_account_id.id
             elif self.state == 'in_bank' and self.Last_state == 'rdc':
@@ -312,16 +333,18 @@ class CheckFollowups(models.Model):
             elif self.state == 'return_acc' and self.Last_state == 'rdc':
                 return self.account_holder.property_account_receivable_id.id, self.payment_id.journal_id.rdc.id
             elif self.state == 'return_acc' and self.Last_state == 'under_collection':
-                return self.account_holder.property_account_receivable_id.id, self.payment_id.journal_id.payment_debit_account_id.id
+                return self.account_holder.property_account_receivable_id.id, debit_acc
             elif self.state == 'return_acc' and self.Last_state == 'in_bank':
                 return self.account_holder.property_account_receivable_id.id, self.to_account_journal_id.default_account_id.id
         elif self.type in ['outbound', 'transfer']:
             # Vendor Part
             if self.payment_id:
+
+                credit_acc = self.payment_id.outstanding_account_id.id
                 if self.state == 'withdrawal' and self.Last_state == 'out_standing':
-                    return self.payment_id.journal_id.payment_credit_account_id.id, self.to_account_journal_id.default_account_id.id
+                    return credit_acc, self.to_account_journal_id.default_account_id.id
                 elif self.state == 'rdv' and self.Last_state == 'out_standing':
-                    return self.payment_id.journal_id.payment_credit_account_id.id, self.payment_id.journal_id.rdv.id
+                    return credit_acc, self.payment_id.journal_id.rdv.id
                 elif self.state == 'rdv' and self.Last_state == 'withdrawal':
                     return self.to_account_journal_id.default_account_id.id, self.payment_id.journal_id.rdv.id
                 elif self.state == 'withdrawal' and self.Last_state == 'rdv':
@@ -329,12 +352,14 @@ class CheckFollowups(models.Model):
                 elif self.state == 'return_acv' and self.Last_state == 'rdv':
                     return self.payment_id.journal_id.rdv.id, self.payment_id.partner_id.property_account_payable_id.id
                 elif self.state == 'return_acv' and self.Last_state == 'out_standing':
-                    return self.payment_id.journal_id.payment_credit_account_id.id, self.payment_id.partner_id.property_account_payable_id.id
+                    return credit_acc, self.payment_id.partner_id.property_account_payable_id.id
 
         else:
-            _logger.error('can not determine move accounts for {} with type = {}. type should be either "inbound" or "outbound"'.format(self, self.type))
+            _logger.error(
+                'can not determine move accounts for {} with type = {}. type should be either "inbound" or "outbound"'.format(
+                    self, self.type))
             raise ValidationError('Error while calculating accounts for check move!')
-        return self.to_account_journal_id.default_account_id.id, self.payment_id.journal_id.payment_debit_account_id.id
+        return self.to_account_journal_id.default_account_id.id, self.payment_id.outstanding_account_id.id
 
     @api.model
     def create(self, vals):
@@ -348,7 +373,7 @@ class CheckFollowups(models.Model):
                 raise UserError('The Check No. is Already Used!')
 
         if vals['type'] == 'inbound':
-                vals['name'] = self.env['ir.sequence'].get('check_followups.check_followups')
+            vals['name'] = self.env['ir.sequence'].get('check_followups.check_followups')
         else:
             vals['name'] = self.env['ir.sequence'].get('check_followups.check_followups_vender')
         return super(CheckFollowups, self).create(vals)
@@ -356,10 +381,10 @@ class CheckFollowups(models.Model):
     def unlink(self):
         raise UserError('You Cannot Delete The Check')
 
-    def WriteLog(self, Move_id, Description, date, payment_id=False):
+    def WriteLog(self, Description, move_id, date, payment_id=False):
         self.ensure_one()
         log = {
-            'move_id': Move_id,
+            'move_id': move_id,
             'name': Description,
             'date': date,
             'Check': self.id,

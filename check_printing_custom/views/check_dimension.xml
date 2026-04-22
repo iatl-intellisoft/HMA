@@ -63,6 +63,18 @@
                                            placeholder="Y"/>
                                 </div>
                             </group>
+                            <group>
+                                <label for="ac_payee_x" string=" A/c payee"/>
+                                <div class="o_address_format">
+                                    <field name="ac_payee_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="ac_payee_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
 
                             <group>
                                 <label for="date_x" string=" Date"/>

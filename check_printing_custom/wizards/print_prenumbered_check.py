@@ -28,12 +28,20 @@ class PrintPreNumberedCheck(models.TransientModel):
     # @api.multi
     def print_checks(self):
         check_number = int(self.next_check_number)
-        payments = self.env['account.payment'].browse(self.env.context['payment_ids'])
+        active_model = self.env.context.get('active_model')
+        payments = False
+        if active_model == 'account.payment':
+            payments = self.env['account.payment'].browse(self.env.context['payment_ids'])
+        elif active_model == 'check_followups.check_followups':
+            active_id = self.env.context.get('active_ids')[0]
+            check_followups_id = self.env['check_followups.check_followups'].browse(active_id)
+            payment_id = check_followups_id.payment_id.id
+            payments = self.env['account.payment'].browse(payment_id)
         payments.filtered(lambda r: r.state == 'draft').action_post()
         # payments.filtered(lambda r: r.state not in ('sent', 'cancelled')).write({'state': 'sent'})
         payments.write({'check_first_print': True})
-        #if not payments.journal_id.bank_id.id or not payments.journal_id.bank_id.check_dimension_id.id:
-            #raise ValidationError(_("This payment journal has no bank or bank has no dimension!!"))
+        if not payments.journal_id.bank_id.id or not payments.journal_id.bank_id.check_dimension_id.id:
+            raise ValidationError(_("This payment journal has no bank or bank has no dimension!!"))
         if self.reason_id and not self.reason_id.reprinting:
             check_number += 1
             for payment in payments:
@@ -49,3 +57,4 @@ class PrintPreNumberedCheck(models.TransientModel):
 
         lan = self.lang_id.code
         return payments.with_context({'printer': self.printer}).do_print_checks(lan)
+

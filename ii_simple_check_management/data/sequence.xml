@@ -8,10 +8,10 @@
             <field name="payment_type">inbound</field>
         </record>
 
-        <record id="account_payment_method_check_outBound" model="account.payment.method">
-            <field name="name">Check Followup</field>
-            <field name="code">check_printing</field>
-            <field name="payment_type">outbound</field>
-        </record>
+<!--        <record id="account_payment_method_check_outBound" model="account.payment.method">-->
+<!--            <field name="name">Check Followup</field>-->
+<!--            <field name="code">check_printing</field>-->
+<!--            <field name="payment_type">outbound</field>-->
+<!--        </record>-->
     </data>
 </odoo>

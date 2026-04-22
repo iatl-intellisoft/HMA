@@ -10,10 +10,9 @@
     'website': "http://www.iatl-sd.com",
     'category': 'Human Resource',
     'version': '18.0',
-    'depends': ['account', 'account_check_printing'],
+    'depends': ['account','ii_simple_check_management'],
     'data': [
         'security/ir.model.access.csv',
-        'data/data.xml',
         'data/report_paperformat.xml',
         'wizards/print_prenumbered_check.xml',
         'views/check_dimension.xml',

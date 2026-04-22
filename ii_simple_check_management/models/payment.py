@@ -31,6 +31,7 @@ class MoveLine(models.Model):
 class Payment(models.Model):
     _inherit = 'account.payment'
 
+    # check_type = fields.Selection([('direct', 'Direct'), ('outstand', 'Outstanding')], 'Check type', default='direct')
     check_type = fields.Selection([('direct', 'Direct'), ('indirect', 'Indirect')], string="Check Type",
                                   default='direct')
     return_check_move_id = fields.Many2one('account.move', 'Check clearance move', readonly=True)
@@ -70,14 +71,14 @@ class Payment(models.Model):
                 'partner_bank': rec.Bank_id,
                 'check_no': rec.check_number,
                 'to_account_journal_id': to_account_journal_id,
-                # 'check_no': rec.check_number,
+                'deposit_date': rec.check_date,
                 'currency_id': rec.currency_id.id,
                 'communication': rec.memo,
                 'company_id': rec.company_id.id,
 
             }
             log_args = {
-                'Move_id': rec.move_id.id,
+                'move_id': rec.move_id.id,
                 'payment_id': rec.id,
                 'date': rec.date,
             }
@@ -106,8 +107,9 @@ class Payment(models.Model):
     def action_post(self):
         for r in self:
             # inbound_check = r.env.ref('ii_simple_check_management.account_payment_method_check_inBound')
-            outbound_check = r.env.ref('ii_simple_check_management.account_payment_method_check_outBound')
-            inbound_check = self.env.ref('ii_simple_check_management.account_payment_method_check_inbound')
+            outbound_check = r.env.ref('account_check_printing.account_payment_method_check')
+            # inbound_check = self.env.ref('ii_simple_check_management.account_payment_method_check_inbound')
+            inbound_check = self.env.ref('account_custom.5')
             # outbound_check = any(pm.code == 'check_printing' for pm in self.journal_id.outbound_payment_method_ids)
             if r.payment_method_id in [inbound_check, outbound_check]:
                 if not r._context.get('check_payment', False):
@@ -121,7 +123,6 @@ class Payment(models.Model):
                         payment_context.update(dict(check_state='under_collection'))
                         to_account_journal_id = False
                     elif r.payment_method_id == outbound_check:
-                        r.journal_id.sudo().Check_no = r.Check_no
                         # r.journal_id.sudo().check_number = r.check_number
                         payment_context.update(dict(check_state='out_standing'))
                         to_account_journal_id = r.journal_id.id

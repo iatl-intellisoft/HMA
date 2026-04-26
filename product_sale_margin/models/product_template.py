@@ -10,6 +10,6 @@ class ProductTemplate(models.Model):
     @api.onchange('margin_percent')
     def _onchange_margin_percent(self):
         
-        cost * margin_percent / 100
+        standard_price * margin_percent / 100
         
             

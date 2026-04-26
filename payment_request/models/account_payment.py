@@ -358,9 +358,14 @@ class AccountPayment(models.Model):
             payment.action_post()
             payment.action_validate()
 
+        if active_model == 'custody.clearance':            
+            self.payment_request_id.remaining_amount = self.payment_request_id.remaining_amount - self.custody_clearance_id.total_amount  
+            self.custody_clearance_id.request_remaining_amount = self.payment_request_id.remaining_amount 
+            if  self.payment_request_id.remaining_amount == 0:
+                self.payment_request_id.state = 'close'
         if active_model == 'payment.request' and close_custody:
 
-            self.payment_request_id.write({'state': 'close'})
+            # self.payment_request_id.write({'state': 'close'})
 
             return {
                 'type': 'ir.actions.act_window',

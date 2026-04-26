@@ -240,27 +240,9 @@ class PaymentRequest(models.Model):
             self.move_id.button_draft()
         self.write({'state': 'draft'})
 
-    def action_submit(self):
-        # if not self.is_need_clearance and not self.line_ids and not self.is_purchase:
-        #     raise ValidationError(
-        #         'Please inter details!')  
-        
-        prev_custody = self.env['payment.request'].search([('employee_id','=',self.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
-        if self.is_need_clearance == False:
-            self.write({'state': 'wait_payment'})
-        else:
-            if prev_custody:                
-                prev_custody.state = 'close'
-                print(prev_custody.remaining_amount)
-
-                self.base_amount = self.amount + prev_custody.remaining_amount 
-                self.write({'state': 'wait_payment',
-                            'remaining_amount':  self.base_amount})
-            else:
-                self.base_amount = self.amount 
-                self.write({'state': 'wait_payment',
-                                'remaining_amount': self.amount})
-
+    def action_submit(self):        
+        self.write({'state': 'wait_payment'})
+      
     # def action_depart_manager_approve(self):
     #     self.write({'state': 'wait_financial_manager'})
 

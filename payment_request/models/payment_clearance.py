@@ -133,11 +133,7 @@ class CustodyClearance(models.Model):
          
        
         self.write({'state': 'approve'})
-        
-        self.request_id.remaining_amount = self.request_id.remaining_amount - self.total_amount  
-        self.request_remaining_amount = self.request_id.remaining_amount 
-        if  self.request_id.remaining_amount == 0:
-            self.request_id.state = 'close'
+         
 
              
 

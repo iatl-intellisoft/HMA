@@ -342,13 +342,14 @@ class AccountPayment(models.Model):
 
     def action_validate_custody_payment(self):
         prev_custody = self.env['payment.request'].search([('employee_id','=',self.payment_request_id.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
-        if prev_custody:                
-            prev_custody.state = 'close'
-            self.payment_request_id.base_amount = self.payment_request_id.amount + prev_custody.remaining_amount 
-            self.payment_request_id.write({'remaining_amount':  self.payment_request_id.base_amount})
-        else:
-            self.payment_request_id.base_amount = self.payment_request_id.amount 
-            self.payment_request_id.write({'remaining_amount': self.payment_request_id.amount})
+        if  active_model == 'payment.request':
+            if prev_custody:                
+                prev_custody.state = 'close'
+                self.payment_request_id.base_amount = self.payment_request_id.amount + prev_custody.remaining_amount 
+                self.payment_request_id.write({'remaining_amount':  self.payment_request_id.base_amount})
+            else:
+                self.payment_request_id.base_amount = self.payment_request_id.amount 
+                self.payment_request_id.write({'remaining_amount': self.payment_request_id.amount})
         active_ids = self._context.get('active_ids', []) or []
         active_model = self._context.get('active_model')
         close_custody = self._context.get('close', False)

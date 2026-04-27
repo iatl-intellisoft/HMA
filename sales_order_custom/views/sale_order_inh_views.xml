@@ -53,7 +53,6 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml"> 
             <xpath expr="//field[@name='location_id']" position="after"> 
-                    <field name="delivery_amount"/>
                     <field name="truck_id" />
                     <field name="driver_id" /> 
                     <field name="shipping_office_name" /> 

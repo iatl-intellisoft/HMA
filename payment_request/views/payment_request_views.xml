@@ -126,7 +126,7 @@
                                  
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
-                                <field name="niration" invisible="is_need_clearance == True" />  
+                                <field name="niration" />  
                                 <field name="total_amount" invisible="is_need_clearance == True" />
                                 </group>
                         </group>

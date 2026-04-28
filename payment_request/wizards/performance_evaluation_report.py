@@ -340,7 +340,7 @@ class PerformanceReport(models.TransientModel):
         sheet.write(row, 6, all_distance ,content_format4)
         sheet.write(row, 7, all_fuel/all_distance if all_distance > 0 else 0 , content_format4)
         sheet.write(row, 8, f'{"{:.2f}".format(sum_days)}%', content_format4)
-        sheet.write(row, 9, f'{sum_days_income}%', content_format4)
+        sheet.write(row, 9, f'{"{:.2f}".format(sum_days_income)}%', content_format4)
         sheet.write(row, 10, all_maintenance_cost_distance, content_format4)
         sheet.write(row, 11, f'{"{:.2f}".format(sum_fuel_amount)}%', content_format4)
         sheet.write(row, 12, f'{"{:.2f}".format(sum_operation_cost_amount)}%', content_format4)

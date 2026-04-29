@@ -12,16 +12,16 @@ class StockPicking(models.Model):
 
     @api.depends(
         'move_ids_without_package.move_line_ids.quantity',
-        'move_ids_without_package.sale_line_id.price_unit',
-        'move_ids_without_package.sale_line_id.discount',
-        'move_ids_without_package.sale_line_id.tax_id'
+        'move_ids_without_package.sale_line_ids.price_unit',
+        'move_ids_without_package.sale_line_ids.discount',
+        'move_ids_without_package.sale_line_ids.tax_id'
     )
     def _compute_delivery_amount(self):
         for picking in self:
             total = 0.0
 
             for move in picking.move_ids_without_package:
-                sale_line = move.sale_line_id
+                sale_line = move.sale_line_ids
                 if not sale_line:
                     continue
  
@@ -30,16 +30,18 @@ class StockPicking(models.Model):
                 if not qty_done:
                     continue
  
-                price = sale_line.price_unit * (1 - (sale_line.discount or 0.0) / 100.0)
+                # If multiple sale lines exist, you need to handle them
+                for sale_line in sale_lines:
+                    price = sale_line.price_unit * (1 - (sale_line.discount or 0.0) / 100.0)
+     
+                    taxes = sale_line.tax_id.compute_all(
+                        price, 
+                        quantity=qty_done,
+                        product=move.product_id,
+                        partner=sale_line.order_id.partner_shipping_id
+                    )
  
-                taxes = sale_line.tax_id.compute_all(
-                    price, 
-                    quantity=qty_done,
-                    product=move.product_id,
-                    partner=sale_line.order_id.partner_shipping_id
-                )
- 
-                total += taxes['total_included']
+                   total += taxes['total_included']
  
                 # total += taxes['total_excluded']
 

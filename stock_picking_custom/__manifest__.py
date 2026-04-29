@@ -1,6 +1,6 @@
 {
     'name': 'Stock Picking Custom', 
-    'depends': ['stock'],
+    'depends': ['stock', 'sale_stock'],
     'description': """ Stock Picking Custom """,
     'author': "IATL-intellisoft International",
     'website': "http://www.iatl-intellisoft.com", 

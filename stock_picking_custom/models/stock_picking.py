@@ -41,7 +41,7 @@ class StockPicking(models.Model):
                         partner=sale_line.order_id.partner_shipping_id
                     )
  
-                   total += taxes['total_included']
+                    total += taxes['total_included']
  
                 # total += taxes['total_excluded']
 

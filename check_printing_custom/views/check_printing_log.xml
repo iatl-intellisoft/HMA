@@ -27,6 +27,7 @@
             <field name="arch" type="xml">
                 <list>
                     <field name="payment_id"/>
+                    <field name="print_date"/>  
                     <field name="check_no"/>
                     <field name="reason_id"/>
                 </list>

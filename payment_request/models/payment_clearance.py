@@ -235,8 +235,8 @@ class CustodyClearance(models.Model):
             lines_to_reconcile = (payment_line + clearance_line)
             lines_to_reconcile.reconcile()
             self.write({'move_id': move_id.id, 'move_created': False})
-            self.payment_request_id.remaining_amount = self.payment_request_id.remaining_amount - self.total_amount  
-            self.request_remaining_amount = self.payment_request_id.remaining_amount 
+            self.request_id.remaining_amount = self.request_id.remaining_amount - self.total_amount  
+            self.request_remaining_amount = self.request_id.remaining_amount 
             self.write({'state': 'done'})
             if  self.payment_request_id.remaining_amount == 0:
                 self.payment_request_id.state = 'close'

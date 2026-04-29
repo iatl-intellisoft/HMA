@@ -37,11 +37,15 @@ class CustodyClearance(models.Model):
         'account.payment', 'custody_clearance_id', string='payment', )
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('submit', 'Submitted'), 
-        ('approve', 'Approved'),
-        ('wait_payment', 'Waiting Payment'),
+        ('submit', 'Submitted'),
+        ('finance_approval', 'Waiting Financial Approval'),
         ('done', 'Done'),
         ('refuse', 'refused'),
+
+        # ('approve', 'Approved'),
+        # ('wait_payment', 'Waiting Payment'),
+        # ('done', 'Done'),
+        # ('refuse', 'refused'),
     ], string='State', readonly=True, default='draft', tracking=True)
 
     account_id = fields.Many2one('account.account', string='Account', related='request_id.account_id',
@@ -132,7 +136,7 @@ class CustodyClearance(models.Model):
             raise ValidationError('Please enter clearance details first!')
          
        
-        self.write({'state': 'approve'})
+        self.write({'state': 'finance_approval'})
          
 
              
@@ -147,8 +151,8 @@ class CustodyClearance(models.Model):
                     'Can not delete record state not in draft')
         return super(CustodyClearance, self).unlink()
 
-    def action_approve(self):
-        self.write({'state': 'approve'})
+    # def action_approve(self):
+    #     self.write({'state': 'approve'})
 
     def first_move_line(self, move):
         date = fields.Date.today()
@@ -247,25 +251,25 @@ class CustodyClearance(models.Model):
             else:
                 if self.payment_amount == 0.0:
                     self.write({'state': 'done'})
-                    self.request_id.write({'state': 'approve'})
+                    # self.request_id.write({'state': 'approve'})
         # else:
         #     raise ValidationError(_("The payment cann!"))
 
-    def action_wait(self):
-        self.write({'state': 'wait_payment'})
+    # def action_wait(self):
+    #     self.write({'state': 'wait_payment'})
 
     def action_refuse(self):
         self.write({'state': 'refuse'})
 
     def action_done(self):
         if self.is_renewable:
-            self.request_id.write({'state': 'approve'})
+            self.request_id.write({'state': 'finance_approval'})
             self.write({'state': 'done'})
         elif not self.is_renewable:
             if self.payment_amount == 0.0:
                 self.write({'state': 'done'})
             else:
-                self.write({'state': 'approve'})
+                self.write({'state': 'finance_approval'})
 
     @api.depends('custody_line_ids.amount')
     def _amount_all(self):

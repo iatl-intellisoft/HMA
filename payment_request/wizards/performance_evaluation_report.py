@@ -120,6 +120,7 @@ class PerformanceReport(models.TransientModel):
                 result_total += picking.delivery_amount 
                 
             else:
+                all_result_not_done[month][truck]['count'] += 1
                 all_result_not_done[month]['count'] += 1
 
 
@@ -158,6 +159,7 @@ class PerformanceReport(models.TransientModel):
                             'cost':0,
                         }
                 operating_cost[rec.vehicle_id.license_plate]['cost']+=rec.total_amount
+                operating_cost[rec.vehicle_id.license_plate][month]['cost']+=rec.total_amount
                 all_operating_cost_monthly[month]['cost']+= rec.total_amount
                 if rec.custody_type in ['maintenance','oil_change','car_tire_repair']:
                     if rec.vehicle_id.license_plate not in maintenance_cost:
@@ -347,8 +349,14 @@ class PerformanceReport(models.TransientModel):
         row+=3
         sheet.row(row).height = 1200 
         sheet.write(row, 0, "الشهر", heading)
-        sheet.write(row, 1, "الميزانية التقديرية الشهرية", heading)
-        sheet.write(row, 2, "الميزانية الشهرية", heading)
+        sheet.write(row, 1, month, heading)
+        sheet.write(row, 2, "الميزانية التقديرية الشهرية", heading)
+        sheet.write(row, 3, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], heading) 
+        row+=1
+
+        sheet.write(row, 0, "رقم الدفار", content_format4) 
+        sheet.write(row, 1, "اسم السائق", content_format4) 
+        sheet.write(row, 2, "-", content_format4)  
         sheet.write(row, 3, "تكلفة الوقود الشهري", heading) 
         sheet.write(row, 4, "مصروفات التشغيل الشهرية", heading)
         sheet.write(row, 5, "تكلفة التشغيل الشهرية", heading)
@@ -361,7 +369,29 @@ class PerformanceReport(models.TransientModel):
         sheet.write(row, 12, "نقطة التعادل", heading)
         sheet.write(row, 13, "نسبة الطرود المنجزة", heading) 
         row+=1
-        for month in  months : 
+        for month in  months :  
+            for vehicle, data in vehicles.items(): 
+                license_plate=data['license_plate'] 
+                truck=self.env['fleet.vehicle'].search([
+                    ('license_plate', '=', license_plate), 
+                ],)
+                sheet.write(row, 0, data['license_plate'], content_format)
+                sheet.write(row, 1, data['driver'], content_format)           
+                sheet.write(row, 2, "-", content_format)           
+                sheet.write(row, 3, "-", content_format)           
+                sheet.write(row, 4, "-", content_format)           
+                sheet.write(row, 5, operating_cost[license_plate][month]['cost'], content_format4) 
+                sheet.write(row, 6, operating_cost[license_plate][month]['cost']/26, content_format4)  
+                sheet.write(row, 7, result[month][truck]['amount'], content_format4)  
+                sheet.write(row, 8, result[month][truck]['amount']/26, content_format4)  
+                sheet.write(row, 9, operating_cost[license_plate][month]['cost']/(all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'])*100, content_format4)  
+                sheet.write(row, 10, all_result_not_done[month][truck]['count']/(result[month][truck]['count']+all_result_not_done[month][truck]['count'])*100, content_format4)  
+                sheet.write(row, 11, result[month][truck]['count'], content_format4)  
+                sheet.write(row, 12,"-", content_format4)  
+                sheet.write(row, 13, result[month][truck]['count']/(result[month][truck]['count']+all_result_not_done[month][truck]['count'])*100, content_format4)  
+                row+=1
+
+
             all_picks = all_result_not_done[month]['count'] + all_result[month]['count']
             sheet.write(row, 0, month, content_format4)
             sheet.write(row, 1, "-", content_format4) 
@@ -399,180 +429,4 @@ class PerformanceReport(models.TransientModel):
             }
         return True
        
-
-# import base64
-# from io import BytesIO
-# from locale import currency
-
-# import xlwt
-# from odoo import fields, api, models, _
-# from odoo.exceptions import ValidationError
-
-
-# class PerformanceReport(models.TransientModel): 
-#     _name = 'performance.report'
-#     _description = __doc__
-
-#     start_date = fields.Date()
-#     end_date = fields.Date()
-
-#     @api.constrains('start_date', 'end_date')
-#     def _check_performance_report_date_check(self):
-#         """Check if end date is after start date"""
-#         for rec in self:
-#             if rec.start_date and rec.end_date and rec.end_date < rec.start_date:
-#                 raise ValidationError(_("End date cannot be earlier than start date."))
-
-#     def action_generate_performance_excel(self):
-#         """Generate and return Excel file for performance"""
-#         records = self.env['custody.clearance'].search([
-#             ('date', '>=', self.start_date),
-#             ('date', '<=', self.end_date),
-#         ])
-#         operating_costs = self.env['payment.request'].search([ 
-#             ('date', '>=', self.start_date),
-#             ('date', '<=', self.end_date)
-#         ])
-#         truck_odometers = self.env['truck.odometer'].search([
-#             ('date', '>=', self.start_date),
-#             ('date', '<=', self.end_date), 
-#         ])
-
-       
-#         import io
-#         import xlsxwriter
-
-#         output = io.BytesIO()
-#         workbook = xlsxwriter.Workbook(output)
-#         sheet = workbook.add_worksheet('Chart')
-
-#         # اتجاه من اليمين لليسار
-#         sheet.right_to_left()
-
-#         # ================== STYLES ==================
-#         title_format = workbook.add_format({
-#             'bold': True,
-#             'align': 'center',
-#             'valign': 'vcenter',
-#             'bg_color': '#A9D08E',
-#             'border': 1
-#         })
-
-#         header_format = workbook.add_format({
-#             'bold': True,
-#             'align': 'center',
-#             'border': 1
-#         })
-
-#         number_format = workbook.add_format({
-#             'num_format': '#,##0.00',
-#             'border': 1
-#         })
-
-#         # ================== DATA ==================
-#         truck_odometers = self.env['truck.odometer'].search([
-#             ('date', '>=', self.start_date),
-#             ('date', '<=', self.end_date),
-#         ])
-
-#         data = {}
-
-#         for rec in records:
-#             plate = rec.vehicle_id.license_plate
-
-#             data.setdefault(plate, {
-#                 # 'distance': [],
-#                 'fuel': [],
-#                 'cost': []
-#             })
-
-#             # data[plate]['distance'].append(rec.distance or 0)
-#             data[plate]['fuel'].append(rec.custody_line_ids.quantity or 0)
-#             data[plate]['cost'].append(rec.total_amount or 0)
-
-#         # تجهيز البيانات النهائية
-#         trucks = list(data.keys())
-
-#         # distances = [sum(data[t]['distance']) for t in trucks]
-#         fuels = [sum(data[t]['fuel']) for t in trucks]
-#         costs = [sum(data[t]['cost']) for t in trucks]
-
-#         # ================== TITLE ==================
-#         sheet.merge_range('B2:H2',
-#             'رسم بياني للتقرير الشهري من {} إلى {}'.format(self.start_date, self.end_date),
-#             title_format)
-
-#         # ================== TABLE ==================
-#         sheet.write_row('B20', ['الشاحنة'] + trucks, header_format)
-
-#         sheet.write('B21', 'عدد الكيلومترات', header_format)
-#         # sheet.write_row('C21', distances, number_format)
-
-#         sheet.write('B22', 'استهلاك الوقود', header_format)
-#         sheet.write_row('C22', fuels, number_format)
-
-#         sheet.write('B23', 'التكلفة', header_format)
-#         sheet.write_row('C23', costs, number_format)
-
-#         # ================== CHART ==================
-#         chart = workbook.add_chart({'type': 'column'})
-
-#         # الكيلومترات
-#         chart.add_series({
-#             'name': 'عدد الكيلومترات',
-#             'categories': ['Chart', 19, 2, 19, len(trucks)+1],
-#             'values':     ['Chart', 20, 2, 20, len(trucks)+1],
-#         })
-
-#         # الوقود
-#         chart.add_series({
-#             'name': 'استهلاك الوقود',
-#             'categories': ['Chart', 19, 2, 19, len(trucks)+1],
-#             'values':     ['Chart', 21, 2, 21, len(trucks)+1],
-#         })
-
-#         # التكلفة
-#         chart.add_series({
-#             'name': 'التكلفة',
-#             'categories': ['Chart', 19, 2, 19, len(trucks)+1],
-#             'values':     ['Chart', 22, 2, 22, len(trucks)+1],
-#         })
-
-#         # شكل الرسم
-#         chart.set_title({'name': 'تحليل الشاحنات'})
-#         chart.set_legend({'position': 'bottom'})
-#         chart.set_style(10)
-
-#         # إدراج الرسم
-#         sheet.insert_chart('B4', chart, {'x_scale': 2.5, 'y_scale': 2})
-
-#         # ================== SIGNATURE ==================
-#         sheet.write('B26', 'اعتماد مشرف السائقين')
-#         sheet.write('F26', 'اعتماد المدير المالي')
-
-#         sheet.write('B27', 'الاسم: ....................')
-#         sheet.write('F27', 'الاسم: ....................')
-
-#         sheet.write('B28', 'التوقيع: ....................')
-#         sheet.write('F28', 'التوقيع: ....................')
-
-#         # ================== SAVE ==================
-#         workbook.close() 
-#         stream = BytesIO()
-
-#         out = base64.encodebytes(stream.getvalue())
-#         # Create attachment
-#         attachment = self.env['ir.attachment'].sudo().create({
-#             'name': f'monthly movement({self.start_date})/({self.end_date}) Report.xls',
-#             'type': 'binary',
-#             'public': False,
-#             'datas': out,
-#         })
-#         # Return download action
-#         if attachment:
-#             return {
-#                 'type': 'ir.actions.act_url',
-#                 'url': f'/web/content/{attachment.id}?download=true',
-#                 'target': 'new',
-#             }
-#         return True
+ 

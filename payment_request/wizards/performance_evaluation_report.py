@@ -97,15 +97,13 @@ class PerformanceReport(models.TransientModel):
 
         result = defaultdict(lambda: defaultdict(lambda: {'count': 0, 'amount': 0, 'all_amount': 0}))
         result1 =  defaultdict(lambda: defaultdict(lambda: { 'all_amount': 0}))
-        all_result = defaultdict(lambda: {'count': 0})
-        all_result_not_done = defaultdict(lambda: {'count': 0})
-
+        all_result = defaultdict(lambda: defaultdict(lambda: {'count': 0}))
+        all_result_not_done = defaultdict(lambda: defaultdict(lambda: {'count': 0}))
         total = defaultdict(float)
         result_total = 0
         total_per_month = defaultdict(float)
         total_per_truck = defaultdict(float)
-        all_delivery_amount = defaultdict(lambda: {'amount': 0})
-
+        all_delivery_amount = defaultdict(lambda: defaultdict(lambda: {'amount': 0}))
         for picking in pickings: 
             truck = picking.truck_id.name
             month = picking.scheduled_date.strftime('%Y-%m')

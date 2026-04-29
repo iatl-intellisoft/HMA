@@ -494,7 +494,7 @@ class AccountPayment(models.Model):
                 if rec.payment_request_id.state == 'wait_payment':
                     rec.payment_request_id.write({'state': 'paid'})
             elif rec.custody_clearance_id:
-                if rec.custody_clearance_id.state == 'wait_payment':
+                if rec.custody_clearance_id.state == 'finance_approval':
                     rec.custody_clearance_id.write({'state': 'done'})
                     if not rec.custody_clearance_id.request_id.is_renewable:
                         rec.custody_clearance_id.request_id.write({'state': 'close'})

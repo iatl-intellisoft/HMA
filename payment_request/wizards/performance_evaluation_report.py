@@ -89,39 +89,46 @@ class PerformanceReport(models.TransientModel):
         pickings = self.env['stock.picking'].search([ 
             ('scheduled_date', '>=', self.start_date),
             ('scheduled_date', '<=', self.end_date), 
-            ('truck_id', '!=', False)])
-         
+            ('truck_id', '!=', False)]
         all_picking = 0
         picking_done = 0
         picking_not_done = 0        
+ 
+        result = defaultdict(lambda: {
+            'total': {'count': 0, 'amount': 0},
+            'trucks': defaultdict(lambda: {'count': 0, 'amount': 0})
+        })
+ 
+        all_result_not_done = defaultdict(lambda: {
+            'total': {'count': 0},
+            'trucks': defaultdict(lambda: {'count': 0})
+        })
 
-        result = defaultdict(lambda: defaultdict(lambda: {'count': 0, 'amount': 0, 'all_amount': 0}))
-        result1 =  defaultdict(lambda: defaultdict(lambda: { 'all_amount': 0}))
-        all_result = defaultdict(lambda: defaultdict(lambda: {'count': 0}))
-        all_result_not_done = defaultdict(lambda: defaultdict(lambda: {'count': 0}))
-        total = defaultdict(float)
         result_total = 0
-        total_per_month = defaultdict(float)
-        total_per_truck = defaultdict(float)
-        all_delivery_amount = defaultdict(lambda: defaultdict(lambda: {'amount': 0}))
+
         for picking in pickings: 
-            truck = picking.truck_id.name
+            truck = picking.truck_id.name or 'Undefined'
             month = picking.scheduled_date.strftime('%Y-%m')
+
+            all_picking += 1
+
             if picking.state == 'done':
-                result[month][truck]['count'] += 1
-                all_result[month]['count'] += 1
+                picking_done += 1
+ 
+                result[month]['trucks'][truck]['count'] += 1
+                result[month]['trucks'][truck]['amount'] += picking.delivery_amount
+ 
+                result[month]['total']['count'] += 1
+                result[month]['total']['amount'] += picking.delivery_amount
+ 
+                result_total += picking.delivery_amount
 
-                result[month][truck]['amount'] += picking.delivery_amount
-                all_delivery_amount[month]['amount'] += picking.delivery_amount
-                
-                result[truck]['all_amount'] = result[month][truck]['amount']
-                result_total += picking.delivery_amount 
-                
             else:
-                all_result_not_done[month][truck]['count'] += 1
-                all_result_not_done[month]['count'] += 1
-
-
+                picking_not_done += 1
+ 
+                all_result_not_done[month]['trucks'][truck]['count'] += 1
+ 
+                all_result_not_done[month]['total']['count'] += 1
 
 
         truck_odometer={}

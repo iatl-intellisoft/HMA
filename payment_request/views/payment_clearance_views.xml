@@ -13,9 +13,9 @@
                                 groups="payment_request.group_payment_request_manager"
                                 invisible="state != 'submit'" class="oe_highlight"/> -->
 
-                        <button name="action_approve" type="object" string="Approve"
+                        <!-- <button name="action_approve" type="object" string="Approve"
                                 groups="account.group_account_manager"
-                                invisible="state != 'confirm'" class="oe_highlight"/>
+                                invisible="state != 'confirm'" class="oe_highlight"/> -->
 
                         <button name="action_done" type="object" string="Done"
                                 invisible="1"

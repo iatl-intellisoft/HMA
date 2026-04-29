@@ -238,8 +238,8 @@ class CustodyClearance(models.Model):
             self.request_id.remaining_amount = self.request_id.remaining_amount - self.total_amount  
             self.request_remaining_amount = self.request_id.remaining_amount 
             self.write({'state': 'done'})
-            if  self.payment_request_id.remaining_amount == 0:
-                self.payment_request_id.state = 'close'
+            if  self.request_id.remaining_amount == 0:
+                self.request_id.state = 'close'
             if not self.is_renewable:
                 if self.payment_amount == 0.0:
                     self.write({'state': 'done'})

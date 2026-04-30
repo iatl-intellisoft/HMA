@@ -75,54 +75,50 @@ class PerformanceReport(models.TransientModel):
         sheet.col(12).width = 4000
 
         # Write header
-        sheet.write_merge(0, 0, 0, 1, 'التقرير الشهري لعهدة الوقود  ', main_heading)
-        # sheet.write(1, 0, "التاريخ", heading)
-        # sheet.write(1, 1, "رقم العهدة", heading)
-        # sheet.write(1, 2, "اسم المستلم", heading)
-        # sheet.write(1, 3, "المبلغ المسلم(العهدة)", heading)
-        # sheet.write(1, 4, "المبلغ المصروف", heading)
-        # sheet.write(1, 5, "الرصيد المتبقي", heading)
-        # sheet.write(1, 6, "نوع الحركة", heading)
-        # sheet.write(1, 7, "المرجع", heading)
-        # sheet.write(1, 8, "البيان", heading)
-        
+        sheet.write_merge(0, 0, 0, 1, 'التقرير الشهري لعهدة الوقود  ', main_heading)        
         pickings = self.env['stock.picking'].search([ 
             ('scheduled_date', '>=', self.start_date),
             ('scheduled_date', '<=', self.end_date), 
-            ('truck_id', '!=', False)])
-         
+            ('truck_id', '!=', False)])         
         all_picking = 0
         picking_done = 0
         picking_not_done = 0        
+ 
+        result = defaultdict(lambda: {
+            'total': {'count': 0, 'amount': 0},
+            'trucks': defaultdict(lambda: {'count': 0, 'amount': 0})
+        })
+ 
+        all_result_not_done = defaultdict(lambda: {
+            'total': {'count': 0},
+            'trucks': defaultdict(lambda: {'count': 0})
+        })
 
-        result = defaultdict(lambda: defaultdict(lambda: {'count': 0, 'amount': 0, 'all_amount': 0}))
-        result1 =  defaultdict(lambda: defaultdict(lambda: { 'all_amount': 0}))
-        all_result = defaultdict(lambda: {'count': 0})
-        all_result_not_done = defaultdict(lambda: {'count': 0})
-
-        total = defaultdict(float)
         result_total = 0
-        total_per_month = defaultdict(float)
-        total_per_truck = defaultdict(float)
-        all_delivery_amount = defaultdict(lambda: {'amount': 0})
 
         for picking in pickings: 
-            truck = picking.truck_id.name
+            truck = picking.truck_id.name or 'Undefined'
             month = picking.scheduled_date.strftime('%Y-%m')
+
+            all_picking += 1
+
             if picking.state == 'done':
-                result[month][truck]['count'] += 1
-                all_result[month]['count'] += 1
+                picking_done += 1
+ 
+                result[month]['trucks'][truck]['count'] += 1
+                result[month]['trucks'][truck]['amount'] += picking.delivery_amount
+ 
+                result[month]['total']['count'] += 1
+                result[month]['total']['amount'] += picking.delivery_amount
+ 
+                result_total += picking.delivery_amount
 
-                result[month][truck]['amount'] += picking.delivery_amount
-                all_delivery_amount[month]['amount'] += picking.delivery_amount
-                
-                result[truck]['all_amount'] = result[month][truck]['amount']
-                result_total += picking.delivery_amount 
-                
             else:
-                all_result_not_done[month]['count'] += 1
-
-
+                picking_not_done += 1
+ 
+                all_result_not_done[month]['trucks'][truck]['count'] += 1
+ 
+                all_result_not_done[month]['total']['count'] += 1
 
 
         truck_odometer={}
@@ -146,17 +142,16 @@ class PerformanceReport(models.TransientModel):
         
         
 
-                
-        operating_cost = {} 
+        operating_cost = defaultdict(lambda: {'cost': 0})
+        
         maintenance_cost = {}  
         all_operating_cost_monthly = defaultdict(lambda: {'cost': 0})
         for rec in operating_costs:
             if rec.state == "paid":
                 month = rec.date.strftime('%Y-%m')                
                 if rec.vehicle_id.license_plate not in operating_cost:
-                    operating_cost[rec.vehicle_id.license_plate]={
-                            'cost':0,
-                        }
+                    operating_cost[rec.vehicle_id.license_plate]={'cost':0}
+                    operating_cost[rec.vehicle_id.license_plate][month]={'cost':0}
                 operating_cost[rec.vehicle_id.license_plate]['cost']+=rec.total_amount
                 operating_cost[rec.vehicle_id.license_plate][month]['cost']+=rec.total_amount
                 all_operating_cost_monthly[month]['cost']+= rec.total_amount
@@ -176,13 +171,15 @@ class PerformanceReport(models.TransientModel):
         expenses_amount = 0 
         months=[]
         all_vehicles = defaultdict(lambda: {'amount': 0})
-
+        vehicle_month={}
         for rec in records: 
             if rec.state == "done":   
                 month = rec.date.strftime('%Y-%m')
                 if month not in months:
                     months.append(month)
+                    vehicle_month[month]={}
                 if rec.vehicle_id not in vehicles:
+                    vehicle_month[month][rec.vehicle_id]={'amount':0}
                     vehicles[rec.vehicle_id]={
                             'vehicle':rec.vehicle_id,
                             'name': rec.vehicle_id.model_id.name,
@@ -193,6 +190,7 @@ class PerformanceReport(models.TransientModel):
                         }
                 vehicles[rec.vehicle_id]['fuel']+=rec.custody_line_ids.quantity
                 vehicles[rec.vehicle_id]['amount']+=rec.custody_line_ids.amount
+                vehicle_month[month][rec.vehicle_id]['amount']+=rec.custody_line_ids.amount
                 all_vehicles[month]['amount']+=rec.custody_line_ids.amount
 
                 print(vehicles)
@@ -346,48 +344,80 @@ class PerformanceReport(models.TransientModel):
         sheet.write(row, 11, f'{"{:.2f}".format(sum_fuel_amount)}%', content_format4)
         sheet.write(row, 12, f'{"{:.2f}".format(sum_operation_cost_amount)}%', content_format4)
         row+=3
-        sheet.row(row).height = 1200 
-        sheet.write(row, 0, "الشهر", heading)
-        sheet.write(row, 1, month, heading)
-        sheet.write(row, 2, "الميزانية التقديرية الشهرية", heading)
-        sheet.write(row, 3, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], heading) 
-        row+=1
-
-        sheet.write(row, 0, "رقم الدفار", content_format4) 
-        sheet.write(row, 1, "اسم السائق", content_format4) 
-        sheet.write(row, 2, "-", content_format4)  
-        sheet.write(row, 3, "تكلفة الوقود الشهري", heading) 
-        sheet.write(row, 4, "مصروفات التشغيل الشهرية", heading)
-        sheet.write(row, 5, "تكلفة التشغيل الشهرية", heading)
-        sheet.write(row, 6, "تكلفة التشغيل اليومية", heading)
-        sheet.write(row, 7, "الإيراد التشغيلي الشهري المحقق", heading)
-        sheet.write(row, 8, "الإيراد التشغيلي اليومي المحقق", heading)
-        sheet.write(row, 9, "نسبة تكلفة التشغيل للشهر", heading)
-        sheet.write(row, 10, "نسبة عجز التشغيل", heading)
-        sheet.write(row, 11, "عدد الطرود المنجزة", heading)
-        sheet.write(row, 12, "نقطة التعادل", heading)
-        sheet.write(row, 13, "نسبة الطرود المنجزة", heading) 
-        row+=1
+        
         for month in  months : 
-            # for vehicle in operating_cost:  
-                # sheet.write(row, 5, operating_cost[rec.vehicle_id.license_plate][month]['cost'], content_format4) 
+            sheet.row(row).height = 1200 
+            sheet.write(row, 0, "الشهر", heading)
+            sheet.write(row, 1, month, heading)
+            sheet.write(row, 2, "الميزانية التقديرية الشهرية", heading)
+            sheet.write(row, 3, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], heading) 
+            row+=1
+
+            sheet.write(row, 0, "رقم الدفار", heading) 
+            sheet.write(row, 1, "اسم السائق", heading)  
+            sheet.write(row, 2, "تكلفة الوقود الشهري", heading) 
+            # sheet.write(row, 4, "مصروفات التشغيل الشهرية", heading)
+            sheet.write(row, 3, "تكلفة التشغيل الشهرية", heading)
+            sheet.write(row, 4, "تكلفة التشغيل اليومية", heading)
+            sheet.write(row, 5, "الإيراد التشغيلي الشهري المحقق", heading)
+            sheet.write(row, 6, "الإيراد التشغيلي اليومي المحقق", heading)
+            sheet.write(row, 7, "نسبة تكلفة التشغيل للشهر", heading)
+            sheet.write(row, 8, "نسبة عجز التشغيل", heading)
+            sheet.write(row, 9, "عدد الطرود المنجزة", heading)
+            sheet.write(row, 10, "نقطة التعادل", heading)
+            sheet.write(row, 11, "نسبة الطرود المنجزة", heading) 
+            row+=1 
+            for vehicle, data in vehicles.items(): 
+                license_plate=data['license_plate'] 
+                truck_id=self.env['fleet.vehicle'].search([
+                    ('license_plate', '=', license_plate), 
+                ])
+                truck=truck_id.name
+                if month in operating_cost[license_plate]:
+                    monthly_cost=vehicle_month[month][truck_id]['amount']+operating_cost[license_plate][month]['cost']
+                else:
+                    monthly_cost=vehicle_month[month][truck_id]['amount'] 
+                    
+                sheet.write(row, 0, data['license_plate'], content_format)
+                sheet.write(row, 1, data['driver'], content_format)     
+                sheet.write(row, 2, vehicle_month[month][truck_id]['amount']  , content_format)          
+                # sheet.write(row, 3, "-", content_format)            
+                # sheet.write(row, 4, "-", content_format)           
+                sheet.write(row, 3, monthly_cost, content_format) 
+                sheet.write(row, 4, monthly_cost/26, content_format)  
+                sheet.write(row, 5, result[month]['trucks'][truck]['amount'], content_format)  
+                sheet.write(row, 6, result[month]['trucks'][truck]['amount']/26, content_format)  
+                sheet.write(row, 7, f'{"{:.2f}".format(monthly_cost/(all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'])*100)}%' if all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'] > 0 else 0.0, content_format)  
+                sheet.write(row, 8, f'{"{:.2f}".format(all_result_not_done[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  
+                sheet.write(row, 9, result[month]['trucks'][truck]['count'], content_format)  
+                sheet.write(row, 10, (vehicle_month[month][truck_id]['amount']+operating_cost[license_plate][month]['cost'])/400 if  month in operating_cost[license_plate] else vehicle_month[month][truck_id]['amount']/400, content_format) 
+
+                sheet.write(row, 11, f'{"{:.2f}".format(result[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  
+                row+=1
 
 
-            all_picks = all_result_not_done[month]['count'] + all_result[month]['count']
-            # sheet.write(row, 0, month, content_format4)
-            # sheet.write(row, 1, "-", content_format4) 
-            # sheet.write(row, 2, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], content_format4) 
+            all_picks = all_result_not_done[month]['total']['count'] + result[month]['total']['count']
+            sheet.write(row, 0, f'إجمالي شهر ({month})', content_format4)
+            sheet.write(row, 1, "-", content_format4) 
+            sheet.write(row, 2, all_vehicles[month]['amount'], content_format4) 
+            sheet.write(row, 3, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], content_format4)  
             # sheet.write(row, 3, all_vehicles[month]['amount'], content_format4) 
-            # sheet.write(row, 4, all_operating_cost_monthly[month]['cost'], content_format4) 
-            # sheet.write(row, 5, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], content_format4) 
-            # sheet.write(row, 6, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount']/26, content_format4) 
-            # sheet.write(row, 7, all_delivery_amount[month]['amount'], content_format4) 
-            # sheet.write(row, 8, all_delivery_amount[month]['amount']/26, content_format4) 
-            # sheet.write(row, 9, f'{"{:.2f}".format(all_delivery_amount[month]['amount']/26)}%', content_format4) 
-            # sheet.write(row, 10,f'{"{:.2f}".format(all_result_not_done[month]['count'] / all_picks * 100)}%' if all_picks > 0 else 0 , content_format4) 
-            # sheet.write(row, 11, all_result[month]['count'], content_format4)
+            sheet.write(row, 4, (all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'])/26, content_format4) 
+            sheet.write(row, 5, result[month]['total']['amount'] ,content_format4) 
+            sheet.write(row, 6, result[month]['total']['amount']/26, content_format4) 
+            sheet.write(row, 7, "-", content_format4)  
+            sheet.write(row, 8,  "-", content_format4)  
+            sheet.write(row, 9, result[month]['total']['count'], content_format4) 
+            sheet.write(row, 10,"-", content_format4)
+            sheet.write(row, 11, "-", content_format4)  
+
+            # sheet.write(row, 7, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount']/, content_format4) 
+            # sheet.write(row, 8, result[month]['total']['amount']/26, content_format4) 
+            # sheet.write(row, 9, f'{"{:.2f}".format(result[month]['total']['amount']/26)}%', content_format4) 
+            # sheet.write(row, 10,f'{"{:.2f}".format(all_result_not_done[month]['total']['count'] / all_picks * 100)}%' if  all_picks > 0 else 0 , content_format4) 
+            # sheet.write(row, 11, result[month]['total']['count'], content_format4)
             # sheet.write(row, 12, '', content_format4)
-            # sheet.write(row, 13, f'{"{:.2f}".format(all_result[month]['count'] / all_picks * 100)}%' if all_picks > 0 else 0, content_format4) 
+            # sheet.write(row, 13, f'{"{:.2f}".format(result[month]['total']['count'] / all_picks * 100)}%' if all_picks > 0 else 0, content_format4) 
             row+=1
 
         stream = BytesIO()

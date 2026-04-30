@@ -258,6 +258,7 @@ class PerformanceReport(models.TransientModel):
         operation_cost_amount = []
         sum_days = 0
         sum_days_income = 0
+        all_rate=0
         for vehicle, data in vehicles.items():  
             row+=1 
             num_row+=1
@@ -280,6 +281,8 @@ class PerformanceReport(models.TransientModel):
             sum_days += days
             if result_total != 0:
                 sum_days_income += result.get(truck, {}).get('all_amount', 0) / result_total * 100
+            if distance > 0 :
+                all_rate+=data['fuel']/distance
             operation_cost_amount.append(operating_cost.get(license_plate, {}).get('cost', 0))
             sheet.write(row, 0, data['license_plate'], content_format)
             sheet.write(row, 1, data['driver'], content_format)
@@ -337,7 +340,7 @@ class PerformanceReport(models.TransientModel):
         sheet.write(row, 4, all_maintenance_cost, content_format4  )
         sheet.write(row, 5, sum(operation_cost_amount), content_format4  )
         sheet.write(row, 6, all_distance ,content_format4)
-        sheet.write(row, 7, all_fuel/all_distance if all_distance > 0 else 0 , content_format4)
+        sheet.write(row, 7, all_rate , content_format4)
         sheet.write(row, 8, f'{"{:.2f}".format(sum_days)}%', content_format4)
         sheet.write(row, 9, f'{"{:.2f}".format(sum_days_income)}%', content_format4)
         sheet.write(row, 10, all_maintenance_cost_distance, content_format4)
@@ -367,6 +370,7 @@ class PerformanceReport(models.TransientModel):
             sheet.write(row, 10, "نقطة التعادل", heading)
             sheet.write(row, 11, "نسبة الطرود المنجزة", heading) 
             row+=1 
+            all_result=0
             for vehicle, data in vehicles.items(): 
                 license_plate=data['license_plate'] 
                 truck_id=self.env['fleet.vehicle'].search([
@@ -377,7 +381,7 @@ class PerformanceReport(models.TransientModel):
                     monthly_cost=vehicle_month[month][truck_id]['amount']+operating_cost[license_plate][month]['cost']
                 else:
                     monthly_cost=vehicle_month[month][truck_id]['amount'] 
-                    
+                all_result+=result[month]['trucks'][truck]['amount']
                 sheet.write(row, 0, data['license_plate'], content_format)
                 sheet.write(row, 1, data['driver'], content_format)     
                 sheet.write(row, 2, vehicle_month[month][truck_id]['amount']  , content_format)          
@@ -403,8 +407,8 @@ class PerformanceReport(models.TransientModel):
             sheet.write(row, 3, all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'], content_format4)  
             # sheet.write(row, 3, all_vehicles[month]['amount'], content_format4) 
             sheet.write(row, 4, (all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'])/26, content_format4) 
-            sheet.write(row, 5, result[month]['total']['amount'] ,content_format4) 
-            sheet.write(row, 6, result[month]['total']['amount']/26, content_format4) 
+            sheet.write(row, 5, all_result ,content_format4) 
+            sheet.write(row, 6, all_result/26, content_format4) 
             sheet.write(row, 7, "-", content_format4)  
             sheet.write(row, 8,  "-", content_format4)  
             sheet.write(row, 9, result[month]['total']['count'], content_format4) 

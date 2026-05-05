@@ -8,8 +8,7 @@
                 <div name="button_box" position="inside">
                     <button name="action_view_checks" type="object"
                             class="oe_stat_button" icon="fa-bars"
-                            string="Check(s)"
-                    >
+                            string="Check(s)">
                     </button>
                 </div>
                 <xpath expr="//field[@name='property_account_payable_id']" position="after">
@@ -23,13 +22,12 @@
             <field name="model">check_followups.check_followups</field>
             <field name="arch" type="xml">
                 <list create="0" decoration-danger="state in ('rdv','rdc')"
-                      decoration-info="state in ('in_bank','withdrawal') " decoration-muted="state == 'cancel'">
+                      decoration-info="state in ('in_bank','withdrawal')" decoration-muted="state == 'cancel'">
                     <field name="account_holder"/>
                     <field name="beneficiary_id"/>
                     <field name="Date"/>
                     <field name="deposit_date"/>
                     <field name="amount"/>
-                    <!--                    <field name="bank_id"/>-->
                     <field name="check_no"/>
                     <field name="state"/>
                 </list>
@@ -46,12 +44,12 @@
                     <field name="amount" string="Check Amount"/>
                     <field name="account_holder" string="Account Holder"/>
                     <field name="Date" string="Date"/>
-                    <!--                    <field name="bank_id"  string="Bank"/>-->
                     <field name="state" string="State"/>
                 </search>
             </field>
         </record>
 
+        <!-- Vendor Check Form -->
         <record id="check_followups_form" model="ir.ui.view">
             <field name="name">check_followups vendor form</field>
             <field name="model">check_followups.check_followups</field>
@@ -62,7 +60,6 @@
                                 class="oe_highlight" type="object"/>
                         <button name="action_rejectv" invisible="state != 'donev'" string="Check Rejected"
                                 class="oe_highlight" type="object"/>
-                        <!--<button name="action_returnv" invisible="state != 'donev'"  string="Return to Partner" class="oe_highlight" type="object"/>-->
                         <button name="%(action_check_payment_print)d" string="PRINT CHECK"
                                 type="action" class="oe_highlight" invisible="state != 'donev'"/>
                         <button name="action_donev" invisible="state != 'withdrawal'" string="Set TO Done"
@@ -72,9 +69,7 @@
                     </header>
                     <sheet>
                         <div class="oe_title">
-                            <h1>
-                                <field name="name"/>
-                            </h1>
+                            <h1><field name="name"/></h1>
                         </div>
                         <group>
                             <group>
@@ -82,24 +77,21 @@
                                 <field name="Date" required="True" readonly="state != 'out_standing'"/>
                                 <field name="currency_id" options="{'no_create': True, 'no_open': True}"
                                        groups="base.group_multi_currency"/>
-                                <field name="to_account_journal_id" String="Bank" widget="selection"
+                                <field name="to_account_journal_id" string="Bank" widget="selection"
                                        readonly="state != 'out_standing'"/>
                                 <field name="deposit_date"/>
-
                             </group>
                             <group>
                                 <field name="beneficiary_id" options="{'no_create': True}"/>
-                                <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="company_id" required="True" readonly="state != 'out_standing'"/>
                                 <field name="check_no" required="True" readonly="state != 'out_standing'"/>
-                                <!--                            <field name="bank_id" required="True" String="Bank" widget="selection"/>-->
-                                <filed name="communication" string="Memo"/>
+                                <field name="communication" string="Memo"/>
                             </group>
                         </group>
-
                         <notebook>
                             <page string="Check Transactions">
-                                <field name="log_ids" String="Check Transactions">
+                                <field name="log_ids" string="Check Transactions">
                                     <list>
                                         <field name="move_id" string="Move"/>
                                         <field name="payment_id"/>
@@ -110,10 +102,16 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
                 </form>
             </field>
         </record>
 
+        <!-- Customer Check Form -->
         <record model="ir.ui.view" id="check_followups_customerformview">
             <field name="name">check_followups customer form</field>
             <field name="model">check_followups.check_followups</field>
@@ -126,43 +124,36 @@
                                 class="oe_highlight" type="object"/>
                         <button name="action_donec" invisible="state != 'in_bank'" string="Set TO Done"
                                 class="oe_highlight" type="object"/>
-                        <!-- <button name="%(action_check_replacement_wizard)d" invisible="state != 'under_collection'"  string="Return to Partner" class="oe_highlight" type="action" context="{'_default_original_check': id}"/>-->
                         <button name="action_returnc" invisible="state not in ('under_collection','rdc','in_bank')"
                                 string="Return to Partner" class="oe_highlight" type="object"/>
-
-                        <!--                        <button name="action_change_bank" states='under_collection' string="Add Bank" type="object" confirm="Are you sure?"/>-->
-
                         <field name="state" widget="statusbar"
                                statusbar_visible="under_collection,in_bank,rdc,return_acc,donec" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
-                            <h1>
-                                <field name="name"/>
-                            </h1>
+                            <h1><field name="name"/></h1>
                         </div>
                         <group>
                             <group>
                                 <field name="account_holder" options="{'no_create': True}"/>
                                 <field name="Date" required="True" readonly="state != 'out_standing'"/>
                                 <field name="check_no" required="True" readonly="state != 'out_standing'"/>
-                                <field name="to_account_journal_id" String="Bank" widget="selection"
-                                   readonly="state not in ('under_collection','rdc')"/>
+                                <field name="to_account_journal_id" string="Bank" widget="selection"
+                                       readonly="state not in ('under_collection','rdc')"/>
                                 <field name="deposit_date"/>
-
                             </group>
                             <group>
                                 <field name="beneficiary_id" options="{'no_create': True}"/>
-                                <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="currency_id" options="{'no_create': True, 'no_open': True}"
                                        groups="base.group_multi_currency"/>
                                 <field name="company_id" required="True" readonly="state != 'out_standing'"/>
-                                <filed name="communication" string="Memo"/>
+                                <field name="communication" string="Memo"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Check Transactions">
-                                <field name="log_ids" String="Check Transactions">
+                                <field name="log_ids" string="Check Transactions">
                                     <list>
                                         <field name="move_id" string="Move"/>
                                         <field name="payment_id"/>
@@ -172,16 +163,17 @@
                                 </field>
                             </page>
                         </notebook>
-
-
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
                 </form>
             </field>
         </record>
 
         <!-- actions opening views on models -->
-
-        <!--action for the customer-->
 
         <record model="ir.actions.act_window" id="check_followups_customer">
             <field name="name">Check Followups</field>
@@ -189,8 +181,6 @@
             <field name="view_mode">list,form</field>
             <field name="domain">[('payment_id.payment_type','=','inbound')]</field>
         </record>
-
-        <!-- action for the supplier -->
 
         <record model="ir.actions.act_window" id="check_followups_vendor">
             <field name="name">Check Followups</field>
@@ -220,14 +210,12 @@
             <field name="act_window_id" ref="check_followups_vendor"/>
         </record>
 
-
         <record model="ir.actions.act_window.view" id="action_vender_view_form">
             <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="check_followups_form"/>
             <field name="act_window_id" ref="check_followups_vendor"/>
         </record>
-
 
         <record id="seq_check_followup_check" model="ir.sequence">
             <field name="name">Customer Checks</field>
@@ -237,13 +225,6 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <!--        <record id="seq_check_followup_check_vender" model="ir.sequence">-->
-        <!--            <field name="name">Vendor Checks</field>-->
-        <!--            <field name="code">check_followups.check_followups_vender</field>-->
-        <!--            <field name="prefix">Vencheck/</field>-->
-        <!--            <field name="padding">4</field>-->
-        <!--            <field name="company_id" eval="False"/>-->
-        <!--        </record>-->
         <record id="seq_check_followup_check_vender" model="ir.sequence">
             <field name="name">Vendor Checks</field>
             <field name="code">check_followups.check_followups_vender</field>
@@ -253,12 +234,10 @@
             <field name="implementation">no_gap</field>
         </record>
 
-        <!--        <menuitem id="menu_finance_checkfollowups" name="Check Followup" parent="account.menu_finance" sequence="3"/>-->
         <menuitem name="Customer Checks " id="check_followups_customer_action" action="check_followups_customer"
                   parent="account.menu_finance_receivables"/>
         <menuitem name="Vendor Checks " id="check_followups_vendor_action" action="check_followups_vendor"
                   parent="account.menu_finance_payables"/>
-
 
     </data>
 </odoo>

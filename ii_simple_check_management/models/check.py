@@ -10,6 +10,7 @@ class CheckFollowups(models.Model):
     _name = 'check_followups.check_followups'
     _description = 'Checks Followup'
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     @api.depends('payment_id')
     def _compute_partners(self):
@@ -86,6 +87,98 @@ class CheckFollowups(models.Model):
             rec.action_withdrawl()
         for rec in records.filtered(lambda r: r.state == 'under_collection'):
             rec.action_submitted()
+
+    @api.model
+    def cron_create_deposit_date_activities(self):
+        """
+        Scheduled action: runs daily.
+        For every check whose deposit_date == today and that is still active
+        (not done / cancelled), create a 'To Do' mail.activity for every user
+        that belongs to the Accounting → Administrator group, provided that
+        user does not already have an open To-Do activity on that record.
+        The activity is visible inside check_followups_form via the activity
+        widget added to both form views.
+        """
+        today = fields.Date.today()
+
+        # Active states — exclude terminal states so we don't spam closed checks
+        active_states = [
+            'under_collection', 'in_bank', 'out_standing',
+            'rdc', 'rdv', 'withdrawal',
+        ]
+
+        due_checks = self.search([
+            ('deposit_date', '=', today),
+            ('state', 'in', active_states),
+        ])
+
+        if not due_checks:
+            return
+
+        # Resolve the "To Do" activity type (exists in every Odoo 14+ instance)
+        todo_type = self.env.ref('mail.mail_activity_data_todo', raise_if_not_found=False)
+        if not todo_type:
+            # Fallback: find any activity type whose category is 'default'
+            todo_type = self.env['mail.activity.type'].search(
+                [('category', '=', 'default')], limit=1
+            )
+        if not todo_type:
+            _logger.warning(
+                'ii_simple_check_management: Cannot find a "To Do" activity type. '
+                'Deposit-date activities were NOT created.'
+            )
+            return
+
+        # Find all Accounting Administrator users
+        accounting_admin_group = self.env.ref(
+            'account.group_account_manager', raise_if_not_found=False
+        )
+        if not accounting_admin_group:
+            _logger.warning(
+                'ii_simple_check_management: Cannot find account.group_account_manager. '
+                'Deposit-date activities were NOT created.'
+            )
+            return
+
+        admin_users = accounting_admin_group.users
+
+        if not admin_users:
+            return
+
+        for check in due_checks:
+            for user in admin_users:
+                # Avoid duplicating activities that already exist for this user/record
+                existing = self.env['mail.activity'].search([
+                    ('res_model', '=', self._name),
+                    ('res_id', '=', check.id),
+                    ('activity_type_id', '=', todo_type.id),
+                    ('user_id', '=', user.id),
+                    ('date_deadline', '=', today),
+                ], limit=1)
+                if existing:
+                    continue
+
+                check_type_label = (
+                    'collect' if check.type == 'inbound' else 'pay'
+                )
+                self.env['mail.activity'].create({
+                    'res_model_id': self.env['ir.model']._get_id(self._name),
+                    'res_id': check.id,
+                    'activity_type_id': todo_type.id,
+                    'summary': _('Deposit Date Due — Check %s') % check.check_no,
+                    'note': _(
+                        'The deposit date for check <b>%s</b> (amount: %s) '
+                        'is due today. Please %s this check.'
+                    ) % (check.check_no, check.amount, check_type_label),
+                    'date_deadline': today,
+                    'user_id': user.id,
+                })
+
+        _logger.info(
+            'ii_simple_check_management: Created deposit-date To-Do activities '
+            'for %d check(s) due on %s.',
+            len(due_checks), today,
+        )
 
     def action_rejectv(self):
         self.Last_state = self.state

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Check Management",
+    'name': "Check Management-Updated",
 
     'summary': """
         Simple Check Management""",
@@ -11,7 +11,7 @@
     'author': "Iatl-intellisoft",
     'category': 'Accounting',
     'version': '0.1',
-    'depends': ['account','account_check_printing'],
+    'depends': ['account', 'account_check_printing', 'mail'],
     'data': [
 
         'security/check_security.xml',

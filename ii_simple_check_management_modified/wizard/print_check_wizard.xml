@@ -1,0 +1,12 @@
+<odoo>
+
+   <record id="action_check_payment_print" model="ir.actions.act_window">
+        <field name="name">Print Check</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">print.prenumbered.checks</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_check_printing.print_pre_numbered_checks_view"/>
+        <field name="target">new</field>
+    </record>
+
+    </odoo>

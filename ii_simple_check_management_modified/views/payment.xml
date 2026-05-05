@@ -1,0 +1,94 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="check_followups_companytemplate_inh">
+            <field name="name">check_followups companytemplate</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='bank_account']" position="after">
+                    <page name="check_follow" string="Check Follow up" invisible="type != 'bank'">
+                        <!--                    <h1><group ><field name="Check_no" attrs="{'required': [('type', '=', 'bank')]}" class="oe_title"/> </group></h1>-->
+                        <group>
+                            <group string="Customer">
+                                <!--                            <field name="under_collection" attrs="{'required': [('type', '=', ('bank'))]}" />-->
+                                <field name="rdc" required="inbound_payment_method_line_ids in ('Check Followup')"/>
+                            </group>
+                            <group string="Vendor">
+                                <!--                            <field name="out_standing" attrs="{'required': [('type', '=', 'bank')]}" />-->
+                                <field name="rdv" required="outbound_payment_method_line_ids in ('Check Followup')"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="payment_inherit_view">
+            <field name="name">payment_form_inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button name="action_view_checks" type="object"
+                            class="oe_stat_button" icon="fa-bars"
+                            string="Check(s)"
+                            invisible="payment_method_code !='check_printing'"
+                    >
+                    </button>
+                </div>
+                <field name="payment_method_line_id" position="after">
+                    <field widget="radio" name='check_type'
+                           required="payment_method_code == 'check_printing'"
+                           invisible="payment_method_code != 'check_printing'" readonly="state != 'draft'"/>
+                    <field name="check_date"
+                           invisible="payment_method_code != 'check_printing' or check_type != 'indirect'"
+                           required="payment_method_code == 'check_printing' and check_type == 'indirect'"
+                           readonly="state != 'draft'"/>
+                </field>
+                <field name="memo" position="after">
+                    <field name="Bank_id" invisible="payment_method_code != 'check_printing'"/>
+                    <!--                    <field name="check_amount_in_words"/>-->
+                </field>
+            </field>
+        </record>
+
+        <record id="account_payment_register_form_inherit_view" model="ir.ui.view">
+            <field name="name">account.payment.register.wizard.form</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='communication']" position="after">
+                    <field name="payment_method_code" invisible="1"/>
+                    <field name="check_type" widget="radio" invisible="payment_method_code != 'check_printing'"/>
+                    <field name="clearance_date"
+                           invisible="payment_method_code != 'check_printing' or check_type != 'indirect'"
+                           required="payment_method_code == 'check_printing' and check_type == 'indirect'"/>
+                    <field name="check_no"
+                           invisible="payment_method_code != 'check_printing' or check_type != 'indirect'"
+                           required="payment_method_code == 'check_printing' and check_type == 'indirect'"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record model="ir.ui.view" id="check_followups_banktemplate">
+            <field name="name">check_followups banktemplate</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id"  ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='street']/.." position="after">
+                    <group string="template" col="4" colspan="4" >
+                        <field name="amount_textx"/><field name="amount_texty"/>
+                        <field name="acc_holderx"/><field name="acc_holdery"/>
+                        <field name="datex"/><field name="datey"/>
+                        <field name="amountx"/> <field name="amounty"/>
+                        <field name="account_holder_width"/>
+                        <field name="money_text_width"/><field name="money_text_height"/>
+                    </group>
+                    <P style="color: blue;font-family:Times New Roman;font-size:large;" >All Dimensions in mm</P>
+                </xpath>
+            </field>
+        </record>-->
+
+    </data>
+</odoo>

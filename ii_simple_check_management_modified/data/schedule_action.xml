@@ -8,7 +8,6 @@
         <field name="code">model.get_today_checks()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-<!--        <field name="numbercall">-1</field>-->
     </record>
 
     <!-- New cron: create a "To Do" activity for Accounting Admins
@@ -20,7 +19,6 @@
         <field name="code">model.cron_create_deposit_date_activities()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
         <field name="active">True</field>
     </record>
 

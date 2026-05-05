@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Check Management-Updated",
+    'name': "Check Management",
 
     'summary': """
         Simple Check Management""",

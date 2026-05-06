@@ -5,7 +5,7 @@
         <field name="model">tax.invoice</field>
         <field name="arch" type="xml">
             <list>
-                <field name="reference"/>
+                <!-- <field name="reference"/> -->
                 <field name="date"/>
                 <field name="customer_id"/>
                 <field name="total_amount"/>
@@ -22,7 +22,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="reference" readonly="1"/>
+                            <!-- <field name="reference" readonly="1"/> -->
                             <field name="invoice_id" readonly="1"/> 
                             <field name="date" readonly="1"/>
                         </group>

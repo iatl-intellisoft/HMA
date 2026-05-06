@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_sudan_vat_report_manager,sudan.vat.report manager,model_sudan_vat_report,account.group_account_manager,1,1,1,1
-access_sudan_vat_report_user,sudan.vat.report user,model_sudan_vat_report,account.group_account_user,1,1,1,0

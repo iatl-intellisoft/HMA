@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            IMPORTANT for Odoo 18:
+            - report_name in ir.actions.report = this template id (fully qualified)
+            - Odoo engine calls this template directly and passes 'docs' recordset
+            - We iterate docs ourselves, 'o' = single sale.order record
+        -->
+        <template id="report_tax_base_invoice_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+
+                        <div class="page">
+
+                            <!-- ===== TITLE ===== -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h2 class="mt-4">
+                                        <span>Invoice (Tax Base Price)</span>
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <!-- ===== CUSTOMER + ORDER INFO ===== -->
+                            <div class="row mb-4">
+
+                                <!-- Customer -->
+                                <div class="col-6">
+                                    <strong>Customer</strong>
+                                    <address class="mt-1">
+                                        <strong>
+                                            <span t-out="o.partner_id.name"/>
+                                        </strong><br/>
+                                        <t t-if="o.partner_id.street">
+                                            <span t-out="o.partner_id.street"/><br/>
+                                        </t>
+                                        <t t-if="o.partner_id.street2">
+                                            <span t-out="o.partner_id.street2"/><br/>
+                                        </t>
+                                        <t t-if="o.partner_id.city or o.partner_id.zip">
+                                            <span t-out="o.partner_id.zip"/>&#160;
+                                            <span t-out="o.partner_id.city"/><br/>
+                                        </t>
+                                        <t t-if="o.partner_id.country_id">
+                                            <span t-out="o.partner_id.country_id.name"/><br/>
+                                        </t>
+                                        <t t-if="o.partner_id.vat">
+                                            <span>VAT: </span>
+                                            <span t-out="o.partner_id.vat"/>
+                                        </t>
+                                    </address>
+                                </div>
+
+                                <!-- Order Details -->
+                                <div class="col-6 text-end">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold">Order Number:</td>
+                                                <td><span t-out="o.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Order Date:</td>
+                                                <td>
+                                                    <span t-field="o.date_order"
+                                                          t-options='{"widget": "date"}'/>
+                                                </td>
+                                            </tr>
+                                            <t t-if="o.validity_date">
+                                                <tr>
+                                                    <td class="fw-bold">Expiration:</td>
+                                                    <td>
+                                                        <span t-field="o.validity_date"
+                                                              t-options='{"widget": "date"}'/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="o.user_id">
+                                                <tr>
+                                                    <td class="fw-bold">Salesperson:</td>
+                                                    <td><span t-out="o.user_id.name"/></td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="o.client_order_ref">
+                                                <tr>
+                                                    <td class="fw-bold">Customer Ref:</td>
+                                                    <td><span t-out="o.client_order_ref"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <!-- ===== ORDER LINES TABLE ===== -->
+                            <table class="table table-sm o_main_table mt-4">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">#</th>
+                                        <th class="text-start">Product</th>
+                                        <th class="text-start">Description</th>
+                                        <th class="text-end">Qty</th>
+                                        <th class="text-end">UoM</th>
+                                        <th class="text-end">Unit Price (Tax Base)</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="line_number" t-value="0"/>
+                                    <t t-foreach="o.order_line" t-as="line">
+
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <tr class="o_line_section">
+                                                <td colspan="7">
+                                                    <strong t-out="line.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-elif="line.display_type == 'line_note'">
+                                            <tr class="o_line_note">
+                                                <td colspan="7">
+                                                    <span t-out="line.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="line_number" t-value="line_number + 1"/>
+                                            <t t-set="tax_price"
+                                               t-value="line.product_id.tax_base_amount or 0.0"/>
+                                            <t t-set="tax_subtotal"
+                                               t-value="line.product_uom_qty * tax_price"/>
+
+                                            <tr>
+                                                <td class="text-start">
+                                                    <span t-out="line_number"/>
+                                                </td>
+                                                <td class="text-start">
+                                                    <span t-out="line.product_id.name"/>
+                                                </td>
+                                                <td class="text-start">
+                                                    <t t-if="line.name and line.name != line.product_id.name">
+                                                        <span t-out="line.name"/>
+                                                    </t>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-field="line.product_uom_qty"
+                                                          t-options='{"widget": "float", "precision": 2}'/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-out="line.product_uom.name"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-out="'%.2f' % tax_price"/>
+                                                    <span t-out="o.currency_id.symbol"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-out="'%.2f' % tax_subtotal"/>
+                                                    <span t-out="o.currency_id.symbol"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- ===== TOTALS ===== -->
+                            <div class="row justify-content-end mt-4">
+                                <div class="col-5">
+                                    <table class="table table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold">Subtotal</td>
+                                                <td class="text-end">
+                                                    <t t-set="grand_total"
+                                                       t-value="sum(
+                                                           l.product_uom_qty * (l.product_id.tax_base_amount or 0.0)
+                                                           for l in o.order_line
+                                                           if not l.display_type
+                                                       )"/>
+                                                    <span t-out="'%.2f' % grand_total"/>
+                                                    <span t-out="o.currency_id.symbol"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="all_taxes"
+                                               t-value="o.order_line.filtered(lambda l: not l.display_type).mapped('tax_id')"/>
+                                            <t t-if="all_taxes">
+                                                <tr>
+                                                    <td class="text-muted fst-italic">
+                                                        Taxes:
+                                                        <span t-out="', '.join(all_taxes.mapped('name'))"/>
+                                                    </td>
+                                                    <td class="text-end text-muted fst-italic">
+                                                        (not included)
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <tr class="border-top">
+                                                <td class="fw-bold fs-5">Total</td>
+                                                <td class="text-end fw-bold fs-5">
+                                                    <span t-out="'%.2f' % grand_total"/>
+                                                    <span t-out="o.currency_id.symbol"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ===== NOTES ===== -->
+                            <t t-if="o.note">
+                                <div class="mt-4">
+                                    <p class="fw-bold mb-1">Notes:</p>
+                                    <p t-field="o.note"/>
+                                </div>
+                            </t>
+
+                            <!-- ===== DISCLAIMER ===== -->
+                            <div class="mt-5 text-muted small">
+                                <em>* Unit prices shown are based on Tax Base Amount
+                                    configured on each product, not the actual sale price.</em>
+                            </div>
+
+                        </div>
+
+                    </t><!-- end external_layout -->
+                </t><!-- end foreach -->
+            </t><!-- end html_container -->
+        </template>
+
+    </data>
+</odoo>

@@ -5,7 +5,7 @@ class TaxInvoice(models.Model):
     _name = 'tax.invoice'
     _description = 'Tax Invoice'
  
-    reference = fields.Many2one('sale.order',string="Invoice")
+    # reference = fields.Many2one('sale.order',string="Invoice")
     invoice_id = fields.Many2one('account.move',string="Invoice")
     date = fields.Date(string="Date", default=fields.Date.today)
     customer_id = fields.Many2one('res.partner', string="Customer")
@@ -57,7 +57,7 @@ class SaleOrder(models.Model):
 
         for order in self:
             tax_invoice = self.env['tax.invoice'].create({
-                'reference': order.id,
+                # 'reference': order.id,
                 'invoice_id': order.invoice_ids.id,
                 'customer_id': order.partner_id.id,
 
@@ -73,28 +73,5 @@ class SaleOrder(models.Model):
                     'unit_price': line.product_id.product_tmpl_id.tax_base_amount,   
                 })
 
-        return invoices
-# class AccountMoveLine(models.Model):
-#     _inherit = 'account.move.line'
-
-#     tax_base_amount = fields.Float(
-#         string='Tax Price'
-#     )
-#     @api.onchange('product_id')
-#     def _onchange_product_id_tax_base(self):
-#         for line in self:
-#             if line.product_id:
-#                 line.tax_base_amount = line.product_id.tax_base_amount
-
-
-#     def create(self, vals_list):
-#         for vals in vals_list:
-#             product_id = vals.get('product_id')
-
-#             # لو ما في قيمة، جيبها من المنتج
-#             if product_id and not vals.get('tax_base_amount'):
-#                 product = self.env['product.product'].browse(product_id)
-#                 vals['tax_base_amount'] = product.tax_base_amount or 0.0
-
-#         return super().create(vals_list)
+        return invoices 
  

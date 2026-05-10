@@ -124,7 +124,7 @@ class SudanVatReport(models.TransientModel):
                             ],
                         fields=['amount_total:sum'],
                         groupby=[]) 
-        self.purchase_local_total=data_purchase[0]['amount_total']
+        self.purchase_import_total=data_purchase[0]['amount_total']
     # Row 2: Telecommunications (30%)
     sales_telecom_total = fields.Float(string='/٢ الاتصالات - المبلغ الكلي', digits=(16, 2))
     sales_telecom_tax_rate = fields.Char(string='نسبة الضريبة', default='%٣٠')

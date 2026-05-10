@@ -3,6 +3,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 from datetime import date 
+from pytz import timezone,UTC
 import calendar 
 
 
@@ -114,11 +115,12 @@ class SudanVatReport(models.TransientModel):
                         fields=['total_amount:sum'],
                         groupby=[]) 
         self.sales_local_total=data[0]['total_amount']
-        
+        date_from = datetime.combine(fields.Date.from_string(date_from),time.min)
+        date_to = datetime.combine(fields.Date.from_string(date_to),time.max)
         data_purchase = self.env['purchase.order'].read_group(
                         domain=[
-                            ('date_approve', '>=', self.date_from),  
-                            ('date_approve', '<=', self.date_to)
+                            ('date_approve', '>=', date_from),  
+                            ('date_approve', '<=', date_to)
                             ],
                         fields=['amount_total:sum'],
                         groupby=[]) 

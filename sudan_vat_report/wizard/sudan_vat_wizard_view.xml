@@ -12,12 +12,12 @@
             <form string="الإقرار الشهري للضريبة على القيمة المضافة">
                 <sheet>
                     <!-- Header -->
-                    <div class="oe_title text-center">
+                    <!-- <div class="oe_title text-center">
                         <h1>أنموذج رقم (٣)</h1>
                         <h2>جمهورية السودان - ديوان الضرائب</h2>
                         <h2>الضريبة على القيمة المضافة - VAT</h2>
                         <h1><b>الإقرار الشهري</b></h1>
-                    </div>
+                    </div> -->
 
                     <!-- Declaration Period -->
                     <group string="بيانات الإقرار" col="4">
@@ -31,7 +31,7 @@
                     </group>
 
                     <!-- Taxpayer Information -->
-                    <group string="بيانات المكلف">
+                    <!-- <group string="بيانات المكلف">
                         <group>
                             <field name="taxpayer_name" string="اسم المكلف"/>
                             <field name="trade_name" string="الاسم التجاري"/>
@@ -50,10 +50,10 @@
                             <field name="email" string="البريد الإلكتروني"/>
                             <field name="specific_office" string="المكتب المختص"/>
                         </group>
-                    </group>
+                    </group> -->
 
                     <!-- ── SALES / REVENUES ─────────────────────────── -->
-                    <separator string="المبيعات / الإيرادات"/>
+                    <!-- <separator string="المبيعات / الإيرادات"/>
 
                     <group string="/١ السلع والخدمات والأعمال الخاصة (خاضعة - محلية)" col="4">
                         <field name="sales_local_total" string="المبلغ الكلي"/>
@@ -93,10 +93,10 @@
                     <group col="2">
                         <field name="total_sales_tax" string="إجمالي الضريبة المحصلة عن الشهر"
                                readonly="1" class="o_field_highlight"/>
-                    </group>
+                    </group> -->
 
                     <!-- ── PURCHASES ────────────────────────────────── -->
-                    <separator string="المشتريات"/>
+                    <!-- <separator string="المشتريات"/>
 
                     <group string="/٧ المشتريات الخاضعة - المستوردة" col="4">
                         <field name="purchase_import_total" string="المبلغ الكلي"/>
@@ -123,10 +123,10 @@
                         <field name="purchase_special_basis_type" string="أساس التحاسب"/>
                         <field name="purchase_special_tax_amount_unit" string="وعاء الضريبة"/>
                         <field name="purchase_special_tax_total" string="جملة الضريبة"/>
-                    </group>
+                    </group> -->
 
                     <!-- ── EXPENSES / SERVICES ──────────────────────── -->
-                    <separator string="الخدمات والمصروفات الخاضعة"/>
+                    <!-- <separator string="الخدمات والمصروفات الخاضعة"/>
 
                     <group string="/١١ الاتصالات" col="4">
                         <field name="expense_telecom_total" string="المبلغ الكلي"/>
@@ -148,10 +148,10 @@
 
                     <group string="/١٤ المحلية المعفاة" col="2">
                         <field name="expense_local_exempt_total" string="المبلغ الكلي"/>
-                    </group>
+                    </group> -->
 
                     <!-- ── RECONCILIATION / TOTALS ──────────────────── -->
-                    <separator string="الرصيد والتوصية"/>
+                    <!-- <separator string="الرصيد والتوصية"/>
 
                     <group col="2">
                         <field name="total_purchase_tax_paid"
@@ -166,20 +166,20 @@
                                string="/١٧ رصيد الضريبة المدين الواجب السداد" readonly="1"/>
                         <field name="refund_amount" string="/١٨ الإسترداد"/>
                         <field name="petroleum_certificates" string="/١٩ شهادات شركات البترول"/>
-                    </group>
+                    </group> -->
 
                     <!-- ── SUBMITTER ────────────────────────────────── -->
-                    <separator string="خاص بمقدم الإقرار"/>
+                    <!-- <separator string="خاص بمقدم الإقرار"/>
                     <group col="4">
                         <field name="submitter_name" string="الاسم"/>
                         <field name="submitter_role" string="بصفتي"/>
                         <field name="submission_date" string="التاريخ"/>
-                    </group>
+                    </group> -->
                 </sheet>
 
                 <footer>
                     <button name="action_print_report" type="object"
-                            string="🖨️ طباعة الإقرار الضريبي"
+                            string=" طباعة الإقرار الضريبي"
                             class="btn-primary"/>
                     <button string="إغلاق" class="btn-secondary" special="cancel"/>
                 </footer>

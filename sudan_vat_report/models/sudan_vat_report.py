@@ -117,8 +117,8 @@ class SudanVatReport(models.TransientModel):
         
         data_purchase = self.env['purchase.order'].read_group(
                         domain=[
-                            ('date', '>=', self.date_from),  
-                            ('date', '<=', self.date_to)
+                            ('date_approve', '>=', self.date_from),  
+                            ('date_approve', '<=', self.date_to)
                             ],
                         fields=['amount_total:sum'],
                         groupby=[]) 

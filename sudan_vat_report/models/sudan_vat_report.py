@@ -2,7 +2,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
-from datetime import date 
+from datetime import datetime,time, date 
 from pytz import timezone,UTC
 import calendar 
 

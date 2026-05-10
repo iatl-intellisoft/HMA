@@ -115,8 +115,8 @@ class SudanVatReport(models.TransientModel):
                         fields=['total_amount:sum'],
                         groupby=[]) 
         self.sales_local_total=data[0]['total_amount']
-        date_from = datetime.combine(fields.Date.from_string(date_from),time.min)
-        date_to = datetime.combine(fields.Date.from_string(date_to),time.max)
+        date_from = datetime.combine(fields.Date.from_string(self.date_from),time.min)
+        date_to = datetime.combine(fields.Date.from_string(self.date_to),time.max)
         data_purchase = self.env['purchase.order'].read_group(
                         domain=[
                             ('date_approve', '>=', date_from),  

@@ -116,7 +116,8 @@ class SudanVatReport(models.TransientModel):
                         groupby=[]) 
         self.sales_local_total=data[0]['total_amount'] 
         self.sales_local_tax_amount = self.sales_local_total*0.17 
-        self.total_sales_tax = self.sales_local_tax_amount 
+        self.sales_local_tax_total = self.sales_local_tax_amount 
+        # self.total_sales_tax = self.sales_local_tax_amount 
         date_from = datetime.combine(fields.Date.from_string(self.date_from),time.min)
         date_to = datetime.combine(fields.Date.from_string(self.date_to),time.max)
         data_purchase = self.env['purchase.order'].read_group(
@@ -261,7 +262,7 @@ class SudanVatReport(models.TransientModel):
             company = rec.company_id
             rec.taxpayer_name = company.name
             rec.trade_name = company.name
-            rec.tax_registration_number = company.vat or ''
+            rec.tax_registration_number = company.company_registry or ''
             rec.address = ' '.join(filter(None, [
                 company.street, company.city,
                 company.state_id.name if company.state_id else '',
@@ -270,6 +271,7 @@ class SudanVatReport(models.TransientModel):
             rec.phone = company.phone or ''
             rec.email = company.email or ''
             rec.mobile = company.mobile or ''
+            rec.specific_office = company.city or ''
 
     @api.depends(
         'sales_local_tax_total', 'sales_telecom_tax_total',

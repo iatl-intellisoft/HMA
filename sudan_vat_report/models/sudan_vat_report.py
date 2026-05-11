@@ -114,7 +114,9 @@ class SudanVatReport(models.TransientModel):
                             ],
                         fields=['total_amount:sum'],
                         groupby=[]) 
-        self.sales_local_total=data[0]['total_amount']
+        self.sales_local_total=data[0]['total_amount'] 
+        self.sales_local_tax_amount = self.sales_local_total*0.17 
+        self.total_sales_tax = self.sales_local_tax_amount 
         date_from = datetime.combine(fields.Date.from_string(self.date_from),time.min)
         date_to = datetime.combine(fields.Date.from_string(self.date_to),time.max)
         data_purchase = self.env['purchase.order'].read_group(
@@ -124,7 +126,8 @@ class SudanVatReport(models.TransientModel):
                             ],
                         fields=['amount_total:sum'],
                         groupby=[]) 
-        self.purchase_import_total=data_purchase[0]['amount_total']
+        self.purchase_import_total=data_purchase[0]['amount_total'] 
+        self.purchase_assets_tax_amount = self.purchase_import_total*0.17
     # Row 2: Telecommunications (30%)
     sales_telecom_total = fields.Float(string='/٢ الاتصالات - المبلغ الكلي', digits=(16, 2))
     sales_telecom_tax_rate = fields.Char(string='نسبة الضريبة', default='%٣٠')

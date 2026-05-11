@@ -42,7 +42,7 @@
         }
         @font-face {
             font-family: 'Cairo-Bold';
-            src: url(/insurance_reports_custom/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+            src: url(/sudan_vat_report/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
         }
         body, table, div, span {
             font-family: 'Cairo-Bold' !important;

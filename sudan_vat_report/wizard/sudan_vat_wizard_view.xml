@@ -20,14 +20,18 @@
                     </div> -->
 
                     <!-- Declaration Period -->
-                    <group string="بيانات الإقرار" col="4">
-                        <field name="declaration_number" string="الإقرار عن"/>
-                        <field name="month" string="الشهر"/>
-                        <field name="year" string="السنة"/>
-                        <field name="date_from"/> 
-                        <field name="date_to" /> 
-
-                        <field name="company_id" string="الشركة" invisible="1"/>
+                    <group string="بيانات الإقرار" >
+                        <field name="declaration_number" string="الإقرار عن"/> 
+                    </group>
+                    <group>
+                        <group>
+                            <field name="month" string="الشهر"/>
+                             <field name="date_from"/> 
+                        </group>
+                          <group>
+                               <field name="year" string="السنة"/>
+                              <field name="date_to" />
+                        </group>
                     </group>
 
                     <!-- Taxpayer Information -->
@@ -169,12 +173,12 @@
                     </group> -->
 
                     <!-- ── SUBMITTER ────────────────────────────────── -->
-                    <!-- <separator string="خاص بمقدم الإقرار"/>
+                    <separator string="خاص بمقدم الإقرار"/>
                     <group col="4">
                         <field name="submitter_name" string="الاسم"/>
                         <field name="submitter_role" string="بصفتي"/>
                         <field name="submission_date" string="التاريخ"/>
-                    </group> -->
+                    </group>
                 </sheet>
 
                 <footer>

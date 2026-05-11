@@ -42,7 +42,7 @@
         }
         @font-face {
             font-family: 'Cairo-Bold';
-            src: url(/sudan_vat_report/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+            src: url(/insurance_reports_custom/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
         }
         body, table, div, span {
             font-family: 'Cairo-Bold' !important;
@@ -303,7 +303,8 @@
                 <tr>
                     <th style="width:26%; text-align:right;">البيـان (١)</th>
                     <th style="width:16%;" class="num-cell">المبلغ الكلي (٢)</th>
-                    <th style="width:10%;" class="num-cell">(٣) أساس التحاسب / نسبة / مبلغ / كمية</th>
+                    <!-- <th style="width:10%;" class="num-cell">(٣) أساس التحاسب / نسبة / مبلغ / كمية</th> -->
+                    <th style="width:10%;" class="num-cell">(٣) </th>
                     <th style="width:10%;" class="num-cell">نسبة الضريبة (٤)</th>
                     <th style="width:14%;" class="num-cell">مقدار الضريبة (٥)</th>
                     <th style="width:14%;" class="num-cell">جملة الضريبة (٦)</th>
@@ -350,16 +351,60 @@
                     <td class="row-label">/٤ السلع والخدمات والأعمال الخاصة</td>
                     <td class="num-cell"></td>
                     <td colspan="2" style="text-align:center; font-size:8pt;">
+                    <td>                   
                         <div>أساس التحاسب</div>
-                        <div>نسبة / مبلغ | مبلغ / كمية</div>
-                        <div>وعاء الضريبة</div>
-                        <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div>
+                        <div>نسبة / فئة (مبلغ)</div>
                     </td>
+                    <td>
+                        <div>وعاء الضريبة</div>
+                        <div>مبلغ / كمية</div>                    
+                    </td>                        <!-- <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div> -->
+                    </td>
+                    <td class="num-cell"></td>
                     <td class="num-cell"></td>
                     <td class="num-cell"><t t-esc="'%.2f' % o.sales_special_tax_total"/></td>
                 </tr>
 
-                <!-- Row 5 - Exempt -->
+                <tr class="zebra-even">
+                    <td class="row-label"></td>
+                    <td class="num-cell"></td>
+                    <td colspan="2" style="text-align:center; font-size:8pt;">
+                    <td>                   
+                    </td>
+                    <td>                
+                    </td>                        <!-- <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div> -->
+                    </td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                </tr>
+                <tr class="zebra-even">
+                    <td class="row-label"></td>
+                    <td class="num-cell"></td>
+                    <td colspan="2" style="text-align:center; font-size:8pt;">
+                    <td>                   
+                    </td>
+                    <td>                
+                    </td>                        <!-- <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div> -->
+                    </td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                </tr>
+                <tr class="zebra-even">
+                    <td class="row-label"></td>
+                    <td class="num-cell"></td>
+                    <td colspan="2" style="text-align:center; font-size:8pt;">
+                    <td>                   
+                    </td>
+                    <td>                
+                    </td>                        <!-- <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div> -->
+                    </td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"></td>
+                </tr>
+             <!-- Row 5 - Exempt -->
                 <tr class="zebra-odd">
                     <td class="row-label">/٥ السلع والخدمات المعفاة</td>
                     <td class="num-cell"><t t-esc="'%.2f' % o.sales_exempt_total"/></td>
@@ -428,15 +473,21 @@
                 </tr>
 
                 <!-- Row 10 - Special local goods -->
+
                 <tr class="zebra-even">
                     <td class="row-label">/١٠ السلع والخدمات والأعمال الخاصة</td>
                     <td class="num-cell"></td>
                     <td colspan="2" style="text-align:center; font-size:8pt;">
+                    <td>                   
                         <div>أساس التحاسب</div>
-                        <div>نسبة / مبلغ | مبلغ / كمية</div>
-                        <div>وعاء الضريبة</div>
-                        <div><t t-esc="'%.2f' % o.purchase_special_tax_amount_unit"/></div>
+                        <div>نسبة / فئة (مبلغ)</div>
                     </td>
+                    <td>
+                        <div>وعاء الضريبة</div>
+                        <div>مبلغ / كمية</div>                    
+                    </td>                                          <div><t t-esc="'%.2f' % o.purchase_special_tax_amount_unit"/></div>
+</td>
+                 
                     <td class="num-cell"></td>
                     <td class="num-cell"><t t-esc="'%.2f' % o.purchase_special_tax_total"/></td>
                 </tr>

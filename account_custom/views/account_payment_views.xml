@@ -1,0 +1,32 @@
+<odoo>
+	<data>
+		<record id="view_account_payment_search_inherit_invoice_view" model="ir.ui.view">
+            <field name="name">view.account.payment.search.inherit.account.draft</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search" />
+            <field name="arch" type="xml">
+            	<xpath expr="//search">
+                    <separator/>
+            		<filter string="Payments not due " domain="[('date','>', ((context_today()).strftime('%Y-%m-%d'))+' '+'00:00:00')]" name='not_due_payment'/>
+            	</xpath>
+                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="amount"
+                           string="Payment Amount"/>
+                 </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_payment_form_inherit_shortcut" model="ir.ui.view">
+            <field name="name">view.account.move.form.shortcut</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='unmark_as_sent']" position="after">
+                    <button name="button_journal_get_entries" icon="fa-usd" class="oe_stat_button"
+                            string="Journal Entries" type="object" groups="account.group_account_user"/>
+                </xpath>
+            </field>
+        </record>
+
+	</data>
+</odoo>

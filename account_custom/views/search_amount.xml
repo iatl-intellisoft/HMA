@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+
+        <record id="view_account_search_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.select</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" string="Invoice"
+                           filter_domain="[                '|','|','|','|',                ('name', 'ilike', self),                ('invoice_origin', 'ilike', self),                ('ref', 'ilike', self),                ('payment_reference', 'ilike', self),                ('partner_id.name', 'ilike', self)            ]"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="amount_total_signed"
+                           string="Amount Due"
+                           filter_domain="[('amount_total_signed','ilike',self)]"/>
+
+                </xpath>
+
+                <xpath expr="//filter[@name='invoicedate']" position="before">
+                    <filter string="Date" name="invoicedate" context="{'group_by': 'date'}"/>
+
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,49 @@
+<odoo>
+    <data>
+
+
+        <record id="view_partner_form_inherit_4_new_ids" model="ir.ui.view">
+            <field name="name">res.partner.form.agent</field>
+            <field name="model">res.partner</field>
+
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='property_payment_term_id']" position="before">
+
+                    <field name="customer_rank" string="Is a customer" invisible="1"/>
+                    <field name="customer"/>
+                </xpath>
+                <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+                    <field name="supplier_rank"
+                           string="Is a vendor" invisible="1"/>
+                    <field name="vendor"/>
+                </xpath>
+                <xpath expr="//h1[1]/field[@name='name']" position="after">
+                    <br/><field name="code" placeholder="Code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+            <field name="context">{'search_default_supplier': 1,'res_partner_search_mode': 'supplier',
+                'default_is_company': True, 'default_supplier_rank': 1, 'default_vendor': True}
+
+            </field>
+
+
+        </record>
+
+        <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_is_company': True, 'default_customer_rank': 1,'default_customer': True}
+
+            </field>
+
+
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,156 @@
+<!-- <odoo>
+    <template id="report_salary_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o" >
+                <tr t-call="web.external_layout">
+                <div class="header2">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class = "col">
+                                <div class="pull-right">
+                                    <h4 class="text-center" > Salary Advance</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/><br/>
+                <div class="page">
+                    <table  class="table table-condensed">
+                        <h style="color:green" >Employee Data</h>
+                        <tbody>
+                            <tr>
+                                <th class="left">Name : </th>
+                                <td>                <span t-field="docs.employee_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong class = 'mid'> Job Title: </strong>
+                                </th>
+                                <td>
+                                <span t-field="docs.job_id"/>
+                            </td>
+                            <th>
+                                <strong> Department/Section: </strong>
+                            </th>
+                                <td>
+                            <span t-field="docs.department_id"/></td></tr><tr>
+                            <th>
+                                <strong> Date of Join: </strong>
+                            </th><td>
+                            <span t-field="docs.date"/></td></tr><tr>
+                            <th class="left" style="width: 100">Salary Advance Amount : </th>
+                            <td>               <p></p>
+                            </td></tr><tr>
+                            <th>
+                                <strong> Signature: </strong>
+                            </th><td>
+
+                            <p></p>
+                        </td>
+                            <th>
+                                <strong>Date: </strong>
+                            </th><td>
+
+                            <p></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br/><br/><br/>
+                <div class="page">
+                    <table  class="table table-condensed " border-collapse="collapse"  padding="15px"  style="width: 100" >
+                        <h style="color:green"> HR Use</h>
+                        <tbody>
+                            <tr>
+                                <th class="left" > Deduction Amount : </th>
+                                <td>
+                                    <p></p>
+                                </td>
+                            </tr><tr>
+                                <th >
+                                    <strong class = 'mid'> Deduction Period: </strong>
+                                </th>
+                                <td >
+                                    <p>From</p>
+                                </td>
+                            <th>
+                                    <p>To</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong class = 'mid'> HR Officer Signature: </strong>
+                                </th>
+                                <td>   <p></p>
+                                </td>
+                                <th>
+                                    <strong class = 'mid'> Date: </strong>
+                                </th>
+                                <td>
+                                    <p></p>
+                                </td></tr>
+                             <tr>
+                                 <th>
+                                    <strong class = 'mid'>A.G.HR Signature: </strong>
+                                </th>
+                                <td>
+                                    <p></p>
+                                </td>
+                                <th>
+                                    <strong class = 'mid'> Date: </strong>
+                                </th>
+                                <td>
+                                    <p></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br></br>
+                <div class="left">
+                    <table>
+                        <p> <strong> Global HR Head:_______________________________________________________ </strong></p>
+                        <p> <strong> CFO :_________________________________________________________________ </strong></p>
+                    </table>
+                </div>
+                </tr></t>
+        </t>
+</template>
+        </odoo>
+ -->
+
+
+<odoo>
+
+
+    <template id="report_salary_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="header2">
+
+                        <center>
+                            <h1>
+                                <strong>
+                                    <font style="font-family:'serif';">Salary Advance طلب مقدم من المرتب</font>
+                                </strong>
+                            </h1>
+                        </center>
+
+                    </div>
+                    <br/>
+                    <br/>
+                    <div id="template_introduction" t-field="docs.salary_advance_website_description"
+                         class='oe_no_empty'>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+

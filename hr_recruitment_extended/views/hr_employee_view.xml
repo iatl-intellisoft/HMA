@@ -1,0 +1,47 @@
+<odoo>
+    <record id="hr_employee_form_extended" model="ir.ui.view">
+        <field name="name">hr.employee.form.extended</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+             <xpath expr="//sheet/notebook/page[2]" position="before">
+
+                <page string="Applicant Data">
+                <group>
+                    <group string="Personal Data">
+                        <field name="birth_date"/>
+                        <field name="age" readonly="1"/>
+                        <field name="emergency_relation"/>
+                    </group>
+                    <group string="Academic Qualification">
+                        <field name="last_degree"/>
+                        <field name="specialization"/>
+                        <field name="institution_name"/>
+                        <field name="graduation_year"/>
+                    </group>                
+                </group>
+                <group>
+                    <group string="Experience">
+                        <field name="experience_ids">
+                            <list editable="bottom">
+                                <field name="company_name"/>
+                                <field name="job_title"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </list>
+                        </field>
+                    </group>   
+                    <group string="Documents">                      
+                        <field name="personal_photo"/>
+                        <field name="national_id_copy"/>
+                        <field name="certificates_pdf"/> 
+                    </group>             
+                </group>                    
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

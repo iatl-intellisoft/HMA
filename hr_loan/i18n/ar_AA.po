@@ -1,0 +1,945 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_loan
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-14 19:36+0000\n"
+"PO-Revision-Date: 2019-11-14 19:36+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "(update)"
+msgstr "(تحديث)"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong class=\"mid\"> Date: </strong>"
+msgstr "<strong class=\"mid\"> التاريخ: </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong class=\"mid\"> Deduction Period: </strong>"
+msgstr "<strong class=\"mid\"> فترة الخصم: </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong class=\"mid\"> HR Officer Signature: </strong>"
+msgstr "<strong class=\"mid\"> توقيع موظف الموارد البشرية: </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong class=\"mid\"> Job Title: </strong>"
+msgstr "<strong class=\"mid\"> المسمى الوظيفي </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong class=\"mid\"> Loan Purpose: </strong>"
+msgstr "<strong class=\"mid\"> الغرض من السلفية : </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong class=\"mid\"> S.HR Officer Signature: </strong>"
+msgstr "<strong class=\"mid\"> توقيع موظف الموارد البشرية (S.HR Officer) : </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong class=\"mid\">A.G.HR Signature: </strong>"
+msgstr "<strong class=\"mid\"> توقيع موظف الموارد البشرية (A.G.HR) : </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong>  CEO :____________________________________________________________________</strong>"
+msgstr "<strong>  الرئيس التنفيذي :____________________________________________________________________</strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong> CFO :_________________________________________________________________ </strong>"
+msgstr "<strong> المدير المالي :_________________________________________________________________ </strong>"
+
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong> CFO :_____________________________________________________________________</strong>"
+msgstr "<strong> المدير المالي :_________________________________________________________________ </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong> Date of Join: </strong>"
+msgstr "<strong> تاريخ التسجيل </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong> Department/Section: </strong>"
+msgstr "<strong> القسم  </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong> Global HR Head:_______________________________________________________ </strong>"
+msgstr "<strong> الرئيس العام للموارد البشرية:_______________________________________________________ </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong> Global HR Head:___________________________________________________________</strong>"
+msgstr "<strong> الرئيس العام للموارد البشرية:_______________________________________________________ </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong> Signature: </strong>"
+msgstr "<strong> التوقيع: </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "<strong> To Be Deducted in: </strong>"
+msgstr  "<strong> ليتم خصمها في: </strong>"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "<strong>Date: </strong>"
+msgstr "<strong>التاريخ: </strong>"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_needaction
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_needaction
+msgid "Action Needed"
+msgstr "الإجراء المطلوب"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__amount
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Approve"
+msgstr "قبول"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+msgid "Approved"
+msgstr "قبول"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_attachment_count
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__balance_amount
+msgid "Balance Amount"
+msgstr "مبلغ الرصيد"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__code
+msgid "Code"
+msgstr "الكود"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Compute"
+msgstr "حساب"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__create_uid
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__create_uid
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__create_date
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__create_date
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__date
+msgid "Date Request"
+msgstr "تاريخ الطلب"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "Deduction Amount :"
+msgstr "المبلغ المخصوم"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__department_id
+msgid "Department"
+msgstr "القسم"
+
+#. module: hr_loan
+#: selection:loan.type,installment_type:0
+msgid "Depends On Payroll "
+msgstr "يعتمد على الراتب"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__display_name
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__display_name
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_hr_employee
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__employee_id
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__employee_id
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__emp_account_id
+msgid "Employee Account"
+msgstr "حساب الموظف"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "Employee Data"
+msgstr "بيانات الموظف"
+
+#. module: hr_loan
+#: model:ir.actions.act_window,name:hr_loan.act_employee_loan
+msgid "Employee Loan Details"
+msgstr "تفاصيل سلفية الموظف"
+
+#. module: hr_loan
+#: model:hr.salary.rule,name:hr_loan.hr_rule_loan
+msgid "Employee Long Term Loan"
+msgstr "يلفية الموظف على المدى البعيد"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__emp_salary
+msgid "Employee Salary"
+msgstr "مرتب الموظف"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__emp_account_id
+msgid "Employee account"
+msgstr "حساب الموظف"
+
+#. module: hr_loan
+#: selection:loan.type,installment_type:0
+msgid "Fixed"
+msgstr "ثابت"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_follower_ids
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_channel_ids
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "المتابعون (القنوات)"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_partner_ids
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (الشركاء)"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "Form"
+msgstr "النموذج"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "From"
+msgstr "مِن"
+
+#. module: hr_loan
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "General"
+msgstr "عام"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "General Instructions:\n"
+"                    1. Delivers demand for human resources management To search, check and then certify From the CEO\n"
+"                    2. The worker is entitled to a loan in cases of need To ward off a threat to life or property Worker or member of his or her family\n"
+"                    3. The loan value shall not exceed 5 months' salary It is deducted from the same month The loan was obtained\n"
+"                    4. Loan after granting certification From a specialized committee consisting of three members\n"
+"                    5. Financial ratification shall not be permitted Of the loan only after the signature of the employee On a written contract It includes all the relevant conditions"
+msgstr "تعليمات عامة: \ n"
+"1. يسلم الطلب على إدارة الموارد البشرية للبحث ، والتحقق ثم التصديق من المدير التنفيذي \ n"
+"2. يحق للعامل الحصول على قرض في حالات الضرورة لدرء خطر على الحياة أو الممتلكات. العامل أو أحد أفراد أسرته \ n"
+"3. ألا تتجاوز قيمة القرض راتب 5 أشهر ، يتم خصمها من الشهر نفسه.الذي تم الحصول على القرض فيه\ n"
+"4. قرض بعد منح الشهادة من لجنة متخصصة تتألف من ثلاثة أعضاء \ n"
+"5. لا يُسمح بالتصديق المالي على القرض إلا بعد توقيع الموظف بموجب عقد مكتوب ويشمل جميع الشروط ذات الصلة"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_hr_loan
+msgid "HR Loan Request"
+msgstr "طلب السلفية من الموارد البشرية"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_hr_loan_line
+msgid "HR Loan Request Line"
+msgstr "بند طلب السلفية من الموارد البشرية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "HR Use"
+msgstr "استخدام الموارد البشرية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.hr_loan_type_form
+msgid "Hr Loan Type"
+msgstr "نوع سلفية الموارد البشرية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.hr_loan_type_tree
+msgid "Hr Loan Types"
+msgstr "انواع سلفية الموارد البشرية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__id
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__id
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_unread
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_unread
+msgid "If checked new messages require your attention."
+msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_needaction
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_has_error
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا تم تحديده ، فإن بعض الرسائل بها خطأ في التسليم."
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Installments"
+msgstr "اقساط"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_is_follower
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__job_id
+msgid "Job Position"
+msgstr "المناصب الوظيفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__journal_id
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__journal_id
+msgid "Journal"
+msgstr "دفتر اليومية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan____last_update
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line____last_update
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__write_uid
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__write_uid
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__write_date
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__write_date
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: hr_loan
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__loan_id
+msgid "Loan"
+msgstr "سلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__loan_amount
+msgid "Loan Amount"
+msgstr "مبلغ السلفية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "Loan Amount :"
+msgstr "مبلغ السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_employee__loan_count
+msgid "Loan Count"
+msgstr "عدد السلفيات"
+
+#. module: hr_loan
+#: model:ir.actions.act_window,name:hr_loan.action_hr_loan_line
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan__line_form
+msgid "Loan Details"
+msgstr "تفاصيل السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__loan_line_ids
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Loan Line"
+msgstr "بند السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__name
+msgid "Loan Name"
+msgstr "اسم السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__loan_id
+msgid "Loan Ref."
+msgstr "مرجع السلفية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Loan Request"
+msgstr "طلب السلفية"
+
+#. module: hr_loan
+#: model:ir.actions.act_window,name:hr_loan.action_hr_loan_request
+#: model:ir.ui.menu,name:hr_loan.menu_hr_loan_request
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.tree_hr_loan_line_view
+#: model_terms:ir.ui.view,arch_db:hr_loan.tree_hr_loan_view
+msgid "Loan Requests"
+msgstr "طلبات السلفية"
+
+#. module: hr_loan
+#: model:ir.actions.report,name:hr_loan.action_loan_requests_report
+msgid "Loan Requests Reports"
+msgstr "تقارير طلبات السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__loan_type
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__loan_type
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Loan Type"
+msgstr "نوع السلفية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.hr_loan_type_form
+msgid "Loan Type Name"
+msgstr "اسم نوع السلفية"
+
+#. module: hr_loan
+#: model:ir.ui.menu,name:hr_loan.loan_settings
+msgid "Loan Types"
+msgstr "انواع السلفية"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:85
+#, python-format
+msgid "Loan amount must not be greater Employee Salary !"
+msgstr "مبلغ السلفية يجب ان لا كون اكبر من مرتب الموظف"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_employee__loan_ids
+msgid "Loan lines"
+msgstr "بنود السلفية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Loan type"
+msgstr "نوع السلفية"
+
+#. module: hr_loan
+#: model:ir.actions.act_window,name:hr_loan.action_hr_loan_type
+msgid "Loan types"
+msgstr "انواع السلفية"
+
+#. module: hr_loan
+#: model:ir.actions.act_window,name:hr_loan.act_hr_employee_loan_request
+#: model:ir.actions.act_window,name:hr_loan.act_hr_loan_request
+#: model:ir.model.fields,field_description:hr_loan.field_hr_payslip__loan_ids
+#: model:ir.ui.menu,name:hr_loan.menu_hr_loans
+#: model_terms:ir.ui.view,arch_db:hr_loan.hr_payslip_form_inherit_view
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_employee_form_loan_inherit
+msgid "Loans"
+msgstr "السلفيات"
+
+#. module: hr_loan
+#: model:ir.ui.menu,name:hr_loan.menu_hr_loan_batches
+msgid "Loans Details"
+msgstr "تفاصيل السلفيات"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan__line_form
+msgid "MARK AS PAID"
+msgstr "ضع علامة انه مدفوع"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_main_attachment_id
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__parent_id
+msgid "Manager"
+msgstr "المدير"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__max_loan
+msgid "Max Loan"
+msgstr "اقصى سلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__max_loan_amount
+msgid "Max Loan Amount"
+msgstr "الحد الاقصى للسلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_has_error
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسائل"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_ids
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "Monthly Deduction Amount :"
+msgstr "المبلغ المخصوم شهريا"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__name
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "Name :"
+msgstr "الاسم"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__no_month
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__no_month
+msgid "No Of Month"
+msgstr "رقم الشهر"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:112
+#, python-format
+msgid "Not allow old installment unpaid."
+msgstr "لا يسمح بوجود قسط قديم غير مدفوع ."
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__no_unpaid
+msgid "Not allow old unpaid installment "
+msgstr "لا يسمح بوجود قسط قديم غير مدفوع ."
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan__line_form
+msgid "Note"
+msgstr "ملاحظة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_needaction_counter
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_has_error_counter
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_has_error_counter
+msgid "Number of error"
+msgstr "عدد الاخطاء"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_needaction_counter
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "عدد الرسائل التي تتطلب اجراء"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_has_error_counter
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل مع خطأ في التسليم"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__message_unread_counter
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__message_unread_counter
+msgid "Number of unread messages"
+msgstr "عدد الرسائل الجديدة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__loan_old_amount
+msgid "Old Loan Not Paid"
+msgstr "سلفية قديمة غير مدفوعة"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Other Information"
+msgstr "معلومات أخرى"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__paid_amount
+msgid "Paid Amount"
+msgstr "المبلغ المدفوع"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:310
+#, python-format
+msgid "Paid Date can't be Less than Date Today!"
+msgstr "تاريخ الدفع لا يجب ان يكون اقل من تاريخ اليوم"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Paid Loans"
+msgstr "السلفيات المدفوعة"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_hr_payslip
+msgid "Pay Slip"
+msgstr "قسيمة المرتب"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__paid_date
+msgid "Payment Date"
+msgstr "تاريخ السداد"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__payslip_id
+msgid "Payslip Ref."
+msgstr "مرجع دفعية المرتب"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__percentage
+msgid "Percentage"
+msgstr "النسبة"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:209
+#, python-format
+msgid "Please add Partner for this Employee."
+msgstr "الرجاء اضافة شريك في هذا الموظف"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan__line_form
+msgid "Postpone"
+msgstr "مؤجل"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Recompute Balance"
+msgstr "اعادة حساب الرصيد"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Refuse"
+msgstr "رفض"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+msgid "Refused"
+msgstr "مرفوض"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__salary_advance
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "Salary Advance"
+msgstr "سلفة على الراتب"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "Salary Advance Amount :"
+msgstr "مبلغ السلفة على الراتب "
+
+#. module: hr_loan
+#: model:ir.actions.report,name:hr_loan.action_salary_advance_report
+msgid "Salary Advance Reports"
+msgstr "تقارير السلفة على اراتب"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_hr_salary_rule
+msgid "Salary Rule"
+msgstr "قاعدة مرتبات"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__rule_id
+msgid "Salary rule"
+msgstr "قاعدة المرتب"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Set To Draft"
+msgstr "وضع كمسودة"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:193
+#, python-format
+msgid "Sorry! you can't cancel this record; There is a payslip /s for this record!"
+msgstr "لا تستطيع ان تلغي هذا السجل ، يوجد دفعية مرتب مرتبطة بهذا السجل"
+
+#. module: hr_loan
+#: selection:hr.payslip.line,use_type:0
+#: selection:hr.salary.rule,use_type:0
+msgid "Special"
+msgstr "خاص"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__payment_start_date
+msgid "Start Date of Payment"
+msgstr "تاريخ البداية للدفع"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "Submit"
+msgstr "تاكيد"
+
+#. module: hr_loan
+#: sql_constraint:loan.type:0
+msgid "The code of loan type must be unique"
+msgstr "رمز نوع السلفية يجب ان يكون مميز"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_loan_type__max_loan_amount
+msgid "The max loan amount requested must not be grate that formula in this rule Ex: Employee 5 Basic"
+msgstr "يجب ألا يكون الحد الأقصى لمبلغ القرض المطلوب أكبر من الصيغة في هذه القاعدة على سبيل المثال: الموظف 5 الاساس"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:76
+#, python-format
+msgid "The number of monthes must be more than zero!"
+msgstr "عدد الاشهر يجب ان يكون اكبر من 0"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:132
+#, python-format
+msgid "There Is An A voucher In State %s You Shoud Cancel It Or Delet It First!"
+msgstr "هناك قسيمة في الحالة٪ s يجب عليك إلغاؤها أو حذفها أولاً!"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:190
+#, python-format
+msgid "There is an a voucher in state %s, You Shoud cancel it Or delete it first!"
+msgstr "هناك قسيمة في الحالة٪ s يجب عليك إلغاؤها أو حذفها أولاً!"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_salary_document
+msgid "To"
+msgstr "إلى"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__total_amount
+msgid "Total Amount"
+msgstr "المبلغ الكلي"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:70
+#, python-format
+msgid "Total Installments can't be Bigger than Loan Amount!"
+msgstr "لا يمكن أن يكون إجمالي الأقساط أكبر من مبلغ السلفية!"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__total_loan
+msgid "Total Loan"
+msgstr "اجمالي السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_payslip__total_amount_paid
+msgid "Total Loan Amount"
+msgstr "اجمالي مبلغ السلفية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__total_paid_amount
+msgid "Total Paid Amount"
+msgstr "اجمالي المبلغ المدفوع"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__treasury_account_id
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__treasury_account_id
+msgid "Treasury Account"
+msgstr "حساب الخزينة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_loan_type__installment_type
+msgid "Type"
+msgstr "النوع"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_line_search
+msgid "Un Paid Loans"
+msgstr "السلفيات غير المدفوعة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_unread
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_unread
+msgid "Unread Messages"
+msgstr "الرسائل الجديدة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__message_unread_counter
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "عدد الرسائل الجديدة"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_payslip_line__use_type
+#: model:ir.model.fields,field_description:hr_loan.field_hr_salary_rule__use_type
+msgid "Use Type"
+msgstr "نوع الاستخدام"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__voucher_id
+msgid "Voucher"
+msgstr "إيصال"
+
+#. module: hr_loan
+#: selection:hr.loan,state:0
+msgid "Waiting Finance Approval"
+msgstr "انتظار الموافقة المالية"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan__website_message_ids
+#: model:ir.model.fields,field_description:hr_loan.field_hr_loan_line__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: hr_loan
+#: model:ir.model.fields,help:hr_loan.field_hr_loan__website_message_ids
+#: model:ir.model.fields,help:hr_loan.field_hr_loan_line__website_message_ids
+msgid "Website communication history"
+msgstr "سجل تواصل الموقع"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:287
+#, python-format
+msgid "You can not delete record not in draft state."
+msgstr "لا يمكنك حذف السجل ليس في حالة المسودة."
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "________________________________________Month"
+msgstr "________________________________________الشهر"
+
+#. module: hr_loan
+#: model:ir.model.fields,field_description:hr_loan.field_hr_employee__loan_amount
+msgid "loan Amount"
+msgstr "مبلغ السلفية"
+
+#. module: hr_loan
+#: model:ir.model,name:hr_loan.model_loan_type
+msgid "loan.type"
+msgstr ""
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.report_loan_document
+msgid "oan Details"
+msgstr "تفاصيل السلفية"
+
+#. module: hr_loan
+#: model_terms:ir.ui.view,arch_db:hr_loan.view_hr_loan_form
+msgid "postpone"
+msgstr "تاجيل"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:181
+#, python-format
+msgid "you can't cancel loan request after installement payment started"
+msgstr "لا يمكنك إلغاء طلب السلفية بعد بدء الدفعة"
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:124
+#, python-format
+msgid "you can't refuse loan request after installement payment started"
+msgstr "لا يمكنك رفض طلب القرض بعد بدء الدفعة "
+
+#. module: hr_loan
+#: code:addons/hr_loan/models/hr_loan.py:146
+#, python-format
+msgid "you can't return loan request to draft state after installement payment started"
+msgstr "لايمكن ارجاع حالة طلب السلفية الى مسودة بعد بدء الدفعة"
+

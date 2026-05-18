@@ -1,0 +1,74 @@
+<odoo>
+        <record id="view_hr_job_form_inherit_gm_approval" model="ir.ui.view">
+                <field name="name">hr.job.form.gm.approval</field>
+                <field name="model">hr.job</field>
+                <field name="inherit_id" ref="hr_recruitment.hr_job_simple_form"/>
+                <field name="arch" type="xml">
+                        <xpath expr="//footer" position="inside">  
+                        <button name="action_submit"
+                                type="object"
+                                string="Submit for Approval"
+                                class="btn-primary"
+                                groups="hr_job_approve_manager.group_hr_job_user"
+                        />  
+                        </xpath>
+                        <xpath expr="//button[@name='547']" position="attributes"> 
+                                <attribute name="groups">hr_job_approve_manager.group_hr_job_manager</attribute>
+                        </xpath>
+                
+                </field>
+        </record>
+        
+
+        <record id="view_hr_job_form_inherit_gm2_approval" model="ir.ui.view">
+        <field name="name">hr.job.form.gm2.approval</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//form/header" position="inside">
+                <field name="state" widget="statusbar"
+                        statusbar_visible="draft,waiting_approval,approved"/>
+
+                </xpath>
+
+        </field>
+        </record>
+       <record id="view_hr_job_kanban_inherit_gm2_approval" model="ir.ui.view">
+    <field name="name">hr.job.kanban</field>
+    <field name="model">hr.job</field>
+    <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban"/>
+    <field name="arch" type="xml">
+
+        <xpath expr="//kanban" position="inside">
+            <field name="state"/>
+        </xpath>
+
+        <xpath expr="//field[@name='is_favorite']" position="before">
+                <button name="action_approve"
+                        type="object"
+                        string="Manager Approve"
+                        class="btn-success"
+                        groups="hr_job_approve_manager.group_hr_job_manager"
+                        invisible="state != 'waiting_approval'"  />
+
+                <button name="action_reject"
+                        type="object"
+                        string="Reject"
+                        class="btn-danger"
+                        invisible="state != 'waiting_approval'" 
+                        groups="hr_job_approve_manager.group_hr_job_manager"
+                         />
+            <t t-if="record.state and record.state.raw_value != 'approved'" groups="hr_job_approve_manager.group_hr_job_user">
+                <span class="badge bg-warning">
+                    قيد  موافقة المدير
+                </span>
+            </t>
+
+        </xpath>
+
+    </field>
+</record>
+
+
+
+</odoo>

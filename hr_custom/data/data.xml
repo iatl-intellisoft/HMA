@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+        <!-- Create structure type -->
+        <record id="employee_structure_type" model="hr.payroll.structure.type">
+            <field name="name">Employee</field>
+            <field name="wage_type">monthly</field>
+            <field name="default_schedule_pay">monthly</field>
+            <field name="default_resource_calendar_id">1</field>
+            <field name="default_work_entry_type_id">1</field>
+            <field name="wage_type">monthly</field>
+        </record>
+
+        <!--  Create structure -->
+        <record id="salary_structure" model="hr.payroll.structure">
+            <field name="name">General Structure</field>
+            <field name="type_id">1</field>
+            <field name="use_worked_day_lines">True</field>
+            <field name="schedule_pay">monthly</field>
+        </record>
+
+    </data>
+</odoo>

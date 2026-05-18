@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_account_payment_form_inherit_bankak" model="ir.ui.view">
+        <field name="name">account.payment.form.bankak</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                    <field name="bankak_transaction_number" invisible="not show_partner_bank_account" required="require_partner_bank_account"/>
+                    <field name="bank_transaction_notification" invisible="not show_partner_bank_account" required="require_partner_bank_account"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

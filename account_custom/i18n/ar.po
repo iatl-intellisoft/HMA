@@ -1,0 +1,104 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-05 10:01+0000\n"
+"PO-Revision-Date: 2021-06-05 10:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_custom
+#: model:res.groups,name:account_custom.group_accountant_payable
+msgid "Accountant Payable"
+msgstr "محساب الدائنون"
+
+#. module: account_custom
+#: model:res.groups,name:account_custom.group_accountant_receivable
+msgid "Accountant Receivable"
+msgstr "محساب المدينون"
+
+#. module: account_custom
+#: model_terms:ir.ui.view,arch_db:account_custom.view_partner_form_inherit_4_new_ids
+msgid "Code"
+msgstr "كود"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_account_bank_statement_line__company_id
+#: model:ir.model.fields,field_description:account_custom.field_account_move__company_id
+#: model:ir.model.fields,field_description:account_custom.field_account_payment__company_id
+msgid "Company"
+msgstr "شركة"
+
+#. module: account_custom
+#: model:ir.model,name:account_custom.model_res_partner
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_res_partner__code
+#: model:ir.model.fields,field_description:account_custom.field_res_users__code
+msgid "Customer Code"
+msgstr ""
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_custom.field_res_partner__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: account_custom
+#: model:res.groups,name:account_custom.group_account_financial_manager
+msgid "Financial Manager"
+msgstr "مدير المالية"
+
+#. module: account_custom
+#: model:res.groups,name:account_custom.group_general_manager
+msgid "General Manager"
+msgstr "المدير العام"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_account_move__id
+#: model:ir.model.fields,field_description:account_custom.field_res_partner__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_res_partner__customer
+#: model:ir.model.fields,field_description:account_custom.field_res_users__customer
+msgid "Is Customer"
+msgstr "عميل"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_res_partner__vendor
+#: model:ir.model.fields,field_description:account_custom.field_res_users__vendor
+msgid "Is Vendor"
+msgstr "مورد"
+
+#. module: account_custom
+#: model_terms:ir.ui.view,arch_db:account_custom.view_partner_form_inherit_4_new_ids
+msgid "Is a customer"
+msgstr ""
+
+#. module: account_custom
+#: model_terms:ir.ui.view,arch_db:account_custom.view_partner_form_inherit_4_new_ids
+msgid "Is a vendor"
+msgstr "مورد"
+
+#. module: account_custom
+#: model:ir.model,name:account_custom.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: account_custom
+#: model:ir.model.fields,field_description:account_custom.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_custom.field_res_partner____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"

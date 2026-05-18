@@ -1,0 +1,479 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* afag_hr_overtime
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-03 10:42+0000\n"
+"PO-Revision-Date: 2022-10-03 10:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__analytic_account_id
+msgid "Analytic Account"
+msgstr "الحساب التحليلي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields.selection,name:afag_hr_overtime.selection__hr_overtime__state__cancel
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: afag_hr_overtime
+#: model:ir.ui.menu,name:afag_hr_overtime.hr_overtime_config_main_menu
+#: model:ir.ui.menu,name:afag_hr_overtime.hr_overtime_setting
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__create_uid
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__create_uid
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__create_date
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__create_date
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__date
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__date
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__calendar_id
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__resource_calendar_id
+msgid "Define the schedule of resource"
+msgstr "الرجاء تعريف جدول العمل"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__department_id
+msgid "Department"
+msgstr "الإدارة"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__notes
+msgid "Description"
+msgstr "الوصف"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__line_ids
+msgid "Details"
+msgstr "التفاصيل"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_contract__display_name
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__display_name
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__display_name
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields.selection,name:afag_hr_overtime.selection__hr_overtime__state__done
+msgid "Done"
+msgstr "منتهي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields.selection,name:afag_hr_overtime.selection__hr_overtime__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: afag_hr_overtime
+#: model:ir.model,name:afag_hr_overtime.model_hr_contract
+msgid "Employee Contract"
+msgstr "عقد الموظف"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields.selection,name:afag_hr_overtime.selection__hr_overtime__state__hro
+msgid "HR Officer"
+msgstr "منسق الموارد البشرية"
+
+#. module: afag_hr_overtime
+#: model:ir.module.category,description:afag_hr_overtime.module_category_hr_overtime
+msgid "Helps you manage your Overtime."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__total_global_leave_hours
+msgid "Holiday Hours"
+msgstr "ساعات العطلات الرسمية"
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Holiday Hours:"
+msgstr "ساعات العطلات الرسمية"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_contract__id
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__id
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__id
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_needaction
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_has_error
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_contract____last_update
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime____last_update
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config____last_update
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__write_uid
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__write_uid
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__write_date
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__write_date
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__no_hours
+msgid "No of Hours"
+msgstr "عدد الساعات"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__total_normal_hours
+msgid "Normal Hours"
+msgstr "الساعات العادية"
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Normal Hours:"
+msgstr "الساعات العادية"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__number
+msgid "Number"
+msgstr "العدد"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:res.groups,name:afag_hr_overtime.group_hr_overtime_officer
+msgid "Officer"
+msgstr "منسق الموارد البشرية"
+
+#. module: afag_hr_overtime
+#: model:hr.salary.rule,name:afag_hr_overtime.hr_salary_rule_overtime
+#: model:ir.module.category,name:afag_hr_overtime.module_category_hr_overtime
+#: model:ir.ui.menu,name:afag_hr_overtime.hr_overtime_root
+msgid "Overtime"
+msgstr "العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.actions.act_window,name:afag_hr_overtime.hr_overtime_config_action_window
+msgid "Overtime Configuration"
+msgstr "إعدادات العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_config__overtime_equation
+msgid "Overtime Equation"
+msgstr "معادلة العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime_line__request_id
+msgid "Request"
+msgstr "طلب عمل اضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.ui.menu,name:afag_hr_overtime.hr_overtime_requests
+msgid "Requests"
+msgstr "طلبات العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__resource_id
+msgid "Resource"
+msgstr "جدول الدوام"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Submit"
+msgstr "تقديم"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__tz
+msgid ""
+"This field is used in order to define in which timezone the resources will "
+"work."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__tz
+msgid "Timezone"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__total_amount
+msgid "Total Amount"
+msgstr "الإجمالي"
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Total Amount:"
+msgstr "الإجمالي"
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,help:afag_hr_overtime.field_hr_overtime__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__total_weekend_hours
+msgid "Weekend Hours"
+msgstr "ساعات العطلات الإسبوعية"
+
+#. module: afag_hr_overtime
+#: model_terms:ir.ui.view,arch_db:afag_hr_overtime.view_hr_overtime_form
+msgid "Weekend Hours:"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__calendar_id
+#: model:ir.model.fields,field_description:afag_hr_overtime.field_hr_overtime__resource_calendar_id
+msgid "Working Hours"
+msgstr "ساعات العمل"
+
+#. module: afag_hr_overtime
+#: code:addons/afag_hr_overtime/models/hr_overtime.py:0
+#, python-format
+msgid "You cannot delete a request which is not draft or cancelled!"
+msgstr "لايمكنك حذف سجل  ليس في حالة مسودة او ملغي"
+
+#. module: afag_hr_overtime
+#: model:ir.actions.act_window,name:afag_hr_overtime.hr_overtime_action_window
+msgid "Overtime"
+msgstr "العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.model,name:afag_hr_overtime.model_hr_overtime
+msgid "saudi hr overtime"
+msgstr "نظام العمل الإضافي"
+
+#. module: afag_hr_overtime
+#: model:ir.model,name:afag_hr_overtime.model_hr_overtime_config
+msgid "saudi hr overtime configuration"
+msgstr ""
+
+#. module: afag_hr_overtime
+#: model:ir.model,name:afag_hr_overtime.model_hr_overtime_line
+msgid "saudi hr overtime lines"
+msgstr ""

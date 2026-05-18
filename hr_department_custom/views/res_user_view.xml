@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+    <record id="view_users_form" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='access_rights']/group" position="after">
+                    <group string="Allowed Departments" >
+                        <field name="department_id" string="Current Department" readonly="0"/>
+                        <field name="allowed_department_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </xpath>
+                
+            </field>
+        </record>
+  </data>
+</odoo>

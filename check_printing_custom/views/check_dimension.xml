@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <menuitem action="base.action_res_bank_form" id="action_journal_bank_id"
+                  parent="account.account_account_menu"/>
+
+        <record id="check_dimension_view" model="ir.ui.view">
+            <field name="name">check.dimension.form</field>
+            <field name="model">check.dimension</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" required="True"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+                            <group>
+                                <field name="font_size" style="width: 50%;"/>
+                                <field name="type" style="width: 50%;"/>
+                            </group>
+
+                        </group>
+                        <group>
+                            <group>
+                                <label for="partner_y" string=" Partner"/>
+                                <div class="o_address_format">
+                                    <field name="partner_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="partner_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
+
+                            <group>
+                                <label for="check_amount_in_words_x" string=" Amount in Words"/>
+                                <div class="o_address_format">
+                                    <field name="check_amount_in_words_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="check_amount_in_words_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
+
+                            <group>
+                                <label for="amount_x" string=" Amount"/>
+                                <div class="o_address_format">
+                                    <field name="amount_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="amount_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="ac_payee_x" string=" A/c payee"/>
+                                <div class="o_address_format">
+                                    <field name="ac_payee_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="ac_payee_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
+
+                            <group>
+                                <label for="date_x" string=" Date"/>
+                                <div class="o_address_format">
+                                    <field name="date_x" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" placeholder="X"
+                                           nolabel="1"/>
+                                    <strong>,</strong>
+                                    <field name="date_y" class="o_address_city"
+                                           style="width: 20%;margin-right: 0%;text-align: center;" nolabel="1"
+                                           placeholder="Y"/>
+                                </div>
+                            </group>
+
+                            <group>
+                                <field name="account_holder_width" class="text-center"/>
+                                <field name="money_text_width" class="text-center"/>
+                                <field name="money_text_height" class="text-center"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="check_dimension_tree" model="ir.ui.view">
+            <field name="name">check.dimension.tree</field>
+            <field name="model">check.dimension</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_check_dimension">
+            <field name="name">Check Dimension</field>
+            <field name="res_model">check.dimension</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="check_dimension_tree"/>
+        </record>
+
+        <menuitem action="action_check_dimension" id="check_dimension_menu_id"
+                  parent="account.account_account_menu"/>
+        
+        <record id="re_bank_inherit" model="ir.ui.view">
+            <field name="name">res.bank.inherit.form</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="check_dimension_id"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

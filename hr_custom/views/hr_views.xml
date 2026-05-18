@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it HR Employee -->
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='birthday']" position="after">
+                    <field name="age"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- <record id="view_department_inherit_tree" model="ir.ui.view">
+            <field name="name">hr.view.department.tree</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='display_name']" position="replace">
+                    <field name="name"/>
+                </xpath>
+            </field>
+        </record> -->
+
+        <menuitem
+                id="menu_hr_employee_process"
+                name="Employee Process"
+                parent="hr.menu_hr_root"
+                sequence="9"
+                groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"/>
+
+        <menuitem id="menu_employee_reports" name="Reports" parent="hr.menu_hr_root" sequence='99'/>
+    </data>
+</odoo>

@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  Sudan VAT Monthly Declaration Report Template - Form 3                  ║
+║  الإقرار الشهري للضريبة على القيمة المضافة - أنموذج رقم (٣)            ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<template id="report_sudan_vat_template"> 
+  
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="o">
+<t t-call="web.external_layout">
+<!-- 
+<div class="page" style="font-family: 'Noto Naskh Arabic', 'Traditional Arabic', 'Arial', sans-serif; direction: rtl; font-size: 18pt;"> -->
+
+    <!-- ══════════════════════════════════════════════
+         PAGE 1 - HEADER + TAXPAYER INFO
+    ══════════════════════════════════════════════ -->
+    <style>
+        .vat-border { border: 2px solid #333; }
+        .vat-table  { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+        .vat-table th, .vat-table td {
+            border: 1px solid #555;
+            padding: 4px 6px;
+            text-align: right;
+        }
+        .vat-table th { background: #d0d0d0; font-weight: bold; font-size: 9.5pt; }
+        .vat-table .num-cell { text-align: center; min-width: 90px; }
+        .header-box { text-align: center; padding: 8px; }
+        .form-label { font-weight: bold; color: #333; }
+        .section-header {
+            background: #b0b0b0;
+            font-weight: bold;
+            text-align: center;
+            padding: 4px;
+            border: 1px solid #555;
+            font-size: 10pt;
+        }
+        body{
+            direction: rtl;
+        }
+        @font-face {
+            font-family: 'Cairo-Bold';
+            src: url(/sudan_vat_report/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+        }
+        body, table, div, span {
+            font-family: 'Cairo-Bold' !important;
+        }
+        .row-label { font-weight: bold; min-width: 140px; }
+        .zebra-odd  { background: #f5f5f5; }
+        .zebra-even { background: #ffffff; }
+        .total-row  { background: #c8c8c8; font-weight: bold; }
+        .page-footer { text-align: center; font-size: 8pt; color: #555; margin-top: 10px; }
+        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        .info-table td { border: 1px solid #555; padding: 4px 6px; min-height: 22px; }
+        .info-label { background: #d0d0d0; font-weight: bold; width: 130px; }
+        .outer-box  { margin-top: 30px; border: 2px solid #333; padding: 10px; }
+    </style>
+
+    <!-- ─── OUTER BORDER BOX ─────────────────────────── -->
+    <div class="outer-box" style=" margin-top: 30px;">
+
+        <!-- FORM NUMBER top-right -->
+        <div style="text-align: right; font-size: 10pt; font-weight: bold; margin-bottom: 4px;">
+            أنموذج رقم (٣)
+        </div>
+
+        <!-- HEADER -->
+        <div class="header-box">
+            <div style="font-size: 20pt; font-weight: bold; margin-bottom: 20px;margin-top: 30px;">جمهورية السـودان</div>
+            <div style="font-size: 20pt; font-weight: bold; margin-bottom: 20px;">ديـوان الضـرائب</div>
+            <div style="font-size: 20pt; font-weight: bold; margin-bottom: 20px;">الضريبة على القيمة المضافة</div>
+            <div style="font-size: 20pt; font-weight: bold; text-decoration: underline; margin-top: 4px; margin-bottom: 40px;">VAT</div>
+            <div style="font-size: 26pt; font-weight: bold; margin-top: 6px;margin-bottom: 20px;">الإقرار الشهري</div>
+        </div>
+
+        <!-- PERIOD ROW -->
+        <table class="vat-table" style="margin-top: 80px;" >
+            
+            <tr>
+                <th style="width:25%; text-align: center;">إقرار عن</th>
+                <th style="width:18%;text-align: center;">شهر</th>
+                <th style="width:18%;text-align: center;"> 
+                        <t t-esc="dict([('1','يناير'),('2','فبراير'),('3','مارس'),('4','أبريل'),('5','مايو'),('6','يونيو'),('7','يوليو'),('8','أغسطس'),('9','سبتمبر'),('10','أكتوبر'),('11','نوفمبر'),('12','ديسمبر')]).get(o.month, o.month)"/>
+                   
+                </th>
+                <th style="width:18%;text-align: center;" class="num-cell">سنة</th>
+                <th style="width:18%;text-align: center;"><t t-esc="o.year"/></th>
+            </tr >
+        </table>
+        <table class="vat-table" style="margin-bottom: 80px;">
+            <tr> 
+                <th  style="width:100%;text-align: center;" class="num-cell"> 
+                        طبقاً للمادة (١٠) البند (١) من قانون الضريبة على القيمة المضافة لسنة ٢٠٠١م المعدل
+                </th> 
+            </tr>
+        </table>
+
+        <!-- TAXPAYER INFORMATION TABLE -->
+        <table class="info-table" style="margin-top: 10px;">
+            <tr>
+                <td class="info-label" style="width:35%;">اسم المكلف</td>
+                <td colspan="3"><t t-esc="o.taxpayer_name or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:35%;">الاسم التجاري</td>
+                <td colspan="3"><t t-esc="o.trade_name or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:35%;">رقم التسجيل / الرقم التعريفي</td>
+                <td colspan="3"><t t-esc="o.tax_registration_number or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:35%;">طبيعة النشاط</td>
+                <td colspan="3"><t t-esc="o.activity_type or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:35%;">الكيان القانوني</td>
+                <td colspan="3"><t t-esc="o.legal_entity or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:35%;">العنـوان</td>
+                <td class="info-label" colspan="3"><t t-esc="o.address or ''"/></td>
+            </tr>
+        </table>
+
+        <table class="info-table" style=" margin-bottom: 80px;">
+        
+            <tr>
+                <td class="info-label" style="width:15%;">الولاية</td>
+                <td style="width:18%;"><t t-esc="o.state_province or ''"/></td>
+                <td class="info-label" style="width:15%;">المحلية</td>
+                <td style="width:18%;"><t t-esc="o.locality or ''"/></td>
+                <td class="info-label" style="width:15%;">الوحدة الإدارية</td>
+                <td style="width:18%;"><t t-esc="o.admin_unit or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:15%;">الحي</td>
+                <td style="width:18%;"><t t-esc="o.neighborhood or ''"/></td>
+                <td class="info-label" style="width:15%;">الحارة</td>
+                <td style="width:18%;"><t t-esc="o.quarter or ''"/></td>
+                <td class="info-label" style="width:15%;">المربع</td>
+                <td style="width:18%;"><t t-esc="o.block or ''"/></td>
+            </tr> 
+            <tr>
+                <td class="info-label" style="width:15%;">السوق</td>
+                <td style="width:18%;"><t t-esc="o.market or ''"/></td>
+                <td class="info-label" style="width:15%;">الشارع</td>
+                <td style="width:18%;"><t t-esc="o.street or ''"/></td>
+                <td class="info-label" style="width:15%;">المبنى</td>
+                <td style="width:18%;"><t t-esc="o.building or ''"/></td>
+            </tr> 
+            <tr>
+                <td class="info-label" style="width:15%;">الطابق</td>
+                <td style="width:18%;"><t t-esc="o.floor or ''"/></td>
+                <td class="info-label" style="width:15%;">الهواتف</td>
+                <td style="width:18%;"><t t-esc="o.phone or ''"/></td>
+                <td class="info-label" style="width:15%;">الجوال</td>
+                <td style="width:18%;"><t t-esc="o.mobile or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label" style="width:15%;">البريد الإلكتروني</td>
+                <td style="width:18%;"><t t-esc="o.email or ''"/></td>
+                <td class="info-label" style="width:15%;">البريد الإلكتروني</td>
+                <td style="width:18%;"><t t-esc="o.email or ''"/></td>
+                <td class="info-label" style="width:15%;">المكتب المختص</td>
+                <td style="width:18%;"><t t-esc="o.specific_office or ''"/></td>
+            </tr>
+        </table>
+
+        <div class="page-footer">
+            الإقرار الشهري للضريبة على القيمة المضافة / ١ - ٤
+        </div>
+
+    </div><!-- end outer-box page 1 -->
+
+    <!-- ══════════════════════════════════════════════
+         PAGE BREAK → PAGE 2  (General Instructions)
+    ══════════════════════════════════════════════ -->
+    <div style="page-break-before: always;"></div>
+
+    <div class="outer-box" style=" margin-top: 30px;">
+        <table class="vat-table" style="margin-bottom: 80px;">
+            <tr>
+                <td class="info-label" style="width:5%;"> </td>
+                <td class="info-label" style="width:95%;">إرشـادات عامـة</td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;">١/</td>
+                <td  style="width:95%;">
+                    <p> 
+                        يجب على المكلف التعامل بموجب الفاتورة الضريبية و<b>مسك</b> السجلات والدفاتر المحاسبية
+                        المنتظمة مع توخي الدقة والإدلاء بالمعلومات الصحيحة عند ملء الإقرار.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;">٢/</td>
+                <td  style="width:95%;">
+                    <p> 
+                        على المكلف تقديم الإقرار الضريبي في تاريخ أقصاه الخامس عشر من الشهر التالي لشهر
+                        المحاسبة حتى إذا لم يكن قد حقق بيعاً أو أدى خدمات أو أعمال خاضعة في خلال شهر المحاسبة.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;">٣/</td>
+                <td  style="width:95%;">
+                   <p> 
+                        إذا لم يلتزم المكلف بتقديم الإقرار في المواعيد المحددة أو أغفل تقديم الإقرار أو أدلى
+                        بمعلومات غير صحيحة يكون للأمين الهام الحق في تقدير الضريبة عن فترة المحاسبة
+                        بالإضافة إلى تطبيق الجزاءات أو العقوبات المنصوص عليها في القانون.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"> ٤/</td>
+                <td class="info-label" style="width:95%;">المبيعـات: </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"></td>
+                <td  style="width:95%;">
+                   <p> تُدرج كافة البيانات الخاصة بالمبيعات والضريبة المحصلة عنها.</p>
+                    <p>
+                         يدخل في حكم البيع إستعمال السلعة أو الإستفادة من الخدمة أو العمل في أغراض
+                        خاصة أو شخصية أو التصرف فيها بأي من التصرفات القانونية.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"> ٥/</td>
+                <td class="info-label" style="width:95%;">المشتـريات:</td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"></td>
+                <td  style="width:95%;">
+                   <p> تُدرج كافة بيانات المشتريات والمصروفات الخاصة بها والضريبة المدفوعة عنها.</p>
+                    <p>
+                        المشتريات والمصروفات (المدخلات) التي تُستخدم في منتجات خاضعة وبعضها معفاة
+                        تُخصم بنسبة إجمالي <b>المبيعات الخاضعة إلى إجمالي المبيعات الكلية (الخاضعة + المعفاة)</b>.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"></td>
+                <td  style="width:95%;">
+                    <p>
+                        تتم المحاسبة عن السلع المحلية الخاصة وفقاً للأسس المحددة بالقرارات الوزارية أو
+                        الإدارية على النحو التالي:
+                    </p>
+                    <p style="margin-right: 20px;">
+                         السلع أو الخدمات المحددة الوعاء على أساس نسبة مئوية من المبلغ الكلي
+                        (الطباعة، الزيوت المحلية، الذبيح...).
+                        <br/>
+                        <b>مقدار الضريبة = المبلغ الكلي × النسبة المئوية × سعر الضريبة</b>
+                    </p>
+                    <p style="margin-right: 20px;">
+                        السلع المحددة مبلغ الضريبة عن الوحدة الواحدة منها (الذهب / جرام).
+                        <br/>
+                        <b>مقدار الضريبة = الكميات المباعة × مبلغ الضريبة عن الوحدة الواحدة</b>
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"></td>
+                <td  style="width:95%;">
+                    <p>
+                        <b>الرصيد الدائن المرحل للشهر التالي أو المدين واجب السداد =</b>
+                        جملة الضريبة المحصلة عن المبيعات خلال شهر + رصيد الضريبة الدائن المرحل
+                        عن الشهر السابق.
+                    </p>
+                </td> 
+            </tr>
+            <tr>
+                <td class="info-label" style="width:5%;"></td>
+                <td  style="width:95%;">
+                    <p>
+                        <b>أ/٨</b>
+                        ملء البيانات في الخانات الغير مظللة فقط مع توضيح نوع العملة.
+                    </p>
+                </td> 
+            </tr>
+        </table>
+           
+
+        <div class="page-footer">
+            الإقرار الشهري للضريبة على القيمة المضافة / ٢ - ٤
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         PAGE BREAK → PAGE 3 (Data Tables)
+    ══════════════════════════════════════════════ -->
+    <div style="page-break-before: always;"></div>
+
+    <div class="outer-box" style=" margin-top: 30px;">
+
+        <!-- MAIN DATA TABLE -->
+        <table class="vat-table">
+            <!-- Column Headers -->
+            <thead>
+                <tr>
+                    <th style="width:26%; text-align:right;">البيـان (١)</th>
+                    <th style="width:16%;" class="num-cell">المبلغ الكلي (٢)</th>
+                    <th style="width:10%;" class="num-cell">(٣) أساس التحاسب / نسبة / مبلغ / كمية</th>
+                    <th style="width:10%;" class="num-cell">نسبة الضريبة (٤)</th>
+                    <th style="width:14%;" class="num-cell">مقدار الضريبة (٥)</th>
+                    <th style="width:14%;" class="num-cell">جملة الضريبة (٦)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ── SALES / REVENUES ───────────────── -->
+                <tr>
+                    <td colspan="6" class="section-header">المبيعـات (الإيـرادات)</td>
+                </tr>
+
+                <!-- Row 1 -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/١ السلع والخدمات والأعمال الخاصة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_local_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_local_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_local_tax_total"/></td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="zebra-even">
+                    <td class="row-label">/٢ الاتصالات</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_telecom_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%٣٠</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_telecom_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_telecom_tax_total"/></td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/٣ الأصول الثابتة الخاصة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_assets_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_assets_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_assets_tax_total"/></td>
+                </tr>
+
+                <!-- Row 4 (special - unit/quantity based) -->
+                <tr class="zebra-even">
+                    <td class="row-label">/٤ السلع والخدمات والأعمال الخاصة</td>
+                    <td class="num-cell"></td>
+                    <td colspan="2" style="text-align:center; font-size:8pt;">
+                        <div>أساس التحاسب</div>
+                        <div>نسبة / مبلغ | مبلغ / كمية</div>
+                        <div>وعاء الضريبة</div>
+                        <div><t t-esc="'%.2f' % o.sales_special_tax_amount_unit"/></div>
+                    </td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_special_tax_total"/></td>
+                </tr>
+
+                <!-- Row 5 - Exempt -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/٥ السلع والخدمات المعفاة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_exempt_total"/></td>
+                    <td class="num-cell" colspan="2" style="text-align:center; color:#666;">إعفـاء</td>
+                    <td class="num-cell">-</td>
+                    <td class="num-cell">-</td>
+                </tr>
+
+                <!-- Row 6 - Exports -->
+                <tr class="zebra-even">
+                    <td class="row-label">/٦ سلع وخدمات الصادر</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.sales_export_total"/></td>
+                    <td class="num-cell" colspan="2" style="text-align:center; color:#666;">صفـر</td>
+                    <td class="num-cell">-</td>
+                    <td class="num-cell">-</td>
+                </tr>
+
+                <!-- Total Sales Tax -->
+                <tr class="total-row">
+                    <td colspan="5" style="text-align:right; font-weight:bold;">
+                        إجمالي الضريبة المحصلة عن الشهر
+                    </td>
+                    <td class="num-cell" style="font-size:11pt;">
+                        <t t-esc="'%.2f' % o.sales_local_tax_total"/>
+                    </td>
+                </tr>
+
+                <!-- ── PURCHASES ──────────────────────── -->
+                <tr>
+                    <td colspan="6" class="section-header">المشـتريات</td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="background:#e0e0e0; font-weight:bold; padding:3px 6px;">
+                        المشتريات الخاضعة
+                    </td>
+                </tr>
+
+                <!-- Row 7 - Imported -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/٧ المستوردة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_import_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_import_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_import_tax_total"/></td>
+                </tr>
+
+                <!-- Row 8 - Local -->
+                <tr class="zebra-even">
+                    <td class="row-label">/٨ المحلية</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_local_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_local_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_local_tax_total"/></td>
+                </tr>
+
+                <!-- Row 9 - Fixed Assets -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/٩ الأصول الثابتة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_assets_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_assets_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_assets_tax_total"/></td>
+                </tr>
+
+                <!-- Row 10 - Special local goods -->
+                <tr class="zebra-even">
+                    <td class="row-label">/١٠ السلع والخدمات والأعمال الخاصة</td>
+                    <td class="num-cell"></td>
+                    <td colspan="2" style="text-align:center; font-size:8pt;">
+                        <div>أساس التحاسب</div>
+                        <div>نسبة / مبلغ | مبلغ / كمية</div>
+                        <div>وعاء الضريبة</div>
+                        <div><t t-esc="'%.2f' % o.purchase_special_tax_amount_unit"/></div>
+                    </td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.purchase_special_tax_total"/></td>
+                </tr>
+
+                <!-- ── EXPENSES / SERVICES ────────────── -->
+                <tr>
+                    <td colspan="6" style="background:#e0e0e0; font-weight:bold; padding:3px 6px;">
+                        الخدمات والمصروفات الخاضعة
+                    </td>
+                </tr>
+
+                <!-- Row 11 - Telecom expenses -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/١١ الاتصالات</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_telecom_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%٣٠</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_telecom_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_telecom_tax_total"/></td>
+                </tr>
+
+                <!-- Row 12 - Other expenses -->
+                <tr class="zebra-even">
+                    <td class="row-label">/١٢ أخـرى</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_other_total"/></td>
+                    <td class="num-cell"></td>
+                    <td class="num-cell">%١٧</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_other_tax_amount"/></td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_other_tax_total"/></td>
+                </tr>
+
+                <!-- Row 13 - Imported exempt -->
+                <tr class="zebra-odd">
+                    <td class="row-label">/١٣ المستوردة المعفاة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_import_exempt_total"/></td>
+                    <td class="num-cell" colspan="2" style="text-align:center; color:#666;">إعفـاء</td>
+                    <td class="num-cell">-</td>
+                    <td class="num-cell">-</td>
+                </tr>
+
+                <!-- Row 14 - Local exempt -->
+                <tr class="zebra-even">
+                    <td class="row-label">/١٤ المحلية المعفاة</td>
+                    <td class="num-cell"><t t-esc="'%.2f' % o.expense_local_exempt_total"/></td>
+                    <td class="num-cell" colspan="2" style="text-align:center; color:#666;">إعفـاء</td>
+                    <td class="num-cell">-</td>
+                    <td class="num-cell">-</td>
+                </tr>
+
+                <!-- Total Purchases Tax Paid -->
+                <tr class="total-row">
+                    <td colspan="5" style="text-align:right; font-weight:bold;">
+                        إجمالي الضريبة المدفوعة عن الشهر
+                    </td>
+                    <td class="num-cell" style="font-size:11pt;">
+                        <t t-esc="'%.2f' % o.total_purchase_tax_paid"/>
+                    </td>
+                </tr>
+
+                <!-- NET TAX FOR MONTH -->
+                <tr style="background: #a0a0a0; font-weight:bold;">
+                    <td colspan="5" style="text-align:right;">
+                        الضريبة عن الشهر (دائن / مدين)
+                    </td>
+                    <td class="num-cell" style="font-size:11pt;">
+                        <t t-esc="'%.2f' % o.monthly_net_tax"/>
+                    </td>
+                </tr>
+
+                <!-- ── RECONCILIATION ─────────────────── -->
+                <tr>
+                    <td colspan="6" class="section-header">الرصيـد والتوصيـة</td>
+                </tr>
+
+                <tr class="zebra-odd">
+                    <td class="row-label">/١٥ رصيد الضريبة المرحل عن الشهر السابق</td>
+                    <td class="num-cell" colspan="5">
+                        <t t-esc="'%.2f' % o.carried_forward_balance"/>
+                    </td>
+                </tr>
+                <tr class="zebra-even">
+                    <td class="row-label">/١٦ رصيد الضريبة الدائن المرحل</td>
+                    <td class="num-cell" colspan="5">
+                        <t t-esc="'%.2f' % o.creditor_carried_balance"/>
+                    </td>
+                </tr>
+                <tr class="zebra-odd">
+                    <td class="row-label">/١٧ رصيد الضريبة المدين الواجب السداد</td>
+                    <td class="num-cell" colspan="5">
+                        <t t-esc="'%.2f' % o.debtor_payable_balance"/>
+                    </td>
+                </tr>
+                <tr class="zebra-even">
+                    <td class="row-label">/١٨ الإستـرداد</td>
+                    <td class="num-cell" colspan="5">
+                        <t t-esc="'%.2f' % o.refund_amount"/>
+                    </td>
+                </tr>
+                <tr class="zebra-odd">
+                    <td class="row-label">/١٩ شهادات شركات البترول</td>
+                    <td colspan="5"><t t-esc="o.petroleum_certificates or ''"/></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div class="page-footer">
+            الإقرار الشهري للضريبة على القيمة المضافة / ٣ - ٤
+        </div>
+    </div><!-- end outer-box page 3 -->
+
+    <!-- ══════════════════════════════════════════════
+         PAGE BREAK → PAGE 4  (Signatures)
+    ══════════════════════════════════════════════ -->
+    <div style="page-break-before: always;"></div>
+
+    <div class="outer-box">
+
+        <!-- SUBMITTER SECTION -->
+        <div class="section-header" style="font-size: 12pt; margin-bottom: 10px;">
+            خاص بمقدم الإقرار
+        </div>
+        <div style="text-align:center; margin-bottom:10px; font-size:10pt;">
+            أنا الموقع أدناه أُقر بصحة ودقة المعلومات الواردة بالإقرار
+        </div>
+
+        <table class="info-table" style="margin-bottom:30px;">
+            <tr>
+                <td class="info-label" style="width:20%;">الاسـم</td>
+                <td><t t-esc="o.submitter_name or ''"/></td>
+            </tr>
+            <tr>
+                <td class="info-label">بصفتي</td>
+                <td>
+                    <t t-if="o.submitter_role == 'owner'">
+                        &#x2612; صاحب النشاط  &#x2610; مفوض
+                    </t>
+                    <t t-else="">
+                        &#x2610; صاحب النشاط  &#x2612; مفوض
+                    </t>
+                </td>
+            </tr>
+            <tr>
+                <td class="info-label">التوقيـع</td>
+                <td style="height:50px;"></td>
+            </tr>
+            <tr>
+                <td class="info-label">ختم المنشأة</td>
+                <td style="height:80px;"></td>
+            </tr>
+            <tr>
+                <td class="info-label">التاريـخ</td>
+                <td>
+                    <t t-esc="o.submission_date and o.submission_date.strftime('%Y/%m/%d') or ''"/>
+                </td>
+            </tr>
+        </table>
+
+        <!-- TAX AUTHORITY SECTION -->
+        <div class="section-header" style="font-size: 12pt; margin: 20px 0 10px 0;">
+            خاص بالإدارة الضريبية
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <td class="info-label" style="width:20%;">الاسـم</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="info-label">الصفـة</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="info-label">التوقيـع</td>
+                <td style="height:50px;"></td>
+            </tr>
+            <tr>
+                <td class="info-label">الختـم</td>
+                <td style="height:80px;"></td>
+            </tr>
+            <tr>
+                <td class="info-label">التاريـخ</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <div class="page-footer">
+            الإقرار الشهري للضريبة على القيمة المضافة / ٤ - ٤
+        </div>
+    </div><!-- end outer-box page 4 -->
+ <!-- page wrapper -->
+</t>
+</t>
+</t>
+</template>
+</odoo>

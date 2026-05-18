@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="checks_cron" model="ir.cron">
+        <field name="name">Get Today Checks</field>
+        <field name="model_id" ref="model_check_followups_check_followups"/>
+        <field name="state">code</field>
+        <field name="code">model.get_today_checks()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+<!--        <field name="numbercall">-1</field>-->
+    </record>
+
+    <!-- New cron: create a "To Do" activity for Accounting Admins
+         when a check's deposit_date is due today -->
+    <record id="cron_deposit_date_activities" model="ir.cron">
+        <field name="name">Check Management: Create Deposit-Date To-Do Activities</field>
+        <field name="model_id" ref="model_check_followups_check_followups"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_create_deposit_date_activities()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
+</odoo>

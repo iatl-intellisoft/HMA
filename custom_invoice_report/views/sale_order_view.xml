@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            Inherit the Sale Order form to add "Print Tax Base Invoice" button
+            in the top action buttons area (next to Send by Email, Print, etc.)
+        -->
+        <record id="view_sale_order_tax_base_button" model="ir.ui.view">
+            <field name="name">sale.order.tax.base.invoice.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!--
+                    Insert our button right after the existing "Send by Email" button.
+                    This places it in the header action buttons area.
+                -->
+                <xpath expr="//button[@name='action_quotation_send']" position="after">
+                    <button name="action_print_tax_base_invoice"
+                            string="Print Tax Base Invoice"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state == 'cancel'"
+                            icon="fa-print"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

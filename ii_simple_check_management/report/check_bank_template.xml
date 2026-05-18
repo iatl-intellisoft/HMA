@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--<template id="check_container">
+        <t t-set="body_classname" t-value="'container'"/>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+    </template>-->
+
+    <template id="check_bank_template1">
+		<t t-call="web.basic_layout">
+                <div class="page" style="margin-left: -15px;">
+                    <div t-att-style="'transform-origin:0% 100%;-webkit-transform:rotatez(90deg);position:absolute;
+                  top:43mm;left:-25mm;width: 170mm;height: 85mm;font-size:' + str(font_size or 12) + 'px;'">
+
+
+
+                        <div t-att-style="'position:absolute;left:' + str(x_amount_word or '0mm') + 
+                 ';top:' + str(y_amount_word or '0mm') + 
+                 ';width:' + str(money_text_width or '100mm') + 
+                 ';height:' + str(money_text_height or '10mm') + ';'">
+                            <div>
+                                <span style="font-family: Courier New, Courier;" t-esc="Amount_in_text"/>
+                            </div>
+                        </div>
+
+                        <div t-att-style="'position:absolute;left:' + str(x_date or '0mm') + ';top:' + str(y_date or '0mm') + ';'">
+                            <div style="width:35mm;">
+                                <span t-esc="Date"/>
+                            </div>
+                        </div>
+
+<div t-att-style="'position:absolute;left:' + str(x_amount or '0mm') + ';top:' + str(y_amount or '0mm') + ';'">
+                            <div>***<span t-esc="'{:,}'.format(docs.amount)"/></div>
+                        </div>
+
+<div t-att-style="'position:absolute;left:' + str(x_partner or '0mm') +
+                 ';top:' + str(y_partner or '0mm') +
+                 ';width:' + str(account_holder_width or '100mm') + ';'">
+                            <div>
+                               <!-- <span t-esc="docs.beneficiary" style="font-family:courier;"/>-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+    </template>
+    
+    <!-- <report
+            id="check_print"
+            string="Check print"
+            report_type="qweb-pdf"
+            model="check_followups.check_followups"
+            name="ii_simple_check_management.check_bank_template1"
+            file="ii_simple_check_management.check_bank_template1"
+            menu="False"
+    />
+ -->
+     <record id="check_print" model="ir.actions.report">
+                <field name="name">Check print</field>
+                <field name="model">check_followups.check_followups</field>
+                <field name="report_type">qweb-pdf</field>
+                <field name="report_name">ii_simple_check_management.check_bank_template1</field>
+                <field name="report_file">ii_simple_check_management.check_bank_template1</field>
+                <field name="binding_model_id" ref="model_check_followups_check_followups"/>
+                <field name="binding_type">report</field>
+        </record>
+        
+    <record id="Check_Page_Format" model="report.paperformat">
+        <field name="name">Check Page Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">170</field>
+        <field name="page_width">85</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+    <!--<record id="check_print" model="ir.actions.report">-->
+    <!--<field name="paperformat_id" ref="Check_Page_Format"/>-->
+    <!--</record>-->
+
+</odoo>

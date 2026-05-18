@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+    <record id="action_salary_advance_report" model="ir.actions.report">
+                    <field name="name">Salary Advance Forms</field>
+                    <field name="model">hr.loan</field>
+                    <field name="report_type">qweb-pdf</field>
+                    <field name="report_name">hr_loan.report_salary_document</field>
+                    <field name="report_file">hr_loan.report_salary_document</field>
+                    <field name="binding_model_id" ref="model_hr_loan"/>
+                    <field name="binding_type">report</field>
+                
+                </record>
+       
+    </data>
+</odoo>

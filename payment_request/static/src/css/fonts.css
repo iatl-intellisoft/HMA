@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Amiri';
+    src: url(/payment_request/static/src/fonts/Amiri-Bold.ttf);
+}
+ 
+@font-face {
+    font-family: 'Cairo-Bold';
+    src: url(/payment_request/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+}
+ 

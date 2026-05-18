@@ -1,0 +1,12 @@
+<odoo>
+	<data>
+		<report
+            string="Bank Sheet Report"
+            id="hr_voucher_report_id"
+            model="account.move"
+            report_type="qweb-pdf"
+            name="hr_payroll_custom.voucher_report_template"
+            file="hr_payroll_custom.voucher_report_template"
+        />
+	</data>
+</odoo>

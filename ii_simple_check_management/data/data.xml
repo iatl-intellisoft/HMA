@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <!-- <record id="account_payment_method_check_inbound" model="account.payment.method">
+            <field name="name">Checks Followup</field>
+            <field name="code">check_printing</field>
+            <field name="payment_type">inbound</field>
+        </record>
+ -->
+<!--       <record id="account_payment_method_check_outBound" model="account.payment.method">-->
+<!--            <field name="name">Checks Followup</field>-->
+<!--            <field name="code">check_printing</field>-->
+<!--            <field name="payment_type">outbound</field>-->
+<!--        </record>-->
+    </data>
+</odoo>

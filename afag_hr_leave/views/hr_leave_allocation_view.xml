@@ -1,0 +1,12 @@
+<odoo>
+	<record id="hr_leave_allocation_view_form_manager" model="ir.ui.view">
+		<field name="name">hr.leave.allocation.form.dates</field>
+		<field name="model">hr.leave.allocation</field>
+		<field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form_manager" />
+		<field name="arch" type="xml">
+			<field name="allocation_type" position="after">
+				<field name="last_update" />
+			</field>
+		</field>
+	</record>
+</odoo>

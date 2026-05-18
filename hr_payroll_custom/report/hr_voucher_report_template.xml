@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="voucher_report_template">
+            <t t-call="web.html_container">
+                <t t-if="docs and result" t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <link rel="stylesheet" href="/hr_payroll_custom/static/src/table.css"/>
+                         <link rel="stylesheet" href="/hr_payroll_custom/static/src/css/font.css"/>
+                    <font style="font-family: 'Amiri', 'serif';">
+                        <div class="page">
+
+                            <div t-if="o.bank_id">
+                                <p class="text-center" style="font-size:22px;">بِسْمِ اللَّهِ
+                                    الرَّحْمَٰنِ الرَّحِيمِ
+                                </p>
+                                <p class="text-right" style="font-size:22px; ">
+                                    <u>التاريخ:
+                                        <span t-field="o.invoice_date"/>
+                                    </u>
+                                    <br/>
+                                    <!-- <span t-field="o.bank_id.name">الساده:</span -->
+                                </p>
+                                <p class="text-right" style="font-size:22px; ">
+                                    <span t-field="o.bank_id.name"/>
+                                    <span>/الساده</span>
+                                </p>
+                                <p class="text-center" style="font-size:18px; ">،،،المحترمين</p>
+                                <p class="text-center" style="font-size:18px; ">السلام عليكم و رحمة
+                                    اللَّهِ و بركاته
+                                </p>
+                                <t t-if="o.company_id.warranty_type == 'after_delivery'">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <b ><u>الموضوع: مرتبات لموظفي مصنع النعيم</u></b>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <b ><u>الموضوع:حوافز لموظفي مصنع النعيم</u></b>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <b ><u>الموضوع: بدل العمل الاضافي لموظفي مصنع النعيم</u></b>
+                                    </p>
+                                </t>
+                                <t t-if="o.company_id.warranty_type == 'after_installation'">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <b > <u>الموضوع: مرتبات لموظفي شركة بي جي ام للخدمات الهندسية</u></b>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <b ><u>الموضوع: حوافز لموظفي شركة بي جي ام للخدمات الهندسية</u></b>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <b ><u>الموضوع: بدل العمل الاضافي لموظفي شركة بي جي ام للخدمات الهندسية</u></b>
+                                    </p>
+                                </t>
+                                <br/>
+                                <br/>
+                                <p class="text-right"
+                                   style="margin-right:18px;margin-left:18px;font-size:22px; ">
+                                    بالاشارة للموضوع اعلاه الرجاء التكرم بخصم مبلغ
+                                    <span t-esc="total"/>
+                                    (فقط
+                                    <span t-esc="total_text"/>
+                                    <t t-if="o.company_id.warranty_type == 'after_delivery' and report_type == 'payroll'">
+                                        لا غير) عبارة عن مرتبات شهر<t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي مصنع النعيم حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if="o.company_id.warranty_type == 'after_delivery' and report_type == 'incentive'">
+                                         لا غير) عبارة عن حوافز شهر <t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي مصنع النعيم حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if="o.company_id.warranty_type == 'after_delivery' and report_type == 'overtime'">
+                                        لا غير) عبارة عن بدل العمل الاضافي شهر<t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي مصنع النعيم حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if="o.company_id.warranty_type == 'after_installation' and report_type == 'payroll'">
+                                        لا غير) عبارة عن مرتبات شهر<t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي شركة بى جى ام للخدمات الهندسية حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if="o.company_id.warranty_type == 'after_installation' and report_type == 'incentive'">
+                                        لا غير) عبارة عن حوافز شهر<t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي شركة بى جى ام للخدمات الهندسية حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if="o.company_id.warranty_type == 'after_installation' and report_type == 'overtime'">
+                                        لا غير) عبارة عن بدل عمل اضافي شهر<t t-esc="month"/>&#032;<t t-esc="date.year"/>
+                                        لموظفي شركة بى جى ام للخدمات الهندسية حسب الكشف المرفق و خصم العمولة من حسابنا
+                                        طرفكم بالرقم
+                                    </t>
+                                    <t t-if=" o.payment_ids">
+                                        <t t-if=" o.payment_ids[0].state=='posted'">
+                                            <span t-field="o.payment_ids[0].journal_id.bank_account_id.acc_number"/>
+                                        </t>
+                                    </t>
+                                </p>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <p class="text-center" style="font-size:18px; ">،،،شاكرين لكم حسن
+                                    تعاملكم معنا
+                                </p>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <t t-if=" o.gm_exist">
+                                    <p class="text-left" style="font-size:22px; ">م.نهيزي الرفاعي محمد
+                                        المهدي
+                                        <br/>
+                                    </p>
+                                    <p class="text-left" style="margin-left:50px;font-size:22px; ">
+                                        المدير
+                                        العام
+                                    </p>
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+                                        <br/>
+                                    </div>
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+                                        <br/>
+                                        <strong>-------------------------</strong>
+
+                                    </div>
+                                </t>
+                                <t t-if="not o.gm_exist">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.first_employee_id"/>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.second_employee_id"/>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>---------------------</strong>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>------------------------</strong>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- New Page -->
+                            <div style="display: block;" t-if="not o.bank_id">
+
+                                <t t-if="o.company_id.warranty_type == 'after_installation' ">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <strong>كشف مرتبات شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                     <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <strong>كشف حوافز شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                     <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <strong>كشف بدل عمل اضافي شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                </t>
+                                <t t-if="o.company_id.warranty_type == 'after_delivery'">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <strong>كشف مرتبات مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <strong>كشف حوافز مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <strong>كشف بدل عمل اضافي مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                </t>
+                                <br/>
+                                <br/>
+                                <table style="font-size:22px;">
+                                    <thead style="display: table-row-group">
+                                        <tr>
+                                            <td class="text-center" style="width: 30% ;font-size:18px;" scope="col">التوقيع</td>
+                                            <td class="text-center" style="width: 30% ;font-size:18px;" scope="col">المبلغ</td>
+                                            <!-- <td class="text-center" style="width: 20%" scope="col">رقم الحساب</td> -->
+                                            <td class="text-center" style="width: 50% ;font-size:18px;" scope="col">الإسم</td>
+                                            <td class="text-center" style="width: 50% ;font-size:18px;" scope="col">الرقم</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <t t-set="index" t-value="1"/>
+                                        <t t-foreach="result" t-as="pay">
+
+                                            <tr>
+                                                <td  style="font-size:18px;" >
+                                                    <span/>
+                                                </td>
+                                                <td  style="font-size:18px;" >
+                                                    <span t-esc="pay['amount']" t-options='{"widget": "float", "precision": decimal_precision}'/>
+                                                </td>
+                                                <!-- <td class="text-center"><span t-esc="pay['acc_number']"/></td> -->
+                                                <td class="text-right"  style="font-size:18px;" >
+                                                    <span t-esc="pay['employee']"/>
+                                                </td>
+                                                <td class="text-center"  style="font-size:18px;" >
+                                                    <span t-esc="index"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="index" t-value="index+1"  style="font-size:18px;" />
+                                        </t>
+                                        <tr>
+                                            <!-- <td style="font-size:18px;">
+                                                <span />
+
+                                            </td> -->
+                                            <td style="font-size:18px;" colspan="2">
+                                                <span t-esc="total" t-options='{"widget": "float", "precision": decimal_precision}'/>
+
+                                            </td>
+                                            <td colspan="3" style="font-size:18px;">
+                                                الإجمالي
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <p class="text-center" style="font-size:22px; ">
+                                    <strong>  فقط  <t t-esc="total_text"/>&#032; لا غير
+                                    </strong>
+                                </p>
+                                <br/>
+
+                                <t t-if=" o.gm_exist">
+                                    <p class="text-left" style="font-size:22px; ">م.نهيزي الرفاعي محمد
+                                        المهدي
+                                        <br/>
+                                    </p>
+                                    <p class="text-left" style="margin-left:50px;font-size:22px; ">
+                                        المدير
+                                        العام
+                                    </p>
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+                                    </div>
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+
+                                        <br/>
+                                        <strong>-------------------------</strong>
+
+                                    </div>
+                                </t>
+                                <t t-if="not o.gm_exist">
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.first_employee_id"/>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.second_employee_id"/>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>---------------------</strong>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>------------------------</strong>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </t>
+
+                            </div>
+                            <div style="display: block;break-before: always;page-break-before: always;"
+                                 t-if="o.bank_id">
+                                <t t-if="o.company_id.warranty_type == 'after_delivery'">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <strong>كشف مرتبات مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <strong>كشف حوافز مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <strong>كشف بدل عمل اضافي مصنع النعيم عن شهر<t t-esc="month"/>&#032;<t
+                                                t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                </t>
+                                <t t-if="o.company_id.warranty_type == 'after_installation'">
+                                    <p class="text-center" style="font-size:22px; " t-if="report_type == 'payroll'">
+                                        <strong>كشف مرتبات شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                     <p class="text-center" style="font-size:22px; " t-if="report_type == 'incentive'">
+                                        <strong>كشف حوافز شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                     <p class="text-center" style="font-size:22px; " t-if="report_type == 'overtime'">
+                                        <strong>كشف بدل عمل اضافي شركة بى جى ام للخدمات الهندسية المحدودة عن
+                                            شهر<t t-esc="month"/>&#032;<t
+                                                    t-esc="date.year"/>
+                                        </strong>
+                                    </p>
+                                </t>
+                                <br/>
+                                <table>
+                                    <thead style="display: table-row-group">
+                                        <tr>
+                                            <td class="text-center" style="width: 30% ;font-size:18px;" scope="col">المرتب</td>
+                                            <td class="text-center" style="width: 20% ;font-size:18px;" scope="col">رقم الحساب</td>
+                                            <td class="text-center" style="width: 50% ;font-size:18px;" scope="col">الإسم</td>
+                                            <td class="text-center" style="width: 50% ;font-size:18px;" scope="col">الرقم</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="index" t-value="1"/>
+                                        <t t-foreach="result" t-as="pay">
+
+                                            <tr>
+                                                <td style="font-size:18px;">
+                                                    <span t-esc="pay['amount']" t-options='{"widget": "float", "precision": decimal_precision}'/>
+                                                </td>
+                                                <td class="text-center"  style="font-size:18px;" >
+                                                    <span t-esc="pay['acc_number']"/>
+                                                </td>
+                                                <td class="text-right"  style="font-size:18px;" >
+                                                    <span t-esc="pay['employee']"/>
+                                                </td>
+                                                <td class="text-center"  style="font-size:18px;" >
+                                                    <span t-esc="index"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="index" t-value="index+1"  style="font-size:18px;" />
+                                        </t>
+                                        <tr>
+                                            <td  style="font-size:18px;" >
+                                                <span />
+                                            </td>
+                                            <td  style="font-size:18px;" >
+                                                <span t-esc="total" t-options='{"widget": "float", "precision": decimal_precision}'/>
+
+                                            </td>
+                                            <td colspan="3" style="font-size:18px;">
+                                                الإجمالي
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <br/>
+                                <p class="text-center" style="font-size:22px; ">
+                                    <strong> فقط  <t t-esc="total_text"/>&#032; لا غير
+                                    </strong>
+                                </p>
+                                <br/>
+                                <t t-if=" o.gm_exist">
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+                                        <br/>
+                                    </div>
+                                    <div id="total" style="font-weight: bold;margin-left:50px;">
+                                        <strong> المدير العام</strong>
+                                        <br/>
+                                        <br/>
+                                        <strong>-------------------------</strong>
+
+                                    </div>
+                                </t>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <t t-if="not o.gm_exist">
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.first_employee_id"/>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>توقيع معتمد</strong>
+                                            <br/>
+                                            <span t-field="o.company_id.second_employee_id"/>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="font-size:22px;">
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>---------------------</strong>
+                                            <br/>
+                                        </div>
+                                        <div id="total" class="col-6 text-center" style="font-weight: bold;">
+                                            <strong>------------------------</strong>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </font>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

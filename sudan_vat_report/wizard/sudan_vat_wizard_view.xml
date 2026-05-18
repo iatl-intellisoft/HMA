@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════════════════════════════
+         Sudan VAT Monthly Declaration - Wizard Form View
+         الإقرار الشهري للضريبة على القيمة المضافة
+    ══════════════════════════════════════════════════════════════════ -->
+
+    <record id="view_sudan_vat_report_form" model="ir.ui.view">
+        <field name="name">sudan.vat.report.form</field>
+        <field name="model">sudan.vat.report</field>
+        <field name="arch" type="xml">
+            <form string="الإقرار الشهري للضريبة على القيمة المضافة">
+                <sheet>
+                    <!-- Header -->
+                    <!-- <div class="oe_title text-center">
+                        <h1>أنموذج رقم (٣)</h1>
+                        <h2>جمهورية السودان - ديوان الضرائب</h2>
+                        <h2>الضريبة على القيمة المضافة - VAT</h2>
+                        <h1><b>الإقرار الشهري</b></h1>
+                    </div> -->
+
+                    <!-- Declaration Period -->
+                    <group string="بيانات الإقرار" >
+                        <field name="declaration_number" string="الإقرار عن"/> 
+                    </group>
+                    <group>
+                        <group>
+                            <field name="month" string="الشهر"/>
+                             <field name="date_from"/> 
+                        </group>
+                          <group>
+                               <field name="year" string="السنة"/>
+                              <field name="date_to" />
+                        </group>
+                    </group>
+
+                    <!-- Taxpayer Information -->
+                    <!-- <group string="بيانات المكلف">
+                        <group>
+                            <field name="taxpayer_name" string="اسم المكلف"/>
+                            <field name="trade_name" string="الاسم التجاري"/>
+                            <field name="tax_registration_number" string="رقم التسجيل / الرقم التعريفي"/>
+                            <field name="activity_type" string="طبيعة النشاط"/>
+                            <field name="legal_entity" string="الكيان القانوني"/>
+                        </group>
+                        <group>
+                            <field name="address" string="العنوان"/>
+                            <field name="state_province" string="الولاية"/>
+                            <field name="locality" string="المحلية"/>
+                            <field name="admin_unit" string="الوحدة الإدارية"/>
+                            <field name="neighborhood" string="الحي"/>
+                            <field name="phone" string="الهواتف"/>
+                            <field name="mobile" string="الجوال"/>
+                            <field name="email" string="البريد الإلكتروني"/>
+                            <field name="specific_office" string="المكتب المختص"/>
+                        </group>
+                    </group> -->
+
+                    <!-- ── SALES / REVENUES ─────────────────────────── -->
+                    <!-- <separator string="المبيعات / الإيرادات"/>
+
+                    <group string="/١ السلع والخدمات والأعمال الخاصة (خاضعة - محلية)" col="4">
+                        <field name="sales_local_total" string="المبلغ الكلي"/>
+                        <field name="sales_local_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="sales_local_tax_amount" string="مقدار الضريبة"/>
+                        <field name="sales_local_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٢ الاتصالات" col="4">
+                        <field name="sales_telecom_total" string="المبلغ الكلي"/>
+                        <field name="sales_telecom_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="sales_telecom_tax_amount" string="مقدار الضريبة"/>
+                        <field name="sales_telecom_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٣ الأصول الثابتة الخاصة" col="4">
+                        <field name="sales_assets_total" string="المبلغ الكلي"/>
+                        <field name="sales_assets_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="sales_assets_tax_amount" string="مقدار الضريبة"/>
+                        <field name="sales_assets_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٤ السلع والخدمات والأعمال الخاصة (محددة)" col="4">
+                        <field name="sales_special_basis_type" string="أساس التحاسب"/>
+                        <field name="sales_special_tax_amount_unit" string="وعاء الضريبة"/>
+                        <field name="sales_special_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٥ السلع والخدمات المعفاة" col="2">
+                        <field name="sales_exempt_total" string="المبلغ الكلي" colspan="2"/>
+                    </group>
+
+                    <group string="/٦ سلع وخدمات الصادر" col="2">
+                        <field name="sales_export_total" string="المبلغ الكلي" colspan="2"/>
+                    </group>
+
+                    <group col="2">
+                        <field name="total_sales_tax" string="إجمالي الضريبة المحصلة عن الشهر"
+                               readonly="1" class="o_field_highlight"/>
+                    </group> -->
+
+                    <!-- ── PURCHASES ────────────────────────────────── -->
+                    <!-- <separator string="المشتريات"/>
+
+                    <group string="/٧ المشتريات الخاضعة - المستوردة" col="4">
+                        <field name="purchase_import_total" string="المبلغ الكلي"/>
+                        <field name="purchase_import_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="purchase_import_tax_amount" string="مقدار الضريبة"/>
+                        <field name="purchase_import_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٨ المشتريات الخاضعة - المحلية" col="4">
+                        <field name="purchase_local_total" string="المبلغ الكلي"/>
+                        <field name="purchase_local_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="purchase_local_tax_amount" string="مقدار الضريبة"/>
+                        <field name="purchase_local_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/٩ الأصول الثابتة" col="4">
+                        <field name="purchase_assets_total" string="المبلغ الكلي"/>
+                        <field name="purchase_assets_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="purchase_assets_tax_amount" string="مقدار الضريبة"/>
+                        <field name="purchase_assets_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/١٠ السلع والخدمات والأعمال الخاصة (محددة)" col="4">
+                        <field name="purchase_special_basis_type" string="أساس التحاسب"/>
+                        <field name="purchase_special_tax_amount_unit" string="وعاء الضريبة"/>
+                        <field name="purchase_special_tax_total" string="جملة الضريبة"/>
+                    </group> -->
+
+                    <!-- ── EXPENSES / SERVICES ──────────────────────── -->
+                    <!-- <separator string="الخدمات والمصروفات الخاضعة"/>
+
+                    <group string="/١١ الاتصالات" col="4">
+                        <field name="expense_telecom_total" string="المبلغ الكلي"/>
+                        <field name="expense_telecom_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="expense_telecom_tax_amount" string="مقدار الضريبة"/>
+                        <field name="expense_telecom_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/١٢ أخرى" col="4">
+                        <field name="expense_other_total" string="المبلغ الكلي"/>
+                        <field name="expense_other_tax_rate" string="نسبة الضريبة" readonly="1"/>
+                        <field name="expense_other_tax_amount" string="مقدار الضريبة"/>
+                        <field name="expense_other_tax_total" string="جملة الضريبة"/>
+                    </group>
+
+                    <group string="/١٣ المستوردة المعفاة" col="2">
+                        <field name="expense_import_exempt_total" string="المبلغ الكلي"/>
+                    </group>
+
+                    <group string="/١٤ المحلية المعفاة" col="2">
+                        <field name="expense_local_exempt_total" string="المبلغ الكلي"/>
+                    </group> -->
+
+                    <!-- ── RECONCILIATION / TOTALS ──────────────────── -->
+                    <!-- <separator string="الرصيد والتوصية"/>
+
+                    <group col="2">
+                        <field name="total_purchase_tax_paid"
+                               string="إجمالي الضريبة المدفوعة عن الشهر" readonly="1"/>
+                        <field name="monthly_net_tax"
+                               string="الضريبة عن الشهر (دائن / مدين)" readonly="1"/>
+                        <field name="carried_forward_balance"
+                               string="/١٥ رصيد الضريبة المرحل عن الشهر السابق"/>
+                        <field name="creditor_carried_balance"
+                               string="/١٦ رصيد الضريبة الدائن المرحل" readonly="1"/>
+                        <field name="debtor_payable_balance"
+                               string="/١٧ رصيد الضريبة المدين الواجب السداد" readonly="1"/>
+                        <field name="refund_amount" string="/١٨ الإسترداد"/>
+                        <field name="petroleum_certificates" string="/١٩ شهادات شركات البترول"/>
+                    </group> -->
+
+                    <!-- ── SUBMITTER ────────────────────────────────── -->
+                    <separator string="خاص بمقدم الإقرار"/>
+                    <group col="4">
+                        <field name="submitter_name" string="الاسم"/>
+                        <field name="submitter_role" string="بصفتي"/>
+                        <field name="submission_date" string="التاريخ"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_print_report" type="object"
+                            string=" طباعة الإقرار الضريبي"
+                            class="btn-primary"/>
+                    <button string="إغلاق" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_sudan_vat_report" model="ir.actions.act_window">
+        <field name="name">الإقرار الشهري للضريبة على القيمة المضافة</field>
+        <field name="res_model">sudan.vat.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_sudan_vat_report_form"/>
+    </record>
+
+</odoo>

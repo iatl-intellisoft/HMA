@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payslip_line_filter" model="ir.ui.view">
+            <field name="name">payslip.line.select</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter name="group_employee" string="Employees" context="{'group_by': 'employee_id'}"/>
+                        <filter name="group_rule" string="Rule" context="{'group_by': 'salary_rule_id'}"/>
+                        <filter name="group_department" string="Department" context="{'group_by': 'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="payslip_line_report_pivot" model="ir.ui.view">
+            <field name="name">salary.rule.pivot</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <pivot string="payslip Line Analysis" disable_linking="True">
+                    <field name="salary_rule_id" type="col"/>
+                    <field name="employee_id" type="row"/>
+                    <field name="total" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="action_payslip_line_pivot" model="ir.actions.act_window">
+            <field name="name">Payslip Batch Details</field>
+            <field name="view_mode">pivot</field>
+            <field name="context">{'search_default_payslip_run_id':active_id,'search_default_group_employee':1,
+                'search_default_category_id': 1}
+            </field>
+            <field name="domain">[('payslip_run_id','=',active_id)]</field>
+            <field name="res_model">hr.payslip.line</field>
+            <field name="search_view_id" ref="view_payslip_line_filter"/>
+            <field name="view_id" ref="payslip_line_report_pivot"></field>
+        </record>
+
+        <record id="view_hr__payslip_line_form_inherit" model="ir.ui.view">
+            <field name="name">view.hr.form.payslip.line.inherit</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_fix']" position="after">
+                    <field name="payslip_run_id" invisible="1"/>
+                    <field name='partner_id'/>
+                    <field name="analytic_account_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+            <field name="name">view.hr.payslip.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_payslip_draft']" position="attributes">
+                    <attribute name='state'>verify,done,cancel</attribute>
+                </xpath>
+                <xpath expr="//field[@name='struct_id']" position="after">
+                    <field name="num_work_days"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_payslip_run_form_inherit" model="ir.ui.view">
+            <field name="name">view.hr.form.payslip.run.inherit</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_draft']" position="attributes">
+                    <attribute name="string">Rollback</attribute>
+                    <attribute name="context">{'rollback': True}</attribute>
+
+                </xpath>
+                <xpath expr="//button[@name='action_validate']" position="after">
+                    <button string="Set Payslips to Draft" name="draft_payslip_run" type="object" invisible="state != 'verify'"
+                        />
+                    <button string="Set to Draft" name="action_draft" type="object"
+                            invisible="state != 'verify'"/>
+                    <button string="Compute Payslips" name="compute_payslip_run" type="object" invisible="state not in ('draft','verify')"/>
+                    <!-- <button string="Cancel" name="action_payslip_run_cancel" type="object"
+                            states="close" class="oe_highlight"/> -->
+                    <button string="Set To Draft" name="action_draft" type="object"
+                              invisible="state != 'verify'"/>
+                </xpath>
+
+                
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+
+                    <button name="%(action_payslip_line_pivot)d" class="oe_stat_button" string="payslip Details"
+                            icon="fa-list" type="action">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

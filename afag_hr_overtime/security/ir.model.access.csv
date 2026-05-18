@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_overtime,afag_hr_overtime,model_hr_overtime,base.group_user,1,1,1,1
+access_hr_overtime_line,afag_hr_overtime_line,model_hr_overtime_line,base.group_user,1,1,1,1
+access_hr_overtime_officer,afag_hr_overtime_officer,model_hr_overtime,afag_hr_overtime.group_hr_overtime_officer,1,1,1,1
+access_hr_overtime_line_officer,afag_hr_overtime_line_officer,model_hr_overtime_line,afag_hr_overtime.group_hr_overtime_officer,1,1,1,1
+access_hr_overtime_config_officer,afag_hr_overtime_config_officer,model_hr_overtime_config,afag_hr_overtime.group_hr_overtime_officer,1,1,1,1

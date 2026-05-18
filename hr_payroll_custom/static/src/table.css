@@ -1,0 +1,25 @@
+
+
+table{
+    border: 2px solid black;
+    text-align:center;
+    font-family: 'Droid Arabic Kufi';
+    width:90%;
+    margin: 0 auto;
+
+    }
+table td{
+    border: 1px solid black;
+    padding: 5px 5px 5px 5px;
+    text-align:center;
+    font-size:12px;
+    font-family: 'Droid Arabic Kufi';
+    white-space: nowrap;
+    }
+table thead{
+    border: 1px solid black;
+    padding: 5px 5px 5px 5px;
+    font-size:12px;
+    font-family: 'Droid Arabic Kufi';
+
+    }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_account_custom_check_mangment" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.check.management</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="25"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+
+            <block title="Invoicing" id="invoicing_setting_block">
+                        <setting string="Invoicing"  title="Invoicing" id="invoicing_setting">
+                            <div class="content-group">
+                                <div class="mt8">
+                                    <div>
+                                            <label for="account_receivable" string="Account Receivable" class="col-2 o_light_label"/>
+                                            <field name="account_receivable"/>
+                                        </div>
+                                    <field name="account_payable"/>
+                                    <div>
+                                            <label for="account_payable" string="Account Payable" class="col-2 o_light_label"/>
+                                            <field name="account_payable"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </xpath>
+            <!-- <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Invoicing" string="Invoicing" data-key="account" groups="account.group_account_manager">
+                    
+                    <h2>Check Follow up</h2>
+                    <div class="row mt16 o_settings_container">
+                            <group col="2">
+                                <field name="account_receivable"/>
+                                <field name="account_payable"/>
+                            </group>
+                     </div>
+                  
+                 </div>
+
+            </xpath> -->
+        </field>
+    </record>
+    
+</odoo>

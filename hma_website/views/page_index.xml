@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="page_index" name="HMA Home">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | الرئيسية'"/>
+    <t t-set="head">
+      <style>
+        .hero { background:var(--dark); min-height:88vh; display:flex; align-items:center; position:relative; overflow:hidden; padding:80px 0; }
+        .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 85% at 90% 45%,rgba(200,16,46,.2) 0%,transparent 65%),radial-gradient(ellipse 40% 60% at 10% 85%,rgba(200,16,46,.08) 0%,transparent 60%); }
+        .hero-pattern { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px); background-size:44px 44px; }
+        .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+        @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}}
+        .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(200,16,46,.15); border:1px solid rgba(200,16,46,.35); padding:6px 16px; border-radius:100px; font-size:12px; font-weight:700; color:var(--brand); margin-bottom:24px; }
+        .hero-h1 { font-size:clamp(40px,5.5vw,68px); font-weight:900; color:#fff; line-height:1.05; margin-bottom:12px; }
+        .hero-h1 .red { color:var(--brand); }
+        .hero-slogan { font-size:17px; color:rgba(255,255,255,.5); font-style:italic; margin-bottom:28px; }
+        .hero-p { font-size:16px; color:rgba(255,255,255,.58); line-height:1.85; max-width:500px; margin-bottom:36px; }
+        .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:48px; }
+        .hero-stats { display:flex; border:1px solid rgba(255,255,255,.1); border-radius:var(--r); overflow:hidden; background:rgba(255,255,255,.03); flex-wrap:wrap; }
+        .hs { padding:18px 28px; border-left:1px solid rgba(255,255,255,.1); text-align:center; }
+        .hs:last-child { border-left:none; }
+        .hs-n { font-size:28px; font-weight:900; color:var(--brand); line-height:1; }
+        .hs-l { font-size:11px; color:rgba(255,255,255,.4); margin-top:5px; font-weight:600; }
+        .hero-visual { display:flex; flex-direction:column; gap:16px; }
+        .hv-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:var(--r); padding:20px 22px; display:flex; align-items:center; gap:16px; transition:all .3s; }
+        .hv-card:hover { border-color:var(--brand); background:rgba(200,16,46,.12); }
+        .hv-icon { width:48px; height:48px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+        .hv-icon.red { background:rgba(200,16,46,.25); color:var(--brand); }
+        .hv-icon.gold { background:rgba(200,153,42,.2); color:var(--gold); }
+        .hv-icon.white { background:rgba(255,255,255,.1); color:rgba(255,255,255,.7); }
+        .hv-info h4 { font-size:15px; font-weight:800; color:#fff; }
+        .hv-info p { font-size:12px; color:rgba(255,255,255,.45); margin-top:2px; }
+        /* Featured products */
+        .feat-products-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+        @media(max-width:1100px){.feat-products-grid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:700px){.feat-products-grid{grid-template-columns:1fr;}}
+        /* Trust cards */
+        .trust-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:48px; }
+        @media(max-width:1100px){.trust-cards{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:600px){.trust-cards{grid-template-columns:1fr;}}
+        .trust-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r); padding:28px; text-align:center; transition:all .3s; }
+        .trust-card:hover { border-color:var(--brand); transform:translateY(-4px); box-shadow:var(--sh); }
+        .tc-icon { width:52px; height:52px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:20px; margin:0 auto 16px; }
+        .tc-icon.red { background:var(--brand-light); color:var(--brand); }
+        .tc-icon.gold { background:var(--gold-light); color:var(--gold); }
+        .tc-icon.green { background:#D1FAE5; color:#059669; }
+        .tc-icon.blue { background:#DBEAFE; color:#2563EB; }
+        .trust-card h3 { font-size:16px; font-weight:800; color:var(--ink); margin-bottom:8px; }
+        .trust-card p { font-size:13px; color:var(--ink-mid); line-height:1.7; }
+        /* Sectors */
+        .sectors-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:40px; }
+        @media(max-width:900px){.sectors-grid{grid-template-columns:1fr;}}
+        .sector-card { background:var(--dark); border:1px solid rgba(255,255,255,.08); border-radius:var(--r); padding:32px; position:relative; overflow:hidden; transition:all .3s; }
+        .sector-card:hover { border-color:var(--brand); box-shadow:var(--sh-br); }
+        .sc-num { font-size:64px; font-weight:900; color:rgba(255,255,255,.04); position:absolute; top:16px; left:20px; line-height:1; font-style:italic; }
+        .sc-icon { width:52px; height:52px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:20px; }
+        .sc-icon.active { background:rgba(200,16,46,.2); color:var(--brand); }
+        .sc-icon.prep { background:rgba(200,153,42,.15); color:var(--gold); }
+        .sc-icon.future { background:rgba(255,255,255,.08); color:rgba(255,255,255,.5); }
+        .sc-title { font-size:18px; font-weight:800; color:#fff; margin-bottom:10px; }
+        .sc-desc { font-size:13px; color:rgba(255,255,255,.45); line-height:1.7; margin-bottom:16px; }
+        .sc-status { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:100px; font-size:12px; font-weight:700; }
+        .sc-status.active { background:rgba(200,16,46,.15); color:var(--brand); border:1px solid rgba(200,16,46,.3); }
+        .sc-status.prep { background:rgba(200,153,42,.1); color:var(--gold); border:1px solid rgba(200,153,42,.3); }
+        .sc-status.future { background:rgba(255,255,255,.06); color:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.1); }
+        /* Chinbull highlight */
+        .chin-highlight { background:var(--dark); padding:80px 0; }
+        .chin-hi-inner { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+        @media(max-width:900px){.chin-hi-inner{grid-template-columns:1fr;}}
+        .chin-hi-title { font-size:clamp(32px,4vw,52px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:20px; }
+        .chin-hi-title .red { color:var(--brand); }
+        .chin-hi-desc { font-size:15px; color:rgba(255,255,255,.55); line-height:1.85; margin-bottom:28px; }
+        .chin-hi-ctas { display:flex; gap:12px; flex-wrap:wrap; margin-top:32px; }
+        .chin-hi-card { background:rgba(200,153,42,.06); border:1px solid rgba(200,153,42,.2); border-radius:var(--r-lg); padding:36px; }
+        .chin-hi-logo { font-size:40px; font-weight:900; color:var(--gold); letter-spacing:-1px; margin-bottom:12px; text-align:center; }
+        .chin-hi-card h3 { font-size:22px; font-weight:800; color:#fff; margin-bottom:12px; text-align:center; }
+        .chin-hi-card p { font-size:14px; color:rgba(255,255,255,.5); text-align:center; margin-bottom:24px; }
+        .chin-hi-features { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+        .chin-hi-feat { display:flex; align-items:center; gap:10px; font-size:14px; font-weight:600; color:rgba(255,255,255,.65); }
+        .chin-hi-feat i { color:var(--gold); font-size:12px; }
+      </style>
+    </t>
+
+    <div class="hma-website">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container">
+          <div class="hero-inner">
+            <div>
+              <div class="hero-tag">
+                <i class="fa fa-certificate"/>
+                <span data-ar="الوكيل الحصري لـ Chinbull في السودان" data-en="Exclusive Agent for Chinbull in Sudan">الوكيل الحصري لـ Chinbull في السودان</span>
+              </div>
+              <h1 class="hero-h1">
+                <span data-ar="أواني منزلية" data-en="Kitchenware">أواني منزلية</span><br/>
+                <span class="red" data-ar="بجودة لا تُجارى" data-en="Unmatched Quality">بجودة لا تُجارى</span>
+              </h1>
+              <p class="hero-slogan" data-ar="«عدّتي لي بتي — من جيل إلى جيل»" data-en="«My Home's Tools — Generation to Generation»">«عدّتي لي بتي — من جيل إلى جيل»</p>
+              <p class="hero-p" data-ar="شركة إتش أم أيه للمشاريع المتطورة — رائدة في استيراد وتوزيع أفضل الأواني المنزلية منذ ١٩٩٠م. الوكيل الحصري الوحيد لماركة Chinbull الدولية في السودان." data-en="H.M.A Developed Projects — a leader in importing and distributing the finest kitchenware since 1990. The sole exclusive agent for the international Chinbull brand in Sudan.">شركة إتش أم أيه للمشاريع المتطورة — رائدة في استيراد وتوزيع أفضل الأواني المنزلية منذ ١٩٩٠م. الوكيل الحصري الوحيد لماركة Chinbull الدولية في السودان.</p>
+              <div class="hero-ctas">
+                <a href="/products" class="btn-primary"><i class="fa fa-th-large"/> <span data-ar="تصفح المنتجات" data-en="Browse Products">تصفح المنتجات</span></a>
+                <a href="https://wa.me/249912390982" class="btn-wa-cta" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="تواصل واتساب" data-en="WhatsApp Us">تواصل واتساب</span></a>
+              </div>
+              <div class="hero-stats">
+                <div class="hs"><div class="hs-n">35+</div><div class="hs-l" data-ar="سنة خبرة" data-en="Years">سنة خبرة</div></div>
+                <div class="hs"><div class="hs-n">500+</div><div class="hs-l" data-ar="منتج متنوع" data-en="Products">منتج متنوع</div></div>
+                <div class="hs"><div class="hs-n">7</div><div class="hs-l" data-ar="أرقام واتساب" data-en="WhatsApp #s">أرقام واتساب</div></div>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <div class="hv-card">
+                <div class="hv-icon red"><i class="fa fa-certificate"/></div>
+                <div class="hv-info">
+                  <h4 data-ar="وكيل Chinbull الحصري" data-en="Exclusive Chinbull Agent">وكيل Chinbull الحصري</h4>
+                  <p data-ar="الموزع الرسمي الوحيد في السودان" data-en="The only official distributor in Sudan">الموزع الرسمي الوحيد في السودان</p>
+                </div>
+              </div>
+              <div class="hv-card">
+                <div class="hv-icon gold"><i class="fa fa-star"/></div>
+                <div class="hv-info">
+                  <h4 data-ar="جودة معتمدة" data-en="Certified Quality">جودة معتمدة</h4>
+                  <p data-ar="بورسلين لا يتشقق، مقاوم للحرارة" data-en="Crack-resistant, heat-proof porcelain">بورسلين لا يتشقق، مقاوم للحرارة</p>
+                </div>
+              </div>
+              <div class="hv-card">
+                <div class="hv-icon white"><i class="fa fa-handshake-o"/></div>
+                <div class="hv-info">
+                  <h4 data-ar="بيع جملة ومفرق" data-en="Wholesale &amp; Retail">بيع جملة ومفرق</h4>
+                  <p data-ar="أسعار تنافسية لكل الكميات" data-en="Competitive prices for all quantities">أسعار تنافسية لكل الكميات</p>
+                </div>
+              </div>
+              <div class="hv-card">
+                <div class="hv-icon red"><i class="fa fa-map-marker"/></div>
+                <div class="hv-info">
+                  <h4 data-ar="سوق أمدرمان" data-en="Omdurman Market">سوق أمدرمان</h4>
+                  <p data-ar="شارع الكنيسة، عمارة محمد حسن بشير" data-en="Church St., Mohamed Hassan Bashir Building">شارع الكنيسة، عمارة محمد حسن بشير</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED PRODUCTS -->
+      <section class="hma-section" style="background:var(--bg);">
+        <div class="hma-container">
+          <div class="text-center fade-in" style="margin-bottom:44px;">
+            <div class="eyebrow-label center"><i class="fa fa-th-large"/> <span data-ar="منتجاتنا" data-en="Our Products">منتجاتنا</span></div>
+            <h2 class="section-h mt-8"><span data-ar="أبرز " data-en="Featured ">أبرز </span><span class="red" data-ar="منتجاتنا" data-en="Products">منتجاتنا</span></h2>
+            <p class="section-sub" data-ar="تشكيلة مختارة من أفضل ما نقدم — أواني طهي، سفرة، وأكواب بجودة لا تُجارى" data-en="A curated selection of our finest — cookware, dinnerware, and cups of unmatched quality">تشكيلة مختارة من أفضل ما نقدم — أواني طهي، سفرة، وأكواب بجودة لا تُجارى</p>
+          </div>
+          <div class="feat-products-grid">
+            <t t-foreach="featured_products" t-as="p">
+              <div t-attf-class="prod-card #{p.dark_bg and 'dark-bg' or ''} fade-in">
+                <div class="prod-icon-wrap">
+                  <div t-attf-class="prod-icon-box #{p.category == 'chinbull' and 'cb' or (p.dark_bg and 'dark' or '')}">
+                    <i t-att-class="p.icon"/>
+                  </div>
+                  <t t-if="p.badge">
+                    <span t-if="p.badge == 'wholesale'" class="pill pill-gold" data-ar="جملة" data-en="Wholesale">جملة</span>
+                    <span t-elif="p.badge == 'cb'" class="pill-cb">Chinbull</span>
+                    <span t-else="" class="pill pill-red" t-esc="p.badge_label_ar or 'جديد'"/>
+                  </t>
+                </div>
+                <div class="prod-body">
+                  <div t-attf-class="prod-cat #{p.category == 'chinbull' and 'gold' or ''}">
+                    <span t-esc="p.cat_label_ar or p.category"/>
+                  </div>
+                  <h3 class="prod-title" t-esc="p.name_ar"/>
+                  <p class="prod-desc" t-esc="p.desc_ar"/>
+                  <p class="prod-avail" t-esc="p.avail_label_ar"/>
+                  <div class="prod-actions">
+                    <a t-attf-href="/products/#{p.id}" class="btn-primary"><i class="fa fa-eye"/> <span data-ar="التفاصيل" data-en="Details">التفاصيل</span></a>
+                    <a t-attf-href="https://wa.me/#{p.wa_number}" class="btn-wa-cta" target="_blank" style="padding:10px 14px;font-size:13px;flex:none;"><i class="fa fa-whatsapp"/></a>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </div>
+          <div class="text-center" style="margin-top:36px;">
+            <a href="/products" class="btn-primary"><i class="fa fa-th-large"/> <span data-ar="عرض جميع المنتجات" data-en="View All Products">عرض جميع المنتجات</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTORS -->
+      <section class="hma-section" style="background:var(--dark);">
+        <div class="hma-container">
+          <div class="fade-in">
+            <div class="eyebrow-label" style="color:rgba(255,255,255,.5);"><i class="fa fa-industry"/> <span data-ar="قطاعاتنا" data-en="Our Sectors">قطاعاتنا</span></div>
+            <h2 class="section-h mt-8" style="color:#fff;"><span data-ar="قطاعات " data-en="Business ">قطاعات </span><span class="red" data-ar="الأعمال" data-en="Sectors">الأعمال</span></h2>
+          </div>
+          <div class="sectors-grid">
+            <div class="sector-card fade-in fade-in-d1">
+              <div class="sc-num">01</div>
+              <div class="sc-icon active"><i class="fa fa-cutlery"/></div>
+              <h3 class="sc-title" data-ar="الأواني المنزلية" data-en="Kitchenware">الأواني المنزلية</h3>
+              <p class="sc-desc" data-ar="قطاعنا الرئيسي — استيراد وتوزيع أواني الطهي والسفرة وأدوات المطبخ." data-en="Our main sector — importing and distributing cookware, tableware, and kitchen tools.">قطاعنا الرئيسي — استيراد وتوزيع أواني الطهي والسفرة وأدوات المطبخ.</p>
+              <span class="sc-status active"><i class="fa fa-circle"/> <span data-ar="نشط حالياً" data-en="Currently Active">نشط حالياً</span></span>
+            </div>
+            <div class="sector-card fade-in fade-in-d2">
+              <div class="sc-num">02</div>
+              <div class="sc-icon prep"><i class="fa fa-leaf"/></div>
+              <h3 class="sc-title" data-ar="المنتجات الغذائية" data-en="Food Products">المنتجات الغذائية</h3>
+              <p class="sc-desc" data-ar="توسع استراتيجي قادم في قطاع المنتجات الغذائية." data-en="Strategic upcoming expansion into food products.">توسع استراتيجي قادم في قطاع المنتجات الغذائية.</p>
+              <span class="sc-status prep"><i class="fa fa-clock-o"/> <span data-ar="قيد الإعداد" data-en="In Preparation">قيد الإعداد</span></span>
+            </div>
+            <div class="sector-card fade-in fade-in-d3">
+              <div class="sc-num">03</div>
+              <div class="sc-icon future"><i class="fa fa-industry"/></div>
+              <h3 class="sc-title" data-ar="القطاع الصناعي" data-en="Industrial Sector">القطاع الصناعي</h3>
+              <p class="sc-desc" data-ar="رؤية مستقبلية للدخول في قطاع الأعمال الصناعية." data-en="Future vision to enter industrial business.">رؤية مستقبلية للدخول في قطاع الأعمال الصناعية.</p>
+              <span class="sc-status future"><i class="fa fa-rocket"/> <span data-ar="مستقبلي" data-en="Future">مستقبلي</span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHINBULL HIGHLIGHT -->
+      <section class="chin-highlight">
+        <div class="hma-container">
+          <div class="chin-hi-inner">
+            <div class="fade-in">
+              <div class="eyebrow-label" style="color:var(--brand);"><i class="fa fa-certificate"/> <span data-ar="شراكة حصرية" data-en="Exclusive Partnership">شراكة حصرية</span></div>
+              <h2 class="chin-hi-title">
+                <span data-ar="الوكيل الحصري" data-en="Exclusive Agent">الوكيل الحصري</span><br/>
+                <span data-ar="لـ " data-en="for ">لـ </span><span class="red">Chinbull</span><br/>
+                <span data-ar="في السودان" data-en="in Sudan">في السودان</span>
+              </h2>
+              <p class="chin-hi-desc" data-ar="نحمل بكل فخر لقب الوكيل الحصري الوحيد لماركة Chinbull العالمية في السودان. منتجات بورسلين لا تتشقق، مقاومة للحرارة، وبتصاميم أنيقة تناسب كل مناسبة." data-en="We proudly hold the title of the sole exclusive agent for the international Chinbull brand in Sudan. Crack-resistant, heat-proof porcelain products with elegant designs for every occasion.">نحمل بكل فخر لقب الوكيل الحصري الوحيد لماركة Chinbull العالمية في السودان.</p>
+              <div class="feat-list">
+                <div class="feat-item white"><i class="fa fa-certificate"/> <span data-ar="وكالة رسمية حصرية معتمدة" data-en="Official exclusive certified agency">وكالة رسمية حصرية معتمدة</span></div>
+                <div class="feat-item white"><i class="fa fa-shield"/> <span data-ar="لا يتشقق — مقاوم للحرارة" data-en="Crack-resistant — heat-proof">لا يتشقق — مقاوم للحرارة</span></div>
+                <div class="feat-item white"><i class="fa fa-star"/> <span data-ar="تصاميم فاخرة تناسب المناسبات" data-en="Luxury designs for all occasions">تصاميم فاخرة تناسب المناسبات</span></div>
+              </div>
+              <div class="chin-hi-ctas">
+                <a href="/chinbull" class="btn-primary"><i class="fa fa-certificate"/> <span data-ar="اعرف المزيد عن Chinbull" data-en="Learn More About Chinbull">اعرف المزيد عن Chinbull</span></a>
+                <a href="https://wa.me/249912390982" class="btn-wa-cta" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="استفسر الآن" data-en="Inquire Now">استفسر الآن</span></a>
+              </div>
+            </div>
+            <div class="chin-hi-card fade-in fade-in-d2">
+              <div class="chin-hi-logo">CHIN<span style="color:var(--brand);">BULL</span></div>
+              <h3 data-ar="Chinbull" data-en="Chinbull">Chinbull</h3>
+              <p data-ar="الماركة العالمية الأولى في البورسلين الفاخر — متاحة حصرياً في السودان عبر إتش أم أيه." data-en="The world's leading premium porcelain brand — available exclusively in Sudan through H.M.A.">الماركة العالمية الأولى في البورسلين الفاخر — متاحة حصرياً في السودان عبر إتش أم أيه.</p>
+              <div class="chin-hi-features">
+                <div class="chin-hi-feat"><i class="fa fa-check"/> <span data-ar="طقم عشاء ٥٨ قطعة" data-en="58-Piece Dinner Set">طقم عشاء ٥٨ قطعة</span></div>
+                <div class="chin-hi-feat"><i class="fa fa-check"/> <span data-ar="أطقم شاي وقهوة فاخرة" data-en="Premium Tea &amp; Coffee Sets">أطقم شاي وقهوة فاخرة</span></div>
+                <div class="chin-hi-feat"><i class="fa fa-check"/> <span data-ar="أطباق تقديم متنوعة" data-en="Varied Serving Dishes">أطباق تقديم متنوعة</span></div>
+                <div class="chin-hi-feat"><i class="fa fa-check"/> <span data-ar="أكواب للضيافة والمناسبات" data-en="Cups for Hospitality &amp; Occasions">أكواب للضيافة والمناسبات</span></div>
+              </div>
+              <a href="/chinbull" class="btn-primary" style="width:100%;justify-content:center;"><i class="fa fa-arrow-left"/> <span data-ar="تصفح منتجات Chinbull" data-en="Browse Chinbull Products">تصفح منتجات Chinbull</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRUST -->
+      <section class="hma-section" style="background:var(--bg);">
+        <div class="hma-container">
+          <div class="text-center fade-in">
+            <div class="eyebrow-label center"><i class="fa fa-shield"/> <span data-ar="لماذا نحن" data-en="Why Us">لماذا نحن</span></div>
+            <h2 class="section-h mt-8"><span data-ar="لماذا يختار الزبائن " data-en="Why Customers Choose ">لماذا يختار الزبائن </span><span class="red" data-ar="إتش أم أيه" data-en="H.M.A">إتش أم أيه</span></h2>
+          </div>
+          <div class="trust-cards">
+            <div class="trust-card fade-in fade-in-d1">
+              <div class="tc-icon red"><i class="fa fa-certificate"/></div>
+              <h3 data-ar="جودة معتمدة" data-en="Certified Quality">جودة معتمدة</h3>
+              <p data-ar="جميع منتجاتنا تمر بمعايير جودة صارمة قبل وصولها لعملائنا" data-en="All our products pass strict quality standards before reaching our customers">جميع منتجاتنا تمر بمعايير جودة صارمة قبل وصولها لعملائنا</p>
+            </div>
+            <div class="trust-card fade-in fade-in-d2">
+              <div class="tc-icon gold"><i class="fa fa-handshake-o"/></div>
+              <h3 data-ar="خبرة 35+ سنة" data-en="35+ Years Experience">خبرة 35+ سنة</h3>
+              <p data-ar="تجربة متراكمة في السوق السوداني منذ عام ١٩٩٠م تضمن الموثوقية" data-en="Accumulated experience in the Sudanese market since 1990 guarantees reliability">تجربة متراكمة في السوق السوداني منذ عام ١٩٩٠م</p>
+            </div>
+            <div class="trust-card fade-in fade-in-d3">
+              <div class="tc-icon green"><i class="fa fa-tags"/></div>
+              <h3 data-ar="أسعار تنافسية" data-en="Competitive Prices">أسعار تنافسية</h3>
+              <p data-ar="نضمن أفضل الأسعار في السوق مع خيارات الجملة للتجار والموزعين" data-en="We guarantee the best market prices with wholesale options">نضمن أفضل الأسعار في السوق مع خيارات الجملة</p>
+            </div>
+            <div class="trust-card fade-in fade-in-d4">
+              <div class="tc-icon blue"><i class="fa fa-headphones"/></div>
+              <h3 data-ar="خدمة عملاء متميزة" data-en="Excellent Customer Service">خدمة عملاء متميزة</h3>
+              <p data-ar="فريق خدمة عملاء متاح عبر ٧ أرقام واتساب وخط ساخن مخصص" data-en="Customer service team available via 7 WhatsApp numbers and a dedicated hotline">فريق خدمة عملاء متاح عبر ٧ أرقام واتساب وخط ساخن</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WA NUMBERS STRIP -->
+      <div class="wa-strip">
+        <div class="hma-container">
+          <div class="wa-strip-inner">
+            <span class="wa-label"><i class="fa fa-whatsapp" style="color:#25D366;"/> <span data-ar="أرقام المبيعات:" data-en="Sales Numbers:">أرقام المبيعات:</span></span>
+            <a href="https://wa.me/249912390982" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0912 390 982</a>
+            <a href="https://wa.me/249910562488" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 562 488</a>
+            <a href="https://wa.me/249910556266" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 556 266</a>
+            <a href="https://wa.me/249910562352" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 562 352</a>
+            <a href="https://wa.me/249122008736" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0122 008 736</a>
+            <a href="https://wa.me/249913002734" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0913 002 734</a>
+            <a href="https://wa.me/249913002757" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0913 002 757</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="hma-container">
+          <div class="cta-inner fade-in">
+            <h2 data-ar="جاهز للطلب أو الاستفسار؟" data-en="Ready to Order or Inquire?">جاهز للطلب أو الاستفسار؟</h2>
+            <p data-ar="تواصل معنا الآن عبر واتساب أو اتصل بخطنا الساخن — فريقنا جاهز لخدمتك في جملة أو مفرق" data-en="Contact us now via WhatsApp or call our hotline — our team is ready to serve you wholesale or retail">تواصل معنا الآن عبر واتساب أو اتصل بخطنا الساخن</p>
+            <div class="cta-buttons">
+              <a href="https://wa.me/249912390982" class="btn-cta-white" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="تواصل واتساب" data-en="WhatsApp Us">تواصل واتساب</span></a>
+              <a href="tel:6775" class="btn-cta-outline"><i class="fa fa-phone-square"/> <span data-ar="الخط الساخن: 6775" data-en="Hotline: 6775">الخط الساخن: 6775</span></a>
+              <a href="/products" class="btn-cta-outline"><i class="fa fa-th-large"/> <span data-ar="تصفح المنتجات" data-en="Browse Products">تصفح المنتجات</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+</odoo>

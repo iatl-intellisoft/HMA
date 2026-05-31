@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hma_product_public,hma.product (public),model_hma_product,base.group_public,1,0,0,0
+access_hma_product_spec_public,hma.product.spec (public),model_hma_product_spec,base.group_public,1,0,0,0
+access_hma_product_feature_public,hma.product.feature (public),model_hma_product_feature,base.group_public,1,0,0,0
+access_hma_product_portal,hma.product (portal),model_hma_product,base.group_portal,1,0,0,0
+access_hma_product_spec_portal,hma.product.spec (portal),model_hma_product_spec,base.group_portal,1,0,0,0
+access_hma_product_feature_portal,hma.product.feature (portal),model_hma_product_feature,base.group_portal,1,0,0,0
+access_hma_product_user,hma.product (user),model_hma_product,base.group_user,1,0,0,0
+access_hma_product_spec_user,hma.product.spec (user),model_hma_product_spec,base.group_user,1,0,0,0
+access_hma_product_feature_user,hma.product.feature (user),model_hma_product_feature,base.group_user,1,0,0,0
+access_hma_product_manager,hma.product (manager),model_hma_product,base.group_system,1,1,1,1
+access_hma_product_spec_manager,hma.product.spec (manager),model_hma_product_spec,base.group_system,1,1,1,1
+access_hma_product_feature_manager,hma.product.feature (manager),model_hma_product_feature,base.group_system,1,1,1,1

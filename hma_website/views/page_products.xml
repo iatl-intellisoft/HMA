@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="page_products" name="HMA Products">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | المنتجات'"/>
+
+    <div class="hma-website">
+      <!-- HERO -->
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="المنتجات" data-en="Products">المنتجات</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-th-large"/> <span data-ar="كتالوج المنتجات" data-en="Product Catalogue">كتالوج المنتجات</span></div>
+          <h1><span data-ar="جميع " data-en="All ">جميع </span><span class="accent" data-ar="المنتجات" data-en="Products">المنتجات</span></h1>
+          <p class="hero-desc" data-ar="استكشف تشكيلتنا الكاملة من أطقم الطهي، أطقم السفرة، أكواب الشاي والقهوة، ومنتجات Chinbull الحصرية." data-en="Explore our full range of cookware, dinnerware, tea &amp; coffee sets, and exclusive Chinbull products.">استكشف تشكيلتنا الكاملة من أطقم الطهي، أطقم السفرة، وأكواب الشاي والقهوة.</p>
+        </div>
+      </section>
+
+      <!-- FILTER + GRID -->
+      <section class="hma-section">
+        <div class="hma-container">
+          <!-- Category Filter Tabs -->
+          <div class="cat-filter">
+            <t t-foreach="categories" t-as="cat">
+              <a t-attf-href="/products?category=#{cat[0]}"
+                 t-attf-class="cat-tab #{active_cat == cat[0] and 'active' or ''}"
+                 t-att-data-cat="cat[0]">
+                <t t-esc="cat[1]"/>
+              </a>
+            </t>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="hma-grid-4" id="products-grid">
+            <t t-foreach="products" t-as="p">
+              <div t-attf-class="prod-card #{p.dark_bg and 'dark-bg' or ''} fade-in"
+                   t-att-data-cat="p.category">
+                <div class="prod-icon-wrap">
+                  <div t-attf-class="prod-icon-box #{p.category == 'chinbull' and 'cb' or (p.dark_bg and 'dark' or '')}">
+                    <i t-att-class="p.icon"/>
+                  </div>
+                  <t t-if="p.badge">
+                    <span t-if="p.badge == 'wholesale'" class="pill pill-gold" data-ar="جملة" data-en="Wholesale">جملة</span>
+                    <span t-elif="p.badge == 'cb'" class="pill-cb">Chinbull</span>
+                    <span t-elif="p.badge_label_ar" class="pill pill-red" t-esc="p.badge_label_ar"/>
+                    <span t-else="" class="pill pill-red" data-ar="جديد" data-en="New">جديد</span>
+                  </t>
+                </div>
+                <div class="prod-body">
+                  <div t-attf-class="prod-cat #{p.category == 'chinbull' and 'gold' or ''}">
+                    <t t-esc="p.cat_label_ar or ''"/>
+                  </div>
+                  <h3 class="prod-title"><t t-esc="p.name_ar"/></h3>
+                  <p class="prod-desc"><t t-esc="p.desc_ar"/></p>
+                  <p class="prod-avail"><t t-esc="p.avail_label_ar or ''"/></p>
+                  <div class="prod-actions">
+                    <a t-attf-href="/products/#{p.id}" class="btn-primary" style="flex:1;justify-content:center;">
+                      <i class="fa fa-eye"/> <span data-ar="التفاصيل" data-en="Details">التفاصيل</span>
+                    </a>
+                    <a t-attf-href="https://wa.me/#{p.wa_number}" class="btn-wa-cta" target="_blank" style="padding:10px 14px;flex:none;">
+                      <i class="fa fa-whatsapp"/>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </t>
+
+            <!-- Empty state -->
+            <t t-if="not products">
+              <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-light);">
+                <i class="fa fa-box-open" style="font-size:48px;margin-bottom:16px;display:block;"/>
+                <p data-ar="لا توجد منتجات في هذه الفئة" data-en="No products in this category">لا توجد منتجات في هذه الفئة</p>
+              </div>
+            </t>
+          </div>
+        </div>
+      </section>
+
+      <!-- WA Strip -->
+      <div class="wa-strip">
+        <div class="hma-container">
+          <div class="wa-strip-inner">
+            <span class="wa-label"><i class="fa fa-whatsapp" style="color:#25D366;"/> <span data-ar="استفسر عن أي منتج:" data-en="Product Enquiries:">استفسر عن أي منتج:</span></span>
+            <a href="https://wa.me/249912390982" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0912 390 982</a>
+            <a href="https://wa.me/249910562488" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 562 488</a>
+            <a href="https://wa.me/249910556266" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 556 266</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="hma-container">
+          <div class="cta-inner fade-in">
+            <h2 data-ar="هل تبحث عن كميات بالجملة؟" data-en="Looking for Wholesale Quantities?">هل تبحث عن كميات بالجملة؟</h2>
+            <p data-ar="نقدم أسعاراً خاصة للتجار والموزعين — تواصل معنا الآن" data-en="We offer special prices for traders and distributors — contact us now">نقدم أسعاراً خاصة للتجار والموزعين — تواصل معنا الآن</p>
+            <div class="cta-buttons">
+              <a href="/wholesale" class="btn-cta-white"><i class="fa fa-handshake-o"/> <span data-ar="صفحة الجملة" data-en="Wholesale Page">صفحة الجملة</span></a>
+              <a href="https://wa.me/249912390982" class="btn-cta-outline" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="تواصل واتساب" data-en="WhatsApp Us">تواصل واتساب</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+</odoo>

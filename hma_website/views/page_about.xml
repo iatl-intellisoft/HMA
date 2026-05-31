@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ================================================================
+     ABOUT PAGE
+     ================================================================ -->
+<template id="page_about" name="HMA About Us">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | من نحن'"/>
+    <div class="hma-website">
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="من نحن" data-en="About Us">من نحن</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-building"/> <span data-ar="تعرف علينا" data-en="Get to Know Us">تعرف علينا</span></div>
+          <h1><span data-ar="من " data-en="About ">من </span><span class="accent" data-ar="نحن" data-en="Us">نحن</span></h1>
+          <p class="hero-desc" data-ar="شركة إتش أم أيه للمشاريع المتطورة — رائدة في استيراد الأواني المنزلية منذ ١٩٩٠م، والوكيل الحصري لـ Chinbull في السودان." data-en="H.M.A Developed Projects — a leader in kitchenware import since 1990, and the exclusive agent for Chinbull in Sudan.">شركة إتش أم أيه للمشاريع المتطورة — رائدة في استيراد الأواني المنزلية منذ ١٩٩٠م، والوكيل الحصري لـ Chinbull في السودان.</p>
+        </div>
+      </section>
+
+      <!-- Company Story -->
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-2">
+            <div class="fade-in">
+              <div class="eyebrow-label"><i class="fa fa-history"/> <span data-ar="قصتنا" data-en="Our Story">قصتنا</span></div>
+              <h2 class="section-h mt-8"><span data-ar="أكثر من " data-en="More Than ">أكثر من </span><span class="red">35</span> <span data-ar="عاماً من التميز" data-en="Years of Excellence">عاماً من التميز</span></h2>
+              <p class="section-sub" data-ar="تأسست شركة إتش أم أيه للمشاريع المتطورة عام ١٩٩٠م في قلب سوق أمدرمان، وبدأت رحلتها بالاستيراد المختار لأجود الأواني المنزلية. على مدار أكثر من ثلاثة عقود، نمت الشركة لتصبح الاسم الأبرز في قطاع الأواني المنزلية في السودان." data-en="H.M.A Developed Projects was founded in 1990 in the heart of Omdurman market, beginning its journey with a curated selection of the finest kitchenware. Over more than three decades, the company grew to become the most prominent name in the kitchenware sector in Sudan.">تأسست شركة إتش أم أيه للمشاريع المتطورة عام ١٩٩٠م في قلب سوق أمدرمان.</p>
+              <div class="feat-list" style="margin-top:24px;">
+                <div class="feat-item"><i class="fa fa-check-circle"/> <span data-ar="تأسست عام ١٩٩٠م بسوق أمدرمان" data-en="Founded in 1990 in Omdurman Market">تأسست عام ١٩٩٠م بسوق أمدرمان</span></div>
+                <div class="feat-item"><i class="fa fa-check-circle"/> <span data-ar="الوكيل الحصري الوحيد لـ Chinbull في السودان" data-en="The sole exclusive agent for Chinbull in Sudan">الوكيل الحصري الوحيد لـ Chinbull في السودان</span></div>
+                <div class="feat-item"><i class="fa fa-check-circle"/> <span data-ar="أكثر من ٥٠٠ منتج متنوع" data-en="More than 500 diverse products">أكثر من ٥٠٠ منتج متنوع</span></div>
+                <div class="feat-item"><i class="fa fa-check-circle"/> <span data-ar="شبكة توزيع واسعة في السودان" data-en="Wide distribution network across Sudan">شبكة توزيع واسعة في السودان</span></div>
+              </div>
+            </div>
+            <div class="fade-in fade-in-d2">
+              <div style="background:var(--dark);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:40px;">
+                <div class="stats-strip light" style="justify-content:center;width:100%;">
+                  <div class="stat-item"><div class="stat-num">35+</div><div class="stat-lbl" data-ar="سنة خبرة" data-en="Years Experience">سنة خبرة</div></div>
+                  <div class="stat-item"><div class="stat-num">500+</div><div class="stat-lbl" data-ar="منتج" data-en="Products">منتج</div></div>
+                  <div class="stat-item"><div class="stat-num">7</div><div class="stat-lbl" data-ar="خطوط واتساب" data-en="WhatsApp Lines">خطوط واتساب</div></div>
+                </div>
+                <div style="margin-top:28px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
+                  <p style="font-style:italic;color:rgba(255,255,255,.5);font-size:20px;font-weight:800;text-align:center;line-height:1.4;" data-ar="«عدّتي لي بتي — من جيل إلى جيل»" data-en="«My Home's Tools — Generation to Generation»">«عدّتي لي بتي — من جيل إلى جيل»</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Values -->
+      <section class="hma-section-sm" style="background:var(--surface2);">
+        <div class="hma-container">
+          <div class="text-center fade-in" style="margin-bottom:40px;">
+            <div class="eyebrow-label center"><i class="fa fa-star"/> <span data-ar="قيمنا" data-en="Our Values">قيمنا</span></div>
+            <h2 class="section-h mt-8"><span data-ar="مبادئنا " data-en="Our ">مبادئنا </span><span class="red" data-ar="" data-en="Principles"> </span></h2>
+          </div>
+          <div class="hma-grid-3">
+            <div class="hma-card fade-in fade-in-d1" style="padding:28px;text-align:center;" >
+              <div style="width:52px;height:52px;background:var(--brand-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;color:var(--brand);">
+                <i class="fa fa-gem"/>
+              </div>
+              <h3 style="font-weight:800;font-size:17px;margin-bottom:10px;" data-ar="الجودة أولاً" data-en="Quality First">الجودة أولاً</h3>
+              <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;" data-ar="كل منتج يمر بفحص دقيق قبل وصوله لعملائنا" data-en="Every product goes through careful inspection before reaching our customers">كل منتج يمر بفحص دقيق قبل وصوله لعملائنا</p>
+            </div>
+            <div class="hma-card fade-in fade-in-d2" style="padding:28px;text-align:center;" >
+              <div style="width:52px;height:52px;background:var(--gold-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;color:var(--gold);">
+                <i class="fa fa-users"/>
+              </div>
+              <h3 style="font-weight:800;font-size:17px;margin-bottom:10px;" data-ar="خدمة العميل" data-en="Customer Service">خدمة العميل</h3>
+              <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;" data-ar="رضا العميل هو مقياس نجاحنا الحقيقي" data-en="Customer satisfaction is our true measure of success">رضا العميل هو مقياس نجاحنا الحقيقي</p>
+            </div>
+            <div class="hma-card fade-in fade-in-d3" style="padding:28px;text-align:center;" >
+              <div style="width:52px;height:52px;background:#DBEAFE;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;color:#2563EB;">
+                <i class="fa fa-handshake-o"/>
+              </div>
+              <h3 style="font-weight:800;font-size:17px;margin-bottom:10px;" data-ar="الأمانة والمصداقية" data-en="Trust &amp; Integrity">الأمانة والمصداقية</h3>
+              <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;" data-ar="شراكة قائمة على الثقة والشفافية مع عملائنا" data-en="A partnership built on trust and transparency with our customers">شراكة قائمة على الثقة والشفافية</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="hma-container">
+          <div class="cta-inner fade-in">
+            <h2 data-ar="تواصل معنا اليوم" data-en="Contact Us Today">تواصل معنا اليوم</h2>
+            <p data-ar="يسعدنا خدمتك — تصفح منتجاتنا أو تواصل مباشرة" data-en="We're delighted to serve you — browse our products or contact directly">يسعدنا خدمتك — تصفح منتجاتنا أو تواصل مباشرة</p>
+            <div class="cta-buttons">
+              <a href="/products" class="btn-cta-white"><i class="fa fa-th-large"/> <span data-ar="تصفح المنتجات" data-en="Browse Products">تصفح المنتجات</span></a>
+              <a href="/contact" class="btn-cta-outline"><i class="fa fa-envelope"/> <span data-ar="اتصل بنا" data-en="Contact Us">اتصل بنا</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+<!-- ================================================================
+     CHINBULL PAGE
+     ================================================================ -->
+<template id="page_chinbull" name="HMA Chinbull">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | Chinbull'"/>
+    <div class="hma-website">
+      <!-- Hero dark with Chinbull branding -->
+      <section style="background:var(--dark);padding:80px 0;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(200,153,42,.12) 0%,transparent 65%);"/>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;"/>
+        <div class="hma-container" style="position:relative;z-index:2;">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span>Chinbull</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,153,42,.15);border:1px solid rgba(200,153,42,.3);padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;color:var(--gold);margin-bottom:16px;">
+            <i class="fa fa-certificate"/> <span data-ar="شراكة حصرية" data-en="Exclusive Partnership">شراكة حصرية</span>
+          </div>
+          <h1 style="font-size:clamp(40px,6vw,72px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:20px;">
+            CHIN<span style="color:var(--gold);">BULL</span>
+          </h1>
+          <p style="font-size:17px;color:rgba(255,255,255,.55);max-width:580px;line-height:1.8;margin-bottom:32px;" data-ar="الوكيل الحصري الوحيد لماركة Chinbull الدولية في السودان — البورسلين الفاخر الذي لا يتشقق." data-en="The sole exclusive agent for the international Chinbull brand in Sudan — premium porcelain that never cracks.">الوكيل الحصري الوحيد لماركة Chinbull الدولية في السودان — البورسلين الفاخر الذي لا يتشقق.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="https://wa.me/249912390982" class="btn-wa-cta" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="استفسر الآن" data-en="Inquire Now">استفسر الآن</span></a>
+            <a href="/products?category=chinbull" class="btn-secondary" style="border-color:rgba(255,255,255,.2);color:#fff;"><i class="fa fa-th-large"/> <span data-ar="تصفح منتجات Chinbull" data-en="Browse Chinbull Products">تصفح منتجات Chinbull</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Chinbull -->
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="text-center fade-in" style="margin-bottom:48px;">
+            <div class="eyebrow-label center"><i class="fa fa-star"/> <span data-ar="لماذا Chinbull" data-en="Why Chinbull">لماذا Chinbull</span></div>
+            <h2 class="section-h mt-8"><span data-ar="ما يميز " data-en="What Sets ">ما يميز </span><span class="red">Chinbull</span></h2>
+          </div>
+          <div class="hma-grid-4">
+            <div class="hma-card fade-in fade-in-d1" style="padding:24px;text-align:center;" >
+              <div style="width:52px;height:52px;background:rgba(200,153,42,.1);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;color:var(--gold);"><i class="fa fa-shield"/></div>
+              <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;" data-ar="لا يتشقق أبداً" data-en="Never Cracks">لا يتشقق أبداً</h3>
+              <p style="font-size:12px;color:var(--ink-mid);line-height:1.7;" data-ar="بورسلين عالي الكثافة لا يتشقق أو يتكسر بسهولة" data-en="High-density porcelain that never cracks or chips easily">بورسلين عالي الكثافة لا يتشقق أو يتكسر بسهولة</p>
+            </div>
+            <div class="hma-card fade-in fade-in-d2" style="padding:24px;text-align:center;" >
+              <div style="width:52px;height:52px;background:var(--brand-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;color:var(--brand);"><i class="fa fa-thermometer-full"/></div>
+              <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;" data-ar="مقاوم للحرارة" data-en="Heat Resistant">مقاوم للحرارة</h3>
+              <p style="font-size:12px;color:var(--ink-mid);line-height:1.7;" data-ar="يتحمل درجات حرارة عالية دون تشوه أو تشقق" data-en="Withstands high temperatures without warping or cracking">يتحمل درجات حرارة عالية دون تشوه</p>
+            </div>
+            <div class="hma-card fade-in fade-in-d3" style="padding:24px;text-align:center;" >
+              <div style="width:52px;height:52px;background:#D1FAE5;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;color:#059669;"><i class="fa fa-tint"/></div>
+              <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;" data-ar="آمن للغسالة" data-en="Dishwasher Safe">آمن للغسالة</h3>
+              <p style="font-size:12px;color:var(--ink-mid);line-height:1.7;" data-ar="مناسب لغسالة الأطباق الأوتوماتيكية بأمان تام" data-en="Suitable for automatic dishwashers with complete safety">مناسب لغسالة الأطباق الأوتوماتيكية</p>
+            </div>
+            <div class="hma-card fade-in fade-in-d4" style="padding:24px;text-align:center;" >
+              <div style="width:52px;height:52px;background:#DBEAFE;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:20px;color:#2563EB;"><i class="fa fa-certificate"/></div>
+              <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;" data-ar="معتمد أصلي" data-en="Authentic Certified">معتمد أصلي</h3>
+              <p style="font-size:12px;color:var(--ink-mid);line-height:1.7;" data-ar="وكالة رسمية معتمدة من الشركة الأم مباشرة" data-en="Officially certified agency directly from the parent company">وكالة رسمية معتمدة من الشركة الأم</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chinbull Products -->
+      <t t-if="cb_products">
+        <section class="hma-section-sm" style="background:var(--surface2);">
+          <div class="hma-container">
+            <div class="text-center fade-in" style="margin-bottom:40px;">
+              <div class="eyebrow-label center"><i class="fa fa-th-large"/> <span data-ar="منتجات Chinbull" data-en="Chinbull Products">منتجات Chinbull</span></div>
+              <h2 class="section-h mt-8" data-ar="تشكيلة Chinbull الحصرية" data-en="Chinbull Exclusive Range">تشكيلة Chinbull الحصرية</h2>
+            </div>
+            <div class="hma-grid-3">
+              <t t-foreach="cb_products" t-as="p">
+                <div class="prod-card dark-bg fade-in">
+                  <div class="prod-icon-wrap">
+                    <div class="prod-icon-box cb"><i t-att-class="p.icon"/></div>
+                    <span class="pill-cb">Chinbull</span>
+                  </div>
+                  <div class="prod-body">
+                    <div class="prod-cat gold">Chinbull حصري</div>
+                    <h3 class="prod-title" t-esc="p.name_ar"/>
+                    <p class="prod-desc" t-esc="p.desc_ar"/>
+                    <div class="prod-actions">
+                      <a t-attf-href="/products/#{p.id}" class="btn-primary" style="flex:1;justify-content:center;"><i class="fa fa-eye"/> <span data-ar="التفاصيل" data-en="Details">التفاصيل</span></a>
+                      <a t-attf-href="https://wa.me/#{p.wa_number}" class="btn-wa-cta" target="_blank" style="padding:10px 14px;flex:none;"><i class="fa fa-whatsapp"/></a>
+                    </div>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+        </section>
+      </t>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="hma-container">
+          <div class="cta-inner fade-in">
+            <h2 data-ar="احصل على منتجات Chinbull الأصلية" data-en="Get Authentic Chinbull Products">احصل على منتجات Chinbull الأصلية</h2>
+            <p data-ar="تواصل معنا الآن للاستفسار عن التوفر والأسعار" data-en="Contact us now to inquire about availability and prices">تواصل معنا الآن للاستفسار عن التوفر والأسعار</p>
+            <div class="cta-buttons">
+              <a href="https://wa.me/249912390982" class="btn-cta-white" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="تواصل واتساب" data-en="WhatsApp Us">تواصل واتساب</span></a>
+              <a href="tel:6775" class="btn-cta-outline"><i class="fa fa-phone-square"/> <span>6775</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+<!-- ================================================================
+     WHOLESALE PAGE
+     ================================================================ -->
+<template id="page_wholesale" name="HMA Wholesale">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | الجملة'"/>
+    <div class="hma-website">
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="الجملة" data-en="Wholesale">الجملة</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-handshake-o"/> <span data-ar="بيع الجملة" data-en="Wholesale Sales">بيع الجملة</span></div>
+          <h1><span data-ar="أسعار " data-en="Wholesale ">أسعار </span><span class="accent" data-ar="الجملة" data-en="Prices">الجملة</span></h1>
+          <p class="hero-desc" data-ar="نقدم أفضل أسعار الجملة للتجار والموزعين وأصحاب المحلات والمطاعم والفنادق في كل أنحاء السودان." data-en="We offer the best wholesale prices for traders, distributors, shop owners, restaurants, and hotels across all of Sudan.">نقدم أفضل أسعار الجملة للتجار والموزعين وأصحاب المحلات والمطاعم في السودان.</p>
+        </div>
+      </section>
+
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-2">
+            <div class="fade-in">
+              <div class="eyebrow-label"><i class="fa fa-tags"/> <span data-ar="مزايا الجملة" data-en="Wholesale Benefits">مزايا الجملة</span></div>
+              <h2 class="section-h mt-8"><span data-ar="لماذا تشتري " data-en="Why Buy ">لماذا تشتري </span><span class="red" data-ar="بالجملة منا؟" data-en="Wholesale from Us?">بالجملة منا؟</span></h2>
+              <div class="feat-list" style="margin-top:24px;">
+                <div class="feat-item"><i class="fa fa-percent"/> <span data-ar="خصومات خاصة على الكميات الكبيرة" data-en="Special discounts on large quantities">خصومات خاصة على الكميات الكبيرة</span></div>
+                <div class="feat-item"><i class="fa fa-truck"/> <span data-ar="توصيل للمحافظات بالتنسيق" data-en="Delivery to provinces by arrangement">توصيل للمحافظات بالتنسيق</span></div>
+                <div class="feat-item"><i class="fa fa-certificate"/> <span data-ar="منتجات أصلية مع ضمان الجودة" data-en="Authentic products with quality guarantee">منتجات أصلية مع ضمان الجودة</span></div>
+                <div class="feat-item"><i class="fa fa-headphones"/> <span data-ar="مندوب مبيعات مخصص لكل عميل" data-en="Dedicated sales representative for each client">مندوب مبيعات مخصص لكل عميل</span></div>
+                <div class="feat-item"><i class="fa fa-refresh"/> <span data-ar="إمكانية الإرجاع والاستبدال للمنتجات المعيبة" data-en="Return and replacement option for defective products">إمكانية الإرجاع والاستبدال</span></div>
+              </div>
+              <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="https://wa.me/249912390982" class="btn-wa-cta" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="استفسر الآن" data-en="Inquire Now">استفسر الآن</span></a>
+                <a href="tel:6775" class="btn-dark"><i class="fa fa-phone"/> <span>6775</span></a>
+              </div>
+            </div>
+            <div class="fade-in fade-in-d2">
+              <div class="hma-grid-2" style="gap:16px;">
+                <div style="background:var(--dark);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;text-align:center;">
+                  <i class="fa fa-store" style="font-size:28px;color:var(--brand);margin-bottom:12px;display:block;"/>
+                  <h4 style="color:#fff;font-weight:800;margin-bottom:6px;" data-ar="التجار وأصحاب المحلات" data-en="Traders &amp; Shop Owners">التجار وأصحاب المحلات</h4>
+                  <p style="font-size:12px;color:rgba(255,255,255,.45);" data-ar="أسعار منافسة لإعادة البيع" data-en="Competitive prices for resale">أسعار منافسة لإعادة البيع</p>
+                </div>
+                <div style="background:var(--dark);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;text-align:center;">
+                  <i class="fa fa-utensils" style="font-size:28px;color:var(--gold);margin-bottom:12px;display:block;"/>
+                  <h4 style="color:#fff;font-weight:800;margin-bottom:6px;" data-ar="المطاعم والفنادق" data-en="Restaurants &amp; Hotels">المطاعم والفنادق</h4>
+                  <p style="font-size:12px;color:rgba(255,255,255,.45);" data-ar="أطقم مخصصة بكميات كبيرة" data-en="Custom sets in large quantities">أطقم مخصصة بكميات كبيرة</p>
+                </div>
+                <div style="background:var(--dark);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;text-align:center;">
+                  <i class="fa fa-building" style="font-size:28px;color:#25D366;margin-bottom:12px;display:block;"/>
+                  <h4 style="color:#fff;font-weight:800;margin-bottom:6px;" data-ar="المؤسسات والشركات" data-en="Institutions &amp; Companies">المؤسسات والشركات</h4>
+                  <p style="font-size:12px;color:rgba(255,255,255,.45);" data-ar="توريد دوري بعقود مخصصة" data-en="Periodic supply with custom contracts">توريد دوري بعقود مخصصة</p>
+                </div>
+                <div style="background:var(--dark);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;text-align:center;">
+                  <i class="fa fa-globe" style="font-size:28px;color:#2563EB;margin-bottom:12px;display:block;"/>
+                  <h4 style="color:#fff;font-weight:800;margin-bottom:6px;" data-ar="الموزعون الإقليميون" data-en="Regional Distributors">الموزعون الإقليميون</h4>
+                  <p style="font-size:12px;color:rgba(255,255,255,.45);" data-ar="تغطية جميع ولايات السودان" data-en="Coverage across all Sudanese states">تغطية جميع ولايات السودان</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WA Strip -->
+      <div class="wa-strip">
+        <div class="hma-container">
+          <div class="wa-strip-inner">
+            <span class="wa-label"><i class="fa fa-whatsapp" style="color:#25D366;"/> <span data-ar="مبيعات الجملة:" data-en="Wholesale Sales:">مبيعات الجملة:</span></span>
+            <a href="https://wa.me/249912390982" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0912 390 982</a>
+            <a href="https://wa.me/249910562488" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0910 562 488</a>
+            <a href="https://wa.me/249913002734" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0913 002 734</a>
+            <a href="https://wa.me/249913002757" class="wa-num" target="_blank"><i class="fa fa-whatsapp"/> 0913 002 757</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </t>
+</template>
+
+</odoo>

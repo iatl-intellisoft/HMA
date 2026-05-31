@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 1 — Traditional Kettles (Tea)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_kettles" model="hma.product">
+    <field name="name_ar">كفتيرات مقاسات مختلفة</field>
+    <field name="name_en">Traditional Kettles (Multiple Sizes)</field>
+    <field name="category">tea</field>
+    <field name="cat_label_ar">شاي وقهوة</field>
+    <field name="cat_label_en">Tea &amp; Coffee</field>
+    <field name="icon">fa fa-coffee</field>
+    <field name="badge">wholesale</field>
+    <field name="desc_ar">كفتيرات ذهبية اللون بمقاسات متعددة — تصميم سوداني تقليدي أصيل بخامات ممتازة ومتانة عالية.</field>
+    <field name="desc_en">Golden-colored traditional kettles in multiple sizes — authentic Sudanese design with premium materials and exceptional durability.</field>
+    <field name="full_desc_ar">الكفتيرات السودانية التقليدية من إتش أم أيه تجمع بين الأصالة والجودة العالية. مصنوعة من مواد ممتازة مع تشطيب ذهبي لامع يضيف لمسة جمالية رفيعة. متوفرة بمقاسات متعددة تناسب مختلف الاحتياجات، سواء للأسرة الصغيرة أو الاستخدام التجاري.</field>
+    <field name="full_desc_en">HMA's traditional Sudanese kettles combine heritage craftsmanship with high quality. Made from premium materials with a gleaming golden finish. Available in multiple sizes to suit various needs, from small family use to commercial settings.</field>
+    <field name="avail_label_ar">متاح بالجملة</field>
+    <field name="avail_label_en">Available Wholesale</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">10</field>
+  </record>
+  <record id="spec_kettles_1" model="hma.product.spec">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-ruler</field>
+    <field name="label_ar">مقاسات متعددة</field>
+    <field name="label_en">Multiple Sizes</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="spec_kettles_2" model="hma.product.spec">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-paint-brush</field>
+    <field name="label_ar">ذهبي لامع</field>
+    <field name="label_en">Golden Finish</field>
+    <field name="sequence">2</field>
+  </record>
+  <record id="spec_kettles_3" model="hma.product.spec">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-th-large</field>
+    <field name="label_ar">طقم متكامل</field>
+    <field name="label_en">Complete Set</field>
+    <field name="sequence">3</field>
+  </record>
+  <record id="spec_kettles_4" model="hma.product.spec">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-shield</field>
+    <field name="label_ar">خامات ممتازة</field>
+    <field name="label_en">Premium Materials</field>
+    <field name="sequence">4</field>
+  </record>
+  <record id="feat_kettles_1" model="hma.product.feature">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-star</field>
+    <field name="label_ar">تصميم سوداني تقليدي أصيل</field>
+    <field name="label_en">Authentic traditional Sudanese design</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="feat_kettles_2" model="hma.product.feature">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-tint</field>
+    <field name="label_ar">فوهة صب دقيقة بدون تسرب</field>
+    <field name="label_en">Precision spout — no spills</field>
+    <field name="sequence">2</field>
+  </record>
+  <record id="feat_kettles_3" model="hma.product.feature">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-hand-o-up</field>
+    <field name="label_ar">مقبض مريح ومحكم</field>
+    <field name="label_en">Comfortable, secure grip handle</field>
+    <field name="sequence">3</field>
+  </record>
+  <record id="feat_kettles_4" model="hma.product.feature">
+    <field name="product_id" ref="product_kettles"/>
+    <field name="icon">fa fa-boxes</field>
+    <field name="label_ar">متوفر بالجملة لأصحاب المشاريع</field>
+    <field name="label_en">Available wholesale for businesses</field>
+    <field name="sequence">4</field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 2 — Pressure Cooker (Cookware)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_pressure_cooker" model="hma.product">
+    <field name="name_ar">حلة ضغط بادريق</field>
+    <field name="name_en">Padrig Pressure Cooker</field>
+    <field name="category">cookware</field>
+    <field name="cat_label_ar">أطقم الطهي</field>
+    <field name="cat_label_en">Cookware</field>
+    <field name="icon">fa fa-fire</field>
+    <field name="badge">new</field>
+    <field name="badge_label_ar">الأكثر طلباً</field>
+    <field name="badge_label_en">Best Seller</field>
+    <field name="desc_ar">حلة ضغط فولاذية عالية الجودة — تقنية الضغط العالي لطهي أسرع وأشهى مع أمان تام.</field>
+    <field name="desc_en">High-quality steel pressure cooker — advanced high-pressure technology for faster, more flavorful cooking with complete safety.</field>
+    <field name="full_desc_ar">حلة ضغط بادريق الفولاذية من إتش أم أيه توفر تجربة طهي متقدمة بتقنية الضغط العالي التي تقلل وقت الطهي بنسبة تصل إلى ٧٠٪. مزودة بنظام أمان متعدد المستويات يشمل صمام تنفيس الضغط وقفل الغطاء الآمن.</field>
+    <field name="full_desc_en">HMA's Padrig steel pressure cooker offers an advanced cooking experience with high-pressure technology that reduces cooking time by up to 70%. Equipped with a multi-level safety system including a pressure relief valve and secure lid lock.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">20</field>
+  </record>
+  <record id="spec_pc_1" model="hma.product.spec"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-shield</field><field name="label_ar">ستانلس ستيل</field><field name="label_en">Stainless Steel</field><field name="sequence">1</field></record>
+  <record id="spec_pc_2" model="hma.product.spec"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-tachometer</field><field name="label_ar">ضغط عالي</field><field name="label_en">High Pressure</field><field name="sequence">2</field></record>
+  <record id="spec_pc_3" model="hma.product.spec"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-certificate</field><field name="label_ar">معتمد الجودة</field><field name="label_en">Quality Certified</field><field name="sequence">3</field></record>
+  <record id="spec_pc_4" model="hma.product.spec"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-lock</field><field name="label_ar">نظام أمان متعدد</field><field name="label_en">Multi-Safety System</field><field name="sequence">4</field></record>
+  <record id="feat_pc_1" model="hma.product.feature"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-bolt</field><field name="label_ar">تقليل وقت الطهي حتى ٧٠٪</field><field name="label_en">Reduces cooking time by up to 70%</field><field name="sequence">1</field></record>
+  <record id="feat_pc_2" model="hma.product.feature"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-shield</field><field name="label_ar">نظام أمان متعدد المستويات</field><field name="label_en">Multi-level safety system</field><field name="sequence">2</field></record>
+  <record id="feat_pc_3" model="hma.product.feature"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-leaf</field><field name="label_ar">حفظ القيمة الغذائية للطعام</field><field name="label_en">Preserves nutritional value</field><field name="sequence">3</field></record>
+  <record id="feat_pc_4" model="hma.product.feature"><field name="product_id" ref="product_pressure_cooker"/><field name="icon">fa fa-fire</field><field name="label_ar">مناسبة لجميع أنواع المواقد</field><field name="label_en">Suitable for all stove types</field><field name="sequence">4</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 3 — Kasalawi Patterned Cups (Tea)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_kasalawi_patterned" model="hma.product">
+    <field name="name_ar">فنجان كسلاوي مشجر</field>
+    <field name="name_en">Kasalawi Patterned Cups</field>
+    <field name="category">tea</field>
+    <field name="cat_label_ar">شاي وقهوة</field>
+    <field name="cat_label_en">Tea &amp; Coffee</field>
+    <field name="icon">fa fa-coffee</field>
+    <field name="badge">wholesale</field>
+    <field name="desc_ar">فناجين كسلاوية بنقشات زهرية — تراث سوداني بجودة بورسلين فاخرة.</field>
+    <field name="desc_en">Kasalawi cups with floral patterns — Sudanese heritage in premium porcelain quality.</field>
+    <field name="full_desc_ar">فناجين الكسلاوي المشجرة من إتش أم أيه تجسد التراث السوداني الأصيل في أبهى صوره. مصنوعة من البورسلين الفاخر عالي الكثافة الذي يحافظ على حرارة المشروبات لفترة أطول. متوفرة بطقم ١٢ فنجان مع الأطباق المتطابقة.</field>
+    <field name="full_desc_en">HMA's patterned Kasalawi cups embody authentic Sudanese heritage in its finest form. Made from high-density premium porcelain that keeps beverages warm longer. Available in a 12-cup set with matching saucers.</field>
+    <field name="avail_label_ar">متاح بالجملة</field>
+    <field name="avail_label_en">Available Wholesale</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">30</field>
+  </record>
+  <record id="spec_kp_1" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-circle</field><field name="label_ar">بورسلين فاخر</field><field name="label_en">Premium Porcelain</field><field name="sequence">1</field></record>
+  <record id="spec_kp_2" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-paint-brush</field><field name="label_ar">نقش زهري</field><field name="label_en">Floral Pattern</field><field name="sequence">2</field></record>
+  <record id="spec_kp_3" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-th</field><field name="label_ar">١٢ قطعة + أطباق</field><field name="label_en">12 Cups + Saucers</field><field name="sequence">3</field></record>
+  <record id="spec_kp_4" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-thermometer</field><field name="label_ar">مقاوم للحرارة</field><field name="label_en">Heat Resistant</field><field name="sequence">4</field></record>
+  <record id="feat_kp_1" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-paint-brush</field><field name="label_ar">نقشات زهرية يدوية راقية</field><field name="label_en">Delicate hand-painted floral patterns</field><field name="sequence">1</field></record>
+  <record id="feat_kp_2" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-thermometer-full</field><field name="label_ar">يحافظ على حرارة المشروبات</field><field name="label_en">Keeps beverages warm longer</field><field name="sequence">2</field></record>
+  <record id="feat_kp_3" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-shield</field><field name="label_ar">لا يتشقق ولا ينكسر بسهولة</field><field name="label_en">Crack and chip resistant</field><field name="sequence">3</field></record>
+  <record id="feat_kp_4" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_patterned"/><field name="icon">fa fa-boxes</field><field name="label_ar">متوفر بالجملة</field><field name="label_en">Available wholesale</field><field name="sequence">4</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 4 — Kasalawi Plain Cups (Tea)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_kasalawi_plain" model="hma.product">
+    <field name="name_ar">فنجان كسلاوي سادة</field>
+    <field name="name_en">Kasalawi Plain Cups</field>
+    <field name="category">tea</field>
+    <field name="cat_label_ar">شاي وقهوة</field>
+    <field name="cat_label_en">Tea &amp; Coffee</field>
+    <field name="icon">fa fa-coffee</field>
+    <field name="desc_ar">فناجين بورسلين بيضاء سادة — جودة ممتازة للاستخدام اليومي والمناسبات.</field>
+    <field name="desc_en">Plain white porcelain cups — premium quality for daily use and occasions.</field>
+    <field name="full_desc_ar">فناجين الكسلاوي السادة من إتش أم أيه توفر نقاء وبساطة أنيقة تناسب كل المناسبات. مصنوعة من البورسلين الأبيض الناصع عالي الجودة. طقم ١٢ فنجان مع الأطباق المتطابقة، سهلة التنظيف ومقاومة للبقع.</field>
+    <field name="full_desc_en">HMA's plain Kasalawi cups offer pure, elegant simplicity. Made from brilliant white high-quality porcelain. 12-cup set with matching saucers, easy to clean and stain resistant.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">40</field>
+  </record>
+  <record id="spec_ks_1" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_plain"/><field name="icon">fa fa-circle</field><field name="label_ar">بورسلين أبيض</field><field name="label_en">White Porcelain</field><field name="sequence">1</field></record>
+  <record id="spec_ks_2" model="hma.product.spec"><field name="product_id" ref="product_kasalawi_plain"/><field name="icon">fa fa-th</field><field name="label_ar">١٢ قطعة + أطباق</field><field name="label_en">12 Cups + Saucers</field><field name="sequence">2</field></record>
+  <record id="feat_ks_1" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_plain"/><field name="icon">fa fa-star</field><field name="label_ar">بساطة أنيقة متعددة الاستخدام</field><field name="label_en">Elegant simplicity — versatile use</field><field name="sequence">1</field></record>
+  <record id="feat_ks_2" model="hma.product.feature"><field name="product_id" ref="product_kasalawi_plain"/><field name="icon">fa fa-soap</field><field name="label_ar">سهلة التنظيف ومقاومة للبقع</field><field name="label_en">Easy to clean and stain resistant</field><field name="sequence">2</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 5 — Non-stick Cookware Set (Cookware)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_nonstick" model="hma.product">
+    <field name="name_ar">طقم طهي تفلون لا يلتصق</field>
+    <field name="name_en">Non-stick Teflon Cookware Set</field>
+    <field name="category">cookware</field>
+    <field name="cat_label_ar">أطقم الطهي</field>
+    <field name="cat_label_en">Cookware</field>
+    <field name="icon">fa fa-fire</field>
+    <field name="badge">wholesale</field>
+    <field name="desc_ar">أطقم طهي بطلاء تفلون عالي الجودة — لا يلتصق الطعام ويسهل التنظيف.</field>
+    <field name="desc_en">Premium Teflon-coated cookware sets — food won't stick and cleaning is effortless.</field>
+    <field name="full_desc_ar">أطقم الطهي التفلون من إتش أم أيه مثالية للمطبخ السوداني. الطلاء عالي الجودة يمنع الالتصاق ويتيح الطهي بكمية أقل من الزيت. هيكل الألومنيوم المقوى يوزع الحرارة بالتساوي ويضمن نتائج طهي مثالية.</field>
+    <field name="full_desc_en">HMA's Teflon cookware sets are perfect for the Sudanese kitchen. The high-quality coating prevents sticking and allows cooking with less oil. The reinforced aluminum body distributes heat evenly for perfect cooking results.</field>
+    <field name="avail_label_ar">متاح بالجملة</field>
+    <field name="avail_label_en">Available Wholesale</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">50</field>
+  </record>
+  <record id="spec_ns_1" model="hma.product.spec"><field name="product_id" ref="product_nonstick"/><field name="icon">fa fa-circle</field><field name="label_ar">تفلون عالي الجودة</field><field name="label_en">Premium Teflon</field><field name="sequence">1</field></record>
+  <record id="spec_ns_2" model="hma.product.spec"><field name="product_id" ref="product_nonstick"/><field name="icon">fa fa-th</field><field name="label_ar">طقم متكامل</field><field name="label_en">Complete Set</field><field name="sequence">2</field></record>
+  <record id="feat_ns_1" model="hma.product.feature"><field name="product_id" ref="product_nonstick"/><field name="icon">fa fa-check</field><field name="label_ar">لا يلتصق الطعام — سهل التنظيف</field><field name="label_en">Non-stick — easy to clean</field><field name="sequence">1</field></record>
+  <record id="feat_ns_2" model="hma.product.feature"><field name="product_id" ref="product_nonstick"/><field name="icon">fa fa-fire</field><field name="label_ar">توزيع متساوٍ للحرارة</field><field name="label_en">Even heat distribution</field><field name="sequence">2</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 6 — Food Storage Containers (Storage)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_storage" model="hma.product">
+    <field name="name_ar">علب تخزين الطعام</field>
+    <field name="name_en">Food Storage Containers</field>
+    <field name="category">storage</field>
+    <field name="cat_label_ar">التخزين</field>
+    <field name="cat_label_en">Storage</field>
+    <field name="icon">fa fa-archive</field>
+    <field name="desc_ar">علب بلاستيكية محكمة الإغلاق لحفظ الطعام — آمنة للثلاجة والمايكروويف.</field>
+    <field name="desc_en">Airtight plastic containers for food storage — safe for fridge and microwave.</field>
+    <field name="full_desc_ar">علب تخزين الطعام من إتش أم أيه مصنوعة من البلاستيك الغذائي عالي الجودة الخالي من BPA. الإغلاق المحكم يحفظ الطعام طازجاً لفترة أطول ويمنع تسرب الروائح. متوفرة بمجموعات متعددة المقاسات.</field>
+    <field name="full_desc_en">HMA's food storage containers are made from high-quality BPA-free food-grade plastic. The airtight seal keeps food fresh longer and prevents odor leakage. Available in multi-size sets.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">60</field>
+  </record>
+  <record id="spec_st_1" model="hma.product.spec"><field name="product_id" ref="product_storage"/><field name="icon">fa fa-lock</field><field name="label_ar">إغلاق محكم</field><field name="label_en">Airtight Seal</field><field name="sequence">1</field></record>
+  <record id="spec_st_2" model="hma.product.spec"><field name="product_id" ref="product_storage"/><field name="icon">fa fa-microchip</field><field name="label_ar">آمن للمايكروويف</field><field name="label_en">Microwave Safe</field><field name="sequence">2</field></record>
+  <record id="feat_st_1" model="hma.product.feature"><field name="product_id" ref="product_storage"/><field name="icon">fa fa-check</field><field name="label_ar">بلاستيك غذائي خالٍ من BPA</field><field name="label_en">BPA-free food-grade plastic</field><field name="sequence">1</field></record>
+  <record id="feat_st_2" model="hma.product.feature"><field name="product_id" ref="product_storage"/><field name="icon">fa fa-snowflake-o</field><field name="label_ar">آمن للثلاجة والفريزر</field><field name="label_en">Fridge and freezer safe</field><field name="sequence">2</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 7 — Serving Trays (Dinnerware)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_trays" model="hma.product">
+    <field name="name_ar">صواني تقديم ستانلس</field>
+    <field name="name_en">Stainless Steel Serving Trays</field>
+    <field name="category">dinnerware</field>
+    <field name="cat_label_ar">أطقم السفرة</field>
+    <field name="cat_label_en">Dinnerware</field>
+    <field name="icon">fa fa-circle-o</field>
+    <field name="desc_ar">صواني تقديم ستانلس ستيل لامعة — متينة وأنيقة لكل مناسبة.</field>
+    <field name="desc_en">Shiny stainless steel serving trays — durable and elegant for every occasion.</field>
+    <field name="full_desc_ar">صواني التقديم الستانلس ستيل من إتش أم أيه تجمع بين المتانة والأناقة. مصنوعة من الفولاذ المقاوم للصدأ عالي الجودة الذي يحافظ على لمعانه لفترات طويلة. متوفرة بمقاسات متعددة ومناسبة لجميع المناسبات.</field>
+    <field name="full_desc_en">HMA's stainless steel serving trays combine durability with elegance. Made from high-quality stainless steel that maintains its shine for long periods. Available in multiple sizes for all occasions.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">70</field>
+  </record>
+  <record id="spec_tr_1" model="hma.product.spec"><field name="product_id" ref="product_trays"/><field name="icon">fa fa-shield</field><field name="label_ar">ستانلس ستيل</field><field name="label_en">Stainless Steel</field><field name="sequence">1</field></record>
+  <record id="spec_tr_2" model="hma.product.spec"><field name="product_id" ref="product_trays"/><field name="icon">fa fa-ruler</field><field name="label_ar">مقاسات متعددة</field><field name="label_en">Multiple Sizes</field><field name="sequence">2</field></record>
+  <record id="feat_tr_1" model="hma.product.feature"><field name="product_id" ref="product_trays"/><field name="icon">fa fa-star</field><field name="label_ar">لمعان طويل الأمد</field><field name="label_en">Long-lasting shine</field><field name="sequence">1</field></record>
+  <record id="feat_tr_2" model="hma.product.feature"><field name="product_id" ref="product_trays"/><field name="icon">fa fa-soap</field><field name="label_ar">سهل التنظيف</field><field name="label_en">Easy to clean</field><field name="sequence">2</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 8 — Mixing Bowls Set (Cookware)
+  ═══════════════════════════════════════════════ -->
+  <record id="product_bowls" model="hma.product">
+    <field name="name_ar">طقم أوعية تحضير</field>
+    <field name="name_en">Mixing Bowls Set</field>
+    <field name="category">cookware</field>
+    <field name="cat_label_ar">أطقم الطهي</field>
+    <field name="cat_label_en">Cookware</field>
+    <field name="icon">fa fa-circle-o</field>
+    <field name="desc_ar">طقم أوعية تحضير ستانلس ستيل — مقاسات متدرجة لكل احتياجات المطبخ.</field>
+    <field name="desc_en">Stainless steel mixing bowls set — graduated sizes for all kitchen needs.</field>
+    <field name="full_desc_ar">طقم أوعية التحضير من إتش أم أيه مصنوع من الستانلس ستيل الغذائي عالي الجودة. يشمل الطقم ٥ أوعية بمقاسات متدرجة تناسب جميع احتياجات الطهي والخبز والتحضير. الحواف المقوسة تسهل السكب بدقة.</field>
+    <field name="full_desc_en">HMA's mixing bowls set is made from high-quality food-grade stainless steel. The set includes 5 bowls in graduated sizes for all cooking, baking, and preparation needs. Rolled edges make precise pouring easy.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">80</field>
+  </record>
+  <record id="spec_bw_1" model="hma.product.spec"><field name="product_id" ref="product_bowls"/><field name="icon">fa fa-shield</field><field name="label_ar">ستانلس ستيل غذائي</field><field name="label_en">Food-grade Stainless</field><field name="sequence">1</field></record>
+  <record id="spec_bw_2" model="hma.product.spec"><field name="product_id" ref="product_bowls"/><field name="icon">fa fa-th</field><field name="label_ar">٥ أوعية متدرجة</field><field name="label_en">5 Graduated Bowls</field><field name="sequence">2</field></record>
+  <record id="feat_bw_1" model="hma.product.feature"><field name="product_id" ref="product_bowls"/><field name="icon">fa fa-check</field><field name="label_ar">حواف مقوسة للسكب الدقيق</field><field name="label_en">Rolled edges for precise pouring</field><field name="sequence">1</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 9 — Chinbull 58-piece Dinner Set
+  ═══════════════════════════════════════════════ -->
+  <record id="product_chinbull_dinner" model="hma.product">
+    <field name="name_ar">Chinbull طقم عشاء ٥٨ قطعة</field>
+    <field name="name_en">Chinbull 58-Piece Dinner Set</field>
+    <field name="category">chinbull</field>
+    <field name="cat_label_ar">Chinbull حصري</field>
+    <field name="cat_label_en">Chinbull Exclusive</field>
+    <field name="icon">fa fa-spoon</field>
+    <field name="badge">cb</field>
+    <field name="dark_bg">True</field>
+    <field name="desc_ar">طقم عشاء بورسلين فاخر ٥٨ قطعة — الخيار الأمثل للمناسبات الراقية والضيافة المميزة.</field>
+    <field name="desc_en">Premium 58-piece porcelain dinner set — the ideal choice for elegant occasions and distinguished hospitality.</field>
+    <field name="full_desc_ar">طقم عشاء Chinbull الفاخر من إتش أم أيه يضم ٥٨ قطعة من البورسلين عالي الكثافة. يشمل الطقم أطباق الطعام الرئيسية، الحساء، التقديم، وأكواب الماء. لا يتشقق، مقاوم للحرارة الشديدة، وآمن لغسالة الأطباق. منتج أصلي معتمد حصرياً من إتش أم أيه في السودان.</field>
+    <field name="full_desc_en">Chinbull's premium dinner set from HMA includes 58 pieces of high-density porcelain. The set includes main dinner plates, soup bowls, serving plates, and water cups. Crack-resistant, high heat resistant, and dishwasher safe. Authentic certified product exclusively from HMA in Sudan.</field>
+    <field name="avail_label_ar">أصلي معتمد — متوفر</field>
+    <field name="avail_label_en">Authentic Certified — In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">90</field>
+  </record>
+  <record id="spec_cbd_1" model="hma.product.spec"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-circle</field><field name="label_ar">بورسلين عالي الكثافة</field><field name="label_en">High-Density Porcelain</field><field name="sequence">1</field></record>
+  <record id="spec_cbd_2" model="hma.product.spec"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-th</field><field name="label_ar">٥٨ قطعة كاملة</field><field name="label_en">58 Full Pieces</field><field name="sequence">2</field></record>
+  <record id="spec_cbd_3" model="hma.product.spec"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-thermometer</field><field name="label_ar">مقاوم للحرارة</field><field name="label_en">Heat Resistant</field><field name="sequence">3</field></record>
+  <record id="spec_cbd_4" model="hma.product.spec"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-certificate</field><field name="label_ar">ضمان الأصالة</field><field name="label_en">Authenticity Guarantee</field><field name="sequence">4</field></record>
+  <record id="feat_cbd_1" model="hma.product.feature"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-certificate</field><field name="label_ar">منتج أصلي معتمد من Chinbull</field><field name="label_en">Authentic Chinbull certified product</field><field name="sequence">1</field></record>
+  <record id="feat_cbd_2" model="hma.product.feature"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-shield</field><field name="label_ar">لا يتشقق — متانة طويلة الأمد</field><field name="label_en">Crack-resistant — long-lasting durability</field><field name="sequence">2</field></record>
+  <record id="feat_cbd_3" model="hma.product.feature"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-tint</field><field name="label_ar">مناسب لغسالة الأطباق</field><field name="label_en">Dishwasher safe</field><field name="sequence">3</field></record>
+  <record id="feat_cbd_4" model="hma.product.feature"><field name="product_id" ref="product_chinbull_dinner"/><field name="icon">fa fa-fire</field><field name="label_ar">مقاوم للحرارة الشديدة</field><field name="label_en">High heat resistant</field><field name="sequence">4</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 10 — Chinbull Tea & Coffee Set
+  ═══════════════════════════════════════════════ -->
+  <record id="product_chinbull_tea" model="hma.product">
+    <field name="name_ar">Chinbull طقم شاي وقهوة</field>
+    <field name="name_en">Chinbull Tea &amp; Coffee Set</field>
+    <field name="category">chinbull</field>
+    <field name="cat_label_ar">Chinbull حصري</field>
+    <field name="cat_label_en">Chinbull Exclusive</field>
+    <field name="icon">fa fa-coffee</field>
+    <field name="badge">cb</field>
+    <field name="dark_bg">True</field>
+    <field name="desc_ar">طقم شاي وقهوة بورسلين فاخر بتصاميم أنيقة — الخيار الراقي للمناسبات والضيافة.</field>
+    <field name="desc_en">Premium porcelain tea and coffee set with elegant designs — the refined choice for occasions and hospitality.</field>
+    <field name="full_desc_ar">طقم الشاي والقهوة من Chinbull عبر إتش أم أيه يضع معياراً جديداً للضيافة الراقية. مصنوع من البورسلين الناعم الفاخر بجودة استثنائية. كل قطعة مزودة بتصميم أنيق ومتوازن يضيف لمسة جمالية لمائدة القهوة أو الشاي.</field>
+    <field name="full_desc_en">The Chinbull tea and coffee set from HMA sets a new standard for refined hospitality. Made from smooth premium porcelain with exceptional quality. Each piece features an elegant, balanced design that adds an aesthetic touch to any coffee or tea setting.</field>
+    <field name="avail_label_ar">أصلي معتمد — متوفر</field>
+    <field name="avail_label_en">Authentic Certified — In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">100</field>
+  </record>
+  <record id="spec_cbt_1" model="hma.product.spec"><field name="product_id" ref="product_chinbull_tea"/><field name="icon">fa fa-circle</field><field name="label_ar">بورسلين ناعم فاخر</field><field name="label_en">Smooth Premium Porcelain</field><field name="sequence">1</field></record>
+  <record id="spec_cbt_2" model="hma.product.spec"><field name="product_id" ref="product_chinbull_tea"/><field name="icon">fa fa-star</field><field name="label_ar">تصميم فاخر أنيق</field><field name="label_en">Elegant Luxury Design</field><field name="sequence">2</field></record>
+  <record id="feat_cbt_1" model="hma.product.feature"><field name="product_id" ref="product_chinbull_tea"/><field name="icon">fa fa-gem</field><field name="label_ar">جودة استثنائية في كل تفصيل</field><field name="label_en">Exceptional quality in every detail</field><field name="sequence">1</field></record>
+  <record id="feat_cbt_2" model="hma.product.feature"><field name="product_id" ref="product_chinbull_tea"/><field name="icon">fa fa-shield</field><field name="label_ar">مقاوم للتشقق والكسر</field><field name="label_en">Crack and chip resistant</field><field name="sequence">2</field></record>
+  <record id="feat_cbt_3" model="hma.product.feature"><field name="product_id" ref="product_chinbull_tea"/><field name="icon">fa fa-tint</field><field name="label_ar">آمن للغسيل الآلي</field><field name="label_en">Dishwasher safe</field><field name="sequence">3</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 11 — Glass Dinnerware Sets
+  ═══════════════════════════════════════════════ -->
+  <record id="product_glass_dinnerware" model="hma.product">
+    <field name="name_ar">أطقم سفرة زجاج</field>
+    <field name="name_en">Glass Dinnerware Sets</field>
+    <field name="category">dinnerware</field>
+    <field name="cat_label_ar">أطقم السفرة</field>
+    <field name="cat_label_en">Dinnerware</field>
+    <field name="icon">fa fa-glass</field>
+    <field name="desc_ar">أطقم من الزجاج الشفاف عالي الجودة — أنيقة وشفافة لكل مناسبة.</field>
+    <field name="desc_en">High-quality clear glass tableware — elegant and transparent for every occasion.</field>
+    <field name="full_desc_ar">أطقم السفرة الزجاجية من إتش أم أيه تتميز بشفافيتها الكريستالية التي تبرز جمال المأكولات. مصنوعة من الزجاج المقوى الحراري الذي يتحمل تغيرات درجة الحرارة. التصميم الشفاف يجعلها مناسبة لكل المناسبات.</field>
+    <field name="full_desc_en">HMA's glass dinnerware sets feature crystal clarity that showcases the beauty of food. Made from heat-tempered glass that withstands temperature changes. The transparent design makes them suitable for all occasions.</field>
+    <field name="avail_label_ar">متوفر</field>
+    <field name="avail_label_en">In Stock</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">110</field>
+  </record>
+  <record id="spec_gd_1" model="hma.product.spec"><field name="product_id" ref="product_glass_dinnerware"/><field name="icon">fa fa-gem</field><field name="label_ar">زجاج مقوى حراري</field><field name="label_en">Heat-Tempered Glass</field><field name="sequence">1</field></record>
+  <record id="spec_gd_2" model="hma.product.spec"><field name="product_id" ref="product_glass_dinnerware"/><field name="icon">fa fa-eye</field><field name="label_ar">شفافية كريستالية</field><field name="label_en">Crystal Clarity</field><field name="sequence">2</field></record>
+  <record id="feat_gd_1" model="hma.product.feature"><field name="product_id" ref="product_glass_dinnerware"/><field name="icon">fa fa-gem</field><field name="label_ar">شفافية كريستالية راقية</field><field name="label_en">Premium crystal clarity</field><field name="sequence">1</field></record>
+  <record id="feat_gd_2" model="hma.product.feature"><field name="product_id" ref="product_glass_dinnerware"/><field name="icon">fa fa-tint</field><field name="label_ar">آمن للغسيل الآلي</field><field name="label_en">Dishwasher safe</field><field name="sequence">2</field></record>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT 12 — Ceramic Dinnerware Sets
+  ═══════════════════════════════════════════════ -->
+  <record id="product_ceramic_dinnerware" model="hma.product">
+    <field name="name_ar">أطقم سفرة سيراميك</field>
+    <field name="name_en">Ceramic Dinnerware Sets</field>
+    <field name="category">dinnerware</field>
+    <field name="cat_label_ar">أطقم السفرة</field>
+    <field name="cat_label_en">Dinnerware</field>
+    <field name="icon">fa fa-circle-o</field>
+    <field name="badge">wholesale</field>
+    <field name="desc_ar">أطقم سيراميك بألوان جميلة وتصاميم متنوعة — للاستخدام اليومي والمناسبات.</field>
+    <field name="desc_en">Ceramic sets in beautiful colors and varied designs — for daily use and occasions.</field>
+    <field name="full_desc_ar">أطقم السفرة السيراميكية من إتش أم أيه توفر مزيجاً مثالياً بين الجمال والوظيفية. مصنوعة من السيراميك عالي الجودة المطلي بألوان ثابتة لا تتغير مع الاستخدام المتكرر. آمنة للاستخدام في الميكروويف وغسالة الأطباق. متوفرة بالجملة للمطاعم والفنادق.</field>
+    <field name="full_desc_en">HMA's ceramic dinnerware sets offer a perfect blend of beauty and functionality. Made from high-quality ceramic with stable colors that don't change with repeated use. Microwave and dishwasher safe. Available wholesale for restaurants and hotels.</field>
+    <field name="avail_label_ar">متاح بالجملة</field>
+    <field name="avail_label_en">Available Wholesale</field>
+    <field name="available">True</field>
+    <field name="wa_number">249912390982</field>
+    <field name="sequence">120</field>
+  </record>
+  <record id="spec_cd_1" model="hma.product.spec"><field name="product_id" ref="product_ceramic_dinnerware"/><field name="icon">fa fa-paint-brush</field><field name="label_ar">سيراميك فاخر</field><field name="label_en">Premium Ceramic</field><field name="sequence">1</field></record>
+  <record id="spec_cd_2" model="hma.product.spec"><field name="product_id" ref="product_ceramic_dinnerware"/><field name="icon">fa fa-microchip</field><field name="label_ar">آمن للميكروويف</field><field name="label_en">Microwave Safe</field><field name="sequence">2</field></record>
+  <record id="spec_cd_3" model="hma.product.spec"><field name="product_id" ref="product_ceramic_dinnerware"/><field name="icon">fa fa-tint</field><field name="label_ar">آمن للغسيل الآلي</field><field name="label_en">Dishwasher Safe</field><field name="sequence">3</field></record>
+  <record id="feat_cd_1" model="hma.product.feature"><field name="product_id" ref="product_ceramic_dinnerware"/><field name="icon">fa fa-paint-brush</field><field name="label_ar">ألوان ثابتة لا تتغير مع الاستخدام</field><field name="label_en">Colors stay stable with repeated use</field><field name="sequence">1</field></record>
+  <record id="feat_cd_2" model="hma.product.feature"><field name="product_id" ref="product_ceramic_dinnerware"/><field name="icon">fa fa-boxes</field><field name="label_ar">متوفر بالجملة للمطاعم والفنادق</field><field name="label_en">Available wholesale for restaurants and hotels</field><field name="sequence">2</field></record>
+
+</data>
+</odoo>

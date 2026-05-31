@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ================================================================
+     LOCATION PAGE
+     ================================================================ -->
+<template id="page_location" name="HMA Location">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | موقعنا'"/>
+    <div class="hma-website">
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="موقعنا" data-en="Our Location">موقعنا</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Our Location">موقعنا</span></div>
+          <h1><span data-ar="زورونا في " data-en="Visit Us in ">زورونا في </span><span class="accent" data-ar="أمدرمان" data-en="Omdurman">أمدرمان</span></h1>
+          <p class="hero-desc" data-ar="نحن في قلب سوق أمدرمان — شارع الكنيسة، عمارة محمد حسن بشير. يسعدنا استقبالكم في متجرنا." data-en="We are in the heart of Omdurman Market — Church Street, Mohamed Hassan Bashir Building. We look forward to welcoming you.">نحن في قلب سوق أمدرمان — شارع الكنيسة، عمارة محمد حسن بشير.</p>
+        </div>
+      </section>
+
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-2">
+            <!-- Contact Info Cards -->
+            <div class="fade-in">
+              <div class="eyebrow-label"><i class="fa fa-info-circle"/> <span data-ar="معلومات الوصول" data-en="How to Reach Us">معلومات الوصول</span></div>
+              <h2 class="section-h mt-8" style="margin-bottom:28px;"><span data-ar="تفاصيل " data-en="Location ">تفاصيل </span><span class="red" data-ar="الموقع" data-en="Details">الموقع</span></h2>
+
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div class="hma-card" style="padding:20px 24px;">
+                  <div style="display:flex;align-items:flex-start;gap:14px;">
+                    <div style="width:44px;height:44px;background:var(--brand-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:var(--brand);"><i class="fa fa-map-marker"/></div>
+                    <div>
+                      <div style="font-size:12px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;" data-ar="العنوان" data-en="Address">العنوان</div>
+                      <div style="font-size:15px;font-weight:700;color:var(--ink);" data-ar="سوق أمدرمان — شارع الكنيسة" data-en="Omdurman Market — Church Street">سوق أمدرمان — شارع الكنيسة</div>
+                      <div style="font-size:13px;color:var(--ink-mid);margin-top:3px;" data-ar="عمارة محمد حسن بشير، الخرطوم، السودان" data-en="Mohamed Hassan Bashir Building, Khartoum, Sudan">عمارة محمد حسن بشير، الخرطوم، السودان</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hma-card" style="padding:20px 24px;">
+                  <div style="display:flex;align-items:flex-start;gap:14px;">
+                    <div style="width:44px;height:44px;background:var(--brand-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:var(--brand);"><i class="fa fa-phone-square"/></div>
+                    <div>
+                      <div style="font-size:12px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;" data-ar="الخط الساخن" data-en="Hotline">الخط الساخن</div>
+                      <a href="tel:6775" style="font-size:22px;font-weight:900;color:var(--ink);">6775</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hma-card" style="padding:20px 24px;">
+                  <div style="display:flex;align-items:flex-start;gap:14px;">
+                    <div style="width:44px;height:44px;background:#D1FAE5;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:#059669;"><i class="fa fa-whatsapp"/></div>
+                    <div>
+                      <div style="font-size:12px;font-weight:700;color:#059669;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;" data-ar="أرقام واتساب" data-en="WhatsApp Numbers">أرقام واتساب</div>
+                      <div style="display:flex;flex-direction:column;gap:6px;">
+                        <a href="https://wa.me/249912390982" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0912 390 982</a>
+                        <a href="https://wa.me/249910562488" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0910 562 488</a>
+                        <a href="https://wa.me/249910556266" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0910 556 266</a>
+                        <a href="https://wa.me/249910562352" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0910 562 352</a>
+                        <a href="https://wa.me/249122008736" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0122 008 736</a>
+                        <a href="https://wa.me/249913002734" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0913 002 734</a>
+                        <a href="https://wa.me/249913002757" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;"><i class="fa fa-whatsapp" style="color:#25D366;"/> 0913 002 757</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hma-card" style="padding:20px 24px;">
+                  <div style="display:flex;align-items:flex-start;gap:14px;">
+                    <div style="width:44px;height:44px;background:#DBEAFE;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:#2563EB;"><i class="fa fa-clock-o"/></div>
+                    <div>
+                      <div style="font-size:12px;font-weight:700;color:#2563EB;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;" data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</div>
+                      <div style="font-size:14px;font-weight:700;color:var(--ink);" data-ar="السبت — الخميس: ٨ص — ٩م" data-en="Saturday — Thursday: 8AM — 9PM">السبت — الخميس: ٨ص — ٩م</div>
+                      <div style="font-size:13px;color:var(--ink-mid);margin-top:4px;" data-ar="الجمعة: مغلق" data-en="Friday: Closed">الجمعة: مغلق</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hma-card" style="padding:20px 24px;">
+                  <div style="display:flex;align-items:flex-start;gap:14px;">
+                    <div style="width:44px;height:44px;background:var(--brand-light);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:var(--brand);"><i class="fa fa-envelope"/></div>
+                    <div>
+                      <div style="font-size:12px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</div>
+                      <a href="mailto:info@HMA.net" style="font-size:15px;font-weight:700;color:var(--ink);">info@HMA.net</a><br/>
+                      <a href="http://www.HMA.net" target="_blank" style="font-size:13px;color:var(--ink-mid);">www.HMA.net</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Map embed -->
+            <div class="fade-in fade-in-d2">
+              <div style="border-radius:var(--r-lg);overflow:hidden;border:1.5px solid var(--border);height:100%;min-height:500px;background:var(--surface2);display:flex;align-items:center;justify-content:center;">
+                <!-- Embed Google Maps — Omdurman Market area -->
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.8!2d32.4831!3d15.6435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTXCsDM4JzM2LjYiTiAzMsKwMjgnNTkuMiJF!5e0!3m2!1sar!2ssd!4v1700000000000!5m2!1sar!2ssd"
+                  width="100%" height="100%" style="border:0;min-height:500px;" allowfullscreen="1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"/>
+              </div>
+              <a href="https://maps.google.com/?q=Omdurman+Market+Sudan" target="_blank" class="btn-primary" style="margin-top:16px;justify-content:center;width:100%;">
+                <i class="fa fa-map-marker"/> <span data-ar="افتح في خرائط Google" data-en="Open in Google Maps">افتح في خرائط Google</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+
+<!-- ================================================================
+     CONTACT PAGE
+     ================================================================ -->
+<template id="page_contact" name="HMA Contact">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | تواصل معنا'"/>
+    <div class="hma-website">
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-envelope"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></div>
+          <h1><span data-ar="نحن " data-en="We're ">نحن </span><span class="accent" data-ar="هنا لخدمتك" data-en="Here to Help">هنا لخدمتك</span></h1>
+          <p class="hero-desc" data-ar="تواصل معنا عبر أي قناة تفضلها — واتساب، هاتف، أو نموذج الاستفسار." data-en="Reach us through any channel you prefer — WhatsApp, phone, or the enquiry form.">تواصل معنا عبر أي قناة تفضلها — واتساب، هاتف، أو نموذج الاستفسار.</p>
+        </div>
+      </section>
+
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-2">
+            <!-- Contact Form -->
+            <div class="fade-in">
+              <div class="eyebrow-label"><i class="fa fa-paper-plane"/> <span data-ar="نموذج الاستفسار" data-en="Enquiry Form">نموذج الاستفسار</span></div>
+              <h2 class="section-h mt-8" style="margin-bottom:28px;"><span data-ar="أرسل " data-en="Send Us ">أرسل </span><span class="red" data-ar="رسالتك" data-en="a Message">رسالتك</span></h2>
+
+              <!-- Success banner -->
+              <t t-if="success">
+                <div class="alert-success">
+                  <i class="fa fa-check-circle"/>
+                  <div>
+                    <strong data-ar="تم الإرسال بنجاح!" data-en="Sent Successfully!">تم الإرسال بنجاح!</strong><br/>
+                    <span data-ar="شكراً لتواصلك معنا. سنرد عليك في أقرب وقت ممكن." data-en="Thank you for contacting us. We will reply as soon as possible.">شكراً لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.</span>
+                  </div>
+                </div>
+              </t>
+
+              <!-- Validation error banner -->
+              <t t-if="error">
+                <div style="background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:var(--r-sm);padding:14px 18px;display:flex;align-items:flex-start;gap:10px;color:#991B1B;font-size:14px;font-weight:600;margin-bottom:20px;">
+                  <i class="fa fa-exclamation-circle" style="font-size:18px;margin-top:1px;flex-shrink:0;color:#DC2626;"/>
+                  <span t-esc="error"/>
+                </div>
+              </t>
+
+              <!-- Contact form — CSRF token injected by Odoo website framework -->
+              <t t-if="not success">
+                <form action="/contact/submit" method="post" class="hma-form">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label data-ar="الاسم الكامل *" data-en="Full Name *">الاسم الكامل *</label>
+                      <input type="text" name="name" required="required"
+                             maxlength="500"
+                             data-ph-ar="أدخل اسمك الكامل" data-ph-en="Enter your full name"
+                             placeholder="أدخل اسمك الكامل"
+                             t-att-value="form_values and form_values.get('name', '') or ''"/>
+                    </div>
+                    <div class="form-group">
+                      <label data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                      <input type="tel" name="phone"
+                             maxlength="30"
+                             data-ph-ar="09XXXXXXXX" data-ph-en="09XXXXXXXX"
+                             placeholder="09XXXXXXXX"
+                             t-att-value="form_values and form_values.get('phone', '') or ''"/>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                    <input type="email" name="email"
+                           maxlength="254"
+                           data-ph-ar="example@email.com" data-ph-en="example@email.com"
+                           placeholder="example@email.com"
+                           t-att-value="form_values and form_values.get('email', '') or ''"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-ar="موضوع الرسالة" data-en="Subject">موضوع الرسالة</label>
+                    <input type="text" name="subject"
+                           maxlength="500"
+                           data-ph-ar="استفسار عن منتج / طلب جملة / ..." data-ph-en="Product enquiry / Wholesale order / ..."
+                           placeholder="استفسار عن منتج / طلب جملة / ..."
+                           t-att-value="form_values and form_values.get('subject', '') or ''"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-ar="رسالتك" data-en="Your Message">رسالتك</label>
+                    <textarea name="message" rows="5" maxlength="2000"
+                              data-ph-ar="اكتب رسالتك هنا..." data-ph-en="Write your message here..."
+                              placeholder="اكتب رسالتك هنا...">
+                      <t t-esc="form_values and form_values.get('message', '') or ''"/>
+                    </textarea>
+                  </div>
+
+                  <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:15px;">
+                    <i class="fa fa-paper-plane"/> <span data-ar="إرسال الرسالة" data-en="Send Message">إرسال الرسالة</span>
+                  </button>
+                </form>
+              </t>
+            </div>
+
+            <!-- Direct contact options -->
+            <div class="fade-in fade-in-d2">
+              <div class="eyebrow-label"><i class="fa fa-bolt"/> <span data-ar="تواصل سريع" data-en="Quick Contact">تواصل سريع</span></div>
+              <h2 class="section-h mt-8" style="margin-bottom:28px;"><span data-ar="قنوات " data-en="Contact ">قنوات </span><span class="red" data-ar="التواصل" data-en="Channels">التواصل</span></h2>
+
+              <!-- WhatsApp primary -->
+              <a href="https://wa.me/249912390982" target="_blank"
+                 style="display:flex;align-items:center;gap:16px;background:#25D366;color:#fff;padding:20px 24px;border-radius:var(--r);margin-bottom:14px;font-weight:800;font-size:16px;transition:all .25s;text-decoration:none;">
+                <i class="fa fa-whatsapp" style="font-size:28px;"/>
+                <div>
+                  <div data-ar="تواصل عبر واتساب" data-en="Chat on WhatsApp">تواصل عبر واتساب</div>
+                  <div style="font-size:12px;font-weight:400;opacity:.8;">0912 390 982</div>
+                </div>
+                <i class="fa fa-external-link" style="margin-right:auto;margin-left:0;opacity:.7;font-size:14px;"/>
+              </a>
+
+              <!-- Channel -->
+              <a href="https://whatsapp.com/channel/0029Vb2RV5I4o7qV3Ev1L204" target="_blank"
+                 style="display:flex;align-items:center;gap:16px;background:var(--dark);color:#fff;padding:20px 24px;border-radius:var(--r);margin-bottom:14px;font-weight:800;font-size:16px;transition:all .25s;text-decoration:none;">
+                <i class="fa fa-whatsapp" style="font-size:28px;color:#25D366;"/>
+                <div>
+                  <div data-ar="قناة واتساب الرسمية" data-en="Official WhatsApp Channel">قناة واتساب الرسمية</div>
+                  <div style="font-size:12px;font-weight:400;opacity:.5;" data-ar="اشترك لآخر العروض" data-en="Subscribe for latest offers">اشترك لآخر العروض</div>
+                </div>
+              </a>
+
+              <!-- Hotline -->
+              <a href="tel:6775"
+                 style="display:flex;align-items:center;gap:16px;background:var(--brand);color:#fff;padding:20px 24px;border-radius:var(--r);margin-bottom:14px;font-weight:800;font-size:16px;transition:all .25s;text-decoration:none;">
+                <i class="fa fa-phone-square" style="font-size:28px;"/>
+                <div>
+                  <div data-ar="الخط الساخن" data-en="Hotline">الخط الساخن</div>
+                  <div style="font-size:20px;font-weight:900;letter-spacing:2px;">6775</div>
+                </div>
+              </a>
+
+              <!-- Email -->
+              <a href="mailto:info@HMA.net"
+                 style="display:flex;align-items:center;gap:16px;background:var(--surface2);color:var(--ink);padding:20px 24px;border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:14px;font-weight:800;font-size:15px;transition:all .25s;text-decoration:none;">
+                <i class="fa fa-envelope" style="font-size:22px;color:var(--brand);"/>
+                <div>
+                  <div data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</div>
+                  <div style="font-size:13px;font-weight:500;color:var(--ink-mid);">info@HMA.net</div>
+                </div>
+              </a>
+
+              <!-- Address -->
+              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);padding:20px 24px;display:flex;align-items:flex-start;gap:14px;">
+                <i class="fa fa-map-marker" style="font-size:22px;color:var(--brand);margin-top:2px;"/>
+                <div>
+                  <div style="font-weight:800;font-size:14px;margin-bottom:5px;" data-ar="العنوان" data-en="Address">العنوان</div>
+                  <div style="font-size:13px;color:var(--ink-mid);line-height:1.6;" data-ar="سوق أمدرمان، شارع الكنيسة، عمارة محمد حسن بشير، الخرطوم، السودان" data-en="Omdurman Market, Church St., Mohamed Hassan Bashir Building, Khartoum, Sudan">سوق أمدرمان، شارع الكنيسة، عمارة محمد حسن بشير، الخرطوم، السودان</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+
+<!-- ================================================================
+     SITEMAP PAGE
+     ================================================================ -->
+<template id="page_sitemap" name="HMA Sitemap">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="'إتش أم أيه | خريطة الموقع'"/>
+    <div class="hma-website">
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span>
+          </div>
+          <div class="hero-eyebrow"><i class="fa fa-sitemap"/> <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span></div>
+          <h1><span data-ar="دليل " data-en="Site ">دليل </span><span class="accent" data-ar="الموقع" data-en="Map">الموقع</span></h1>
+        </div>
+      </section>
+
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-3">
+            <!-- Main Pages -->
+            <div class="hma-card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--brand);">
+                <i class="fa fa-file-text" style="color:var(--brand);font-size:16px;"/>
+                <h3 style="font-size:15px;font-weight:800;color:var(--ink);" data-ar="الصفحات الرئيسية" data-en="Main Pages">الصفحات الرئيسية</h3>
+              </div>
+              <ul style="display:flex;flex-direction:column;gap:10px;">
+                <li><a href="/" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-home" style="color:var(--brand);width:14px;"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
+                <li><a href="/about" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-building" style="color:var(--brand);width:14px;"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
+                <li><a href="/products" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-th-large" style="color:var(--brand);width:14px;"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a></li>
+                <li><a href="/chinbull" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-certificate" style="color:var(--brand);width:14px;"/> <span>Chinbull</span></a></li>
+                <li><a href="/wholesale" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-handshake-o" style="color:var(--brand);width:14px;"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a></li>
+                <li><a href="/location" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-map-marker" style="color:var(--brand);width:14px;"/> <span data-ar="موقعنا" data-en="Our Location">موقعنا</span></a></li>
+                <li><a href="/contact" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);transition:color .2s;"><i class="fa fa-phone" style="color:var(--brand);width:14px;"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></a></li>
+              </ul>
+            </div>
+
+            <!-- Product Categories -->
+            <div class="hma-card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--brand);">
+                <i class="fa fa-th-large" style="color:var(--brand);font-size:16px;"/>
+                <h3 style="font-size:15px;font-weight:800;color:var(--ink);" data-ar="فئات المنتجات" data-en="Product Categories">فئات المنتجات</h3>
+              </div>
+              <ul style="display:flex;flex-direction:column;gap:10px;">
+                <li><a href="/products?category=cookware" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);"><i class="fa fa-fire" style="color:var(--brand);width:14px;"/> <span data-ar="أطقم الطهي" data-en="Cookware">أطقم الطهي</span></a></li>
+                <li><a href="/products?category=dinnerware" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);"><i class="fa fa-spoon" style="color:var(--brand);width:14px;"/> <span data-ar="أطقم السفرة" data-en="Dinnerware">أطقم السفرة</span></a></li>
+                <li><a href="/products?category=tea" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);"><i class="fa fa-coffee" style="color:var(--brand);width:14px;"/> <span data-ar="شاي وقهوة" data-en="Tea &amp; Coffee">شاي وقهوة</span></a></li>
+                <li><a href="/products?category=storage" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);"><i class="fa fa-archive" style="color:var(--brand);width:14px;"/> <span data-ar="التخزين" data-en="Storage">التخزين</span></a></li>
+                <li><a href="/products?category=chinbull" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-mid);"><i class="fa fa-certificate" style="color:var(--gold);width:14px;"/> <span data-ar="Chinbull حصري" data-en="Chinbull Exclusive">Chinbull حصري</span></a></li>
+              </ul>
+            </div>
+
+            <!-- Products list -->
+            <div class="hma-card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--brand);">
+                <i class="fa fa-boxes" style="color:var(--brand);font-size:16px;"/>
+                <h3 style="font-size:15px;font-weight:800;color:var(--ink);" data-ar="صفحات المنتجات" data-en="Product Pages">صفحات المنتجات</h3>
+              </div>
+              <ul style="display:flex;flex-direction:column;gap:8px;">
+                <t t-foreach="products" t-as="p">
+                  <li>
+                    <a t-attf-href="/products/#{p.id}"
+                       style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--ink-mid);transition:color .2s;">
+                      <i t-att-class="p.icon" style="color:var(--brand);width:14px;font-size:11px;"/>
+                      <span t-esc="p.name_ar"/>
+                    </a>
+                  </li>
+                </t>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+</odoo>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!--
+    HMA LAYOUT — Topbar + Navbar + Footer
+    Odoo 18 compatible: inherits website.layout, replaces header/footer via xpath
+  -->
+
+  <!-- 1. Topbar above header -->
+  <template id="hma_topbar" inherit_id="website.layout" name="HMA Topbar">
+    <xpath expr="//header" position="before">
+      <div id="hma-topbar">
+        <div class="topbar-inner">
+          <div class="topbar-item"><i class="fa fa-star"/>
+            <span data-ar="الوكيل الحصري لـ Chinbull في السودان" data-en="Exclusive Agent for Chinbull in Sudan">الوكيل الحصري لـ Chinbull في السودان</span>
+          </div>
+          <span class="topbar-sep">·</span>
+          <div class="topbar-item"><i class="fa fa-phone"/>
+            <span data-ar="خط ساخن: 6775" data-en="Hotline: 6775">خط ساخن: 6775</span>
+          </div>
+          <span class="topbar-sep">·</span>
+          <div class="topbar-item"><i class="fa fa-envelope"/><span>info@HMA.net</span></div>
+          <span class="topbar-sep">·</span>
+          <div class="topbar-item"><i class="fa fa-globe"/><span>www.HMA.net</span></div>
+        </div>
+      </div>
+    </xpath>
+  </template>
+
+  <!-- 2. Replace Odoo header with HMA navbar -->
+  <template id="hma_navbar" inherit_id="website.layout" name="HMA Navbar">
+    <xpath expr="//header" position="replace">
+      <header id="hma-navbar">
+        <div class="nav-inner">
+          <a class="hma-brand" href="/">
+            <div class="brand-logo"><i class="fa fa-cutlery"/></div>
+            <div>
+              <div class="b-ar" data-ar="إتش أم أيه للمشاريع المتطورة" data-en="H.M.A Developed Projects">إتش أم أيه للمشاريع المتطورة</div>
+              <div class="b-en">H.M.A DEVELOPED PROJECTS CO.LTD</div>
+            </div>
+          </a>
+          <ul class="hma-nav-links">
+            <li><a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
+            <li><a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
+            <li><a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a></li>
+            <li><a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a></li>
+            <li><a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a></li>
+            <li><a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a></li>
+            <li><a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل" data-en="Contact">تواصل</span></a></li>
+          </ul>
+          <div class="hma-nav-right">
+            <button class="hma-lang-btn" onclick="hmaToggleLang()">EN</button>
+            <a href="https://whatsapp.com/channel/0029Vb2RV5I4o7qV3Ev1L204" class="hma-btn-wa" target="_blank">
+              <i class="fa fa-whatsapp" style="font-size:18px;"/>
+            </a>
+            <a href="tel:6775" class="hma-btn-hotline">
+              <i class="fa fa-phone-square"/>
+              <span>6775</span>
+            </a>
+            <button class="hma-mobile-btn" onclick="hmaToggleMobileNav()">
+              <i class="fa fa-bars"/>
+            </button>
+          </div>
+        </div>
+        <div id="hma-mobile-nav">
+          <a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a>
+          <a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a>
+          <a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a>
+          <a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a>
+          <a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a>
+          <a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a>
+          <a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></a>
+          <a href="/sitemap"><i class="fa fa-sitemap"/> <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span></a>
+        </div>
+      </header>
+    </xpath>
+  </template>
+
+  <!-- 3. Replace footer with HMA footer -->
+  <template id="hma_footer" inherit_id="website.layout" name="HMA Footer">
+    <xpath expr="//footer" position="replace">
+      <footer id="hma-footer">
+        <div class="hma-container">
+          <div class="hma-footer-grid">
+            <div>
+              <div class="fb-logo">
+                <div class="fb-ico"><i class="fa fa-cutlery"/></div>
+                <div class="fb-txt">
+                  <div class="fn" data-ar="إتش أم أيه للمشاريع المتطورة المحدودة" data-en="H.M.A Developed Projects CO.LTD">إتش أم أيه للمشاريع المتطورة المحدودة</div>
+                  <div class="fe">H.M.A DEVELOPED PROJECTS CO.LTD</div>
+                </div>
+              </div>
+              <p class="fb-desc" data-ar="شركة رائدة في الاستيراد والتجارة منذ ١٩٩٠م. الوكيل الحصري لـ Chinbull في السودان." data-en="A leading import and trade company since 1990. Exclusive agent for Chinbull in Sudan.">شركة رائدة في الاستيراد والتجارة منذ ١٩٩٠م. الوكيل الحصري لـ Chinbull في السودان.</p>
+              <p class="fb-motto" data-ar="«عدّتي لي بتي — من جيل إلى جيل»" data-en="«My Home's Tools — Generation to Generation»">«عدّتي لي بتي — من جيل إلى جيل»</p>
+              <div class="f-social">
+                <a href="https://whatsapp.com/channel/0029Vb2RV5I4o7qV3Ev1L204" target="_blank"><i class="fa fa-whatsapp"/></a>
+                <a href="http://www.HMA.net" target="_blank"><i class="fa fa-globe"/></a>
+                <a href="mailto:info@HMA.net"><i class="fa fa-envelope"/></a>
+              </div>
+            </div>
+            <div class="f-col">
+              <h4 data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h4>
+              <ul>
+                <li><a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
+                <li><a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
+                <li><a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a></li>
+                <li><a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a></li>
+                <li><a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a></li>
+                <li><a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a></li>
+                <li><a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></a></li>
+                <li><a href="/sitemap"><i class="fa fa-sitemap"/> <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span></a></li>
+              </ul>
+            </div>
+            <div class="f-col">
+              <h4 data-ar="فئات المنتجات" data-en="Product Categories">فئات المنتجات</h4>
+              <ul>
+                <li><a href="/products?category=cookware"><i class="fa fa-fire"/> <span data-ar="أطقم الطهي" data-en="Cookware">أطقم الطهي</span></a></li>
+                <li><a href="/products?category=dinnerware"><i class="fa fa-spoon"/> <span data-ar="أطقم السفرة" data-en="Dinnerware">أطقم السفرة</span></a></li>
+                <li><a href="/products?category=tea"><i class="fa fa-coffee"/> <span data-ar="شاي وقهوة" data-en="Tea &amp; Coffee">شاي وقهوة</span></a></li>
+                <li><a href="/products?category=storage"><i class="fa fa-archive"/> <span data-ar="التخزين" data-en="Storage">التخزين</span></a></li>
+                <li><a href="/chinbull"><i class="fa fa-certificate"/> <span data-ar="Chinbull حصري" data-en="Chinbull Exclusive">Chinbull حصري</span></a></li>
+              </ul>
+            </div>
+            <div class="f-col">
+              <h4 data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</h4>
+              <div class="f-ci"><i class="fa fa-map-marker"/>
+                <span data-ar="سوق أمدرمان - شارع الكنيسة، عمارة محمد حسن بشير" data-en="Omdurman Market - Church St., Mohamed Hassan Bashir Building">سوق أمدرمان - شارع الكنيسة، عمارة محمد حسن بشير</span>
+              </div>
+              <div class="f-ci"><i class="fa fa-phone"/>
+                <a href="tel:6775" data-ar="خط ساخن: 6775" data-en="Hotline: 6775">خط ساخن: 6775</a>
+              </div>
+              <div class="f-ci"><i class="fa fa-whatsapp"/>
+                <a href="https://wa.me/249912390982" target="_blank">0912 390 982</a>
+              </div>
+              <div class="f-ci"><i class="fa fa-envelope"/>
+                <a href="mailto:info@HMA.net">info@HMA.net</a>
+              </div>
+              <div class="f-ci"><i class="fa fa-globe"/>
+                <a href="http://www.HMA.net" target="_blank">www.HMA.net</a>
+              </div>
+            </div>
+          </div>
+          <div class="f-bottom">
+            <p data-ar="© ٢٠٢٥ H.M.A Developed Projects CO.LTD · جميع الحقوق محفوظة" data-en="© 2025 H.M.A Developed Projects CO.LTD · All Rights Reserved">© ٢٠٢٥ H.M.A Developed Projects CO.LTD · جميع الحقوق محفوظة</p>
+            <p class="f-motto-foot"><i class="fa fa-certificate"/>
+              <span data-ar="الوكيل الحصري لـ Chinbull في السودان" data-en="Exclusive Agent for Chinbull in Sudan">الوكيل الحصري لـ Chinbull في السودان</span>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </xpath>
+  </template>
+
+</odoo>

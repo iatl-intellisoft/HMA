@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="page_product_detail" name="HMA Product Detail">
+  <t t-call="website.layout">
+    <t t-set="additional_title" t-value="product.name_ar + ' | إتش أم أيه'"/>
+
+    <div class="hma-website">
+      <!-- HERO MINI -->
+      <section class="page-hero">
+        <div class="hero-pattern"/>
+        <div class="hma-container hero-inner">
+          <div class="hero-breadcrumb">
+            <a href="/" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <i class="fa fa-angle-left"/>
+            <a href="/products" data-ar="المنتجات" data-en="Products">المنتجات</a>
+            <i class="fa fa-angle-left"/>
+            <span t-esc="product.name_ar"/>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCT DETAIL -->
+      <section class="hma-section">
+        <div class="hma-container">
+          <div class="hma-grid-2">
+            <!-- Left: Info -->
+            <div class="fade-in">
+              <!-- Badge + Category -->
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+                <span t-if="product.badge == 'wholesale'" class="pill pill-gold" data-ar="متاح بالجملة" data-en="Available Wholesale">متاح بالجملة</span>
+                <span t-elif="product.badge == 'cb'" class="pill-cb">Chinbull حصري</span>
+                <span t-elif="product.badge" class="pill pill-red" t-esc="product.badge_label_ar or product.badge"/>
+                <span class="pill pill-light" t-esc="product.cat_label_ar or product.category"/>
+              </div>
+
+              <h1 style="font-size:clamp(28px,4vw,44px);font-weight:900;color:var(--ink);line-height:1.1;margin-bottom:16px;">
+                <t t-esc="product.name_ar"/>
+              </h1>
+              <h2 style="font-size:18px;font-weight:500;color:var(--ink-mid);margin-bottom:24px;">
+                <t t-esc="product.name_en"/>
+              </h2>
+
+              <p style="font-size:15px;color:var(--ink-mid);line-height:1.85;margin-bottom:28px;">
+                <t t-esc="product.full_desc_ar"/>
+              </p>
+
+              <!-- Availability -->
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;padding:12px 16px;background:var(--brand-mid);border:1px solid rgba(200,16,46,.2);border-radius:var(--r-sm);">
+                <i class="fa fa-check-circle" style="color:var(--brand);"/>
+                <span style="font-size:14px;font-weight:700;color:var(--brand);" t-esc="product.avail_label_ar"/>
+              </div>
+
+              <!-- Actions -->
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+                <a t-attf-href="https://wa.me/#{product.wa_number}" class="btn-wa-cta" target="_blank" style="flex:1;min-width:200px;justify-content:center;">
+                  <i class="fa fa-whatsapp"/> <span data-ar="استفسر عبر واتساب" data-en="Enquire via WhatsApp">استفسر عبر واتساب</span>
+                </a>
+                <a href="tel:6775" class="btn-dark" style="flex:none;">
+                  <i class="fa fa-phone"/> <span>6775</span>
+                </a>
+              </div>
+
+              <!-- Specs -->
+              <t t-if="product.spec_ids">
+                <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px;" data-ar="المواصفات" data-en="Specifications">المواصفات</h3>
+                <div class="specs-grid">
+                  <t t-foreach="product.spec_ids" t-as="spec">
+                    <div t-attf-class="spec-item #{product.dark_bg and 'dark' or ''}">
+                      <i t-att-class="spec.icon or 'fa fa-check'"/>
+                      <span t-esc="spec.label_ar"/>
+                    </div>
+                  </t>
+                </div>
+              </t>
+            </div>
+
+            <!-- Right: Visual Card + Features -->
+            <div class="fade-in fade-in-d2">
+              <!-- Product visual card -->
+              <div t-attf-class="#{product.dark_bg and 'cb-brand-card' or ''}" style="background:var(--dark);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:40px;text-align:center;margin-bottom:24px;">
+                <div style="width:100px;height:100px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+                  <t t-if="product.category == 'chinbull'">
+                    <div style="background:rgba(200,153,42,.15);width:100%;height:100%;border-radius:var(--r);display:flex;align-items:center;justify-content:center;">
+                      <i t-att-class="product.icon" style="font-size:42px;color:var(--gold);"/>
+                    </div>
+                  </t>
+                  <t t-else="">
+                    <div style="background:rgba(200,16,46,.15);width:100%;height:100%;border-radius:var(--r);display:flex;align-items:center;justify-content:center;">
+                      <i t-att-class="product.icon" style="font-size:42px;color:var(--brand);"/>
+                    </div>
+                  </t>
+                </div>
+                <h3 style="font-size:22px;font-weight:900;color:#fff;margin-bottom:8px;" t-esc="product.name_ar"/>
+                <p style="font-size:13px;color:rgba(255,255,255,.4);" t-esc="product.name_en"/>
+              </div>
+
+              <!-- Features -->
+              <t t-if="product.feature_ids">
+                <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:24px;">
+                  <h3 style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:16px;" data-ar="مزايا المنتج" data-en="Product Features">مزايا المنتج</h3>
+                  <div class="feat-list">
+                    <t t-foreach="product.feature_ids" t-as="feat">
+                      <div class="feat-item">
+                        <i t-att-class="feat.icon or 'fa fa-check'"/>
+                        <span t-esc="feat.label_ar"/>
+                      </div>
+                    </t>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+
+          <!-- Related Products -->
+          <t t-if="related">
+            <div style="margin-top:64px;">
+              <div class="eyebrow-label"><i class="fa fa-th-large"/> <span data-ar="منتجات ذات صلة" data-en="Related Products">منتجات ذات صلة</span></div>
+              <h2 class="section-h mt-8" style="margin-bottom:32px;"><span data-ar="قد يعجبك " data-en="You May Also ">قد يعجبك </span><span class="red" data-ar="أيضاً" data-en="Like">أيضاً</span></h2>
+              <div class="hma-grid-3">
+                <t t-foreach="related" t-as="rp">
+                  <div t-attf-class="prod-card #{rp.dark_bg and 'dark-bg' or ''}">
+                    <div class="prod-icon-wrap">
+                      <div t-attf-class="prod-icon-box #{rp.category == 'chinbull' and 'cb' or ''}"><i t-att-class="rp.icon"/></div>
+                    </div>
+                    <div class="prod-body">
+                      <div class="prod-cat" t-esc="rp.cat_label_ar or ''"/>
+                      <h3 class="prod-title" t-esc="rp.name_ar"/>
+                      <p class="prod-desc" t-esc="rp.desc_ar"/>
+                      <div class="prod-actions">
+                        <a t-attf-href="/products/#{rp.id}" class="btn-primary" style="flex:1;justify-content:center;"><i class="fa fa-eye"/></a>
+                      </div>
+                    </div>
+                  </div>
+                </t>
+              </div>
+            </div>
+          </t>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="hma-container">
+          <div class="cta-inner fade-in">
+            <h2 data-ar="هل أعجبك هذا المنتج؟" data-en="Interested in This Product?">هل أعجبك هذا المنتج؟</h2>
+            <p data-ar="تواصل معنا الآن للاستفسار عن الأسعار والتوفر" data-en="Contact us now to inquire about prices and availability">تواصل معنا الآن للاستفسار عن الأسعار والتوفر</p>
+            <div class="cta-buttons">
+              <a t-attf-href="https://wa.me/#{product.wa_number}" class="btn-cta-white" target="_blank"><i class="fa fa-whatsapp"/> <span data-ar="استفسر الآن" data-en="Enquire Now">استفسر الآن</span></a>
+              <a href="/products" class="btn-cta-outline"><i class="fa fa-arrow-right"/> <span data-ar="المزيد من المنتجات" data-en="More Products">المزيد من المنتجات</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+</odoo>

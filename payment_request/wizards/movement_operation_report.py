@@ -25,8 +25,8 @@ class MovementOperationReport(models.TransientModel):
         operating_costs = self.env['payment.request'].search([ 
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
-            ('state', '==', 'paid'),
-            ('is_need_clearance', '==', False),
+            ('state', '=', 'paid'),
+            ('is_need_clearance', '=', False),
         ])
         
 
@@ -90,9 +90,9 @@ class MovementOperationReport(models.TransientModel):
             vehicle = rec.vehicle_id 
             vehicle_odometers = 0
             records = self.env['custody.clearance'].search([ 
-                ('date', '==', date),
-                ('vehicle_id', '==', vehicle),
-                ('state', '==', 'done'),
+                ('date', '=', date),
+                ('vehicle_id', '=', vehicle),
+                ('state', '=', 'done'),
             ]) 
             if records:
                 for rec in  records:
@@ -100,8 +100,8 @@ class MovementOperationReport(models.TransientModel):
                     fuel_price += rec.custody_line_ids.price_unit
                     fuel_amount += rec.custody_line_ids.amount
             truck_odometers = self.env['fleet.vehicle.odometer'].search([ 
-                ('date', '==', date), 
-                ('vehicle_id', '==', vehicle),
+                ('date', '=', date), 
+                ('vehicle_id', '=', vehicle),
             ])
             if truck_odometers :
                 for rec in  truck_odometers:

@@ -95,17 +95,17 @@ class MovementOperationReport(models.TransientModel):
                 ('state', '=', 'done'),
             ]) 
             if records:
-                for rec in  records:
-                    fuel_quantity += rec.custody_line_ids.quantity
-                    fuel_price += rec.custody_line_ids.price_unit
-                    fuel_amount += rec.custody_line_ids.amount
+                for record in  records:
+                    fuel_quantity += record.custody_line_ids.quantity
+                    fuel_price += record.custody_line_ids.price_unit
+                    fuel_amount += record.custody_line_ids.amount
             truck_odometers = self.env['fleet.vehicle.odometer'].search([ 
                 ('date', '=', date), 
                 ('vehicle_id', '=', vehicle),
             ])
             if truck_odometers :
-                for rec in  truck_odometers:
-                    vehicle_odometers = rec.value 
+                for truck_odometer in  truck_odometers:
+                    vehicle_odometers = truck_odometer.value 
             sheet.row(row).height = 400
             sheet.write(row, 0, rec.vehicle_id.license_plate, content_format) 
             sheet.write(row, 1, rec.vehicle_id.driver_id.name, content_format) 

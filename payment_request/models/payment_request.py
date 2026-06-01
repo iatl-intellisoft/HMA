@@ -101,6 +101,7 @@ class PaymentRequest(models.Model):
         ('violations','مخالفات حكومية'),
         ('insurance', 'تأمين'),
         ('monthly_inspection', 'تفتيش شهري'),
+        ('other', 'أخرى'),
     ], string='Type', store=True)
 
   

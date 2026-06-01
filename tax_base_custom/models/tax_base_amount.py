@@ -36,12 +36,10 @@ class AccountMoveLine(models.Model):
             if line.product_id:
                 line.tax_base_amount = line.product_id.tax_base_amount
 
-
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             product_id = vals.get('product_id')
-
-            # لو ما في قيمة، جيبها من المنتج
             if product_id and not vals.get('tax_base_amount'):
                 product = self.env['product.product'].browse(product_id)
                 vals['tax_base_amount'] = product.tax_base_amount or 0.0

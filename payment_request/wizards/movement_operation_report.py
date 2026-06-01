@@ -1,11 +1,9 @@
 import base64
 from io import BytesIO
 from locale import currency
-
 import xlwt
 from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
-
 
 class MovementOperationReport(models.TransientModel): 
     _name = 'movement.operation.report'
@@ -52,7 +50,6 @@ class MovementOperationReport(models.TransientModel):
         content_format3 = xlwt.easyxf('align:horiz center,  vert center; font: height 270;pattern:pattern solid,fore_colour red;',num_format_str="#,##0.00")
         currency_format = xlwt.easyxf('align:horiz center, vert center; font: bold True, height 320;pattern:pattern solid,fore_colour light_blue;',num_format_str="#,##0.00")
 
-
         # Define styles
         date_format = xlwt.XFStyle()
         date_format.num_format_str = 'dd/mm/yyyy'
@@ -73,7 +70,7 @@ class MovementOperationReport(models.TransientModel):
         sheet.col(8).width = sheet.col(9).width = sheet.col(10).width = sheet.col(11).width = sheet.col(12).width = sheet.col(13).width = sheet.col(14).width = sheet.col(15).width =sheet.col(16).width =sheet.col(17).width =sheet.col(18).width=sheet.col(19).width = 5000
 
         # Write header
-        sheet.write_merge(0, 0, 0, 17,  f'({self.end_date})/({self.start_date}) كشف متابعة و تشغيل الدفارات للفترة ', main_heading)
+        sheet.write_merge(0, 0, 0, 16,  f'({self.end_date})/({self.start_date}) كشف متابعة و تشغيل الدفارات للفترة ', main_heading)
         sheet.write(1, 0, "رقم الشاحنة", heading)
         sheet.write(1, 1, "اسم السائق", heading)
         sheet.write(1, 2, "تاريخ التعبئة", heading)
@@ -99,15 +96,7 @@ class MovementOperationReport(models.TransientModel):
                 sheet.row(row).height = 400
                 sheet.write(row, 0, rec.vehicle_id.license_plate, content_format) 
                 sheet.write(row, 1, rec.vehicle_id.driver_id.name, content_format) 
-                sheet.write(row, 2, rec.date.strftime('%d/%m/%Y'), content_format)
-                # sheet.write(row, 1, rec.request_id.name, content_format)
-                # sheet.write(row, 2, rec.employee_id.name, content_format)
-                # sheet.write(row, 3, rec.custody_amount, content_format)
-                # sheet.write(row, 4, "-", content_format)
-                # sheet.write(row, 5, rec.request_id.base_amount, content_format)
-                # sheet.write(row, 6, "استلام", content_format1)
-                # sheet.write(row, 7, "" , content_format)
-                # sheet.write(row, 8, ref, content_format) 
+                sheet.write(row, 2, rec.date.strftime('%d/%m/%Y'), content_format) 
                 if rec.custody_type == 'maintenance':
                     sheet.write(row, 9, rec.total_amount, content_format) 
                     total_maintenance += rec.total_amount
@@ -131,6 +120,7 @@ class MovementOperationReport(models.TransientModel):
                     total_other += rec.total_amount
                 sheet.write(row, 16, rec.niration, content_format)  
                 row += 1  
+                
         sheet.row(row).height = 400
         sheet.write(row, 0, "المجموع", currency_format)
         sheet.write(row, 1, "-", currency_format)
@@ -148,6 +138,7 @@ class MovementOperationReport(models.TransientModel):
         sheet.write(row, 13, total_insurance , currency_format) 
         sheet.write(row, 14, total_monthly_inspection , currency_format) 
         sheet.write(row, 15, "", currency_format) 
+        sheet.write(row, 16, "", currency_format) 
     
         stream = BytesIO()
         workbook.save(stream)

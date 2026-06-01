@@ -95,12 +95,12 @@ class PaymentRequest(models.Model):
     )
 
     custody_type = fields.Selection([
-        ('violations','مخالفات مرورية'),
-        ('maintenance', 'صيانات دورية'),
-        ('insurance', 'تأمينات'),
-        ('oil_change', 'غيار زيت'),
-        ('car_tire_repair', 'بنشر'),
+        ('maintenance', 'الصيانة الدورية'),
         ('car_wash', 'مغسلة'),
+        ('car_tire_repair', 'بنشر'),
+        ('violations','مخالفات حكومية'),
+        ('insurance', 'تأمين'),
+        ('monthly_inspection', 'تفتيش شهري'),
     ], string='Type', store=True)
 
   

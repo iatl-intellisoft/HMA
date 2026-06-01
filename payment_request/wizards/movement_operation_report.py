@@ -87,7 +87,7 @@ class MovementOperationReport(models.TransientModel):
             fuel_price = 0
             fuel_amount = 0
             date = rec.date
-            vehicle = rec.vehicle_id 
+            vehicle = rec.vehicle_id.id 
             vehicle_odometers = 0
             records = self.env['custody.clearance'].search([ 
                 ('date', '=', date),

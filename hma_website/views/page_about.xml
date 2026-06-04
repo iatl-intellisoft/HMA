@@ -5,9 +5,8 @@
      ABOUT PAGE
      ================================================================ -->
 <template id="page_about" name="HMA About Us">
-  <t t-call="website.layout">
+  <t t-call="hma_website.hma_website_layout">
     <t t-set="additional_title" t-value="'إتش أم أيه | من نحن'"/>
-    <div class="hma-website">
       <section class="page-hero">
         <div class="hero-pattern"/>
         <div class="hma-container hero-inner">
@@ -99,7 +98,6 @@
           </div>
         </div>
       </section>
-    </div>
   </t>
 </template>
 
@@ -107,9 +105,8 @@
      CHINBULL PAGE
      ================================================================ -->
 <template id="page_chinbull" name="HMA Chinbull">
-  <t t-call="website.layout">
+  <t t-call="hma_website.hma_website_layout">
     <t t-set="additional_title" t-value="'إتش أم أيه | Chinbull'"/>
-    <div class="hma-website">
       <!-- Hero dark with Chinbull branding -->
       <section style="background:var(--dark);padding:80px 0;position:relative;overflow:hidden;">
         <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(200,153,42,.12) 0%,transparent 65%);"/>
@@ -210,7 +207,6 @@
           </div>
         </div>
       </section>
-    </div>
   </t>
 </template>
 
@@ -218,9 +214,8 @@
      WHOLESALE PAGE
      ================================================================ -->
 <template id="page_wholesale" name="HMA Wholesale">
-  <t t-call="website.layout">
+  <t t-call="hma_website.hma_website_layout">
     <t t-set="additional_title" t-value="'إتش أم أيه | الجملة'"/>
-    <div class="hma-website">
       <section class="page-hero">
         <div class="hero-pattern"/>
         <div class="hma-container hero-inner">
@@ -293,7 +288,6 @@
           </div>
         </div>
       </div>
-    </div>
   </t>
 </template>
 

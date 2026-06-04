@@ -1,86 +1,87 @@
 /* ================================================================
    HMA WEBSITE JS — Odoo Frontend Module
-   Bilingual toggle (AR/EN) + scroll animations + mobile nav
-   Works alongside Odoo's own language system
+   Syncs data-ar/data-en copy with Odoo language + UI helpers
    ================================================================ */
 
 'use strict';
 
 (function () {
 
-  /* ─── Language Engine ─────────────────────────────────────────── */
-  window.HMA_LANG = 'ar';
+  /* ─── Language (follow Odoo html[lang], not a custom toggle) ─── */
+  function detectLang() {
+    const htmlLang = (document.documentElement.lang || 'ar').toLowerCase();
+    if (htmlLang.startsWith('en')) {
+      return 'en';
+    }
+    return 'ar';
+  }
 
   function applyLang(lang) {
     window.HMA_LANG = lang;
-    const html = document.documentElement;
-    html.lang = lang;
-    html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
-
-    // Update all data-ar / data-en text nodes
     document.querySelectorAll('[data-ar]').forEach(el => {
       const val = el.getAttribute('data-' + lang);
-      if (val !== null) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = val;
-        } else {
-          el.textContent = val;
-        }
+      if (val === null) {
+        return;
+      }
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = val;
+      } else {
+        el.textContent = val;
       }
     });
 
-    // Placeholder attributes
     document.querySelectorAll('[data-ph-ar]').forEach(el => {
       el.placeholder = el.getAttribute('data-ph-' + lang) || '';
     });
 
-    // title attributes
     document.querySelectorAll('[data-title-ar]').forEach(el => {
       el.title = el.getAttribute('data-title-' + lang) || '';
     });
-
-    // Language button label
-    document.querySelectorAll('.hma-lang-btn').forEach(btn => {
-      btn.textContent = lang === 'ar' ? 'EN' : 'عر';
-    });
-
-    // Persist preference
-    try { localStorage.setItem('hma_lang', lang); } catch (e) {}
   }
-
-  function toggleLang() {
-    applyLang(window.HMA_LANG === 'ar' ? 'en' : 'ar');
-  }
-
-  // Expose globally so inline onclick handlers work
-  window.hmaToggleLang  = toggleLang;
-  window.hmaApplyLang   = applyLang;
 
   /* ─── Mobile Nav ──────────────────────────────────────────────── */
   function toggleMobileNav() {
     const mn = document.getElementById('hma-mobile-nav');
-    if (mn) mn.classList.toggle('open');
+    if (mn) {
+      mn.classList.toggle('open');
+    }
   }
   window.hmaToggleMobileNav = toggleMobileNav;
 
   /* ─── Scroll-reveal (IntersectionObserver) ────────────────────── */
   function initScrollReveal() {
+    const els = document.querySelectorAll('.fade-in');
+    if (!els.length) {
+      return;
+    }
+
+    const reveal = (el) => el.classList.add('visible');
+
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          e.target.classList.add('visible');
+          reveal(e.target);
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.07 });
+    }, { threshold: 0.07, rootMargin: '0px 0px 80px 0px' });
 
-    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    els.forEach(el => {
+      obs.observe(el);
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        reveal(el);
+      }
+    });
+
+    // Never leave product/category blocks invisible
+    setTimeout(() => els.forEach(reveal), 600);
   }
 
   /* ─── Active nav link ─────────────────────────────────────────── */
   function markActiveNav() {
     const path = window.location.pathname.replace(/\/$/, '') || '/';
-    document.querySelectorAll('.hma-nav-links a, #hma-mobile-nav a').forEach(a => {
+    document.querySelectorAll('.hma-nav-links a, #hma-mobile-nav a:not(.js_change_lang)').forEach(a => {
       const href = a.getAttribute('href') || '';
       const normalized = href.replace(/\/$/, '') || '/';
       if (normalized === path || (path.startsWith(normalized) && normalized !== '/')) {
@@ -93,18 +94,18 @@
   function initCategoryFilter() {
     const tabs = document.querySelectorAll('.cat-tab[data-cat]');
     const cards = document.querySelectorAll('.prod-card[data-cat]');
-    if (!tabs.length) return;
+    if (!tabs.length) {
+      return;
+    }
 
     tabs.forEach(tab => {
       tab.addEventListener('click', function (e) {
         e.preventDefault();
         const cat = this.dataset.cat;
 
-        // Update active tab
         tabs.forEach(t => t.classList.remove('active'));
         this.classList.add('active');
 
-        // Show / hide product cards
         cards.forEach(card => {
           if (cat === 'all' || card.dataset.cat === cat) {
             card.style.display = '';
@@ -118,11 +119,8 @@
 
   /* ─── Init on DOM ready ───────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', function () {
-    // Restore language preference (default Arabic)
-    let saved = 'ar';
-    try { saved = localStorage.getItem('hma_lang') || 'ar'; } catch (e) {}
-    applyLang(saved);
-
+    document.documentElement.classList.add('js-hma');
+    applyLang(detectLang());
     initScrollReveal();
     markActiveNav();
     initCategoryFilter();

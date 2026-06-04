@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'HMA Developed Projects — Website',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.10',
     'summary': 'Full website for H.M.A Developed Projects CO.LTD, exclusive Chinbull agent in Sudan.',
     'description': '''
         Complete Odoo Website module for H.M.A Developed Projects CO.LTD.
@@ -35,6 +35,7 @@
     'assets': {
         'web.assets_frontend': [
             'hma_website/static/src/css/hma_website.css',
+            'hma_website/static/src/css/hma_website_home.css',
             'hma_website/static/src/js/hma_website.js',
         ],
     },

@@ -1,11 +1,7 @@
 /* ================================================================
    HMA DESIGN SYSTEM — Odoo Website Stylesheet
    H.M.A Developed Projects CO.LTD
-   Adapted from hma-style.css for Odoo 17 website module
    ================================================================ */
-
-/* ── GOOGLE FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
 /* ── DESIGN TOKENS ── */
 :root {
@@ -35,16 +31,87 @@
   --sh-br:  0 8px 32px rgba(200,16,46,.22);
 }
 
+/* ── ODOO WEBSITE INTEGRATION ── */
+/* HMA chrome is inside <main>; undo boxed-layout container on main + children */
+#wrapwrap.o_hma_website > main {
+  display: block !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+#wrapwrap.o_hma_website > main > #hma-topbar,
+#wrapwrap.o_hma_website > main > #hma-navbar,
+#wrapwrap.o_hma_website > main > header#top.hma-navbar,
+#wrapwrap.o_hma_website > main > #wrap.hma-website,
+#wrapwrap.o_hma_website > main > footer#hma-footer,
+#wrapwrap.o_hma_website > main > footer#bottom.hma-footer {
+  max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#wrapwrap.o_hma_website #wrap.hma-website {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* Nav links: not Bootstrap .nav-link */
+#wrapwrap.o_hma_website .hma-nav-links a,
+#wrapwrap.o_hma_website #hma-mobile-nav a {
+  text-decoration: none !important;
+}
+
+#wrapwrap.o_hma_website #wrap.hma-website a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#wrapwrap.o_hma_website #wrap.hma-website img {
+  display: block;
+  max-width: 100%;
+}
+
+#wrapwrap.o_hma_website #wrap.hma-website ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 /* ── BODY & BASE ── */
-body.hma-website {
+body.hma-website,
+#wrapwrap.o_hma_website #wrap.hma-website {
   font-family: 'Tajawal', sans-serif !important;
   background: var(--bg);
   color: var(--ink);
   line-height: 1.6;
 }
-body.hma-website a { text-decoration: none; color: inherit; }
-body.hma-website img { display: block; max-width: 100%; }
-body.hma-website ul { list-style: none; padding: 0; margin: 0; }
+
+body.hma-website a,
+#wrapwrap.o_hma_website #wrap.hma-website a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body.hma-website img,
+#wrapwrap.o_hma_website #wrap.hma-website img {
+  display: block;
+  max-width: 100%;
+}
+
+body.hma-website ul,
+#wrapwrap.o_hma_website #wrap.hma-website ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
 /* ── TOPBAR ── */
 #hma-topbar {
@@ -71,13 +138,16 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
 #hma-topbar .topbar-sep { opacity: .35; }
 
 /* ── NAVBAR OVERRIDES ── */
-#hma-navbar {
+/* #hma-navbar = legacy id from pre-1.0.8 global layout (DB upgrade safety) */
+#hma-navbar,
+header#top.hma-navbar {
   background: #fff;
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 20px rgba(0,0,0,.05);
   font-family: 'Tajawal', sans-serif;
 }
-#hma-navbar .nav-inner {
+#hma-navbar .nav-inner,
+header#top.hma-navbar .nav-inner {
   max-width: 1320px;
   margin: 0 auto;
   padding: 0 32px;
@@ -125,15 +195,56 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
   font-size: 16px; transition: all .25s;
 }
 .hma-btn-wa:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,.35); color: #fff; }
-.hma-lang-btn {
-  border: 1.5px solid var(--border);
-  background: transparent; color: var(--ink-mid);
-  padding: 7px 14px; border-radius: var(--r-sm);
-  font-size: 12px; font-weight: 700;
-  transition: all .2s; cursor: pointer;
-  font-family: 'Tajawal', sans-serif;
+/* Odoo language selector (navbar + mobile) */
+.hma-nav-lang {
+  display: flex;
+  align-items: center;
 }
-.hma-lang-btn:hover { border-color: var(--brand); color: var(--brand); }
+
+#wrapwrap.o_hma_website .hma-nav-lang .o_header_language_selector,
+#wrapwrap.o_hma_website .hma-mobile-lang .js_language_selector {
+  list-style: none;
+}
+
+#wrapwrap.o_hma_website .hma-lang-selector-btn {
+  border: 1.5px solid var(--border) !important;
+  background: transparent !important;
+  color: var(--ink-mid) !important;
+  padding: 7px 14px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  font-family: 'Tajawal', sans-serif !important;
+  box-shadow: none !important;
+}
+
+#wrapwrap.o_hma_website .hma-lang-selector-btn:hover,
+#wrapwrap.o_hma_website .hma-lang-selector-btn:focus {
+  border-color: var(--brand) !important;
+  color: var(--brand) !important;
+  background: transparent !important;
+}
+
+#wrapwrap.o_hma_website .hma-nav-lang .dropdown-menu,
+#wrapwrap.o_hma_website .hma-mobile-lang .dropdown-menu {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 13px;
+  border-radius: var(--r-sm);
+  border-color: var(--border);
+  box-shadow: var(--sh);
+}
+
+#wrapwrap.o_hma_website .hma-nav-lang .dropdown-item.active,
+#wrapwrap.o_hma_website .hma-mobile-lang .dropdown-item.active {
+  background: var(--brand-mid);
+  color: var(--brand);
+}
+
+.hma-mobile-lang {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding: 16px 24px 8px;
+}
 .hma-mobile-btn {
   display: none; width: 38px; height: 38px;
   border-radius: var(--r-sm);
@@ -163,7 +274,13 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
 #hma-mobile-nav a:hover { color: var(--brand); background: var(--brand-mid); }
 
 /* ── FOOTER OVERRIDES ── */
-#hma-footer { background: var(--dark); padding: 60px 0 28px; font-family: 'Tajawal', sans-serif; }
+footer#hma-footer,
+footer#bottom.hma-footer,
+footer#bottom.hma-footer #hma-footer {
+  background: var(--dark);
+  padding: 60px 0 28px;
+  font-family: 'Tajawal', sans-serif;
+}
 .hma-footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1.2fr;
@@ -227,15 +344,97 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
 .section-sub { font-size: 15px; color: var(--ink-mid); line-height: 1.8; margin-top: 12px; }
 .section-divider { width: 60px; height: 3px; background: var(--brand); border-radius: 2px; margin: 16px auto; }
 
-/* ── BUTTONS ── */
-.btn-primary { display: inline-flex; align-items: center; gap: 9px; background: var(--brand); color: #fff; padding: 13px 26px; border-radius: var(--r-sm); font-size: 14px; font-weight: 800; transition: all .25s; border: none; cursor: pointer; }
-.btn-primary:hover { background: var(--brand-dark); transform: translateY(-2px); box-shadow: var(--sh-br); color: #fff; }
-.btn-secondary { display: inline-flex; align-items: center; gap: 9px; border: 1.5px solid var(--border); color: var(--ink-mid); padding: 12px 24px; border-radius: var(--r-sm); font-size: 14px; font-weight: 700; transition: all .25s; }
-.btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
-.btn-wa-cta { display: inline-flex; align-items: center; gap: 9px; background: #25D366; color: #fff; padding: 13px 26px; border-radius: var(--r-sm); font-size: 14px; font-weight: 800; transition: all .25s; }
-.btn-wa-cta:hover { background: #1EBD5A; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,.3); color: #fff; }
-.btn-dark { display: inline-flex; align-items: center; gap: 9px; background: var(--dark); color: #fff; padding: 13px 26px; border-radius: var(--r-sm); font-size: 14px; font-weight: 800; transition: all .25s; }
-.btn-dark:hover { background: var(--dark2); transform: translateY(-2px); color: #fff; }
+/* ── BUTTONS (override Bootstrap .btn-* on HMA pages) ── */
+#wrapwrap.o_hma_website .btn-primary,
+#wrapwrap.o_hma_website a.btn-primary {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  background: var(--brand) !important;
+  color: #fff !important;
+  padding: 13px 26px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 14px;
+  font-weight: 800;
+  transition: all .25s;
+  border: none !important;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+#wrapwrap.o_hma_website .btn-primary:hover,
+#wrapwrap.o_hma_website a.btn-primary:hover {
+  background: var(--brand-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--sh-br);
+  color: #fff !important;
+}
+
+#wrapwrap.o_hma_website .btn-secondary,
+#wrapwrap.o_hma_website a.btn-secondary {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  border: 1.5px solid var(--border) !important;
+  color: var(--ink-mid) !important;
+  background: transparent !important;
+  padding: 12px 24px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all .25s;
+}
+
+#wrapwrap.o_hma_website .btn-secondary:hover,
+#wrapwrap.o_hma_website a.btn-secondary:hover {
+  border-color: var(--brand) !important;
+  color: var(--brand) !important;
+}
+
+#wrapwrap.o_hma_website .btn-wa-cta,
+#wrapwrap.o_hma_website a.btn-wa-cta {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  background: #25D366 !important;
+  color: #fff !important;
+  padding: 13px 26px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 14px;
+  font-weight: 800;
+  transition: all .25s;
+  border: none !important;
+}
+
+#wrapwrap.o_hma_website .btn-wa-cta:hover,
+#wrapwrap.o_hma_website a.btn-wa-cta:hover {
+  background: #1EBD5A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, .3);
+  color: #fff !important;
+}
+
+#wrapwrap.o_hma_website .btn-dark,
+#wrapwrap.o_hma_website a.btn-dark {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  background: var(--dark) !important;
+  color: #fff !important;
+  padding: 13px 26px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 14px;
+  font-weight: 800;
+  transition: all .25s;
+  border: none !important;
+}
+
+#wrapwrap.o_hma_website .btn-dark:hover,
+#wrapwrap.o_hma_website a.btn-dark:hover {
+  background: var(--dark2) !important;
+  transform: translateY(-2px);
+  color: #fff !important;
+}
 
 /* ── CARDS ── */
 .hma-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r); transition: all .3s; }
@@ -303,8 +502,54 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
 @media(max-width:600px) { .hma-container { padding: 0 20px; } }
 
 /* ── ANIMATIONS ── */
-.fade-in { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
+/* Visible by default so products/categories never stay hidden if JS fails */
+.fade-in {
+  opacity: 1;
+  transform: none;
+}
+
+.js-hma .fade-in:not(.visible) {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+
+.js-hma .fade-in.visible,
+body.editor_enable .fade-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Snippet drop zones: in DOM for Website Builder, hidden for normal browsing */
+#wrapwrap.o_hma_website #oe_structure_hma_editor.oe_empty,
+#wrapwrap.o_hma_website footer#bottom #footer.oe_structure.oe_empty {
+  display: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+body.editor_enable #wrapwrap.o_hma_website #oe_structure_hma_editor.oe_empty,
+body.editor_enable #wrapwrap.o_hma_website footer#bottom #footer.oe_structure.oe_empty {
+  display: block;
+  min-height: 64px;
+}
+
+/* Login / auth pages using hma_website_layout via website.login_layout */
+#wrapwrap.o_hma_website #wrap.hma-website .oe_website_login_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+  padding: 48px 20px;
+  background: var(--bg);
+}
+
+#wrapwrap.o_hma_website #wrap.hma-website .oe_website_login_container .container {
+  max-width: 420px;
+  width: 100%;
+}
 .fade-in-d1 { transition-delay: .1s; }
 .fade-in-d2 { transition-delay: .2s; }
 .fade-in-d3 { transition-delay: .3s; }
@@ -324,10 +569,49 @@ body.hma-website ul { list-style: none; padding: 0; margin: 0; }
 .cta-inner h2 { font-size: clamp(28px,4vw,44px); font-weight: 900; color: #fff; margin-bottom: 14px; }
 .cta-inner p { font-size: 16px; color: rgba(255,255,255,.75); max-width: 560px; margin: 0 auto 32px; }
 .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.btn-cta-white { display: inline-flex; align-items: center; gap: 9px; background: #fff; color: var(--brand); padding: 14px 28px; border-radius: var(--r-sm); font-size: 15px; font-weight: 800; transition: all .25s; }
-.btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.2); color: var(--brand); }
-.btn-cta-outline { display: inline-flex; align-items: center; gap: 9px; border: 2px solid rgba(255,255,255,.5); color: #fff; padding: 14px 28px; border-radius: var(--r-sm); font-size: 15px; font-weight: 800; transition: all .25s; }
-.btn-cta-outline:hover { border-color: #fff; background: rgba(255,255,255,.1); color: #fff; }
+#wrapwrap.o_hma_website .btn-cta-white,
+#wrapwrap.o_hma_website a.btn-cta-white {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  background: #fff !important;
+  color: var(--brand) !important;
+  padding: 14px 28px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 15px;
+  font-weight: 800;
+  transition: all .25s;
+  border: none !important;
+}
+
+#wrapwrap.o_hma_website .btn-cta-white:hover,
+#wrapwrap.o_hma_website a.btn-cta-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .2);
+  color: var(--brand) !important;
+}
+
+#wrapwrap.o_hma_website .btn-cta-outline,
+#wrapwrap.o_hma_website a.btn-cta-outline {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  border: 2px solid rgba(255, 255, 255, .5) !important;
+  color: #fff !important;
+  background: transparent !important;
+  padding: 14px 28px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 15px;
+  font-weight: 800;
+  transition: all .25s;
+}
+
+#wrapwrap.o_hma_website .btn-cta-outline:hover,
+#wrapwrap.o_hma_website a.btn-cta-outline:hover {
+  border-color: #fff !important;
+  background: rgba(255, 255, 255, .1) !important;
+  color: #fff !important;
+}
 
 /* ── CONTACT FORM ── */
 .hma-form { display: flex; flex-direction: column; gap: 18px; }

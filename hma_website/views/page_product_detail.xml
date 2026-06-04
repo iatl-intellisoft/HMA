@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <template id="page_product_detail" name="HMA Product Detail">
-  <t t-call="website.layout">
+  <t t-call="hma_website.hma_website_layout">
     <t t-set="additional_title" t-value="product.name_ar + ' | إتش أم أيه'"/>
 
-    <div class="hma-website">
       <!-- HERO MINI -->
       <section class="page-hero">
         <div class="hero-pattern"/>
@@ -151,7 +150,6 @@
           </div>
         </div>
       </section>
-    </div>
   </t>
 </template>
 </odoo>

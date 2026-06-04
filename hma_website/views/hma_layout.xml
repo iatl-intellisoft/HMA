@@ -1,84 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <!--
-    HMA LAYOUT — Topbar + Navbar + Footer
-    Odoo 18 compatible: inherits website.layout, replaces header/footer via xpath
+    HMA LAYOUT ARCHITECTURE (stable — do not revert to global website.layout xpath replace)
+
+    All visitors (including logged-in designers): HMA topbar + header + footer always.
+    no_header/no_footer keeps Odoo default chrome off HMA routes (other site pages unchanged).
+
+    Snippet drop zones (always in DOM, visible only in active Website Builder via CSS):
+      - #oe_structure_hma_editor at top of #wrap (page body snippets)
+      - #footer.oe_structure inside HMA footer (footer snippets, Odoo convention)
+
+    Do NOT gate chrome on QWeb "editable" — that flag is True for every designer even when
+    not editing, which wrongly showed Odoo's default header/footer before.
+
+    Pages must use t-call="hma_website.hma_website_layout" (not website.layout alone).
   -->
 
-  <!-- 1. Topbar above header -->
-  <template id="hma_topbar" inherit_id="website.layout" name="HMA Topbar">
-    <xpath expr="//header" position="before">
-      <div id="hma-topbar">
-        <div class="topbar-inner">
-          <div class="topbar-item"><i class="fa fa-star"/>
-            <span data-ar="الوكيل الحصري لـ Chinbull في السودان" data-en="Exclusive Agent for Chinbull in Sudan">الوكيل الحصري لـ Chinbull في السودان</span>
+  <template id="hma_public_topbar" name="HMA Public Topbar">
+    <div id="hma-topbar">
+      <div class="topbar-inner">
+        <div class="topbar-item"><i class="fa fa-star"/>
+          <span data-ar="الوكيل الحصري لـ Chinbull في السودان" data-en="Exclusive Agent for Chinbull in Sudan">الوكيل الحصري لـ Chinbull في السودان</span>
+        </div>
+        <span class="topbar-sep">·</span>
+        <div class="topbar-item"><i class="fa fa-phone"/>
+          <span data-ar="خط ساخن: 6775" data-en="Hotline: 6775">خط ساخن: 6775</span>
+        </div>
+        <span class="topbar-sep">·</span>
+        <div class="topbar-item"><i class="fa fa-envelope"/><span>info@HMA.net</span></div>
+        <span class="topbar-sep">·</span>
+        <div class="topbar-item"><i class="fa fa-globe"/><span>www.HMA.net</span></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="hma_public_header" name="HMA Public Header">
+    <header id="top" class="hma-navbar" data-anchor="true" data-name="Header">
+      <div class="nav-inner">
+        <a class="hma-brand" href="/">
+          <div class="brand-logo"><i class="fa fa-cutlery"/></div>
+          <div>
+            <div class="b-ar" data-ar="إتش أم أيه للمشاريع المتطورة" data-en="H.M.A Developed Projects">إتش أم أيه للمشاريع المتطورة</div>
+            <div class="b-en">H.M.A DEVELOPED PROJECTS CO.LTD</div>
           </div>
-          <span class="topbar-sep">·</span>
-          <div class="topbar-item"><i class="fa fa-phone"/>
-            <span data-ar="خط ساخن: 6775" data-en="Hotline: 6775">خط ساخن: 6775</span>
-          </div>
-          <span class="topbar-sep">·</span>
-          <div class="topbar-item"><i class="fa fa-envelope"/><span>info@HMA.net</span></div>
-          <span class="topbar-sep">·</span>
-          <div class="topbar-item"><i class="fa fa-globe"/><span>www.HMA.net</span></div>
+        </a>
+        <ul class="hma-nav-links">
+          <li><a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
+          <li><a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
+          <li><a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a></li>
+          <li><a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a></li>
+          <li><a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a></li>
+          <li><a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a></li>
+          <li><a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل" data-en="Contact">تواصل</span></a></li>
+        </ul>
+        <div class="hma-nav-right">
+          <ul class="list-unstyled mb-0 hma-nav-lang d-none d-lg-flex">
+            <t t-call="website.placeholder_header_language_selector">
+              <t t-set="_btn_class" t-valuef="hma-lang-selector-btn"/>
+              <t t-set="_dropdown_menu_class" t-valuef="dropdown-menu-end"/>
+            </t>
+          </ul>
+          <a href="https://whatsapp.com/channel/0029Vb2RV5I4o7qV3Ev1L204" class="hma-btn-wa" target="_blank">
+            <i class="fa fa-whatsapp" style="font-size:18px;"/>
+          </a>
+          <a href="tel:6775" class="hma-btn-hotline">
+            <i class="fa fa-phone-square"/>
+            <span>6775</span>
+          </a>
+          <button type="button" class="hma-mobile-btn" onclick="hmaToggleMobileNav()">
+            <i class="fa fa-bars"/>
+          </button>
         </div>
       </div>
-    </xpath>
+      <div id="hma-mobile-nav">
+        <a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a>
+        <a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a>
+        <a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a>
+        <a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a>
+        <a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a>
+        <a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a>
+        <a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></a>
+        <a href="/sitemap"><i class="fa fa-sitemap"/> <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span></a>
+        <div class="hma-mobile-lang" t-if="len(frontend_languages) > 1">
+          <t t-call="portal.language_selector">
+            <t t-set="_btn_class" t-valuef="hma-lang-selector-btn w-100 d-flex align-items-center"/>
+            <t t-set="_txt_class" t-valuef="me-auto small"/>
+            <t t-set="_div_classes" t-valuef="dropup"/>
+            <t t-set="_dropdown_menu_class" t-valuef="w-100"/>
+          </t>
+        </div>
+      </div>
+    </header>
   </template>
 
-  <!-- 2. Replace Odoo header with HMA navbar -->
-  <template id="hma_navbar" inherit_id="website.layout" name="HMA Navbar">
-    <xpath expr="//header" position="replace">
-      <header id="hma-navbar">
-        <div class="nav-inner">
-          <a class="hma-brand" href="/">
-            <div class="brand-logo"><i class="fa fa-cutlery"/></div>
-            <div>
-              <div class="b-ar" data-ar="إتش أم أيه للمشاريع المتطورة" data-en="H.M.A Developed Projects">إتش أم أيه للمشاريع المتطورة</div>
-              <div class="b-en">H.M.A DEVELOPED PROJECTS CO.LTD</div>
-            </div>
-          </a>
-          <ul class="hma-nav-links">
-            <li><a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
-            <li><a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
-            <li><a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a></li>
-            <li><a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a></li>
-            <li><a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a></li>
-            <li><a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a></li>
-            <li><a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل" data-en="Contact">تواصل</span></a></li>
-          </ul>
-          <div class="hma-nav-right">
-            <button class="hma-lang-btn" onclick="hmaToggleLang()">EN</button>
-            <a href="https://whatsapp.com/channel/0029Vb2RV5I4o7qV3Ev1L204" class="hma-btn-wa" target="_blank">
-              <i class="fa fa-whatsapp" style="font-size:18px;"/>
-            </a>
-            <a href="tel:6775" class="hma-btn-hotline">
-              <i class="fa fa-phone-square"/>
-              <span>6775</span>
-            </a>
-            <button class="hma-mobile-btn" onclick="hmaToggleMobileNav()">
-              <i class="fa fa-bars"/>
-            </button>
-          </div>
-        </div>
-        <div id="hma-mobile-nav">
-          <a href="/"><i class="fa fa-home"/> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a>
-          <a href="/about"><i class="fa fa-building"/> <span data-ar="من نحن" data-en="About Us">من نحن</span></a>
-          <a href="/products"><i class="fa fa-th-large"/> <span data-ar="المنتجات" data-en="Products">المنتجات</span></a>
-          <a href="/chinbull"><i class="fa fa-certificate"/> <span>Chinbull</span></a>
-          <a href="/wholesale"><i class="fa fa-handshake-o"/> <span data-ar="الجملة" data-en="Wholesale">الجملة</span></a>
-          <a href="/location"><i class="fa fa-map-marker"/> <span data-ar="موقعنا" data-en="Location">موقعنا</span></a>
-          <a href="/contact"><i class="fa fa-phone"/> <span data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</span></a>
-          <a href="/sitemap"><i class="fa fa-sitemap"/> <span data-ar="خريطة الموقع" data-en="Sitemap">خريطة الموقع</span></a>
-        </div>
-      </header>
-    </xpath>
-  </template>
-
-  <!-- 3. Replace footer with HMA footer -->
-  <template id="hma_footer" inherit_id="website.layout" name="HMA Footer">
-    <xpath expr="//footer" position="replace">
-      <footer id="hma-footer">
+  <template id="hma_public_footer" name="HMA Public Footer">
+    <footer id="bottom" class="hma-footer" data-anchor="true" data-name="Footer">
+      <div id="hma-footer">
         <div class="hma-container">
           <div class="hma-footer-grid">
             <div>
@@ -146,8 +163,48 @@
             </p>
           </div>
         </div>
-      </footer>
+        <!-- Odoo footer snippet zone (same id as website.layout; hidden until edit mode) -->
+        <div id="footer" class="oe_structure oe_structure_solo oe_empty" data-name="Footer" t-ignore="true"/>
+      </div>
+    </footer>
+  </template>
+
+  <template id="hma_fonts" inherit_id="website.layout" name="HMA Fonts">
+    <xpath expr="//head" position="inside">
+      <link rel="preconnect" href="https://fonts.googleapis.com"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+      <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
     </xpath>
+  </template>
+
+  <!-- Login, password-protected pages, etc. use website.login_layout → website.layout by default -->
+  <template id="hma_login_layout" inherit_id="website.login_layout" name="HMA Website Login Layout" priority="25">
+    <xpath expr="//t[@t-call='website.layout']" position="replace">
+      <t t-call="hma_website.hma_website_layout">
+        <div class="oe_website_login_container" t-out="0"/>
+      </t>
+    </xpath>
+  </template>
+
+  <template id="hma_website_layout" name="HMA Website Layout">
+    <t t-call="website.layout">
+      <!-- Always use HMA chrome; never swap to Odoo default header/footer on this layout. -->
+      <t t-set="no_header" t-value="True"/>
+      <t t-set="no_footer" t-value="True"/>
+      <t t-set="body_classname" t-value="'hma-website'"/>
+      <t t-set="pageName" t-value="'o_hma_website'"/>
+
+      <t t-call="hma_website.hma_public_topbar"/>
+      <t t-call="hma_website.hma_public_header"/>
+
+      <div id="wrap" class="hma-website">
+        <!-- Page snippet drop zone (hidden until Website Builder adds body.editor_enable) -->
+        <div id="oe_structure_hma_editor" class="oe_structure oe_empty" data-name="Content"/>
+        <t t-out="0"/>
+      </div>
+
+      <t t-call="hma_website.hma_public_footer"/>
+    </t>
   </template>
 
 </odoo>

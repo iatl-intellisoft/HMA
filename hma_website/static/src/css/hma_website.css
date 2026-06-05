@@ -180,13 +180,34 @@ header#top.hma-navbar .nav-inner {
 .hma-nav-links a.active { color: var(--brand); background: var(--brand-mid); }
 .hma-nav-links a i { font-size: 12px; }
 .hma-nav-right { display: flex; align-items: center; gap: 9px; }
-.hma-btn-hotline {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--dark); color: #fff;
-  padding: 9px 18px; border-radius: var(--r-sm);
-  font-size: 13px; font-weight: 700; transition: all .25s;
+/* Hotline CTA — same treatment as .prod-actions .btn-primary (not affected by color: inherit on body a) */
+#wrapwrap.o_hma_website header#top.hma-navbar a.hma-btn-hotline {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  background: var(--brand) !important;
+  color: #fff !important;
+  padding: 9px 18px !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none !important;
+  border: none !important;
+  transition: all .25s;
+  box-shadow: none;
 }
-.hma-btn-hotline:hover { background: var(--brand); transform: translateY(-1px); color: #fff; }
+
+#wrapwrap.o_hma_website header#top.hma-navbar a.hma-btn-hotline i,
+#wrapwrap.o_hma_website header#top.hma-navbar a.hma-btn-hotline span {
+  color: #fff !important;
+}
+
+#wrapwrap.o_hma_website header#top.hma-navbar a.hma-btn-hotline:hover {
+  background: var(--brand-dark) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: var(--sh-br);
+}
 .hma-btn-wa {
   width: 40px; height: 40px;
   border-radius: var(--r-sm);
@@ -295,13 +316,36 @@ footer#bottom.hma-footer #hma-footer {
 .fb-desc { font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.8; margin-bottom: 8px; }
 .fb-motto { font-style: italic; color: rgba(200,16,46,.6); font-size: 13px; margin-bottom: 18px; }
 .f-social { display: flex; gap: 7px; }
-.f-social a {
-  width: 34px; height: 34px;
-  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.11);
-  border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,.55); font-size: 14px; transition: all .25s;
+footer#bottom.hma-footer .f-social a,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-social a {
+  width: 34px;
+  height: 34px;
+  background: rgba(255, 255, 255, .07) !important;
+  border: 1px solid rgba(255, 255, 255, .11) !important;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, .55) !important;
+  font-size: 14px;
+  text-decoration: none !important;
+  transition: all .25s;
 }
-.f-social a:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
+footer#bottom.hma-footer .f-social a i,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-social a i {
+  color: rgba(255, 255, 255, .55) !important;
+  transition: color .25s;
+}
+footer#bottom.hma-footer .f-social a:hover,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-social a:hover {
+  background: var(--brand) !important;
+  border-color: var(--brand) !important;
+  color: #fff !important;
+}
+footer#bottom.hma-footer .f-social a:hover i,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-social a:hover i {
+  color: #fff !important;
+}
 .f-col h4 { font-size: 11px; font-weight: 800; color: rgba(255,255,255,.32); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
 .f-col ul li { margin-bottom: 9px; }
 .f-col ul li a { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.5); font-size: 13px; font-weight: 600; transition: color .2s; }
@@ -309,8 +353,20 @@ footer#bottom.hma-footer #hma-footer {
 .f-col ul li a i { font-size: 10px; color: var(--brand); width: 12px; }
 .f-ci { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 10px; }
 .f-ci i { color: var(--brand); font-size: 12px; margin-top: 3px; width: 12px; flex-shrink: 0; }
-.f-ci span, .f-ci a { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 500; line-height: 1.5; }
-.f-ci a:hover { color: var(--brand); }
+.f-ci span,
+footer#bottom.hma-footer .f-ci a,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-ci a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .65) !important;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none !important;
+  transition: color .2s;
+}
+footer#bottom.hma-footer .f-ci a:hover,
+#wrapwrap.o_hma_website footer#bottom.hma-footer .f-ci a:hover {
+  color: var(--brand) !important;
+}
 .f-bottom {
   border-top: 1px solid rgba(255,255,255,.07); padding-top: 22px;
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;

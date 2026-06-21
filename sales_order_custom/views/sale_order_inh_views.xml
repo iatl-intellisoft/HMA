@@ -38,8 +38,8 @@
                 invisible="state != 'sale'"/>              
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after"> 
-                <field name="truck_id"/> 
-                <field name="driver_id"/> 
+                <!-- <field name="truck_id"/> 
+                <field name="driver_id"/>  -->
                 <field name="shipping_office_name"/>
                 <field name="shipping_office_number"/>
                 <field name="shipping_destination"/> 

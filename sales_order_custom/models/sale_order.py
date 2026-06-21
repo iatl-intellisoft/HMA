@@ -98,7 +98,9 @@ class StockPicking(models.Model):
     driver_id = fields.Many2one(
             'res.partner',
             string="Driver",
-            store=True
+            related="truck_id.driver_id",
+            store=True,
+            readonly=True
         )
     shipping_office_name = fields.Char(related='sale_id.shipping_office_name', store=True)
     shipping_office_number = fields.Char(related='sale_id.shipping_office_number' , store=True)

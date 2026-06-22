@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add Total CBM field to the picking form view -->
+    <record id="view_picking_form_total_cbm" model="ir.ui.view">
+        <field name="name">stock.picking.form.total_cbm</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <group name="other_infos" position="inside">
+                <field name="total_cbm" string="Total CBM" readonly="1"/>
+            </group>
+        </field>
+    </record>
+</odoo>

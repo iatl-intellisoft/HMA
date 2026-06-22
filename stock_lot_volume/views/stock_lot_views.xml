@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add volume field to the lot form view -->
+    <record id="view_production_lot_form_volume" model="ir.ui.view">
+        <field name="name">stock.production.lot.form.volume</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <field name="ref" position="after">
+                <field name="volume" string="Volume (CBM)"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add volume column to the lot list view -->
+    <record id="view_production_lot_tree_volume" model="ir.ui.view">
+        <field name="name">stock.production.lot.list.volume</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+            <field name="ref" position="after">
+                <field name="volume" string="Volume (CBM)" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

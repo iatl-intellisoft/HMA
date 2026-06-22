@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add Lot Volume column to valuation adjustment lines in the landed cost form -->
+    <record id="view_stock_landed_cost_form_lot_volume" model="ir.ui.view">
+        <field name="name">stock.landed.cost.form.lot_volume</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+            <field name="volume" position="after">
+                <field name="lot_volume" string="Lot Volume (CBM)" readonly="1" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

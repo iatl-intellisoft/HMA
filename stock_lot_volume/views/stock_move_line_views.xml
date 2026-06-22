@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add volume to the stock.move.line form view -->
+    <record id="view_move_line_form_volume" model="ir.ui.view">
+        <field name="name">stock.move.line.form.volume</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <!-- tracking is already loaded as invisible="1" in this view -->
+            <field name="lot_id" position="after">
+                <field name="volume"
+                    string="Volume (CBM)"
+                    invisible="tracking != 'lot'"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add volume to the operations list used in the "Details" popup of a stock.move -->
+    <record id="view_stock_move_line_operation_tree_volume" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.list.volume</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+        <field name="arch" type="xml">
+            <!-- tracking is already loaded column_invisible="True" in this view -->
+            <field name="quantity" position="before">
+                <field name="volume"
+                    string="Volume (CBM)"
+                    invisible="tracking != 'lot'"
+                    optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add volume to the detailed operations list (Detailed Operations tab) -->
+    <record id="view_stock_move_line_detailed_operation_tree_volume" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.detailed.list.volume</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+        <field name="arch" type="xml">
+            <field name="quantity" position="before">
+                <!-- Load tracking as invisible so we can use it in the invisible condition -->
+                <field name="tracking" column_invisible="True"/>
+                <field name="volume"
+                    string="Volume (CBM)"
+                    invisible="tracking != 'lot'"
+                    optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add volume to the general move line list view -->
+    <record id="view_move_line_tree_volume" model="ir.ui.view">
+        <field name="name">stock.move.line.list.volume</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="quantity" position="before">
+                <field name="volume"
+                    string="Volume (CBM)"
+                    optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

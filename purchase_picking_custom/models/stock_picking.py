@@ -121,3 +121,40 @@ class StockPicking(models.Model):
             'under_shipping': 'تحت الشحن',
         }
         return labels.get(self.custom_state, '')
+   
+    display_state = fields.Selection(
+        [
+            ('draft', 'Draft'),
+            ('assigned', 'Ready'),
+            ('under_manufacturing', 'تحت التصنيع'),
+            ('under_shipping', 'تحت الشحن'),
+            ('done', 'Done'),
+            ('cancel', 'Cancelled'),
+        ],
+        string="Status",
+        compute="_compute_display_state",
+    )
+
+    @api.depends('state')
+    def _compute_display_state(self):
+        for rec in self:
+            if rec.state == 'draft':
+                rec.display_state = 'draft'
+
+            elif rec.state == 'assigned':
+                rec.display_state = 'assigned'
+
+            elif rec.state == 'under_manufacturing':
+                rec.display_state = 'under_manufacturing'
+
+            elif rec.state == 'under_shipping':
+                rec.display_state = 'under_shipping'
+
+            elif rec.state == 'done':
+                rec.display_state = 'done'
+
+            elif rec.state == 'cancel':
+                rec.display_state = 'cancel'
+
+            else:
+                rec.display_state = 'assigned'

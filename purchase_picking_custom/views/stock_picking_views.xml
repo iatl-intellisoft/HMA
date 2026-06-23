@@ -12,10 +12,10 @@
            widget="statusbar"
            invisible="picking_type_code != 'incoming'"
            statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
-   <field name="display_state"
+   <!-- <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code == 'incoming'"
-           statusbar_visible="draft,confirmed,assigned,done"/>
+           statusbar_visible="draft,confirmed,assigned,done"/> -->
 
 </xpath>
     </field>

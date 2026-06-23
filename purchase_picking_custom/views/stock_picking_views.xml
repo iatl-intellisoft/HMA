@@ -6,13 +6,14 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-    
-            <xpath expr="//field[@name='state']" position="attributes">
-                <attribute name="statusbar_visible">
-                    draft,assigned,under_manufacturing,under_shipping,done
-                </attribute>
-            </xpath>
-    
+            <xpath expr="//field[@name='state']" position="replace">
+
+                <field name="display_state"
+                       widget="statusbar"
+                       statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"
+                       readonly="1"/>
+            
+            </xpath>    
         </field>
     </record>
     <record id="view_picking_form_receipt_inherit" model="ir.ui.view">
@@ -49,7 +50,7 @@
             </xpath>
 
             <!-- Show custom_state badge and "تم الاستلام" after state -->
-            <xpath expr="//field[@name='state']" position="after">
+            <!-- <xpath expr="//field[@name='state']" position="after">
                 <field
                     name="custom_state"
                     widget="badge"
@@ -66,7 +67,7 @@
                     readonly="1"
                     string="حالة الاستلام"
                 />
-            </xpath>
+            </xpath> -->
 
             <!-- Add new fields: Bill of Lading and Number of Containers -->
             <xpath expr="//field[@name='origin']" position="after">

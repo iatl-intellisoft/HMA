@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="view_picking_form_inherit" model="ir.ui.view">
+   <record id="view_picking_form_inherit" model="ir.ui.view">
     <field name="name">stock.picking.form.inherit</field>
     <field name="model">stock.picking</field>
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
         <xpath expr="//field[@name='state']" position="replace">
-            <field name="picking_type_code" invisible="1"/>
             <field name="display_state"
                    widget="statusbar"
-                   invisible="picking_type_code != 'incoming'"
+                   invisible="picking_type_id.code != 'incoming'"
                    statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
             <field name="state"
                    widget="statusbar"
-                   invisible="picking_type_code == 'incoming'"/>
+                   invisible="picking_type_id.code == 'incoming'"/>
         </xpath>    
     </field>
 </record>

@@ -9,7 +9,7 @@
     
             <xpath expr="//field[@name='state']" position="attributes">
                 <attribute name="statusbar_visible">
-                    draft,waiting,confirmed,assigned,under_manufacturing,under_shipping,done,cancel
+                    draft,assigned,under_manufacturing,under_shipping,done
                 </attribute>
             </xpath>
     

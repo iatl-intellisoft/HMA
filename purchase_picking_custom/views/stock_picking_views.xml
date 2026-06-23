@@ -10,11 +10,11 @@
     <field name="is_incoming" />
     <field name="display_state"
            widget="statusbar"
-           invisible="not is_incoming"
+           invisible="picking_type_code != 'incoming'"
            statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
     <field name="state"
            widget="statusbar"
-           invisible="is_incoming"/>
+           invisible="picking_type_code != 'incoming'"/>
 </xpath>
     </field>
 </record>
@@ -50,28 +50,7 @@
                     invisible="picking_type_code != 'incoming' or not custom_state"
                 />
             </xpath>
-
-            <!-- Show custom_state badge and "تم الاستلام" after state -->
-            <!-- <xpath expr="//field[@name='state']" position="after">
-                <field
-                    name="custom_state"
-                    widget="badge"
-                    decoration-info="custom_state == 'under_manufacturing'"
-                    decoration-warning="custom_state == 'under_shipping'"
-                    invisible="picking_type_code != 'incoming' or not custom_state"
-                    readonly="1"
-                />
-                <field
-                    name="state_display"
-                    widget="badge"
-                    decoration-success="state == 'done'"
-                    invisible="picking_type_code != 'incoming' or state != 'done'"
-                    readonly="1"
-                    string="حالة الاستلام"
-                />
-            </xpath> -->
-
-            <!-- Add new fields: Bill of Lading and Number of Containers -->
+ 
             <xpath expr="//field[@name='origin']" position="after">
                 <field
                     name="bill_of_lading_number"
@@ -85,25 +64,5 @@
 
         </field>
     </record>
-
-    <!-- ═══════════════════════════════════════════════════
-         Inherit the picking LIST view to show custom_state
-         ═══════════════════════════════════════════════════ -->
-    <!-- <record id="view_picking_list_receipt_inherit" model="ir.ui.view">
-        <field name="name">stock.picking.list.receipt.custom</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.vpicktree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='state']" position="after">
-                <field
-                    name="custom_state"
-                    optional="show"
-                    widget="badge"
-                    decoration-info="custom_state == 'under_manufacturing'"
-                    decoration-warning="custom_state == 'under_shipping'"
-                />
-            </xpath>
-        </field>
-    </record> -->
 
 </odoo>

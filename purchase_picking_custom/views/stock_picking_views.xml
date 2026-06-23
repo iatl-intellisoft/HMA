@@ -87,7 +87,7 @@
     <!-- ═══════════════════════════════════════════════════
          Inherit the picking LIST view to show custom_state
          ═══════════════════════════════════════════════════ -->
-    <record id="view_picking_list_receipt_inherit" model="ir.ui.view">
+    <!-- <record id="view_picking_list_receipt_inherit" model="ir.ui.view">
         <field name="name">stock.picking.list.receipt.custom</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.vpicktree"/>
@@ -102,6 +102,6 @@
                 />
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 </odoo>

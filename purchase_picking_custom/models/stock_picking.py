@@ -159,9 +159,9 @@ class StockPicking(models.Model):
             else:
                 rec.display_state = 'assigned'
                 
-    is_receipt = fields.Boolean(compute="_compute_is_receipt")
+    is_incoming = fields.Boolean(compute="_compute_is_incoming", store=True)
     
-    @api.depends("picking_type_code")
-    def _compute_is_receipt(self):
+    @api.depends("picking_type_id")
+    def _compute_is_incoming(self):
         for rec in self:
-            rec.is_receipt = rec.picking_type_code == "incoming"
+            rec.is_incoming = rec.picking_type_id.code == "incoming"

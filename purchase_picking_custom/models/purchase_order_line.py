@@ -56,7 +56,7 @@ class PurchaseOrderLine(models.Model):
                     WHERE product_id = %s
                         AND origin ILIKE %s
                 )
-                GROUP BY sm.picking_id, sp.custom_state
+                GROUP BY sm.picking_id, sp.state
             """, (line.product_id.id, line.product_id.id, '%' + (line.order_id.name or '') + '%'))
 
             for row in self.env.cr.fetchall():

@@ -5,10 +5,18 @@ from odoo.exceptions import UserError
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+    
+    state = fields.Selection(
+        selection_add=[
+            ('under_manufacturing', 'تحت التصنيع'),
+            ('under_shipping', 'تحت الشحن'),
+        ],
+        ondelete={
+            'under_manufacturing': 'set default',
+            'under_shipping': 'set default',
+        },
+    )
 
-    # Override the state field to rename 'Done' → 'تم الاستلام' for receipts.
-    # We expose a computed display field instead of overriding the core selection
-    # (to avoid breaking other modules that depend on the original labels).
     state_display = fields.Char(
         string='State Label',
         compute='_compute_state_display',
@@ -68,17 +76,23 @@ class StockPicking(models.Model):
             picking.is_receipt = picking.picking_type_code == 'incoming'
 
     def action_set_under_manufacturing(self):
-        """Set custom state to Under Manufacturing (Receipt operations only)."""
         for picking in self:
             if picking.picking_type_code != 'incoming':
-                raise UserError(
-                    _('يمكن تطبيق حالة "تحت التصنيع" على عمليات الاستلام فقط.')
-                )
+                raise UserError('يمكن تطبيق الحالة على عمليات الاستلام فقط.')
             if picking.state == 'cancel':
-                raise UserError(
-                    _('لا يمكن تغيير حالة عملية ملغاة.')
-                )
-            picking.custom_state = 'under_manufacturing'
+                raise UserError('لا يمكن تغيير حالة عملية ملغاة.')
+    
+            picking.state = 'under_manufacturing'
+
+
+    def action_set_under_shipping(self):
+        for picking in self:
+            if picking.picking_type_code != 'incoming':
+                raise UserError('يمكن تطبيق الحالة على عمليات الاستلام فقط.')
+            if picking.state == 'cancel':
+                raise UserError('لا يمكن تغيير حالة عملية ملغاة.')
+    
+            picking.state = 'under_shipping'
 
     def action_set_under_shipping(self):
         """Set custom state to Under Shipping (Receipt operations only)."""

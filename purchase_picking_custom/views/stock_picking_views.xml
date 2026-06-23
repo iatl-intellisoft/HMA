@@ -7,14 +7,14 @@
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
         <xpath expr="//field[@name='state']" position="replace">
-    <field name="is_incoming" />
+    <field name="is_incoming" invisible="1"/>
     <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code != 'incoming'"
            statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
     <field name="state"
            widget="statusbar"
-           invisible="picking_type_code != 'incoming'"/>
+           invisible="picking_type_code == 'incoming'"/>
 </xpath>
     </field>
 </record>

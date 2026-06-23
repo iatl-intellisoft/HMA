@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════
+         Inherit PO form: add Qty Under Manufacturing &
+         Qty Under Shipping in the order lines list
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_purchase_order_form_inherit_custom" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.custom</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add two new columns after qty_received in the PO lines tree -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='qty_received']" position="after">
+                <field
+                    name="qty_under_manufacturing"
+                    string="Qty Under Manufacturing"
+                    optional="show"
+                    readonly="1"
+                    decoration-info="qty_under_manufacturing &gt; 0"
+                />
+                <field
+                    name="qty_under_shipping"
+                    string="Qty Under Shipping"
+                    optional="show"
+                    readonly="1"
+                    decoration-warning="qty_under_shipping &gt; 0"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

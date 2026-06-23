@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════
+         Inherit the Picking form view to add:
+           - Bill of Lading Number
+           - Number of Containers
+           - Custom state buttons (Under Manufacturing / Under Shipping)
+           - state_display badge ("تم الاستلام" for receipts done)
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_picking_form_receipt_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.receipt.custom</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add custom state buttons in the header (receipt only) -->
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_set_under_manufacturing"
+                    string="تحت التصنيع"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت التصنيع؟"
+                />
+                <button
+                    name="action_set_under_shipping"
+                    string="تحت الشحن"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت الشحن؟"
+                />
+                <button
+                    name="action_reset_custom_state"
+                    string="إعادة تعيين الحالة"
+                    type="object"
+                    class="btn-link"
+                    invisible="picking_type_code != 'incoming' or not custom_state"
+                />
+            </xpath>
+
+            <!-- Show custom_state badge and "تم الاستلام" after state -->
+            <xpath expr="//field[@name='state']" position="after">
+                <field
+                    name="custom_state"
+                    widget="badge"
+                    decoration-info="custom_state == 'under_manufacturing'"
+                    decoration-warning="custom_state == 'under_shipping'"
+                    invisible="picking_type_code != 'incoming' or not custom_state"
+                    readonly="1"
+                />
+                <field
+                    name="state_display"
+                    widget="badge"
+                    decoration-success="state == 'done'"
+                    invisible="picking_type_code != 'incoming' or state != 'done'"
+                    readonly="1"
+                    string="حالة الاستلام"
+                />
+            </xpath>
+
+            <!-- Add new fields: Bill of Lading and Number of Containers -->
+            <xpath expr="//field[@name='origin']" position="after">
+                <field
+                    name="bill_of_lading_number"
+                    invisible="picking_type_code != 'incoming'"
+                />
+                <field
+                    name="number_of_containers"
+                    invisible="picking_type_code != 'incoming'"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         Inherit the picking LIST view to show custom_state
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_picking_list_receipt_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.list.receipt.custom</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field
+                    name="custom_state"
+                    optional="show"
+                    widget="badge"
+                    decoration-info="custom_state == 'under_manufacturing'"
+                    decoration-warning="custom_state == 'under_shipping'"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ═══════════════════════════════════════════════════
-         Inherit the Picking form view to add:
-           - Bill of Lading Number
-           - Number of Containers
-           - Custom state buttons (Under Manufacturing / Under Shipping)
-           - state_display badge ("تم الاستلام" for receipts done)
-         ═══════════════════════════════════════════════════ -->
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+    
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">
+                    draft,waiting,confirmed,assigned,under_manufacturing,under_shipping,done,cancel
+                </attribute>
+            </xpath>
+    
+        </field>
+    </record>
     <record id="view_picking_form_receipt_inherit" model="ir.ui.view">
         <field name="name">stock.picking.form.receipt.custom</field>
         <field name="model">stock.picking</field>

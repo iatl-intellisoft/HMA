@@ -2,23 +2,22 @@
 <odoo>
 
     <record id="view_picking_form_inherit" model="ir.ui.view">
-        <field name="name">stock.picking.form.inherit</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='state']" position="replace">
-                <field name="is_receipt" invisible="1"/>
-                <field name="display_state"
-                       widget="statusbar"
-                       invisible="not is_receipt"
-                       statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
-            
-                <field name="state"
-                       widget="statusbar"
-                       invisible="is_receipt"/>
-            </xpath>    
-        </field>
-    </record>
+    <field name="name">stock.picking.form.inherit</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="replace">
+            <field name="is_receipt" invisible="1"/>
+            <field name="display_state"
+                   widget="statusbar"
+                   invisible="picking_type_code != 'incoming'"
+                   statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
+            <field name="state"
+                   widget="statusbar"
+                   invisible="picking_type_code == 'incoming'"/>
+        </xpath>    
+    </field>
+</record>
     <record id="view_picking_form_receipt_inherit" model="ir.ui.view">
         <field name="name">stock.picking.form.receipt.custom</field>
         <field name="model">stock.picking</field>

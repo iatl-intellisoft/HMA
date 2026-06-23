@@ -106,6 +106,7 @@ class StockPicking(models.Model):
                     _('لا يمكن تغيير حالة عملية ملغاة.')
                 )
             picking.custom_state = 'under_shipping'
+            picking.state = 'under_shipping'
 
     def action_reset_custom_state(self):
         """Reset custom state."""

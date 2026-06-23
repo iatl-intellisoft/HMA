@@ -42,7 +42,7 @@ class PurchaseOrderLine(models.Model):
 
             # Get all receipt pickings for this PO via group by on move level
             self.env.cr.execute("""
-                SELECT DISTINCT sm.picking_id, sp.custom_state, SUM(sm.product_qty) as qty
+                SELECT DISTINCT sm.picking_id, sp.state, SUM(sm.product_qty) as qty
                 FROM stock_move sm
                 JOIN stock_picking sp ON sm.picking_id = sp.id
                 JOIN stock_picking_type spt ON sp.picking_type_id = spt.id

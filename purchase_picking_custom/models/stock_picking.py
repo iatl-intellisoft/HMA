@@ -12,8 +12,8 @@ class StockPicking(models.Model):
             ('under_shipping', 'تحت الشحن'),
         ],
         ondelete={
-            'under_manufacturing': 'set default',
-            'under_shipping': 'set default',
+            'under_manufacturing': 'cascade',
+            'under_shipping': 'cascade',
         },
     )
 

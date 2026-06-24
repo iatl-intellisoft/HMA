@@ -80,7 +80,10 @@
     <!-- ================================================================
          2.  INHERITED FORM VIEW
     ================================================================ -->
-
+ 
+        
+        
+ 
     <record id="view_account_payment_form_split" model="ir.ui.view">
         <field name="name">account.payment.form.split</field>
         <field name="model">account.payment</field>
@@ -94,6 +97,21 @@
                 <field name="vendor_cash_payment"   invisible="1"/>
                 <field name="vendor_bank_payment"   invisible="1"/>
                 <field name="split_journal_type"    invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_type']" position="attributes">
+                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+    
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="domain">context.get('customer_cash_payment') and [('type', '=', 'cash')] or []</attribute>
+                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
+                <attribute name="force_save">1</attribute>
             </xpath>
 
             <!--

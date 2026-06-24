@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <record id="view_picking_form_inherit" model="ir.ui.view">
+    <field name="name">stock.picking.form.inherit</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="replace">
+    <field name="is_incoming" invisible="1"/>
+    <field name="display_state"
+           widget="statusbar"
+           invisible="picking_type_code != 'incoming'"
+           statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
+   <!-- <field name="display_state"
+           widget="statusbar"
+           invisible="picking_type_code == 'incoming'"
+           statusbar_visible="draft,confirmed,assigned,done"/> -->
+
+</xpath>
+    </field>
+</record>
+    <record id="view_picking_form_receipt_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.receipt.custom</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add custom state buttons in the header (receipt only) -->
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_set_under_manufacturing"
+                    string="تحت التصنيع"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت التصنيع؟"
+                />
+                <button
+                    name="action_set_under_shipping"
+                    string="تحت الشحن"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت الشحن؟"
+                />
+                <button
+                    name="action_reset_custom_state"
+                    string="إعادة تعيين الحالة"
+                    type="object"
+                    class="btn-link"
+                    invisible="picking_type_code != 'incoming' or not custom_state"
+                />
+            </xpath>
+ 
+            <xpath expr="//field[@name='origin']" position="after">
+                <field
+                    name="bill_of_lading_number"
+                    invisible="picking_type_code != 'incoming'"
+                />
+                <field
+                    name="number_of_containers"
+                    invisible="picking_type_code != 'incoming'"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

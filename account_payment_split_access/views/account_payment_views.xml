@@ -16,9 +16,9 @@
                     <attribute name="readonly">is_split_payment</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='journal_id']" position="attributes">
+                <!-- <xpath expr="//field[@name='journal_id']" position="attributes">
                     <attribute name="readonly">is_split_payment</attribute>
-                </xpath>
+                </xpath> -->
                  
             </field>
         </record>

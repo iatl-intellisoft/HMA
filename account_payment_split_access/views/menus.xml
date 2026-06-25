@@ -2,7 +2,7 @@
  
     <menuitem
         id="menu_customer_cash_payments"
-        name="مدفوعات العملاء (نقدًا)"
+        name=" سند قبض نقدي (نقدًا)"
         parent="account.menu_finance_receivables"
         action="action_customer_cash"
         
@@ -10,7 +10,7 @@
  
     <menuitem
         id="menu_customer_bank_payments"
-        name="مدفوعات العملاء (بنك)"
+        name=" سند قبض بنكي (بنك)"
         parent="account.menu_finance_receivables"
         action="action_customer_bank"
         
@@ -18,7 +18,7 @@
  
     <menuitem
         id="menu_vendor_cash_payments"
-        name="مدفوعات الموردين (نقدًا)"
+        name="سند صرف نقدي (نقدًا)"
         parent="account.menu_finance_payables"
         action="action_vendor_cash"
         
@@ -26,7 +26,7 @@
   
     <menuitem
         id="menu_vendor_bank_payments"
-        name="مدفوعات الموردين (بنك)"
+        name=" سند صرف ينكي (بنك)"
         parent="account.menu_finance_payables"
         action="action_vendor_bank"
         

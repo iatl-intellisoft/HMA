@@ -1,143 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <record id="account_payment_inherit" model="ir.ui.view">
+            <field name="name">account.payment.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="is_split_payment" invisible="1" />
+                </xpath>
 
-    <!-- ================================================================
-         1.  WINDOW ACTIONS
-    ================================================================ -->
+                <xpath expr="//field[@name='payment_type']" position="attributes">
+                    <attribute name="readonly">is_split_payment</attribute>
+                </xpath>
 
-    <!-- سند قبض نقدي -->
-    <record id="action_customer_cash_payments" model="ir.actions.act_window">
-        <field name="name">مدفوعات العملاء (نقدًا)</field>
+                <xpath expr="//field[@name='partner_type']" position="attributes">
+                    <attribute name="readonly">is_split_payment</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="readonly">is_split_payment</attribute>
+                </xpath>
+                 
+            </field>
+        </record>
+
+    <!-- CUSTOMER CASH -->
+    <record id="action_customer_cash" model="ir.actions.act_window">
+        <field name="name">Customer Cash Payments</field>
         <field name="res_model">account.payment</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[
-            ('payment_type',    '=', 'inbound'),
-            ('partner_type',    '=', 'customer'),
-            ('journal_id.type', '=', 'cash')
-        ]</field>
-        <field name="context">{
-            'default_payment_type':  'inbound',
-            'default_partner_type':  'customer',
-            'default_journal_type':  'cash',
-            'customer_cash_payment': True
-        }</field>
+
+        <field name="domain">
+            [('payment_type','=','inbound'),
+             ('partner_type','=','customer'),
+             ('journal_id.type','=','cash')]
+        </field>
+
+        <field name="context">
+            {'payment_mode':'customer_cash'}
+        </field>
     </record>
 
-    <!-- سند قبض بنكي -->
-    <record id="action_customer_bank_payments" model="ir.actions.act_window">
-        <field name="name">مدفوعات العملاء (بنك)</field>
+
+    <!-- CUSTOMER BANK -->
+    <record id="action_customer_bank" model="ir.actions.act_window">
+        <field name="name">Customer Bank Payments</field>
         <field name="res_model">account.payment</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[
-            ('payment_type',    '=', 'inbound'),
-            ('partner_type',    '=', 'customer'),
-            ('journal_id.type', '=', 'bank')
-        ]</field>
-        <field name="context">{
-            'default_payment_type':  'inbound',
-            'default_partner_type':  'customer',
-            'default_journal_type':  'bank',
-            'customer_bank_payment': True
-        }</field>
+
+        <field name="domain">
+            [('payment_type','=','inbound'),
+             ('partner_type','=','customer'),
+             ('journal_id.type','=','bank')]
+        </field>
+
+        <field name="context">
+            {'payment_mode':'customer_bank'}
+        </field>
     </record>
 
-    <!-- سند صرف نقدي -->
-    <record id="action_vendor_cash_payments" model="ir.actions.act_window">
-        <field name="name">مدفوعات الموردين (نقدًا)</field>
+
+    <!-- VENDOR CASH -->
+    <record id="action_vendor_cash" model="ir.actions.act_window">
+        <field name="name">Vendor Cash Payments</field>
         <field name="res_model">account.payment</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[
-            ('payment_type',    '=', 'outbound'),
-            ('partner_type',    '=', 'supplier'),
-            ('journal_id.type', '=', 'cash')
-        ]</field>
-        <field name="context">{
-            'default_payment_type':  'outbound',
-            'default_partner_type':  'supplier',
-            'default_journal_type':  'cash',
-            'vendor_cash_payment':   True
-        }</field>
+
+        <field name="domain">
+            [('payment_type','=','outbound'),
+             ('partner_type','=','supplier'),
+             ('journal_id.type','=','cash')]
+        </field>
+
+        <field name="context">
+            {'payment_mode':'vendor_cash'}
+        </field>
     </record>
 
-    <!-- سند صرف بنكي -->
-    <record id="action_vendor_bank_payments" model="ir.actions.act_window">
-        <field name="name">مدفوعات الموردين (بنك)</field>
+
+    <!-- VENDOR BANK -->
+    <record id="action_vendor_bank" model="ir.actions.act_window">
+        <field name="name">Vendor Bank Payments</field>
         <field name="res_model">account.payment</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[
-            ('payment_type',    '=', 'outbound'),
-            ('partner_type',    '=', 'supplier'),
-            ('journal_id.type', '=', 'bank')
-        ]</field>
-        <field name="context">{
-            'default_payment_type':  'outbound',
-            'default_partner_type':  'supplier',
-            'default_journal_type':  'bank',
-            'vendor_bank_payment':   True
-        }</field>
-    </record>
 
-    <!-- ================================================================
-         2.  INHERITED FORM VIEW
-    ================================================================ -->
- 
-        
-        
- 
-    <record id="view_account_payment_form_split" model="ir.ui.view">
-        <field name="name">account.payment.form.split</field>
-        <field name="model">account.payment</field>
-        <field name="inherit_id" ref="account.view_account_payment_form"/>
-        <field name="arch" type="xml">
+        <field name="domain">
+            [('payment_type','=','outbound'),
+             ('partner_type','=','supplier'),
+             ('journal_id.type','=','bank')]
+        </field>
 
-            <!-- Inject invisible flag fields before payment_type -->
-            <xpath expr="//field[@name='payment_type']" position="before">
-                <field name="customer_cash_payment" invisible="1"/>
-                <field name="customer_bank_payment" invisible="1"/>
-                <field name="vendor_cash_payment"   invisible="1"/>
-                <field name="vendor_bank_payment"   invisible="1"/>
-                <field name="split_journal_type"    invisible="1"/>
-            </xpath>
-            <xpath expr="//field[@name='payment_type']" position="attributes">
-                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
-                <attribute name="force_save">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='partner_type']" position="attributes">
-                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
-                <attribute name="force_save">1</attribute>
-            </xpath>
-    
-            <xpath expr="//field[@name='journal_id']" position="attributes">
-                <attribute name="domain">context.get('customer_cash_payment') and [('type', '=', 'cash')] or []</attribute>
-                <attribute name="readonly">context.get('customer_cash_payment')</attribute>
-                <attribute name="force_save">1</attribute>
-            </xpath>
-
-            <!--
-                payment_type: readonly when opened from any split menu
-            -->
-            <xpath expr="//field[@name='payment_type']" position="attributes">
-                <attribute name="readonly">
-                    customer_cash_payment or customer_bank_payment or vendor_cash_payment or vendor_bank_payment
-                </attribute>
-            </xpath>
-
-            <!--
-                journal_id:
-                  - readonly when in any split menu
-                  - domain filtered to cash OR bank depending on split_journal_type
-                    split_journal_type is '' (falsy) on normal form → no restriction
-            -->
-            <xpath expr="//field[@name='journal_id']" position="attributes">
-                <attribute name="readonly">
-                    customer_cash_payment or customer_bank_payment or vendor_cash_payment or vendor_bank_payment
-                </attribute>
-                <attribute name="domain">
-                    [('type', '=', split_journal_type)] if split_journal_type else [('type', 'in', ['cash', 'bank'])]
-                </attribute>
-            </xpath>
-
+        <field name="context">
+            {'payment_mode':'vendor_bank'}
         </field>
     </record>
 

@@ -36,8 +36,13 @@
         </field>
 
         <field name="context">
-            {'payment_mode':'customer_cash'}
-        </field>
+        {
+            'payment_mode':'customer_cash',
+            'default_payment_type':'inbound',
+            'default_partner_type':'customer',
+            'journal_type_filter':'cash'
+        }
+    </field>
     </record>
 
 
@@ -52,10 +57,15 @@
              ('partner_type','=','customer'),
              ('journal_id.type','=','bank')]
         </field>
-
         <field name="context">
-            {'payment_mode':'customer_bank'}
-        </field>
+                {
+                    'payment_mode':'customer_bank',
+                    'default_payment_type':'inbound',
+                    'default_partner_type':'customer',
+                    'journal_type_filter':'bank'
+                }
+            </field>
+ 
     </record>
 
 
@@ -70,10 +80,15 @@
              ('partner_type','=','supplier'),
              ('journal_id.type','=','cash')]
         </field>
-
         <field name="context">
-            {'payment_mode':'vendor_cash'}
-        </field>
+                {
+                    'payment_mode':'vendor_cash',
+                    'default_payment_type':'outbound',
+                    'default_partner_type':'supplier',
+                    'journal_type_filter':'cash'
+                }
+            </field>
+ 
     </record>
 
 
@@ -88,10 +103,15 @@
              ('partner_type','=','supplier'),
              ('journal_id.type','=','bank')]
         </field>
-
         <field name="context">
-            {'payment_mode':'vendor_bank'}
-        </field>
+                {
+                    'payment_mode':'vendor_bank',
+                    'default_payment_type':'outbound',
+                    'default_partner_type':'supplier',
+                    'journal_type_filter':'bank'
+                }
+            </field>
+ 
     </record>
 
 </odoo>

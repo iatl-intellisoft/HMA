@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+   
+<data> 
+
+    <template id="report_sale_delivery_document">
+
+       <t t-call="web.external_layout">            
+            <head>  
+                    <style>
+
+                        .title{
+                            text-align:center;
+                            font-size:24px;
+                            font-weight:bold;
+                            margin-bottom:20px;
+                        }
+
+                        .sub-title{
+                            text-align:center;
+                            font-size:13px;
+                            color:#666;
+                            margin-bottom:25px;
+                        }
+
+                        .info{
+                            width:100%;
+                            border-collapse:collapse;
+                            margin-bottom:25px;
+                        }
+
+                        .info td{
+                            border:1px solid #444;
+                            padding:8px;
+                            font-size:13px;
+                        }
+
+                        .products{
+                            width:100%;
+                            border-collapse:collapse;
+                        }
+
+                        .products th{
+                            background:#e8e8e8;
+                            border:1px solid #000;
+                            padding:8px;
+                            text-align:center;
+                            font-size:13px;
+                        }
+
+                        .products td{
+                            border:1px solid #000;
+                            padding:7px;
+                            font-size:12px;
+                        }
+
+                        .center{
+                            text-align:center;
+                        }
+
+                        .right{
+                            text-align:right;
+                        }
+
+                        .footer-sign{
+                            margin-top:60px;
+                            width:100%;
+                        }
+
+                        .footer-sign td{
+                            width:33%;
+                            text-align:center;
+                            padding-top:50px;
+                        }
+
+                    </style>
+ 
+ <meta charset="UTF-8"/>                     
+            </head>  
+ <div class="title">
+                        Delivery  
+                        <br/>
+                        إذن إستلام
+                    </div>
+            <t t-foreach="docs" t-as="o">
+            <main class="page"  >
+
+                   
+
+                    <div class="sub-title">
+                        <strong t-esc="o.name"/>
+                    </div>
+
+                    <table class="info">
+
+                        <tr>
+
+                            <td>
+                                <strong>SO No.</strong><br/>
+                                رقم الطلب
+                            </td>
+
+                            <td>
+                                <span t-field="o.sale_id.name"/> 
+                            </td>
+
+                            <td>
+                                <strong>Date</strong><br/>
+                                التاريخ
+                            </td>
+
+                            <td>
+                                <span t-field="o.scheduled_date"
+                                      t-options='{"widget":"date"}'/>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <strong>Customer</strong><br/>
+                                العميل
+                            </td>
+
+                            <td> 
+                             <span t-field="o.sale_id.partner_id.name"/> 
+                             
+                            </td>
+
+                            <td>
+                                <strong>Delivery Address</strong><br/>
+                                مكان إرسال البضاعة
+                            </td>
+
+                            <td> 
+                             <span t-field="o.shipping_destination"/> 
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <strong>Shipping Office</strong><br/>
+                                مكتب الشحن
+                            </td>
+
+                            <td> 
+                             <span t-field="o.shipping_office_name"/> 
+                            </td>
+
+                            <td>
+                                <strong>Office Number</strong><br/>
+                                رقم المكتب
+                            </td>
+
+                            <td> 
+                             <span t-field="o.shipping_office_number"/>
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <table class="products">
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="width:6%">#</th>
+
+                                <th>
+                                    Product<br/>
+                                    المنتج
+                                </th>
+
+                                <th style="width:15%">
+                                    Qty<br/>
+                                    الكمية
+                                </th>
+
+                                <th style="width:15%">
+                                    UoM<br/>
+                                    الوحدة
+                                </th>
+
+                                <th style="width:25%">
+                                    Source Warehouse<br/>
+                                    المخزن
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <t t-set="i" t-value="1"/>
+
+                            <t t-foreach="o.move_ids_without_package.filtered(lambda m: m.state != 'cancel')" t-as="move">
+
+                                <tr>
+
+                                    <td class="center">
+                                        <span t-esc="i"/>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="move.product_id"/>
+                                    </td>
+
+                                    <td class="center">
+                                        <span t-field="move.quantity"/>
+                                    </td>
+
+                                    <td class="center">
+                                        <span t-field="move.product_uom"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="move.location_id"/>
+                                    </td>
+
+                                </tr>
+
+                            </t>
+
+                        </tbody>
+
+                    </table>
+
+                    
+  
+</main>
+            </t>
+
+        </t>
+
+    </template>
+ 
+       <record id="action_report_sale_delivery" model="ir.actions.report">
+        <field name="name">Delivery</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">delivery_order_report.report_sale_delivery_document</field>
+        <field name="report_file">delivery_order_report.report_sale_delivery_document</field>
+        <field name="print_report_name">'Delivery - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+</data>
+</odoo>

@@ -96,7 +96,7 @@ class SaleOrder(models.Model):
   
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
-    truck_id = fields.Many2one('fleet.vehicle' ,related='sale_id.truck_id', string="Truck" , readonly="1")
+    truck_id = fields.Many2one('fleet.vehicle' ,related='sale_id.truck_id', string="Truck")
     driver_id = fields.Many2one(
             'res.partner',
             string="Driver",

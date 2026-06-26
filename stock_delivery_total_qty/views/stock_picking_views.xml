@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_picking_kanban_total_qty" model="ir.ui.view">
+        <field name="name">stock.picking.kanban.total_qty</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.stock_picking_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Load picking_type_code so we can use it in the invisible condition -->
+            <field name="picking_type_id" position="after">
+                <field name="picking_type_code"/>
+                <field name="total_demand_qty"/>
+            </field>
+            <!-- Display total quantity on its own line after the partner row, delivery only -->
+            <xpath expr="//footer//field[@name='partner_id']/.." position="after">
+                <div class="d-flex align-items-center gap-1"
+                     invisible="picking_type_code != 'outgoing'">
+                    <i class="fa fa-cubes text-muted" title="Total Quantity"/>
+                    <span class="text-muted">Total Qty:</span>
+                    <field name="total_demand_qty" class="fw-bold"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

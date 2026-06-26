@@ -1,45 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!--
-        Parent:  Accounting → Payments  (account.menu_finance_payments)
-        Group:   group_payment_split_manager  (only authorised users see these)
-    -->
-
-    <!-- سند قبض نقدي -->
+ 
     <menuitem
         id="menu_customer_cash_payments"
-        name="مدفوعات العملاء (نقدًا)"
+        name=" سند قبض نقدي (نقدًا)"
         parent="account.menu_finance_receivables"
-        action="action_customer_cash_payments"
-        groups="account_payment_split_access.group_payment_split_manager"
-        sequence="21"/>
-
-    <!-- سند قبض بنكي -->
+        action="action_customer_cash"
+        
+       />
+ 
     <menuitem
         id="menu_customer_bank_payments"
-        name="مدفوعات العملاء (بنك)"
+        name=" سند قبض بنكي (بنك)"
         parent="account.menu_finance_receivables"
-        action="action_customer_bank_payments"
-        groups="account_payment_split_access.group_payment_split_manager"
-        sequence="22"/>
-
-    <!-- سند صرف نقدي -->
+        action="action_customer_bank"
+        
+        />
+ 
     <menuitem
         id="menu_vendor_cash_payments"
-        name="مدفوعات الموردين (نقدًا)"
+        name="سند صرف نقدي (نقدًا)"
         parent="account.menu_finance_payables"
-        action="action_vendor_cash_payments"
-        groups="account_payment_split_access.group_payment_split_manager"
-        sequence="23"/>
-
-    <!-- سند صرف بنكي -->
+        action="action_vendor_cash"
+        
+       />
+  
     <menuitem
         id="menu_vendor_bank_payments"
-        name="مدفوعات الموردين (بنك)"
+        name=" سند صرف ينكي (بنك)"
         parent="account.menu_finance_payables"
-        action="action_vendor_bank_payments"
-        groups="account_payment_split_access.group_payment_split_manager"
-        sequence="24"/>
+        action="action_vendor_bank"
+        
+        />
 
 </odoo>

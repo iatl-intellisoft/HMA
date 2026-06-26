@@ -102,7 +102,7 @@
                             </td>
 
                             <td>
-                                <span t-field="o.name"/>
+                                <span t-field="o.name"/> 
                             </td>
 
                             <td>
@@ -125,6 +125,8 @@
                             </td>
 
                             <td> 
+                             <span t-field="o.partner_id.name"/> 
+                             
                             </td>
 
                             <td>
@@ -133,6 +135,7 @@
                             </td>
 
                             <td> 
+                             <span t-field="o.shipping_destination"/> 
                             </td>
 
                         </tr>
@@ -145,6 +148,7 @@
                             </td>
 
                             <td> 
+                             <span t-field="o.shipping_office_name"/> 
                             </td>
 
                             <td>
@@ -153,6 +157,7 @@
                             </td>
 
                             <td> 
+                             <span t-field="o.shipping_office_number"/>
                             </td>
 
                         </tr>
@@ -241,8 +246,8 @@
         <field name="name">Delivery</field>
         <field name="model">stock.picking</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">delivery_vehicle.report_sale_delivery_document</field>
-        <field name="report_file">delivery_vehicle.report_sale_delivery_document</field>
+        <field name="report_name">delivery_order_report.report_sale_delivery_document</field>
+        <field name="report_file">delivery_order_report.report_sale_delivery_document</field>
         <field name="print_report_name">'Delivery - %s' % (object.name)</field>
         <field name="binding_model_id" ref="stock.model_stock_picking"/>
         <field name="binding_type">report</field>

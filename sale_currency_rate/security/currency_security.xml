@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="res.groups" id="group_rate_update">
+        <field name="name">Rate Update</field>
+    </record>
+
+    <record id="res_sale_currency_rate_rule" model="ir.rule">
+            <field name="name">multi-company sale currency rate rule</field>
+            <field name="model_id" ref="model_res_sale_currency_rate"/>
+            <field name="domain_force">['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]</field>
+        </record>
+
+</odoo>

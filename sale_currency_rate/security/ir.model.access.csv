@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_currency_rate,Rate Update,base.model_res_currency_rate,sale_currency_rate.group_rate_update,1,1,1,1
+access_res_currency_sale_rate,Res Currency Sale Rate,sale_currency_rate.model_res_sale_currency_rate,sale_currency_rate.group_rate_update,1,1,1,1

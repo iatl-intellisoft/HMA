@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sale_currency_rate_list" model="ir.ui.view">
+            <field name="name">view.currency.customer.list</field>
+            <field name="model">res.currency</field>
+            <field name="arch" type="xml">
+                <list string="Currency Customer">
+                    <field name="name"/>
+                    <field name="symbol"/>
+                    <field name="full_name" string="Name" optional="show"/>
+                    <field name="date" string="Last Update"/>
+                    <field name="sale_currency_rate" digits="[12,6]"/>
+                    <field name="inverse_sale_rate" digits="[12,6]" optional="hide"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_sale_currency_rate_kanban" model="ir.ui.view">
+            <field name="name">res.sale.currency.kanban</field>
+            <field name="model">res.currency</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="row mb4">
+                                <div class="col-2 text-nowrap">
+                                    <field class="fw-bold fs-3" name="name"/>
+                                </div>
+                                <div class="col-5">
+                                    <span class="badge rounded-pill">
+                                        <field name="symbol"/>
+                                    </span>
+                                </div>
+                                <div class="col-5 text-end">
+                                    <t t-if="! record.active.raw_value">
+                                        <span class="badge rounded-pill bg-light border">inactive</span>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div>
+                                        <field name="sale_rate_string"/>
+                                    </div>
+                                    <t t-if="record.date.raw_value">
+                                        <div>Last update:
+                                            <field name="date"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="action_currency_customer_view" model="ir.actions.act_window">
+            <field name="name">Currency Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.currency</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="context">{'active_test': False, 'search_default_active': 1,'default_is_sale_currency': True}
+            </field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'list', 'view_id': ref('sale_currency_rate.view_sale_currency_rate_list')}),
+                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('sale_currency_rate.view_sale_currency_rate_kanban')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('sale_currency_rate.view_currency_form_inherit')})]"/>
+        </record>
+
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="menu_currency" name="Currencies" parent="sale.sale_menu_root" sequence="21"
+                  groups="sale_currency_rate.group_rate_update"/>
+        <menuitem id="menu_action_currency_rate_form" action="action_currency_customer_view"
+                  name="Currency Rate(Customer)" parent="menu_currency" sequence="1"/>
+        <menuitem
+                id="account.menu_action_currency_form"
+                action="base.action_currency_form"
+                name="Currencies"
+                parent="account.account_account_menu"
+                sequence="1"
+                groups="sale_currency_rate.group_rate_update"/>
+
+    </data>
+</odoo>

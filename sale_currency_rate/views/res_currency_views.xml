@@ -1,0 +1,83 @@
+<odoo>
+    <data>
+         <record id="base.action_currency_form" model="ir.actions.act_window">
+             <field name="context">{'active_test': False, 'default_is_sale_currency': False}</field>
+             <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'list', 'view_id': ref('base.view_currency_tree')}),
+                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('base.view_currency_kanban')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_currency_form')})]"/>
+         </record>
+        <record id="view_sale_currency_rate_list" model="ir.ui.view">
+            <field name="name">res.sale.currency.rate.list</field>
+            <field name="model">res.sale.currency.rate</field>
+            <field name="arch" type="xml">
+                <list string="Currency sale Rates" editable="bottom">
+                    <field name="name"/>
+                    <field name="sale_currency_rate"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_currency_rate_form" model="ir.ui.view">
+            <field name="name">res.sale.currency.rate.form</field>
+            <field name="model">res.sale.currency.rate</field>
+            <field name="arch" type="xml">
+                <form string="Currency Rate">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="sale_currency_rate"/>
+                            </group>
+                            <group>
+                                <field name="currency_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_sale_currency_rates" model="ir.actions.act_window">
+            <field name="name">Currency Sale Rates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.sale.currency.rate</field>
+            <field name="view_id" ref="sale_currency_rate.view_sale_currency_rate_list"/>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'default_currency_id': active_id}</field>
+            <field name="domain">[('currency_id','=',active_id)]</field>
+            <field name="binding_view_types">form</field>
+        </record>
+
+        <!-- Inherit Form View to Modify it Currency-->
+        <record id="view_currency_form_inherit" model="ir.ui.view">
+            <field name="name">view.currency.form.inherit</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='rates']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//page[@name='rates']" position="after">
+                    <page string="Sales Rates" name="sales_rates" groups="sale_currency_rate.group_rate_update">
+                        <field name="is_sale_currency" invisible="1"/>
+                        <field name="sale_rate_ids" widget="one2many">
+                            <list string="Sales Rates" editable="top" limit="25">
+                                <field name="name"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="company_rate" digits="[12,12]"/>
+                                <field name="inverse_company_rate" digits="[12,12]"/>
+                                <field name="sale_currency_rate" digits="[12,12]" optional="hide"/>
+                                <field name="write_date" optional="hide"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

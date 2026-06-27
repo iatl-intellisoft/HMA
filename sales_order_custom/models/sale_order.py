@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError , ValidationError
 
 class ShippingDestination(models.Model):
     _name = 'shipping.destination'

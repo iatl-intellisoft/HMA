@@ -130,12 +130,12 @@
                             </td>
 
                             <td>
-                                <strong>Delivery Address</strong><br/>
-                                مكان إرسال البضاعة
+                                <strong>Tax ID</strong><br/>
+                                المعرف الضريبي للعميل
                             </td>
 
                             <td> 
-                             <span t-field="o.shipping_destination"/> 
+                             <span t-field="o.sale_id.partner_id.vat"/> 
                             </td>
 
                         </tr>
@@ -159,6 +159,26 @@
                             <td> 
                              <span t-field="o.shipping_office_number"/>
                             </td>
+
+                        </tr>
+                     <tr>
+                           <td>
+                                <strong>Delivery Address</strong><br/>
+                                مكان إرسال البضاعة
+                            </td>
+
+                            <td> 
+                             <span t-field="o.shipping_destination"/> 
+                            </td>
+
+                            <td>
+                           </td>
+
+                            <td> 
+                             
+                            </td>
+
+                          
 
                         </tr>
 

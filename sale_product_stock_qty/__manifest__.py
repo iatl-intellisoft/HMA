@@ -6,6 +6,8 @@
     'category': 'Sales/Sales',
     'depends': ['sale_stock'],
     'data': [
+        'security/ir.model.access.csv',
+        'views/sale_confirm_no_stock_wizard_views.xml',
         'views/sale_order_views.xml',
     ],
     'installable': True,

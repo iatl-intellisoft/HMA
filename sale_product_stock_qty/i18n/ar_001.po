@@ -42,10 +42,10 @@ msgstr "إلغاء"
 
 #. module: sale_product_stock_qty
 #: code:addons/sale_product_stock_qty/models/sale_order.py:0
-msgid "You can't sell this item as there is no available qty, please refer to the Sales Manager."
-msgstr "لا يمكنك بيع هذا المنتج لعدم توفر الكمية المطلوبة في المخزن، يرجى التواصل مع مدير المبيعات."
+msgid "The ordered quantity exceeds available stock for the following product(s):\n\n%s\n\nDo you want to confirm this sale order anyway?"
+msgstr "الكمية المطلوبة تتجاوز المخزون المتاح للمنتجات التالية:\n\n%s\n\nهل تريد تأكيد أمر البيع على أي حال؟"
 
 #. module: sale_product_stock_qty
 #: code:addons/sale_product_stock_qty/models/sale_order.py:0
-msgid "The following product(s) have no available stock:\n%s\n\nDo you want to confirm this sale order anyway?"
-msgstr "المنتجات التالية ليس لها كمية متاحة في المخزن:\n%s\n\nهل تريد تأكيد أمر البيع على أي حال؟"
+msgid "You cannot confirm this order because the ordered quantity exceeds available stock for the following product(s):\n\n%s\n\nPlease contact your Sales Manager."
+msgstr "لا يمكنك تأكيد هذا الأمر لأن الكمية المطلوبة تتجاوز المخزون المتاح للمنتجات التالية:\n\n%s\n\nيرجى التواصل مع مدير المبيعات."

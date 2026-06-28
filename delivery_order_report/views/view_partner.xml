@@ -5,7 +5,7 @@
        <field name="inherit_id" ref="base.view_partner_form"/>
        <field name="arch" type="xml">
            <xpath expr="//field[@name='phone']" position="after">
-               <field name="national_id" string="الرقم الوطني"/>
+               <!-- <field name="national_id" string="الرقم الوطني"/> -->
            </xpath>
        </field>
    </record> 

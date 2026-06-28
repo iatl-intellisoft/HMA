@@ -8,8 +8,8 @@
                 <field name="delivery_amount"/>  
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">  
-                <field name="sale_id.partner_id.national_id"/>  
-                <field name="sale_id.partner_id.vat"/>  
+                <field name="national_id"/>  
+                <field name="vat_id"/>  
             </xpath>
 
         </field>

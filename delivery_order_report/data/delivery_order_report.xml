@@ -84,12 +84,6 @@
             <t t-foreach="docs" t-as="o">
             <main class="page"  >
 
-                   
-
-                    <div class="sub-title">
-                        <strong t-esc="o.name"/>
-                    </div>
-
                     <table class="info">
 
                         <tr>
@@ -150,8 +144,7 @@
                              <span t-field="o.shipping_office_name"/> 
                             </td>
 
-                       
-
+                 
                         </tr>
                      <tr>
                            <td>
@@ -168,15 +161,7 @@
                             <td> 
                              <span t-field="o.shipping_destination"/> 
                             </td>
-
-                            <td>
-                           </td>
-
-                            <td> 
-                             
-                            </td>
-
-                          
+ 
 
                         </tr>
 
@@ -202,8 +187,7 @@
                                     الوحدة
                                 </th>
 
-                                <th style="width:25%">
-                                    Source Warehouse<br/>
+                                <th style="width:25%"> 
                                     المخزن
                                 </th>
 

@@ -3,6 +3,19 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    national_id = fields.Char(
+        related="sale_id.partner_id.national_id",
+        string="الرقم الوطني",
+        store=True,
+        readonly=True,
+    )
+    vat_id = fields.Char(
+        related="sale_id.partner_id.vat",
+        string="الرقم الضريبي",
+        store=True,
+        readonly=True,
+    )
+    
     delivery_amount = fields.Float(
         string='Delivery Amount',
         compute='_compute_delivery_amount',

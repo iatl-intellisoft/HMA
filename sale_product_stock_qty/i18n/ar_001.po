@@ -1,0 +1,51 @@
+# Arabic translation of sale_product_stock_qty
+# Copyright (C) 2026
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-28 00:00+0000\n"
+"PO-Revision-Date: 2026-06-28 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: sale_product_stock_qty
+#: model:ir.model.fields,field_description:sale_product_stock_qty.field_sale_order_line__product_qty_available
+msgid "On Hand"
+msgstr "الكمية المتاحة"
+
+#. module: sale_product_stock_qty
+#: model:ir.model.fields,help:sale_product_stock_qty.field_sale_order_line__product_qty_available
+msgid "Current on-hand quantity of the product."
+msgstr "الكمية الحالية المتوفرة في المخزن للمنتج."
+
+#. module: sale_product_stock_qty
+#: model:ir.ui.view,arch_db:sale_product_stock_qty.view_sale_confirm_no_stock_wizard_form
+msgid "Confirm Sale Order"
+msgstr "تأكيد أمر البيع"
+
+#. module: sale_product_stock_qty
+#: model:ir.ui.view,arch_db:sale_product_stock_qty.view_sale_confirm_no_stock_wizard_form
+msgid "Confirm Anyway"
+msgstr "تأكيد على أي حال"
+
+#. module: sale_product_stock_qty
+#: model:ir.ui.view,arch_db:sale_product_stock_qty.view_sale_confirm_no_stock_wizard_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: sale_product_stock_qty
+#: code:addons/sale_product_stock_qty/models/sale_order.py:0
+msgid "You can't sell this item as there is no available qty, please refer to the Sales Manager."
+msgstr "لا يمكنك بيع هذا المنتج لعدم توفر الكمية المطلوبة في المخزن، يرجى التواصل مع مدير المبيعات."
+
+#. module: sale_product_stock_qty
+#: code:addons/sale_product_stock_qty/models/sale_order.py:0
+msgid "The following product(s) have no available stock:\n%s\n\nDo you want to confirm this sale order anyway?"
+msgstr "المنتجات التالية ليس لها كمية متاحة في المخزن:\n%s\n\nهل تريد تأكيد أمر البيع على أي حال؟"

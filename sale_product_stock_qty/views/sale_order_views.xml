@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_product_qty" model="ir.ui.view">
+        <field name="name">sale.order.form.product_qty</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add On Hand qty column after product_uom_qty in the order lines list -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                <field name="product_qty_available"
+                       string="On Hand"
+                       optional="show"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

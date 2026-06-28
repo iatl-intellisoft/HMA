@@ -25,7 +25,7 @@ class SaleOrder(models.Model):
                 lines_over_stock = order.order_line.filtered(
                     lambda l: l.product_id
                     and l.product_id.type == 'consu'
-                    and l.product_uom_qty > l.product_id.qty_available
+                    and l.product_uom_qty > l.product_qty_available
                 )
                 if not lines_over_stock:
                     continue
@@ -33,7 +33,7 @@ class SaleOrder(models.Model):
                     '- %s (ordered: %g, available: %g)' % (
                         l.product_id.display_name,
                         l.product_uom_qty,
-                        l.product_id.qty_available,
+                        l.product_qty_available,
                     )
                     for l in lines_over_stock
                 )

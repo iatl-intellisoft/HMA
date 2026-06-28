@@ -15,7 +15,7 @@
                             type="object"
                             string="Confirm Anyway"
                             class="btn-primary"
-                            groups="sales_team.group_sale_manager,base.group_system"/>
+                            groups="sales_team.group_sale_manager"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

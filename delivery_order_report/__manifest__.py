@@ -2,6 +2,7 @@
     'name': 'Delivery Order Report',
     'version': '18.0.1.0.0', 
     'depends': [
+        'base',
         'stock',
         'sale',
     ],

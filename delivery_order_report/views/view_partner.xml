@@ -1,15 +1,12 @@
 <odoo>
-
    <record id="view_partner_form_national_id" model="ir.ui.view">
-    <field name="name">res.partner.form.national.id</field>
-    <field name="model">res.partner</field>
-    <field name="inherit_id" ref="base.view_partner_form"/>
-    <field name="arch" type="xml">
-
-        <xpath expr="//sheet" position="inside">
-            <field name="national_id"/>
-        </xpath>
-
-    </field>
-</record>
+       <field name="name">res.partner.form.national.id</field>
+       <field name="model">res.partner</field>
+       <field name="inherit_id" ref="base.view_partner_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//field[@name='vat']" position="after">
+               <field name="national_id"/>
+           </xpath>
+       </field>
+   </record> 
 </odoo>

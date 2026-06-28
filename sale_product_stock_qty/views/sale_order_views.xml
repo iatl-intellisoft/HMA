@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Form view: On Hand column in order lines + SO Qty in totals -->
     <record id="view_order_form_product_qty" model="ir.ui.view">
         <field name="name">sale.order.form.product_qty</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add On Hand qty column after product_uom_qty in the order lines list -->
+            <!-- On Hand column after Qty in order lines -->
             <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
                 <field name="product_qty_available"
                        string="On Hand"
                        optional="show"
                        readonly="1"/>
+            </xpath>
+            <!-- SO Qty before tax_totals in the form totals section -->
+            <xpath expr="//group[@name='sale_total']/field[@name='tax_totals']" position="before">
+                <div class="d-flex justify-content-between align-items-center mb-2 w-100">
+                    <span class="text-muted">SO Qty</span>
+                    <field name="so_qty" nolabel="1" readonly="1" class="fw-bold text-end"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List view: SO Qty column before amount_untaxed -->
+    <record id="view_order_list_so_qty" model="ir.ui.view">
+        <field name="name">sale.order.list.so_qty</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_untaxed']" position="before">
+                <field name="so_qty"
+                       string="SO&#160;Qty"
+                       optional="show"
+                       sum="Total SO Qty"/>
             </xpath>
         </field>
     </record>

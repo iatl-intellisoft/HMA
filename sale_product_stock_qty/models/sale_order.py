@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
-from odoo import _, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+
+    so_qty = fields.Float(
+        string='SO Qty',
+        compute='_compute_so_qty',
+        store=True,
+        digits='Product Unit of Measure',
+        help="Total quantity of all order lines.",
+    )
+
+    @api.depends('order_line.product_uom_qty')
+    def _compute_so_qty(self):
+        for order in self:
+            order.so_qty = sum(order.order_line.mapped('product_uom_qty'))
 
     def action_confirm(self):
         if not self.env.context.get('skip_no_stock_check'):

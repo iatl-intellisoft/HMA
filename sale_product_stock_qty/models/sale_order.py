@@ -39,7 +39,6 @@ class SaleOrder(models.Model):
                 )
                 is_admin = (
                     self.env.user.has_group('sales_team.group_sale_manager')
-                    or self.env.user.has_group('base.group_system')
                 )
                 if is_admin:
                     return {

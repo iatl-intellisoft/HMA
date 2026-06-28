@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_confirm_no_stock_wizard_form" model="ir.ui.view">
+        <field name="name">sale.confirm.no.stock.wizard.form</field>
+        <field name="model">sale.confirm.no.stock.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Sale Order">
+                <field name="sale_order_id" invisible="1"/>
+                <div class="alert alert-warning o_form_no_edit" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"/>
+                    <field name="message" readonly="1" class="d-inline"/>
+                </div>
+                <footer>
+                    <button name="action_confirm"
+                            type="object"
+                            string="Confirm Anyway"
+                            class="btn-primary"
+                            groups="sales_team.group_sale_manager,base.group_system"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

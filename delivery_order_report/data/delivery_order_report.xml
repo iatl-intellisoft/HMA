@@ -78,9 +78,7 @@
  
  <meta charset="UTF-8"/>                     
             </head>  
- <div class="title">
-                        Delivery  
-                        <br/>
+ <div class="title"> 
                         إذن إستلام
                     </div>
             <t t-foreach="docs" t-as="o">
@@ -97,8 +95,7 @@
                         <tr>
 
                             <td>
-                                <strong>SO No.</strong><br/>
-                                رقم الطلب
+                                <strong>رقم الطلب</strong>
                             </td>
 
                             <td>
@@ -106,8 +103,7 @@
                             </td>
 
                             <td>
-                                <strong>Date</strong><br/>
-                                التاريخ
+                                <strong>التاريخ</strong>
                             </td>
 
                             <td>
@@ -120,51 +116,53 @@
                         <tr>
 
                             <td>
-                                <strong>Customer</strong><br/>
-                                العميل
+                                <strong>العميل</strong>
                             </td>
 
                             <td> 
                              <span t-field="o.sale_id.partner_id.name"/> 
-                             
                             </td>
 
                             <td>
-                                <strong>Tax ID</strong><br/>
-                                المعرف الضريبي للعميل
+                                <strong>الرقم الوطني للعميل</strong>
                             </td>
 
                             <td> 
-                             <span t-field="o.sale_id.partner_id.vat"/> 
+                             <span t-field="o.sale_id.partner_id.national_id"/> 
                             </td>
 
                         </tr>
 
                         <tr>
+                            <td>
+                                <strong>المعرف الضريبي للعميل</strong>
+                            </td>
+
+                            <td> 
+                             <span t-field="o.sale_id.partner_id.vat"/> 
+                            </td> 
 
                             <td>
-                                <strong>Shipping Office</strong><br/>
-                                مكتب الشحن
+                                <strong>مكتب الشحن</strong>
                             </td>
 
                             <td> 
                              <span t-field="o.shipping_office_name"/> 
                             </td>
 
-                            <td>
-                                <strong>Office Number</strong><br/>
-                                رقم المكتب
+                       
+
+                        </tr>
+                     <tr>
+                           <td>
+                                <strong>رقم المكتب</strong>
                             </td>
 
                             <td> 
                              <span t-field="o.shipping_office_number"/>
                             </td>
-
-                        </tr>
-                     <tr>
                            <td>
-                                <strong>Delivery Address</strong><br/>
-                                مكان إرسال البضاعة
+                                <strong>مكان إرسال البضاعة</strong>
                             </td>
 
                             <td> 
@@ -193,17 +191,14 @@
                                 <th style="width:6%">#</th>
 
                                 <th>
-                                    Product<br/>
                                     المنتج
                                 </th>
 
                                 <th style="width:15%">
-                                    Qty<br/>
                                     الكمية
                                 </th>
 
                                 <th style="width:15%">
-                                    UoM<br/>
                                     الوحدة
                                 </th>
 

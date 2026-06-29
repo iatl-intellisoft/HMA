@@ -164,6 +164,20 @@
  
 
                         </tr>
+                        <t t-set="total_qty"
+                         t-value="sum(
+                             line.quantity
+                             for line in o.move_ids_without_package
+                             if line.product_id.type != 'service'
+                         )"/>
+                       <tr>
+                           <td>
+                                <strong>إجمالي الكميات</strong>                            
+                           </td>
+                           <td>
+                               <t t-esc="total_qty"/>
+                           </td>
+                       </tr>
 
                     </table>
 

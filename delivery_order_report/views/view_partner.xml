@@ -9,4 +9,13 @@
            </xpath>
        </field>
    </record> 
+   <record id="report_saleorder_line_warehouse" model="ir.ui.view">
+      <field name="name">sale.report.hide.warehouse</field>
+      <field name="inherit_id" ref="sale.report_saleorder_document"/>
+      <field name="arch" type="xml">
+         <xpath expr="//th[@name='th_warehouse']" position="replace">
+            <th t-if="False"/>
+         </xpath>
+      </field> 
+   </record>
 </odoo>

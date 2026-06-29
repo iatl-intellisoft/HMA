@@ -4,12 +4,18 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-
-            <xpath expr="//field[@name='payment_method_line_id']" position="after">
-                <field name="bankak_transaction_number"/>                
-                <field name="bank_transaction_notification"/>
+          <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                <field name="show_partner_bank_account" invisible="1"/>
+                <field name="require_partner_bank_account" invisible="1"/>
+                
+                <field name="bankak_transaction_number"
+                       invisible="not show_partner_bank_account"
+                       required="require_partner_bank_account"/>
+                
+                <field name="bank_transaction_notification"
+                       invisible="not show_partner_bank_account"
+                       required="require_partner_bank_account"/>
             </xpath>
-
         </field>
     </record>
     <record id="view_account_payment_register_inherit_bank_fields237" model="ir.ui.view">
@@ -18,10 +24,18 @@
     <field name="inherit_id" ref="account.view_account_payment_register_form"/>
     <field name="arch" type="xml">
 
-        <xpath expr="//field[@name='payment_method_line_id']" position="after">
-            <field name="bankak_transaction_number"/>                
-            <field name="bank_transaction_notification"/> 
-        </xpath>
+         <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                <field name="show_partner_bank_account" invisible="1"/>
+                <field name="require_partner_bank_account" invisible="1"/>
+                
+                <field name="bankak_transaction_number"
+                       invisible="not show_partner_bank_account"
+                       required="require_partner_bank_account"/>
+                
+                <field name="bank_transaction_notification"
+                       invisible="not show_partner_bank_account"
+                       required="require_partner_bank_account"/>
+            </xpath>
 
     </field>
 </record>
@@ -38,7 +52,8 @@
                 invisible="state != 'sale'"/>              
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after"> 
-                
+                <!-- <field name="truck_id"/> 
+                <field name="driver_id"/>  -->
                 <field name="shipping_office_name"/>
                 <field name="shipping_office_number"/>
                 <field name="shipping_destination"/> 
@@ -46,14 +61,17 @@
 
         </field>
     </record>  
-     <record id="stock_picking_shipping_receipt" model="ir.ui.view">
+  
+    <record id="stock_picking_shipping_receipt" model="ir.ui.view">
         <field name="name">stock.picking.shipping.receipt</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml"> 
-            <xpath expr="//field[@name='origin']" position="after"> 
+            <xpath expr="//field[@name='location_id']" position="after"> 
                     <field name="truck_id" />
                     <field name="driver_id" /> 
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after"> 
                     <field name="shipping_office_name" /> 
                     <field name="shipping_office_number" />  
                     <field name="shipping_destination" /> 

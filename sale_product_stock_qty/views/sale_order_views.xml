@@ -6,10 +6,10 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- On Hand column (warehouse - qty) after Qty in order lines -->
+            <!-- On Hand column after Qty in order lines -->
             <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
-                <field name="warehouse_stock_display"
-                       string="On&#160;Hand"
+                <field name="product_qty_available"
+                       string="On Hand"
                        optional="show"
                        readonly="1"/>
             </xpath>

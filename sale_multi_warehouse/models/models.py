@@ -27,4 +27,4 @@ class StockWarehouse(models.Model):
         product = self.env['product.product'].browse(product_id)
         for wh in self:
             qty = product.with_context(location=wh.lot_stock_id.id).qty_available
-            wh.display_name = '%s - %g Qty' % (wh.name, qty)
+            wh.display_name = '%s - %g qty' % (wh.name, qty)

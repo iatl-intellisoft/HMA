@@ -6,9 +6,10 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook/page/field/list/field[@name='product_uom_qty']" position="before">
-                <field name="warehouse_id" 
+                <field name="warehouse_id"
                   optional="show"
-                  context="{'sale_line_product_id': product_id}" 
+                  context="{'sale_line_product_id': product_id}"
+                  readonly="parent.state not in ('draft', 'sent')"
                   force_save="1" />
                 </xpath>
             </field>

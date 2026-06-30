@@ -20,7 +20,7 @@
     'version': '18.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale','stock'],
+    'depends': ['sale_stock'],
 
     # always loaded
     'data': [

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.osv import expression
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from itertools import groupby
 
@@ -38,6 +39,47 @@ class SaleOrderLine(models.Model):
         res = super()._prepare_procurement_values(group_id=group_id)
         res.update({"warehouse_id": self.warehouse_id})
         return res
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    @api.model
+    def _search(self, domain, offset=0, limit=None, order=None):
+        """Restrict visible pickings to the user's default warehouse.
+
+        When an Inventory User (not a manager) has a default warehouse set on
+        their profile, apply the following rules:
+        - Receipts & deliveries: only show pickings whose operation type
+          belongs to the user's warehouse.
+        - Internal transfers: only show pickings where the source OR the
+          destination location is a child of the user's warehouse view location
+          (i.e. any location within that warehouse).
+
+        Inventory Managers, superusers, and users without a default warehouse
+        are not affected and continue to see all pickings.
+        """
+        user = self.env.user
+        if (
+            not self.env.su
+            and user.has_group('stock.group_stock_user')
+            and not user.has_group('stock.group_stock_manager')
+            and user.property_warehouse_id
+        ):
+            wh = user.property_warehouse_id
+            view_loc_id = wh.view_location_id.id
+            warehouse_domain = [
+                '|',
+                # Receipts / deliveries — filter by the picking type's warehouse
+                '&', ('picking_type_id.code', '!=', 'internal'),
+                     ('picking_type_id.warehouse_id', '=', wh.id),
+                # Internal transfers — source OR destination within this warehouse
+                '&', ('picking_type_id.code', '=', 'internal'),
+                     '|', ('location_id', 'child_of', view_loc_id),
+                          ('location_dest_id', 'child_of', view_loc_id),
+            ]
+            domain = expression.AND([domain, warehouse_domain])
+        return super()._search(domain, offset=offset, limit=limit, order=order)
 
 
 class StockWarehouse(models.Model):

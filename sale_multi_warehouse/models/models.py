@@ -6,6 +6,31 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from itertools import groupby
 
 
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _get_user_warehouse(env):
+    """Return the default warehouse for the current user, or False.
+
+    Only applies when the user is an Inventory User (not a manager).
+    Superusers are always excluded so internal operations keep working.
+    """
+    user = env.user
+    if (
+        not env.su
+        and user.has_group('stock.group_stock_user')
+        and not user.has_group('stock.group_stock_manager')
+        and user.property_warehouse_id
+    ):
+        return user.property_warehouse_id
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Sale order line — per-line warehouse
+# ---------------------------------------------------------------------------
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -41,6 +66,10 @@ class SaleOrderLine(models.Model):
         return res
 
 
+# ---------------------------------------------------------------------------
+# Stock picking — warehouse-scoped visibility
+# ---------------------------------------------------------------------------
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -53,21 +82,13 @@ class StockPicking(models.Model):
         - Receipts & deliveries: only show pickings whose operation type
           belongs to the user's warehouse.
         - Internal transfers: only show pickings where the source OR the
-          destination location is a child of the user's warehouse view location
-          (i.e. any location within that warehouse).
+          destination location belongs to the user's warehouse.
 
         Inventory Managers, superusers, and users without a default warehouse
         are not affected and continue to see all pickings.
         """
-        user = self.env.user
-        if (
-            not self.env.su
-            and user.has_group('stock.group_stock_user')
-            and not user.has_group('stock.group_stock_manager')
-            and user.property_warehouse_id
-        ):
-            wh = user.property_warehouse_id
-            view_loc_id = wh.view_location_id.id
+        wh = _get_user_warehouse(self.env)
+        if wh:
             warehouse_domain = [
                 '|',
                 # Receipts / deliveries — filter by the picking type's warehouse
@@ -75,12 +96,67 @@ class StockPicking(models.Model):
                      ('picking_type_id.warehouse_id', '=', wh.id),
                 # Internal transfers — source OR destination within this warehouse
                 '&', ('picking_type_id.code', '=', 'internal'),
-                     '|', ('location_id', 'child_of', view_loc_id),
-                          ('location_dest_id', 'child_of', view_loc_id),
+                     '|', ('location_id.warehouse_id', '=', wh.id),
+                          ('location_dest_id.warehouse_id', '=', wh.id),
             ]
             domain = expression.AND([domain, warehouse_domain])
         return super()._search(domain, offset=offset, limit=limit, order=order)
 
+
+# ---------------------------------------------------------------------------
+# Stock picking type — warehouse-scoped visibility
+# ---------------------------------------------------------------------------
+
+class StockPickingType(models.Model):
+    _inherit = 'stock.picking.type'
+
+    @api.model
+    def _search(self, domain, offset=0, limit=None, order=None):
+        """Restrict visible operation types to the user's default warehouse.
+
+        Inventory Users with a default warehouse only see operation types that
+        belong to that warehouse. Managers and users without a warehouse see all.
+        """
+        wh = _get_user_warehouse(self.env)
+        if wh:
+            domain = expression.AND([domain, [('warehouse_id', '=', wh.id)]])
+        return super()._search(domain, offset=offset, limit=limit, order=order)
+
+
+# ---------------------------------------------------------------------------
+# Stock location — warehouse-scoped visibility
+# ---------------------------------------------------------------------------
+
+class StockLocation(models.Model):
+    _inherit = 'stock.location'
+
+    @api.model
+    def _search(self, domain, offset=0, limit=None, order=None):
+        """Restrict visible internal locations to the user's default warehouse.
+
+        Inventory Users with a default warehouse only see internal locations
+        that belong to that warehouse. All other location types (customer,
+        supplier, transit, view, virtual, etc.) remain fully visible so that
+        receipts and deliveries can still reference partner/virtual locations.
+
+        Managers and users without a default warehouse see all locations.
+        """
+        wh = _get_user_warehouse(self.env)
+        if wh:
+            warehouse_domain = [
+                '|',
+                # Non-internal locations are always visible (partner, virtual, …)
+                ('usage', '!=', 'internal'),
+                # Internal locations: restrict to the user's warehouse
+                ('warehouse_id', '=', wh.id),
+            ]
+            domain = expression.AND([domain, warehouse_domain])
+        return super()._search(domain, offset=offset, limit=limit, order=order)
+
+
+# ---------------------------------------------------------------------------
+# Stock warehouse — display name with on-hand qty
+# ---------------------------------------------------------------------------
 
 class StockWarehouse(models.Model):
     _inherit = 'stock.warehouse'

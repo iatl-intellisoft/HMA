@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_delivery_control" model="ir.ui.view">
+        <field name="name">sale.order.form.delivery.control</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                 
+                    <button name="action_open_down_payment_wizard" type="object" invisible="state != 'pending_payment'"
+                            string="إنشاء فاتورة دفعة مقدمة" class="btn-primary mt-2"/>
+                    <!-- <button name="action_release_delivery_manually" type="object"
+                            string="تأكيد يدوي بدون دفعة (تجاوز استثنائي)"
+                            class="btn-link mt-2" groups="base.group_system"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

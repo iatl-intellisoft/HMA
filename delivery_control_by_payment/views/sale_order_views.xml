@@ -7,7 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
 
-		<div class=" alert-warning mb-0 me-auto" role="alert" invisible="state != 'pending_payment'">
+		<!-- <div class=" alert-warning mb-0 me-auto" role="alert" invisible="state != 'pending_payment'"> -->
+		<div class=" alert-warning mb-0 me-auto" role="alert">
               
                     <button name="action_open_down_payment_wizard" type="object"
                             string="إنشاء فاتورة دفعة مقدمة" class="btn-primary mt-2"/>

@@ -11,13 +11,17 @@ class SaleOrder(models.Model):
         compute='_compute_so_qty',
         store=True,
         digits='Product Unit of Measure',
-        help="Total quantity of all order lines.",
+        help="Total quantity of storable product lines (service lines are excluded).",
     )
 
-    @api.depends('order_line.product_uom_qty')
+    @api.depends('order_line.product_uom_qty', 'order_line.product_id')
     def _compute_so_qty(self):
         for order in self:
-            order.so_qty = sum(order.order_line.mapped('product_uom_qty'))
+            order.so_qty = sum(
+                line.product_uom_qty
+                for line in order.order_line
+                if line.product_id.is_storable
+            )
 
     def action_confirm(self):
         if not self.env.context.get('skip_no_stock_check'):
@@ -39,6 +43,7 @@ class SaleOrder(models.Model):
                 )
                 is_admin = (
                     self.env.user.has_group('sales_team.group_sale_manager')
+                    or self.env.user.has_group('base.group_system')
                 )
                 if is_admin:
                     return {

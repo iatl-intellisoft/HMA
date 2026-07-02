@@ -219,7 +219,21 @@ class AccountPayment(models.Model):
                         })
                 else:
                     new_line_vals_list.append(res)
+            import logging
+            _logger = logging.getLogger(__name__)
+            
+            total_debit = sum(l.get('debit', 0.0) for l in new_line_vals_list)
+            total_credit = sum(l.get('credit', 0.0) for l in new_line_vals_list)
+            
+            _logger.warning("================================")
+            _logger.warning("Payment Amount: %s", self.amount)
+            _logger.warning("Debit: %s", total_debit)
+            _logger.warning("Credit: %s", total_credit)
+            
+            for line in new_line_vals_list:
+                _logger.warning(line)
             return new_line_vals_list
+            
 
         else:
             return line_vals_list

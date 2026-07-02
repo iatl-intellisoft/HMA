@@ -234,12 +234,7 @@ class AccountPayment(models.Model):
             
             for line in new_line_vals_list:
                 _logger.warning(line)
-                _logger.warning(
-                    "subtotal=%s share=%s line_write_off=%s",
-                    line.price_subtotal,
-                    line_share,
-                    line_write_off,
-                )
+               
             return new_line_vals_list
             
 

@@ -173,15 +173,15 @@ class AccountPayment(models.Model):
                 res['payment_request_id'] = self.payment_request_id.id
                 if acc_type in ('asset_receivable', 'liability_payable') or self.partner_id == self.company_id.partner_id:
                     # Compute amounts.
-                    write_off_amount = write_off_line_vals.get('amount', 0.0)
+                    write_off_amount = write_off_line_vals.get('total_amount', 0.0)
 
                     if self.payment_type == 'inbound':
                         # Receive money.
-                        counterpart_amount = -self.amount
+                        counterpart_amount = -self.total_amount
                         write_off_amount *= -1
                     elif self.payment_type == 'outbound':
                         # Send money.
-                        counterpart_amount = self.amount
+                        counterpart_amount = self.total_amount
                     else:
                         counterpart_amount = 0.0
                         write_off_amount = 0.0

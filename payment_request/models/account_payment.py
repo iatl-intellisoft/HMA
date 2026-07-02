@@ -175,11 +175,11 @@ class AccountPayment(models.Model):
                    
                     if self.payment_type == 'inbound':
                         # Receive money.
-                        counterpart_amount = -self.total_amount
+                        counterpart_amount = -self.payment_request_id.total_amount
                         write_off_amount *= -1
                     elif self.payment_type == 'outbound':
                         # Send money.
-                        counterpart_amount = self.total_amount
+                        counterpart_amount = self.payment_request_id.total_amount
                     else:
                         counterpart_amount = 0.0
                         write_off_amount = 0.0

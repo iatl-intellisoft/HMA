@@ -172,9 +172,7 @@ class AccountPayment(models.Model):
                         acc_type = self.env['account.account'].browse(res['account_id']).account_type
                 res['payment_request_id'] = self.payment_request_id.id
                 if acc_type in ('asset_receivable', 'liability_payable') or self.partner_id == self.company_id.partner_id:
-                    # Compute amounts.
-                    write_off_amount = write_off_line_vals.get('total_amount', 0.0)
-
+                   
                     if self.payment_type == 'inbound':
                         # Receive money.
                         counterpart_amount = -self.total_amount
@@ -192,30 +190,27 @@ class AccountPayment(models.Model):
                     write_off_amount_currency = write_off_amount
                     currency_id = self.currency_id.id
                     total = sum(line.price_subtotal for line in self.payment_request_id.line_ids) or 1.0
+                    
                     for line in self.payment_request_id.line_ids:
                         line_share = line.price_subtotal / total
-                        line_write_off = write_off_balance * line_share
-                        balance = self.currency_id._convert(
+                    
+                        line_balance = self.currency_id._convert(
                             line.price_subtotal,
                             self.company_id.currency_id,
                             self.company_id,
                             self.date
                         )
-                        debit = line_write_off if  line_write_off > 0 else 0.0
-                        credit = - line_write_off if  line_write_off < 0 else 0.0
-
-                        line_vals_list.append({
+                    
+                        new_line_vals_list.append({
                             'name': line.name,
                             'date_maturity': self.date,
-                            'amount_currency': counterpart_amount_currency * line_share + write_off_amount_currency * line_share,
+                            'amount_currency': line.price_subtotal,
                             'currency_id': currency_id,
-                            'debit': debit,
-                            'credit': credit,
-                            'partner_id': '',
+                            'balance': line_balance,
+                            'partner_id': False,
                             'account_id': line.expense_account_id.id,
                             'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
-                            # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)] if line.analytic_tag_ids else False,
-                            'payment_request_id': self.payment_request_id.id
+                            'payment_request_id': self.payment_request_id.id,
                         })
                 else:
                     new_line_vals_list.append(res)

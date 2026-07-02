@@ -184,10 +184,7 @@ class AccountPayment(models.Model):
                         counterpart_amount = 0.0
                         write_off_amount = 0.0
                     counterpart_amount_currency = counterpart_amount
-                    write_off_balance = self.currency_id._convert(write_off_amount, self.company_id.currency_id,
-                                                                  self.company_id,
-                                                                  self.date)
-                    write_off_amount_currency = write_off_amount
+                  
                     currency_id = self.currency_id.id
                     total = sum(line.price_subtotal for line in self.payment_request_id.line_ids) or 1.0
                     

@@ -229,9 +229,17 @@ class AccountPayment(models.Model):
             _logger.warning("Payment Amount: %s", self.amount)
             _logger.warning("Debit: %s", total_debit)
             _logger.warning("Credit: %s", total_credit)
+            _logger.warning("write_off_amount = %s", write_off_amount)
+            _logger.warning("write_off_balance = %s", write_off_balance)
             
             for line in new_line_vals_list:
                 _logger.warning(line)
+                _logger.warning(
+                    "subtotal=%s share=%s line_write_off=%s",
+                    line.price_subtotal,
+                    line_share,
+                    line_write_off,
+                )
             return new_line_vals_list
             
 

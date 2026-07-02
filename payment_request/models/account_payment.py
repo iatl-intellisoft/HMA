@@ -157,67 +157,139 @@ class AccountPayment(models.Model):
     #         })
 
     def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
-        ''' inherit to do payment request Edit
-        '''
-        new_line_vals_list = []
         line_vals_list = super(AccountPayment, self)._prepare_move_line_default_vals(
-            write_off_line_vals=write_off_line_vals, force_balance=force_balance)
-        count = 0
-        write_off_line_vals = write_off_line_vals or {}
-        if self.payment_request_id and not self.payment_request_id.is_need_clearance and not self.payment_request_id.is_purchase:
-            for res in line_vals_list:
-                acc_type = " "
-                if type(res) is dict:
-                    if res.get('account_id', ' '):
-                        acc_type = self.env['account.account'].browse(res['account_id']).account_type
-                res['payment_request_id'] = self.payment_request_id.id
-                if acc_type in ('asset_receivable', 'liability_payable') or self.partner_id == self.company_id.partner_id:
-                   
-                    if self.payment_type == 'inbound':
-                        # Receive money.
-                        counterpart_amount = -self.total_amount
-                        write_off_amount *= -1
-                    elif self.payment_type == 'outbound':
-                        # Send money.
-                        counterpart_amount = self.total_amount
-                    else:
-                        counterpart_amount = 0.0
-                        write_off_amount = 0.0
-                    counterpart_amount_currency = counterpart_amount
-                    write_off_balance = self.currency_id._convert(write_off_amount, self.company_id.currency_id,
-                                                                  self.company_id,
-                                                                  self.date)
-                    write_off_amount_currency = write_off_amount
-                    currency_id = self.currency_id.id
-                    total = sum(line.price_subtotal for line in self.payment_request_id.line_ids) or 1.0
-                    
+            write_off_line_vals=write_off_line_vals,
+            force_balance=force_balance,
+        )
+    
+        if not self.payment_request_id:
+            return line_vals_list
+    
+        for vals in line_vals_list:
+            vals['payment_request_id'] = self.payment_request_id.id
+    
+    
+        if (
+            not self.payment_request_id.is_need_clearance
+            and not self.payment_request_id.is_purchase
+            and not self.payment_request_id.line_ids
+        ):
+    
+            for vals in line_vals_list:
+                account = self.env['account.account'].browse(vals['account_id'])
+    
+                if account.account_type in ('asset_receivable', 'liability_payable'):
+                    vals['account_id'] = self.payment_request_id.account_id.id
+                    vals['partner_id'] = False
+    
+            return line_vals_list
+    
+        if (
+            not self.payment_request_id.is_need_clearance
+            and not self.payment_request_id.is_purchase
+            and self.payment_request_id.line_ids
+        ):
+    
+            new_line_vals_list = []
+    
+            for vals in line_vals_list:
+    
+                account = self.env['account.account'].browse(vals['account_id'])
+    
+                if account.account_type in ('asset_receivable', 'liability_payable'):
+    
+                    total = sum(
+                        l.price_subtotal
+                        for l in self.payment_request_id.line_ids
+                    ) or 1.0
+    
+                    original_balance = vals['balance']
+                    original_amount_currency = vals['amount_currency']
+    
                     for line in self.payment_request_id.line_ids:
-                        line_share = line.price_subtotal / total
-                    
-                        line_balance = self.currency_id._convert(
-                            line.price_subtotal,
-                            self.company_id.currency_id,
-                            self.company_id,
-                            self.date
-                        )
-                    
+    
+                        ratio = line.price_subtotal / total
+    
                         new_line_vals_list.append({
                             'name': line.name,
                             'date_maturity': self.date,
-                            'amount_currency': line.price_subtotal,
-                            'currency_id': currency_id,
-                            'balance': line_balance,
-                            'partner_id': False,
                             'account_id': line.expense_account_id.id,
+                            'partner_id': False,
+                            'currency_id': vals['currency_id'],
+                            'amount_currency': original_amount_currency * ratio,
+                            'balance': original_balance * ratio,
                             'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
                             'payment_request_id': self.payment_request_id.id,
                         })
+    
                 else:
-                    new_line_vals_list.append(res)
+                    new_line_vals_list.append(vals)
+    
             return new_line_vals_list
+    
+        return line_vals_list
+    # def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
+    #     ''' inherit to do payment request Edit
+    #     '''
+    #     new_line_vals_list = []
+    #     line_vals_list = super(AccountPayment, self)._prepare_move_line_default_vals(
+    #         write_off_line_vals=write_off_line_vals, force_balance=force_balance)
+    #     count = 0
+    #     write_off_line_vals = write_off_line_vals or {}
+    #     if self.payment_request_id and not self.payment_request_id.is_need_clearance and not self.payment_request_id.is_purchase:
+    #         for res in line_vals_list:
+    #             acc_type = " "
+    #             if type(res) is dict:
+    #                 if res.get('account_id', ' '):
+    #                     acc_type = self.env['account.account'].browse(res['account_id']).account_type
+    #             res['payment_request_id'] = self.payment_request_id.id
+    #             if acc_type in ('asset_receivable', 'liability_payable') or self.partner_id == self.company_id.partner_id:
+                   
+    #                 if self.payment_type == 'inbound':
+    #                     # Receive money.
+    #                     counterpart_amount = -self.total_amount
+    #                     write_off_amount *= -1
+    #                 elif self.payment_type == 'outbound':
+    #                     # Send money.
+    #                     counterpart_amount = self.total_amount
+    #                 else:
+    #                     counterpart_amount = 0.0
+    #                     write_off_amount = 0.0
+    #                 counterpart_amount_currency = counterpart_amount
+    #                 write_off_balance = self.currency_id._convert(write_off_amount, self.company_id.currency_id,
+    #                                                               self.company_id,
+    #                                                               self.date)
+    #                 write_off_amount_currency = write_off_amount
+    #                 currency_id = self.currency_id.id
+    #                 total = sum(line.price_subtotal for line in self.payment_request_id.line_ids) or 1.0
+                    
+    #                 for line in self.payment_request_id.line_ids:
+    #                     line_share = line.price_subtotal / total
+                    
+    #                     line_balance = self.currency_id._convert(
+    #                         line.price_subtotal,
+    #                         self.company_id.currency_id,
+    #                         self.company_id,
+    #                         self.date
+    #                     )
+                    
+    #                     new_line_vals_list.append({
+    #                         'name': line.name,
+    #                         'date_maturity': self.date,
+    #                         'amount_currency': line.price_subtotal,
+    #                         'currency_id': currency_id,
+    #                         'balance': line_balance,
+    #                         'partner_id': False,
+    #                         'account_id': line.expense_account_id.id,
+    #                         'analytic_account_id': line.analytic_account_id.id if line.analytic_account_id else False,
+    #                         'payment_request_id': self.payment_request_id.id,
+    #                     })
+    #             else:
+    #                 new_line_vals_list.append(res)
+    #         return new_line_vals_list
 
-        else:
-            return line_vals_list
+    #     else:
+    #         return line_vals_list
 
     # def _prepare_move_line_default_vals(self, write_off_line_vals=None):
     #     ''' inherit to do payment request Edit

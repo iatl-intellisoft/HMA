@@ -54,8 +54,7 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.location_id and line.location_id.stop_selling:
                 raise ValidationError(_(
-                    "You can't sell from location '%s', it is marked as "
-                    "'Stop Selling'. Please use another location.",
+                    "لا يمكنك البيع من الموقع '%s'، فهو مُعلَّم بـ 'إيقاف البيع'. يرجى استخدام موقع آخر.",
                     line.location_id.display_name,
                 ))
 
@@ -96,10 +95,9 @@ class StockPicking(models.Model):
         for picking in self:
             if picking.location_id and picking.location_id.stop_selling:
                 raise ValidationError(_(
-                    "You can't use location '%s' in picking '%s', it is marked as "
-                    "'Stop Selling'. Please use another location.",
+                    "لا يمكنك استخدام الموقع '%s' في أمر الانتقال '%s'، فهو مُعلَّم بـ 'إيقاف البيع'. يرجى استخدام موقع آخر.",
                     picking.location_id.display_name,
-                    picking.name or _('(new)'),
+                    picking.name or _('(جديد)'),
                 ))
 
     @api.model

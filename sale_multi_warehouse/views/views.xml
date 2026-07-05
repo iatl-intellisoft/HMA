@@ -1,18 +1,39 @@
 <odoo>
   <data>
+
+        <!-- ── Sale order: per-line warehouse and source location ─────────── -->
         <record id="view_order_form_inherit_multi_warehouse" model="ir.ui.view">
             <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook/page/field/list/field[@name='product_uom_qty']" position="before">
-                <field name="warehouse_id"
-                  optional="show"
-                  context="{'sale_line_product_id': product_id}"
-                  readonly="parent.state not in ('draft', 'sent')"
-                  force_save="1" />
+                    <field name="warehouse_id"
+                      optional="show"
+                      context="{'sale_line_product_id': product_id}"
+                      readonly="parent.state not in ('draft', 'sent')"
+                      force_save="1"/>
+                    <field name="location_id"
+                      optional="show"
+                      options="{'no_create': True}"
+                      readonly="parent.state not in ('draft', 'sent')"/>
                 </xpath>
             </field>
         </record>
+
+        <!-- ── Stock location: Stop Selling flag ─────────────────────────── -->
+        <record id="view_location_form_stop_selling" model="ir.ui.view">
+            <field name="name">stock.location.form.stop.selling</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="replenish_location" position="after">
+                    <field name="stop_selling"
+                           invisible="usage not in ('internal', 'transit')"
+                           string="Stop Selling"/>
+                </field>
+            </field>
+        </record>
+
   </data>
 </odoo>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 from odoo.osv import expression
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from itertools import groupby
@@ -40,6 +41,22 @@ class SaleOrderLine(models.Model):
         store=True,
         readonly=False,
     )
+    location_id = fields.Many2one(
+        'stock.location',
+        string='Source Location',
+        domain=[('usage', '=', 'internal')],
+        help="Specific stock location to pick this line's goods from. "
+             "Leave empty to use the warehouse default.",
+    )
+
+    @api.constrains('location_id')
+    def _check_location_stop_selling(self):
+        for line in self:
+            if line.location_id and line.location_id.stop_selling:
+                raise ValidationError(_(
+                    "لا يمكنك البيع من الموقع '%s'، فهو مُعلَّم بـ 'إيقاف البيع'. يرجى استخدام موقع آخر.",
+                    line.location_id.display_name,
+                ))
 
     @api.depends('route_id', 'order_id.warehouse_id', 'product_packaging_id', 'product_id')
     def _compute_warehouse_id(self):
@@ -72,6 +89,16 @@ class SaleOrderLine(models.Model):
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+
+    @api.constrains('location_id')
+    def _check_location_stop_selling(self):
+        for picking in self:
+            if picking.location_id and picking.location_id.stop_selling:
+                raise ValidationError(_(
+                    "لا يمكنك استخدام الموقع '%s' في أمر الانتقال '%s'، فهو مُعلَّم بـ 'إيقاف البيع'. يرجى استخدام موقع آخر.",
+                    picking.location_id.display_name,
+                    picking.name or _('(جديد)'),
+                ))
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None):
@@ -124,11 +151,18 @@ class StockPickingType(models.Model):
 
 
 # ---------------------------------------------------------------------------
-# Stock location — warehouse-scoped visibility
+# Stock location — warehouse-scoped visibility + stop-selling flag
 # ---------------------------------------------------------------------------
 
 class StockLocation(models.Model):
     _inherit = 'stock.location'
+
+    stop_selling = fields.Boolean(
+        string='Stop Selling',
+        default=False,
+        help="When enabled, this location cannot be used as a source location "
+             "on sale order lines or stock pickings.",
+    )
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None):

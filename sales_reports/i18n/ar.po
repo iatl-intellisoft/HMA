@@ -1,0 +1,154 @@
+# Arabic translation for sales_reports
+# Copyright (C) 2026
+# This file is distributed under the same license as the sales_reports module.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-05 00:00+0000\n"
+"PO-Revision-Date: 2026-07-05 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. Model name
+#: model:ir.model,name:sales_reports.model_sale_report_wizard
+msgid "Sales Details Report"
+msgstr "تقرير تفاصيل المبيعات"
+
+#. Model name
+#: model:ir.model,name:sales_reports.model_sale_report_line
+msgid "Sales Details Report Line"
+msgstr "سطر تقرير تفاصيل المبيعات"
+
+#. Field: sale.report.wizard - date_from
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_wizard__date_from
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. Field: sale.report.wizard - date_to
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_wizard__date_to
+msgid "End Date"
+msgstr "تاريخ النهاية"
+
+#. Field: sale.report.line - wizard_id
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__wizard_id
+msgid "Wizard"
+msgstr "معالج"
+
+#. Field: sale.report.line - move_id
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__move_id
+msgid "Invoice"
+msgstr "فاتورة"
+
+#. Field: sale.report.line - sale_order_ref
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__sale_order_ref
+msgid "Sale Order Ref"
+msgstr "مرجع أمر البيع"
+
+#. Field: sale.report.line - invoice_date
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__invoice_date
+msgid "Invoice Date"
+msgstr "تاريخ الفاتورة"
+
+#. Field: sale.report.line - salesperson_id
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__salesperson_id
+msgid "Salesperson"
+msgstr "مندوب المبيعات"
+
+#. Field: sale.report.line - partner_id
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__partner_id
+msgid "Customer"
+msgstr "العميل"
+
+#. Field: sale.report.line - currency_id
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. Field: sale.report.line - total_discount
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__total_discount
+msgid "Total Discount"
+msgstr "إجمالي الخصم"
+
+#. Field: sale.report.line - invoice_total
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__invoice_total
+msgid "Invoice Total"
+msgstr "إجمالي الفاتورة"
+
+#. Field: sale.report.line - refund_total
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__refund_total
+msgid "Refunds Total"
+msgstr "إجمالي المرتجعات"
+
+#. Field: sale.report.line - net_total
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__net_total
+msgid "Net Total"
+msgstr "الإجمالي الصافي"
+
+#. Field: sale.report.line - paid
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. Field: sale.report.line - net
+#: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__net
+msgid "Net"
+msgstr "صافي"
+
+#. View: sale.report.wizard form
+#: model:ir.ui.view,arch_db:sales_reports.sale_report_wizard_view_form
+msgid "Sales Details Report"
+msgstr "تقرير تفاصيل المبيعات"
+
+#. View: sale.report.wizard form - group label
+msgid "Date Filter"
+msgstr "تصفية حسب التاريخ"
+
+#. View button
+msgid "Generate"
+msgstr "إنشاء"
+
+#. View button
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. View: sale.report.line list
+msgid "Sales Details"
+msgstr "تفاصيل المبيعات"
+
+#. Action name
+#: model:ir.actions.act_window,name:sales_reports.action_sale_report_wizard
+#: model:ir.actions.act_window,name:sales_reports.action_sale_report_line
+msgid "Sales Details"
+msgstr "تفاصيل المبيعات"
+
+#. Menu item
+#: model:ir.ui.menu,name:sales_reports.menu_sale_report_details
+msgid "Sales Details"
+msgstr "تفاصيل المبيعات"
+
+#. Search view filters
+msgid "Sale Order"
+msgstr "أمر بيع"
+
+msgid "Unpaid"
+msgstr "غير مدفوع"
+
+msgid "Fully Paid"
+msgstr "مدفوع بالكامل"
+
+msgid "Has Refunds"
+msgstr "به مرتجعات"
+
+#. Group By labels
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. Python validation error
+msgid "Start Date cannot be after End Date."
+msgstr "لا يمكن أن يكون تاريخ البداية بعد تاريخ النهاية."

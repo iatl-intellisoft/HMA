@@ -1,73 +1,105 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _
+
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
-    _inherit = 'sale.order'
- 
-    state = fields.Selection(
-        selection_add=[
-            ('pending_payment', 'بانتظار الدفع'),
-        ],
-        ondelete={'pending_payment': 'set default'},
+    _inherit = "sale.order"
+
+    payment_completed = fields.Boolean(
+        string="Payment Completed",
+        compute="_compute_payment_completed",
+        store=False,
     )
 
-    def _has_received_payment(self):
+    payment_warning = fields.Html(
+        compute="_compute_payment_completed"
+    )
+
+    @api.depends(
+        "invoice_ids.payment_state",
+        "invoice_ids.state",
+        "partner_id.customer_type",
+    )
+    def _compute_payment_completed(self):
+
+        for order in self:
+
+            order.payment_completed = True
+            order.payment_warning = False
+
+            if order.partner_id.customer_type != "direct":
+                continue
+
+            invoices = order.invoice_ids.filtered(
+                lambda x:
+                x.state == "posted"
+                and x.move_type == "out_invoice"
+            )
+
+            if not invoices:
+                order.payment_completed = False
+
+                order.payment_warning = """
+                <div class="alert alert-warning">
+                    <strong>
+                    Customer is Direct.
+                    Invoice has not been created.
+                    </strong>
+                </div>
+                """
+                continue
+
+            unpaid = invoices.filtered(
+                lambda x: x.payment_state != "paid"
+            )
+
+            if unpaid:
+
+                order.payment_completed = False
+
+                order.payment_warning = """
+                <div class="alert alert-danger">
+                    <strong>
+                    Delivery is blocked until invoice is fully paid.
+                    </strong>
+                </div>
+                """
  
-        self.ensure_one()
-        invoices = self.invoice_ids.filtered(
-            lambda inv: inv.state == 'posted' and inv.move_type == 'out_invoice'
-        )
-        return any(
-            inv.payment_state in ('partial', 'paid', 'in_payment')
-            for inv in invoices
-        )
+    payment_status = fields.Selection(
+        [
+            ("approved", "Approved"),
+            ("waiting_payment", "Waiting Payment"),
+            ("paid", "Paid"),
+        ],
+        string="Payment Status",
+        compute="_compute_payment_status",
+        store=True,
+    )
 
-    def _requires_payment_before_confirm(self):
-        self.ensure_one()
-        return self.partner_id.customer_type == 'direct' and not self._has_received_payment()
+    @api.depends(
+        "partner_id.customer_type",
+        "invoice_ids.payment_state",
+        "invoice_ids.state",
+    )
+    def _compute_payment_status(self):
 
-    def action_confirm(self): 
-        orders_on_hold = self.filtered(
-            lambda o: o.state in ('draft', 'sent') and o._requires_payment_before_confirm()
-        )
-        orders_to_confirm = self - orders_on_hold
+        for order in self:
 
-        res = True
-        if orders_to_confirm:
-            res = super(SaleOrder, orders_to_confirm).action_confirm()
+            if order.partner_id.customer_type == "approved":
+                order.payment_status = "approved"
+                continue
 
-        if orders_on_hold:
-            orders_on_hold.write({'state': 'pending_payment'})
-            for order in orders_on_hold:
-                order.message_post(
-                    body=_(
-                        'الأوردر في حالة "بانتظار الدفع": العميل "مباشر" ولم '
-                        'يتم تسجيل أي دفعية على فاتورة بعد. لن يتم تأكيد '
-                        'الأوردر فعلياً ولا إنشاء أمر توصيل له إلا بعد تسجيل '
-                        'أول دفعية (عن طريق فاتورة دفعة مقدمة مثلاً).'
-                    )
-                )
-        return res
+            invoices = order.invoice_ids.filtered(
+                lambda x: x.state == "posted"
+                and x.move_type == "out_invoice"
+            )
 
-    def _release_blocked_delivery(self): 
-        orders = self.filtered(lambda o: o.state == 'pending_payment')
-        if not orders:
-            return
-        orders.write({'state': 'draft'})
-        super(SaleOrder, orders).action_confirm()
+            if not invoices:
+                order.payment_status = "waiting_payment"
+                continue
 
-    def action_release_delivery_manually(self): 
-        self._release_blocked_delivery()
-
-    def action_open_down_payment_wizard(self): 
-        self.ensure_one()
-        action = self.env['ir.actions.act_window']._for_xml_id(
-            'sale.action_view_sale_advance_payment_inv'
-        )
-        action['context'] = {
-            'active_model': 'sale.order',
-            'active_id': self.id,
-            'active_ids': self.ids,
-        }
-        return action
+            if all(inv.payment_state == "paid" for inv in invoices):
+                order.payment_status = "paid"
+            else:
+                order.payment_status = "waiting_payment"

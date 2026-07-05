@@ -57,7 +57,7 @@ class SaleOpsReportWizard(models.TransientModel):
                 'sale_order_ref': picking.sale_id.name or picking.origin or '',
                 'shipping_office_name' : picking.shipping_office_name,
                 'shipping_office_number' : picking.shipping_office_number,
-                'shipping_distination' : picking.shipping_destination,
+                'shipping_distination' : picking.shipping_destination.name,
                 'demand': demand,
                 'quantity': quantity,
             })

@@ -154,3 +154,62 @@ msgstr "تجميع حسب"
 #: code:addons/sales_reports/models/sale_report_wizard.py:0
 msgid "Start Date cannot be after End Date."
 msgstr "لا يمكن أن يكون تاريخ البداية بعد تاريخ النهاية."
+
+#. module: sales_reports
+#: model:ir.model,name:sales_reports.model_sale_ops_report_wizard
+msgid "Operations Report"
+msgstr "تقرير العمليات"
+
+#. module: sales_reports
+#: model:ir.model,name:sales_reports.model_sale_ops_report_line
+msgid "Operations Report Line"
+msgstr "سطر تقرير العمليات"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_wizard__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_line__partner_id
+msgid "Customer Name"
+msgstr "اسم العميل"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_line__sale_order_ref
+msgid "SO Ref"
+msgstr "مرجع أمر البيع"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_line__demand
+msgid "Demand"
+msgstr "الطلب"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_line__quantity
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: sales_reports
+#: model:ir.model.fields,field_description:sales_reports.field_sale_ops_report_line__picking_id
+msgid "Delivery"
+msgstr "التسليم"
+
+#. module: sales_reports
+#: model:ir.actions.act_window,name:sales_reports.action_sale_ops_report_wizard
+#: model:ir.actions.act_window,name:sales_reports.action_sale_ops_report_line
+#: model:ir.ui.menu,name:sales_reports.menu_sale_ops_report
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_ops_report_line_view_list
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_ops_report_line_view_search
+msgid "Operations Report"
+msgstr "تقرير العمليات"
+
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_ops_report_wizard_view_form
+msgid "Customer"
+msgstr "العميل"
+
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_ops_report_line_view_search
+msgid "Sale Order"
+msgstr "أمر بيع"

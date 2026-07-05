@@ -15,140 +15,142 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#. Model name
+#. module: sales_reports
 #: model:ir.model,name:sales_reports.model_sale_report_wizard
 msgid "Sales Details Report"
 msgstr "تقرير تفاصيل المبيعات"
 
-#. Model name
+#. module: sales_reports
 #: model:ir.model,name:sales_reports.model_sale_report_line
 msgid "Sales Details Report Line"
 msgstr "سطر تقرير تفاصيل المبيعات"
 
-#. Field: sale.report.wizard - date_from
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_wizard__date_from
 msgid "Start Date"
 msgstr "تاريخ البداية"
 
-#. Field: sale.report.wizard - date_to
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_wizard__date_to
 msgid "End Date"
 msgstr "تاريخ النهاية"
 
-#. Field: sale.report.line - wizard_id
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__wizard_id
 msgid "Wizard"
 msgstr "معالج"
 
-#. Field: sale.report.line - move_id
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__move_id
 msgid "Invoice"
 msgstr "فاتورة"
 
-#. Field: sale.report.line - sale_order_ref
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__sale_order_ref
 msgid "Sale Order Ref"
 msgstr "مرجع أمر البيع"
 
-#. Field: sale.report.line - invoice_date
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__invoice_date
 msgid "Invoice Date"
 msgstr "تاريخ الفاتورة"
 
-#. Field: sale.report.line - salesperson_id
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__salesperson_id
 msgid "Salesperson"
 msgstr "مندوب المبيعات"
 
-#. Field: sale.report.line - partner_id
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__partner_id
 msgid "Customer"
 msgstr "العميل"
 
-#. Field: sale.report.line - currency_id
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__currency_id
 msgid "Currency"
 msgstr "العملة"
 
-#. Field: sale.report.line - total_discount
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__total_discount
 msgid "Total Discount"
 msgstr "إجمالي الخصم"
 
-#. Field: sale.report.line - invoice_total
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__invoice_total
 msgid "Invoice Total"
 msgstr "إجمالي الفاتورة"
 
-#. Field: sale.report.line - refund_total
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__refund_total
 msgid "Refunds Total"
 msgstr "إجمالي المرتجعات"
 
-#. Field: sale.report.line - net_total
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__net_total
 msgid "Net Total"
 msgstr "الإجمالي الصافي"
 
-#. Field: sale.report.line - paid
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__paid
 msgid "Paid"
 msgstr "مدفوع"
 
-#. Field: sale.report.line - net
+#. module: sales_reports
 #: model:ir.model.fields,field_description:sales_reports.field_sale_report_line__net
 msgid "Net"
 msgstr "صافي"
 
-#. View: sale.report.wizard form
-#: model:ir.ui.view,arch_db:sales_reports.sale_report_wizard_view_form
-msgid "Sales Details Report"
-msgstr "تقرير تفاصيل المبيعات"
+#. module: sales_reports
+#: model:ir.actions.act_window,name:sales_reports.action_sale_report_wizard
+#: model:ir.actions.act_window,name:sales_reports.action_sale_report_line
+#: model:ir.ui.menu,name:sales_reports.menu_sale_report_details
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_list
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
+msgid "Sales Details"
+msgstr "تفاصيل المبيعات"
 
-#. View: sale.report.wizard form - group label
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_wizard_view_form
 msgid "Date Filter"
 msgstr "تصفية حسب التاريخ"
 
-#. View button
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_wizard_view_form
 msgid "Generate"
 msgstr "إنشاء"
 
-#. View button
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_wizard_view_form
 msgid "Cancel"
 msgstr "إلغاء"
 
-#. View: sale.report.line list
-msgid "Sales Details"
-msgstr "تفاصيل المبيعات"
-
-#. Action name
-#: model:ir.actions.act_window,name:sales_reports.action_sale_report_wizard
-#: model:ir.actions.act_window,name:sales_reports.action_sale_report_line
-msgid "Sales Details"
-msgstr "تفاصيل المبيعات"
-
-#. Menu item
-#: model:ir.ui.menu,name:sales_reports.menu_sale_report_details
-msgid "Sales Details"
-msgstr "تفاصيل المبيعات"
-
-#. Search view filters
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
 msgid "Sale Order"
 msgstr "أمر بيع"
 
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
 msgid "Unpaid"
 msgstr "غير مدفوع"
 
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
 msgid "Fully Paid"
 msgstr "مدفوع بالكامل"
 
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
 msgid "Has Refunds"
 msgstr "به مرتجعات"
 
-#. Group By labels
+#. module: sales_reports
+#: model_terms:ir.ui.view,arch_db:sales_reports.sale_report_line_view_search
 msgid "Group By"
 msgstr "تجميع حسب"
 
-#. Python validation error
+#. module: sales_reports
+#. odoo-python
+#: code:addons/sales_reports/models/sale_report_wizard.py:0
 msgid "Start Date cannot be after End Date."
 msgstr "لا يمكن أن يكون تاريخ البداية بعد تاريخ النهاية."

@@ -14,9 +14,9 @@
 
                 <field name="partner_id"     string="Customer Name"/>
                 <field name="sale_order_ref" string="SO Ref"/>
-                <field name="shipping_office_name"         string="Demand"   sum="Shipping Office Name"/>
-                <field name="shipping_office_number"         string="Demand"   sum="Shipping Office Number"/>
-                <field name="shipping_distination"         string="Demand"   sum="Shipping Destination"/>
+                <field name="shipping_office_name"         string="Shipping Office Name"   sum="Shipping Office Name"/>
+                <field name="shipping_office_number"         string="Shipping Office Number"   sum="Shipping Office Number"/>
+                <field name="shipping_distination"         string="Shipping Destination"   sum="Shipping Destination"/>
                 <field name="demand"         string="Demand"   sum="Demand"/>
                 <field name="quantity"       string="Quantity" sum="Quantity"/>
 

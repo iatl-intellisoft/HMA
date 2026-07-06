@@ -173,23 +173,40 @@ class StockLocation(models.Model):
         supplier, transit, view, virtual, etc.) remain fully visible so that
         receipts and deliveries can still reference partner/virtual locations.
 
-        Exception: when the context contains ``show_all_locations=True`` (set
+        Exception 1: when the context contains ``show_all_locations=True`` (set
         by the picking form for internal transfers) the warehouse restriction is
         lifted so the user can select any internal location as source/destination
         on an internal transfer without being limited to their own warehouse.
+
+        Exception 2: ID-lookup searches — i.e. ``domain`` contains
+        ``('id', '=', X)`` or ``('id', 'in', [...])`` — are always allowed
+        without the warehouse restriction.  These are called by the ORM and the
+        web layer to validate stored Many2one values; blocking them would raise
+        spurious "access denied" errors when opening pickings that reference
+        locations in other warehouses, even though the user is allowed to see
+        that picking.
 
         Managers and users without a default warehouse see all locations.
         """
         wh = _get_user_warehouse(self.env)
         if wh and not self.env.context.get('show_all_locations'):
-            warehouse_domain = [
-                '|',
-                # Non-internal locations are always visible (partner, virtual, …)
-                ('usage', '!=', 'internal'),
-                # Internal locations: restrict to the user's warehouse
-                ('warehouse_id', '=', wh.id),
-            ]
-            domain = expression.AND([domain, warehouse_domain])
+            # Check whether this is a direct ID lookup (validation, not browse)
+            is_id_lookup = any(
+                isinstance(term, (list, tuple))
+                and len(term) == 3
+                and term[0] == 'id'
+                and term[1] in ('=', 'in', 'child_of')
+                for term in domain
+            )
+            if not is_id_lookup:
+                warehouse_domain = [
+                    '|',
+                    # Non-internal locations are always visible (partner, virtual, …)
+                    ('usage', '!=', 'internal'),
+                    # Internal locations: restrict to the user's warehouse
+                    ('warehouse_id', '=', wh.id),
+                ]
+                domain = expression.AND([domain, warehouse_domain])
         return super()._search(domain, offset=offset, limit=limit, order=order)
 
 

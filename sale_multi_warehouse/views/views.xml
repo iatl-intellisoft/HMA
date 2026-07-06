@@ -35,12 +35,15 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-                <field name="location_id" groups="stock.group_stock_multi_locations" position="attributes">
+                <!-- Target the visible header field uniquely by its invisible expression.
+                     Using <field> tag with groups= picks the first match (the hidden one).
+                     Explicit xpath on @invisible is the only reliable discriminator. -->
+                <xpath expr="//field[@name='location_id'][contains(@invisible,'incoming')]" position="attributes">
                     <attribute name="context">{'show_all_locations': picking_type_code == 'internal'}</attribute>
-                </field>
-                <field name="location_dest_id" groups="stock.group_stock_multi_locations" position="attributes">
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id'][contains(@invisible,'outgoing')]" position="attributes">
                     <attribute name="context">{'show_all_locations': picking_type_code == 'internal'}</attribute>
-                </field>
+                </xpath>
             </field>
         </record>
 

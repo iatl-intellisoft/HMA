@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Wizard form ──────────────────────────────────────────────────────── -->
+    <record id="sale_ops_report_wizard_view_form" model="ir.ui.view">
+        <field name="name">sale.ops.report.wizard.form</field>
+        <field name="model">sale.ops.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Operations Report">
+                <group>
+                    <field name="date" widget="date"/>
+                </group>
+                <footer>
+                    <button name="action_generate"
+                            string="Generate"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Window action ────────────────────────────────────────────────────── -->
+    <record id="action_sale_ops_report_wizard" model="ir.actions.act_window">
+        <field name="name">Operations Report</field>
+        <field name="res_model">sale.ops.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Menu: Sales → Reporting → Operations Report ──────────────────────── -->
+    <menuitem id="menu_sale_ops_report"
+              name="Operations Report"
+              parent="sale.menu_sale_report"
+              action="action_sale_ops_report_wizard"
+              sequence="101"/>
+
+</odoo>

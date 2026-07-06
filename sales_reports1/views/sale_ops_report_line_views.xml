@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── List view ────────────────────────────────────────────────────────── -->
+    <record id="sale_ops_report_line_view_list" model="ir.ui.view">
+        <field name="name">sale.ops.report.line.list</field>
+        <field name="model">sale.ops.report.line</field>
+        <field name="arch" type="xml">
+            <list string="Operations Report"
+                  create="0"
+                  edit="0"
+                  delete="0"
+                  export_xlsx="1">
+
+                <field name="partner_id"     string="Customer Name"/>
+                <field name="sale_order_ref" string="SO Ref"/>
+                <field name="shipping_office_name"         string="Shipping Office Name"   sum="Shipping Office Name"/>
+                <field name="shipping_office_number"         string="Shipping Office Number"   sum="Shipping Office Number"/>
+                <field name="shipping_distination"         string="Shipping Destination"   sum="Shipping Destination"/>
+                <field name="demand"         string="Demand"   sum="Demand"/>
+                <field name="quantity"       string="Quantity" sum="Quantity"/>
+
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Search view ──────────────────────────────────────────────────────── -->
+    <record id="sale_ops_report_line_view_search" model="ir.ui.view">
+        <field name="name">sale.ops.report.line.search</field>
+        <field name="model">sale.ops.report.line</field>
+        <field name="arch" type="xml">
+            <search string="Operations Report">
+                <field name="partner_id"     string="Customer"/>
+                <field name="sale_order_ref" string="SO Ref"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_customer"
+                            string="Customer"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_so"
+                            string="Sale Order"
+                            context="{'group_by': 'sale_order_ref'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Stand-alone action ───────────────────────────────────────────────── -->
+    <record id="action_sale_ops_report_line" model="ir.actions.act_window">
+        <field name="name">Operations Report</field>
+        <field name="res_model">sale.ops.report.line</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

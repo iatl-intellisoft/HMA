@@ -11,8 +11,6 @@
         'views/sale_report_line_views.xml',
         'views/sale_ops_report_wizard_views.xml',
         'views/sale_ops_report_line_views.xml',
-        'views/sale_payment_report_wizard_views.xml',
-        'report/sale_payment_report_template.xml',
     ],
     'installable': True,
     'application': False,

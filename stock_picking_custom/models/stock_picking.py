@@ -9,9 +9,16 @@ class StockPicking(models.Model):
         store=True,
         readonly=True,
     )
+
     vat_id = fields.Char(
         related="sale_id.partner_id.vat",
         string="الرقم الضريبي",
+        store=True,
+        readonly=True,
+    )
+    phone = fields.Char(
+        related="sale_id.partner_id.phone",
+        string="رقم الهاتف"
         store=True,
         readonly=True,
     )

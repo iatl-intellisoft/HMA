@@ -173,10 +173,15 @@ class StockLocation(models.Model):
         supplier, transit, view, virtual, etc.) remain fully visible so that
         receipts and deliveries can still reference partner/virtual locations.
 
+        Exception: when the context contains ``show_all_locations=True`` (set
+        by the picking form for internal transfers) the warehouse restriction is
+        lifted so the user can select any internal location as source/destination
+        on an internal transfer without being limited to their own warehouse.
+
         Managers and users without a default warehouse see all locations.
         """
         wh = _get_user_warehouse(self.env)
-        if wh:
+        if wh and not self.env.context.get('show_all_locations'):
             warehouse_domain = [
                 '|',
                 # Non-internal locations are always visible (partner, virtual, …)

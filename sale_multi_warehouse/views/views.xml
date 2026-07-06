@@ -21,6 +21,29 @@
             </field>
         </record>
 
+        <!-- ── Stock picking: allow all locations on internal transfers ───── -->
+        <!--
+            The StockLocation._search override normally restricts internal
+            locations to the user's assigned warehouse.  For internal transfers
+            the user must be able to pick any source/destination, so we pass
+            show_all_locations=True when the picking type is internal.
+            The restriction on WHICH pickings are visible is kept by
+            StockPicking._search (source OR destination in user's warehouse).
+        -->
+        <record id="view_picking_form_inherit_internal_locations" model="ir.ui.view">
+            <field name="name">stock.picking.form.internal.locations</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="location_id" groups="stock.group_stock_multi_locations" position="attributes">
+                    <attribute name="context">{'show_all_locations': picking_type_code == 'internal'}</attribute>
+                </field>
+                <field name="location_dest_id" groups="stock.group_stock_multi_locations" position="attributes">
+                    <attribute name="context">{'show_all_locations': picking_type_code == 'internal'}</attribute>
+                </field>
+            </field>
+        </record>
+
         <!-- ── Stock location: Stop Selling flag ─────────────────────────── -->
         <record id="view_location_form_stop_selling" model="ir.ui.view">
             <field name="name">stock.location.form.stop.selling</field>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="payment_report_template">
+        <t t-call="web.html_container">
+            <t t-if="docs">
+
+                <!--
+                    docs = recordset of sale.payment.report.line
+                    wizard     → the parent wizard (company, date, currency)
+                    o          → set to wizard so web.external_layout reads o.company_id
+                -->
+                <t t-set="wizard"   t-value="docs[0].wizard_id"/>
+                <t t-set="currency" t-value="wizard.currency_id"/>
+                <t t-set="o"        t-value="wizard"/>
+
+                <!-- Pre-compute column totals -->
+                <t t-set="tot_inv"      t-value="sum(docs.mapped('invoices_total'))"/>
+                <t t-set="tot_cash"     t-value="sum(docs.mapped('cash_total'))"/>
+                <t t-set="tot_cheque"   t-value="sum(docs.mapped('cheque_total'))"/>
+                <t t-set="tot_transfer" t-value="sum(docs.mapped('transfer_total'))"/>
+                <t t-set="tot_diff"     t-value="sum(docs.mapped('difference'))"/>
+
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- Report title + date -->
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Payment Details Report</h3>
+                            <p t-if="wizard.date" class="text-muted mb-0">
+                                Date: <span t-field="wizard.date"/>
+                            </p>
+                        </div>
+
+                        <!-- Data table -->
+                        <table class="table table-sm table-bordered o_main_table">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>User</th>
+                                    <th class="text-end">Invoices Total</th>
+                                    <th class="text-end">Cash Total</th>
+                                    <th class="text-end">Cheques Total</th>
+                                    <th class="text-end">Transfers Total</th>
+                                    <th class="text-end">Difference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="line">
+                                    <tr>
+                                        <td class="text-center">
+                                            <t t-out="line.sequence"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="line.user_id.name or '—'"/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-out="line.invoices_total"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-out="line.cash_total"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-out="line.cheque_total"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-out="line.transfer_total"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-out="line.difference"
+                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+
+                            <!-- ── Totals row ───────────────────────────────── -->
+                            <tfoot>
+                                <tr class="fw-bold table-secondary">
+                                    <td colspan="2">Total</td>
+                                    <td class="text-end">
+                                        <t t-out="tot_inv"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-out="tot_cash"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-out="tot_cheque"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-out="tot_transfer"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-out="tot_diff"
+                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </t><!-- /web.external_layout -->
+
+            </t>
+        </t>
+    </template>
+
+</odoo>

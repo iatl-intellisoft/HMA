@@ -57,8 +57,8 @@
                           </div>
                           <field name="remaining_leaves" />
                           <field name="leave_compensation" />
-                          <field name="article_77" />
-                          <field name="article_77_compensation" invisible="article_77 != True"/>
+                          <!-- <field name="article_77" />
+                          <field name="article_77_compensation" invisible="article_77 != True"/> -->
                           <field name="eos_amount" />
                       </group>
                   </group>

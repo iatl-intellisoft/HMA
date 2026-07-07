@@ -65,8 +65,9 @@ class SaleOpsReportWizard(models.TransientModel):
                     groups.append({
                         'so_name': p.sale_id.name,
                         'partner_name': p.partner_id.name or '',
-                        'shipping_office': p.picking_type_id.name or '',
-                        'shipping_destination': p.location_dest_id.display_name or '',
+                        'shipping_office': p.shipping_office_name or '',
+                        'shipping_office_no': p.shipping_office_number or '',
+                        'shipping_destination': p.shipping_destination.name or '',
                         'stock_location': p.location_id.display_name or '',
                         'pickings': p,
                     })
@@ -74,8 +75,9 @@ class SaleOpsReportWizard(models.TransientModel):
                 groups.append({
                     'so_name': '',
                     'partner_name': p.partner_id.name or '',
-                    'shipping_office': p.picking_type_id.name or '',
-                    'shipping_destination': p.location_dest_id.display_name or '',
+                    'shipping_office': p.shipping_office_name or '',
+                    'shipping_office_no': p.shipping_office_number or '',
+                    'shipping_destination': p.shipping_destination.name or '',
                     'stock_location': p.location_id.display_name or '',
                     'pickings': p,
                 })

@@ -18,12 +18,12 @@ msgstr ""
 #. module: sales_reports
 #: model:ir.actions.report,print_report_name:sales_reports.action_sale_ops_report_pdf
 msgid "'Operation Report'"
-msgstr "تقرير موقف التوصيلات"
+msgstr "'تقرير موقف التوصيلات'"
 
 #. module: sales_reports
 #: model:ir.actions.report,print_report_name:sales_reports.action_sale_payment_report_pdf
 msgid "'Payment Details'"
-msgstr "تفاصيل الدفعيات"
+msgstr "'تفاصيل الدفعيات'"
 
 #. module: sales_reports
 #: model_terms:ir.ui.view,arch_db:sales_reports.sale_ops_report_wizard_view_form

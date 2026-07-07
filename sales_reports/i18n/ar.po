@@ -257,7 +257,7 @@ msgstr "لا يوجد اوامر توصيل في التاريخ المحدد"
 #: model:ir.actions.report,name:sales_reports.action_sale_ops_report_pdf
 #: model_terms:ir.ui.view,arch_db:sales_reports.ops_report_template
 msgid "Operation Report"
-msgstr "تقرير موقف التوصيلات"
+msgstr "'تقرير موقف التوصيلات'"
 
 #. module: sales_reports
 #. odoo-python

@@ -36,7 +36,7 @@ class SalePaymentReportWizard(models.TransientModel):
         if journal.type == 'cash':
             buckets['cash'] += partial_amount
         elif journal.type == 'bank':
-            if method_code == 'check':
+            if 'check' in method_code:
                 buckets['cheque'] += partial_amount
             elif method_code == 'manual':
                 buckets['transfer'] += partial_amount

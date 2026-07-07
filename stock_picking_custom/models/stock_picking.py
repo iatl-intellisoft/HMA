@@ -18,7 +18,7 @@ class StockPicking(models.Model):
     )
     phone = fields.Char(
         related="sale_id.partner_id.phone",
-        string="رقم الهاتف"
+        string="رقم الهاتف",
         store=True,
         readonly=True,
     )

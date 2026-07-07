@@ -129,24 +129,29 @@
 
                         <tr>
                             <td>
+                                <strong>رقم هاتف العميل</strong>
+                            </td>
+
+                            <td> 
+                             <span t-field="o.sale_id.partner_id.phone"/> 
+                            </td> 
+                            <td>
                                 <strong>المعرف الضريبي للعميل</strong>
                             </td>
 
                             <td> 
                              <span t-field="o.sale_id.partner_id.vat"/> 
                             </td> 
-
-                            <td>
+                        </tr>
+                     <tr>
+                           <td>
                                 <strong>مكتب الشحن</strong>
                             </td>
 
                             <td> 
                              <span t-field="o.shipping_office_name"/> 
                             </td>
-
-                 
-                        </tr>
-                     <tr>
+                      
                            <td>
                                 <strong>رقم المكتب</strong>
                             </td>
@@ -154,15 +159,6 @@
                             <td> 
                              <span t-field="o.shipping_office_number"/>
                             </td>
-                           <td>
-                                <strong>مكان إرسال البضاعة</strong>
-                            </td>
-
-                            <td> 
-                             <span t-field="o.shipping_destination"/> 
-                            </td>
- 
-
                         </tr>
                         <t t-set="total_qty"
                          t-value="sum(
@@ -171,6 +167,14 @@
                              if line.product_id.type != 'service'
                          )"/>
                        <tr>
+                            <td>
+                                <strong>مكان إرسال البضاعة</strong>
+                            </td>
+
+                            <td> 
+                             <span t-field="o.shipping_destination"/> 
+                            </td>
+                        
                            <td>
                                 <strong>إجمالي الكميات</strong>                            
                            </td>

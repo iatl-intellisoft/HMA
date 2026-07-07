@@ -19,8 +19,5 @@ class SaleOpsReportLine(models.TransientModel):
     # ── Report columns ────────────────────────────────────────────────────────
     partner_id = fields.Many2one('res.partner', string='Customer Name', readonly=True)
     sale_order_ref = fields.Char(string='SO Ref', readonly=True)
-    shipping_office_name = fields.Char(string='Shipping Office Name', readonly=True)
-    shipping_office_number = fields.Char(string='Shipping Office Number', readonly=True)
-    shipping_distination = fields.Char(string='Shipping Distination', readonly=True)
     demand = fields.Float(string='Demand', digits='Product Unit of Measure', readonly=True)
     quantity = fields.Float(string='Quantity', digits='Product Unit of Measure', readonly=True)

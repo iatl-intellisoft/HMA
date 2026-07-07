@@ -53,7 +53,7 @@
                                     <td class="fw-bold bg-light">SO Ref</td>
                                     <td colspan="2" t-out="grp['so_name']"/>
                                     <td class="fw-bold bg-light">Shipping Office No</td>
-                                    <td t-out="', '.join(grp['pickings'].mapped('shipping_office_number'))"/>
+                                    <td t-out="', '.join(filter(None, grp['pickings'].mapped('shipping_office_number')))"/>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold bg-light">Date</td>

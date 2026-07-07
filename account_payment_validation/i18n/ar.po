@@ -1,0 +1,28 @@
+# Arabic translation for account_payment_validation
+# Copyright (C) 2026
+# This file is distributed under the same license as the account_payment_validation module.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-07 00:00+0000\n"
+"PO-Revision-Date: 2026-07-07 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: account_payment_validation
+#: code:addons/account_payment_validation/models/account_payment.py:0
+#, python-format
+msgid "(new)"
+msgstr "(جديد)"
+
+#. module: account_payment_validation
+#: code:addons/account_payment_validation/models/account_payment.py:0
+#, python-format
+msgid "Cannot confirm payment(s) %s: amount must be greater than zero."
+msgstr "لا يمكن تأكيد الدفعة/الدفعات %s: يجب أن يكون المبلغ أكبر من الصفر."

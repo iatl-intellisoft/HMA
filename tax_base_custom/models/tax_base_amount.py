@@ -35,14 +35,28 @@ class AccountMoveLine(models.Model):
         for line in self:
             if line.product_id:
                 line.tax_base_amount = line.product_id.tax_base_amount
+     
 
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     for vals in vals_list:
+    #         product_id = vals.get('product_id')
+    #         if product_id and not vals.get('tax_base_amount'):
+    #             product = self.env['product.product'].browse(product_id)
+    #             vals['tax_base_amount'] = product.tax_base_amount or 0.0
+
+    #     return super().create(vals_list)
     @api.model_create_multi
     def create(self, vals_list):
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+
         for vals in vals_list:
-            product_id = vals.get('product_id')
-            if product_id and not vals.get('tax_base_amount'):
-                product = self.env['product.product'].browse(product_id)
-                vals['tax_base_amount'] = product.tax_base_amount or 0.0
+            product_id = vals.get("product_id")
+
+            if product_id and not vals.get("tax_base_amount"):
+                product = self.env["product.product"].browse(product_id)
+                vals["tax_base_amount"] = product.tax_base_amount or 0.0
 
         return super().create(vals_list)
  

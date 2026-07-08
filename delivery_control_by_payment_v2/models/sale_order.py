@@ -91,7 +91,7 @@ class SaleOrder(models.Model):
                     'لمسؤول اعتماد المبيعات المحدد في الإعدادات.'
                 ))
         orders.write({'state': 'draft'})
-        super(SaleOrder, orders).action_confirm()
+        orders.action_confirm()
         for order in orders:
             order.message_post(
                 body=_('تم اعتماد أمر البيع بواسطة %s.', self.env.user.display_name)

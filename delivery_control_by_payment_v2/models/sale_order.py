@@ -29,20 +29,24 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return self.partner_id.customer_type == 'approved'
 
-    def action_confirm(self): 
+    def action_confirm(self):
+        if self.env.context.get('skip_sales_approval'):
+            return super().action_confirm()
+    
         orders_on_hold = self.filtered(
             lambda o: o.state in ('draft', 'sent') and o._requires_sales_approval()
         )
         orders_to_confirm = self - orders_on_hold
-
+    
         res = True
         if orders_to_confirm:
             res = super(SaleOrder, orders_to_confirm).action_confirm()
-
+    
         if orders_on_hold:
             orders_on_hold.write({'state': 'pending_approval'})
             for order in orders_on_hold:
                 order._notify_sales_approver()
+    
         return res
 
     def _notify_sales_approver(self):
@@ -84,18 +88,20 @@ class SaleOrder(models.Model):
         orders = self.filtered(lambda o: o.state == 'pending_approval')
         if not orders:
             return True
+    
         for order in orders:
             if not order.can_approve_order:
-                raise UserError(_(
-                    'غير مصرح لك باعتماد هذا الأوردر. الاعتماد متاح فقط '
-                    'لمسؤول اعتماد المبيعات المحدد في الإعدادات.'
-                ))
+                raise UserError(_("غير مصرح لك باعتماد هذا الأوردر."))
+    
         orders.write({'state': 'draft'})
-        orders.action_confirm()
+    
+        orders.with_context(skip_sales_approval=True).action_confirm()
+    
         for order in orders:
             order.message_post(
-                body=_('تم اعتماد أمر البيع بواسطة %s.', self.env.user.display_name)
+                body=_("تم اعتماد أمر البيع بواسطة %s.", self.env.user.display_name)
             )
+    
         return True
 
     def action_reject_sales_order(self):

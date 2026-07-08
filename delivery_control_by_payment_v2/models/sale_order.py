@@ -92,6 +92,15 @@ class SaleOrder(models.Model):
                 ))
         orders.write({'state': 'draft'})
         super(SaleOrder, orders).action_confirm()
+        import logging
+        _logger = logging.getLogger(__name__)
+        for order in orders:
+            _logger.warning(
+                "Order=%s state=%s pickings=%s",
+                order.name,
+                order.state,
+                order.picking_ids.ids,
+            )
         for order in orders:
             order.message_post(
                 body=_('تم اعتماد أمر البيع بواسطة %s.', self.env.user.display_name)

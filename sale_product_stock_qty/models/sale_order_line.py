@@ -6,10 +6,10 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     product_qty_available = fields.Float(
-        string='On Hand',
+        string='Available',
         compute='_compute_product_qty_available',
         digits='Product Unit of Measure',
-        help="Current on-hand quantity of the product at the selected location.",
+        help="Real-time available quantity (on-hand minus reserved) at the selected warehouse.",
     )
 
     @api.depends('product_id', 'warehouse_id')
@@ -22,6 +22,6 @@ class SaleOrderLine(models.Model):
             if location:
                 line.product_qty_available = line.product_id.with_context(
                     location=location.id
-                ).qty_available
+                ).free_qty
             else:
-                line.product_qty_available = line.product_id.qty_available
+                line.product_qty_available = line.product_id.free_qty

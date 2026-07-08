@@ -99,18 +99,33 @@ class SaleOrder(models.Model):
         return True
 
     def _create_invoices(self, grouped=False, final=False, date=None):
+        
         for order in self:
             if order.partner_id.customer_type != 'approved':
                 continue
-            if not any(line.qty_delivered > 0 for line in order.order_line):
+
+            outgoing_pickings = order.picking_ids.filtered(
+                lambda p: p.picking_type_id.code == 'outgoing'
+                and p.state != 'cancel'
+            )
+            undone_pickings = outgoing_pickings.filtered(lambda p: p.state != 'done')
+
+            if not outgoing_pickings or undone_pickings:
+                if not outgoing_pickings:
+                    status = _('لم يتم إنشاء أي أمر توصيل لهذا الأوردر بعد.')
+                else:
+                    status = _(
+                        'يوجد أمر/أوامر توصيل لم يتم تأكيدها بالكامل بعد: %s',
+                        ', '.join(undone_pickings.mapped('name')),
+                    )
                 raise UserError(_(
                     'لا يمكن إصدار فاتورة لهذا الأوردر الآن.\n\n'
-                    'العميل "%(partner)s" من نوع "عميل معتمد"، وسياسة الفوترة '
-                    'لديه تكون حسب الكميات التي تم توصيلها فعلياً وليس '
-                    'الكميات المطلوبة.\n\n'
-                    'يرجى أولاً تنفيذ وتأكيد أمر التوصيل (Delivery) الخاص '
-                    'بالأوردر، ثم إصدار الفاتورة بعد ذلك.',
+                    'العميل "%(partner)s" من نوع "عميل معتمد"، ولازم يتم '
+                    'تنفيذ وتأكيد أمر التوصيل (Delivery) بالكامل أولاً قبل '
+                    'إصدار الفاتورة.\n\n'
+                    '%(status)s',
                     partner=order.partner_id.display_name,
+                    status=status,
                 ))
         return super()._create_invoices(grouped=grouped, final=final, date=date)
 

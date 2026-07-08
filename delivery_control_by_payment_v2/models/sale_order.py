@@ -84,28 +84,45 @@ class SaleOrder(models.Model):
         orders = self.filtered(lambda o: o.state == 'pending_approval')
         if not orders:
             return True
+    
         for order in orders:
             if not order.can_approve_order:
                 raise UserError(_(
-                    'غير مصرح لك باعتماد هذا الأوردر. الاعتماد متاح فقط '
-                    'لمسؤول اعتماد المبيعات المحدد في الإعدادات.'
+                    'غير مصرح لك باعتماد هذا الأوردر.'
                 ))
+    
         orders.write({'state': 'draft'})
         super(SaleOrder, orders).action_confirm()
-        import logging
-        _logger = logging.getLogger(__name__)
-        for order in orders:
-            _logger.warning(
-                "Order=%s state=%s pickings=%s",
-                order.name,
-                order.state,
-                order.picking_ids.ids,
-            )
+    
+        orders._create_delivery_after_approval()
+    
         for order in orders:
             order.message_post(
-                body=_('تم اعتماد أمر البيع بواسطة %s.', self.env.user.display_name)
+                body=_(
+                    'تم اعتماد أمر البيع بواسطة %s.',
+                    self.env.user.display_name
+                )
             )
+    
         return True
+
+    def _create_delivery_after_approval(self):
+        for order in self:
+            if order.state != 'sale':
+                continue
+    
+            if order.picking_ids.filtered(lambda p: p.state != 'cancel'):
+                continue
+    
+            if not order.procurement_group_id:
+                group = self.env['procurement.group'].create({
+                    'name': order.name,
+                    'move_type': order.picking_policy,
+                    'sale_id': order.id,
+                    'partner_id': order.partner_shipping_id.id,
+                })
+                order.procurement_group_id = group
+    
 
     def _create_invoices(self, grouped=False, final=False, date=None):
         

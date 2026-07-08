@@ -11,6 +11,12 @@ class SaleOrder(models.Model):
         ],
         ondelete={'pending_approval': 'set default'},
     )
+    
+    sales_approved = fields.Boolean(
+        string="Sales Approved",
+        default=False,
+        copy=False,
+    )
 
     can_approve_order = fields.Boolean(
         string='يمكنه الاعتماد',
@@ -30,15 +36,18 @@ class SaleOrder(models.Model):
         return self.partner_id.customer_type == 'approved'
 
     def action_confirm(self):
-        if self.env.context.get('skip_sales_approval'):
-            return super().action_confirm()
-    
         orders_on_hold = self.filtered(
-            lambda o: o.state in ('draft', 'sent') and o._requires_sales_approval()
+            lambda o: (
+                o.state in ('draft', 'sent')
+                and o._requires_sales_approval()
+                and not o.sales_approved
+            )
         )
+    
         orders_to_confirm = self - orders_on_hold
     
         res = True
+    
         if orders_to_confirm:
             res = super(SaleOrder, orders_to_confirm).action_confirm()
     
@@ -48,7 +57,7 @@ class SaleOrder(models.Model):
                 order._notify_sales_approver()
     
         return res
-
+        
     def _notify_sales_approver(self):
         self.ensure_one()
         approver = self.company_id.sale_approval_user_id
@@ -81,42 +90,59 @@ class SaleOrder(models.Model):
             partner_ids=[approver.partner_id.id],
         )
 
-    def action_approve_sales_order(self): 
+    def action_approve_sales_order(self):
         return self._do_approve_sales_order()
-
+    
+    
     def _do_approve_sales_order(self):
         orders = self.filtered(lambda o: o.state == 'pending_approval')
+    
         if not orders:
             return True
     
         for order in orders:
             if not order.can_approve_order:
-                raise UserError(_("غير مصرح لك باعتماد هذا الأوردر."))
+                raise UserError(_(
+                    'غير مصرح لك باعتماد هذا الأوردر.'
+                ))
     
-        orders.write({'state': 'draft'})
+        orders.write({
+            'sales_approved': True,
+            'state': 'draft',
+        })
     
-        orders.with_context(skip_sales_approval=True).action_confirm()
+        res = super(SaleOrder, orders).action_confirm()
     
         for order in orders:
             order.message_post(
-                body=_("تم اعتماد أمر البيع بواسطة %s.", self.env.user.display_name)
+                body=_(
+                    'تم اعتماد أمر البيع بواسطة %s.',
+                    self.env.user.display_name
+                )
             )
     
-        return True
-
+        return res
     def action_reject_sales_order(self):
-        """زر رفض أمر البيع: يرجع الأوردر لحالة مسودة عشان يتعدل أو يتلغى."""
         for order in self:
             if order.state != 'pending_approval':
                 continue
+    
             if not order.can_approve_order:
                 raise UserError(_(
-                    'غير مصرح لك برفض هذا الأوردر. هذا الإجراء متاح فقط '
-                    'لمسؤول اعتماد المبيعات المحدد في الإعدادات.'
+                    'غير مصرح لك برفض هذا الأوردر.'
                 ))
-        self.filtered(lambda o: o.state == 'pending_approval').write({'state': 'draft'})
+    
+        self.filtered(
+            lambda o: o.state == 'pending_approval'
+        ).write({
+            'state': 'draft',
+            'sales_approved': False,
+        })
+    
         for order in self:
             order.message_post(
-                body=_('تم رفض اعتماد أمر البيع بواسطة %s وإرجاعه لحالة مسودة.',
-                       self.env.user.display_name)
+                body=_(
+                    'تم رفض أمر البيع بواسطة %s.',
+                    self.env.user.display_name
+                )
             )

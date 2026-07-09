@@ -302,8 +302,7 @@ class CustodyLines(models.Model):
     _description = 'Custody Lines'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    account_id = fields.Many2one('account.account', string='Account', tracking=True,
-                                 domain=[('internal_group', '=', 'expense')])
+    account_id = fields.Many2one('account.account', string='Account', tracking=True)
     partner_id = fields.Many2one('res.partner', string="Partner")
     amount = fields.Float(string="Amount", tracking=True, compute="_compute_total",)
     company_id = fields.Many2one('res.company',default=lambda self: self.env.company)

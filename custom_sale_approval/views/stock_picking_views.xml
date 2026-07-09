@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_sale_approval" model="ir.ui.view">
+        <field name="name">stock.picking.form.sale.approval</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="sale_payment_state"
+                       invisible="not sale_id or not sale_payment_state"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -19,7 +19,7 @@ class StockPicking(models.Model):
 
             partner = sale.partner_id
 
-            if partner.requires_sale_approval not in (0, False):
+            if partner.requires_sale_approval == True:
                 continue
 
             invoices = sale.invoice_ids.filtered(

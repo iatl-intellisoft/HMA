@@ -15,6 +15,12 @@ class StockPicking(models.Model):
         store=True,
         readonly=True,
     )
+    phone = fields.Char(
+        related="sale_id.partner_id.phone",
+        string="رقم الهاتف",
+        store=True,
+        readonly=True,
+    )
     
     delivery_amount = fields.Float(
         string='Delivery Amount',

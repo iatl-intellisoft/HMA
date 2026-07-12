@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_warehouse_ids" model="ir.ui.view">
+        <field name="name">hr.employee.form.warehouse.ids</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml"> 
+            <xpath expr="//notebook" position="inside">
+                <page string="المخازن المسموح بها" name="allowed_warehouses">
+                    <field name="warehouse_name_ids"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

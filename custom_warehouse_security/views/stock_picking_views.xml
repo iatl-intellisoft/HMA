@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_print_once" model="ir.ui.view">
+        <field name="name">stock.picking.form.print.once</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+ 
+            <xpath expr="//button[@name='%(stock.action_report_delivery)d']"
+                   position="attributes">
+                <attribute name="groups">!custom_warehouse_security.group_warehouse_keeper</attribute>
+            </xpath>
+ 
+            <xpath expr="//button[@name='%(stock.action_report_delivery)d']"
+                   position="after">
+                <button name="action_print_delivery_once"
+                        string="طباعة إذن التوصيل"
+                        type="object"
+                        class="btn-secondary"
+                        groups="custom_warehouse_security.group_warehouse_keeper"
+                        invisible="delivery_print_count &gt;= 1"/>
+                <field name="delivery_print_count" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

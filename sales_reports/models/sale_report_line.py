@@ -54,3 +54,6 @@ class SaleReportLine(models.TransientModel):
         currency_field='currency_id',
         readonly=True,
     )
+    bank_reference = fields.Char(
+        string="Bank Transaction Number"
+    )

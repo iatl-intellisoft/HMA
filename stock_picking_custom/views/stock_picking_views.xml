@@ -10,6 +10,7 @@
             <xpath expr="//field[@name='partner_id']" position="after">  
                 <field name="national_id"/>  
                 <field name="vat_id"/>  
+                <field name="phone"/>
             </xpath>
 
         </field>

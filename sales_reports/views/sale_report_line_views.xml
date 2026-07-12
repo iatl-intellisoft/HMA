@@ -46,6 +46,9 @@
                 <field name="net"
                        string="Net"
                        sum="Net"/>
+                
+                <field name="bank_reference" 
+                    string="Bank Ref"/>
 
             </list>
         </field>

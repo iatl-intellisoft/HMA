@@ -81,6 +81,45 @@ class SaleOrderLine(models.Model):
         res = super()._prepare_procurement_values(group_id=group_id)
         res.update({"warehouse_id": self.warehouse_id})
         return res
+        
+    @api.constrains('product_id', 'warehouse_id', 'order_id')
+    def _check_duplicate_product_warehouse(self):
+        for line in self:
+            if not line.product_id or not line.warehouse_id:
+                continue
+
+            duplicate = line.order_id.order_line.filtered(
+                lambda l: l.product_id == line.product_id
+                and l.warehouse_id == line.warehouse_id
+                and l.id != line.id
+            )
+
+            if duplicate:
+                raise ValidationError(
+                    "الصنف %s موجود بالفعل في نفس المخزن %s داخل نفس أمر البيع."
+                    % (
+                        line.product_id.display_name,
+                        line.warehouse_id.display_name
+                    )
+                )
+
+    @api.onchange('product_id', 'warehouse_id')
+    def _onchange_check_duplicate(self):
+        if self.product_id and self.warehouse_id:
+            duplicate = self.order_id.order_line.filtered(
+                lambda l: l.product_id == self.product_id
+                and l.warehouse_id == self.warehouse_id
+                and l != self
+            )
+
+            if duplicate:
+                self.product_id = False
+                return {
+                    'warning': {
+                        'title': 'تنبيه',
+                        'message': 'هذا الصنف موجود بالفعل في نفس المخزن داخل أمر البيع.',
+                    }
+                }
 
 
 # ---------------------------------------------------------------------------

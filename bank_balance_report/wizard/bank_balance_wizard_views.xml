@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_bank_balance_wizard_form" model="ir.ui.view">
+        <field name="name">bank.balance.wizard.form</field>
+        <field name="model">bank.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تقرير أرصدة الحسابات البنكية">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="company_ids" widget="many2many_tags"
+                               groups="base.group_multi_company"/>
+                        <field name="journal_ids" widget="many2many_tags"
+                               placeholder="كل البنوك (اتركه فارغاً)"/>
+                        <field name="show_details"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_pdf" type="object"
+                            string="طباعة PDF" class="btn-primary"/>
+                    <button name="action_export_xlsx" type="object"
+                            string="تصدير Excel" class="btn-secondary"/>
+                    <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bank_balance_wizard" model="ir.actions.act_window">
+        <field name="name">تقرير أرصدة الحسابات البنكية</field>
+        <field name="res_model">bank.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bank_balance_report"
+              name="أرصدة الحسابات البنكية"
+              parent="account.menu_finance_reports"
+              action="action_bank_balance_wizard"
+              sequence="50"/>
+
+</odoo>

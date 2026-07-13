@@ -69,18 +69,14 @@ class SaleReportWizard(models.TransientModel):
                 ', '.join(sale_orders.mapped('name'))
                 if sale_orders else (inv.invoice_origin or '')
             )
-            # Bank transaction number
-            bank_reference = ''
-            
             payments = inv._get_reconciled_payments()
-            
-            bank_payment = payments.filtered(
-                lambda p: p.journal_id.type == 'bank'
-            )[:1]
-            
-            if bank_payment:
-                bank_reference = bank_payment.bankak_transaction_number or ''
 
+            bank_references = payments.filtered(
+                lambda p: p.journal_id.type == 'bank' and p.bankak_transaction_number
+            ).mapped('bankak_transaction_number')
+            
+            bank_reference = ', '.join(bank_references)
+            
             line_vals.append({
                 'wizard_id': self.id,
                 'move_id': inv.id,

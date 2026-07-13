@@ -133,7 +133,7 @@
                             </td>
 
                             <td> 
-                             <span t-field="o.sale_id.partner_id.phone"/> 
+<span t-field="o.sale_id.partner_id.phone" dir="ltr" style="unicode-bidi: bidi-override;"/>
                             </td> 
                             <td>
                                 <strong>المعرف الضريبي للعميل</strong>

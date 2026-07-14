@@ -45,6 +45,11 @@ class InvoiceReportWizard(models.TransientModel):
         for rec in self:
             if rec.date_from and rec.date_to and rec.date_from > rec.date_to:
                 raise UserError('تاريخ البداية يجب أن يكون قبل تاريخ النهاية')
+    def action_print_pdf(self):
+        self.ensure_one()
+        return self.env.ref(
+            'invoice_products_report.action_invoice_products_pdf'
+        ).report_action(self)
 
     def action_view_report(self):
         self.ensure_one()

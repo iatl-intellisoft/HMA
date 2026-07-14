@@ -19,6 +19,7 @@
         'wizard/invoice_report_wizard_view.xml',
         'views/invoice_report_tree_view.xml',
         'views/menu_views.xml',
+        'reports/report.xml',
     ],
     'installable': True,
     'application': False,

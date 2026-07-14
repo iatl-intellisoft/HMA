@@ -28,6 +28,12 @@
         <field name="target">new</field>
     </record>
 
+      <menuitem id="menu_sale_report_details"
+              name="Sales Details"
+              parent="sale.menu_sale_report"
+              action="action_sale_report_wizard"
+              sequence="100"/>
+
     <!-- Optional: add an entry under Sales/Reporting menu -->
     <!--
     <menuitem id="menu_sale_report_wizard"

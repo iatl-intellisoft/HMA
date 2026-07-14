@@ -7,7 +7,7 @@
 
                 <!--
                     docs = recordset of sale.payment.report.line
-                    wizard     → the parent wizard (company, date, currency)
+                    wizard     → the parent wizard (company, date_from/date_to, currency)
                     o          → set to wizard so web.external_layout reads o.company_id
                 -->
                 <t t-set="wizard"   t-value="docs[0].wizard_id"/>
@@ -24,11 +24,19 @@
                 <t t-call="web.external_layout">
                     <div class="page">
 
-                        <!-- Report title + date -->
+                        <!-- Report title + period -->
                         <div class="text-center mb-4">
                             <h3 class="fw-bold">Payment Details Report</h3>
-                            <p t-if="wizard.date" class="text-muted mb-0">
-                                Date: <span t-field="wizard.date"/>
+                            <p t-if="wizard.date_from or wizard.date_to" class="text-muted mb-0">
+                                <t t-if="wizard.date_from and wizard.date_to">
+                                    Period: <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/>
+                                </t>
+                                <t t-elif="wizard.date_from">
+                                    From: <span t-field="wizard.date_from"/>
+                                </t>
+                                <t t-else="">
+                                    Until: <span t-field="wizard.date_to"/>
+                                </t>
                             </p>
                         </div>
 

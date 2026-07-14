@@ -10,94 +10,121 @@
                 which is populated by action_print_pdf before calling report_action.
                 No client-side data round-trip needed.
             -->
-            <t t-set="wizard" t-value="docs[0]"/>
-            <t t-set="o"      t-value="wizard"/>
+            <t t-set="wizard"   t-value="docs[0]"/>
+            <t t-set="o"        t-value="wizard"/>
+            <t t-set="sections" t-value="wizard._get_ops_report_sections()"/>
 
             <t t-call="web.external_layout">
                 <div class="page">
 
-                    <!-- ── Report title ──────────────────────────────────── -->
+                    <!-- ── Report title + period ─────────────────────────── -->
                     <div class="text-center mb-4">
                         <h3 class="fw-bold">Operation Report</h3>
-                        <p t-if="wizard.date" class="text-muted mb-0">
-                            Date: <span t-field="wizard.date"/>
+                        <p t-if="wizard.date_from or wizard.date_to" class="text-muted mb-0">
+                            <t t-if="wizard.date_from and wizard.date_to">
+                                Period: <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/>
+                            </t>
+                            <t t-elif="wizard.date_from">
+                                From: <span t-field="wizard.date_from"/>
+                            </t>
+                            <t t-else="">
+                                Until: <span t-field="wizard.date_to"/>
+                            </t>
                         </p>
                     </div>
 
                     <t t-if="not wizard.picking_ids">
-                        <p class="text-center text-muted">No deliveries found for the selected date.</p>
+                        <p class="text-center text-muted">No deliveries found for the selected period.</p>
                     </t>
 
-                    <!-- ── One table per group (SO or standalone picking) ── -->
-                    <t t-foreach="wizard._get_ops_report_groups()" t-as="grp">
+                    <!-- ── Near warehouses section ───────────────────────── -->
+                    <t t-if="sections['near']">
+                        <h4 class="fw-bold mt-2 mb-3">Near Warehouses</h4>
+                        <t t-call="sales_reports.ops_report_group_table" t-foreach="sections['near']" t-as="grp"/>
+                    </t>
 
-                        <table class="table table-sm table-bordered mb-4"
-                               style="table-layout:fixed;width:100%;">
-                            <colgroup>
-                                <col style="width:18%"/>
-                                <col style="width:22%"/>
-                                <col style="width:10%"/>
-                                <col style="width:20%"/>
-                                <col style="width:30%"/>
-                            </colgroup>
-
-                            <tbody>
-                                <!-- ── Meta header rows ──────────────────── -->
-                                <tr>
-                                    <td class="fw-bold bg-light">Customer Name</td>
-                                    <td colspan="2" t-out="grp['partner_name']"/>
-                                    <td class="fw-bold bg-light">Shipping Office</td>
-                                    <td t-out="grp['shipping_office']"/>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold bg-light">SO Ref</td>
-                                    <td colspan="2" t-out="grp['so_name']"/>
-                                    <td class="fw-bold bg-light">Shipping Office No</td>
-                                    <td t-out="', '.join(filter(None, grp['pickings'].mapped('shipping_office_number')))"/>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold bg-light">Date</td>
-                                    <td colspan="2">
-                                        <span t-if="wizard.date" t-field="wizard.date"/>
-                                    </td>
-                                    <td class="fw-bold bg-light">Shipping Destination</td>
-                                    <td t-out="grp['shipping_destination']"/>
-                                </tr>
-
-                                <!-- ── Product lines column headers ──────── -->
-                                <tr class="table-secondary">
-                                    <th>Product</th>
-                                    <th class="text-end">Demand</th>
-                                    <th class="text-end">Quantity</th>
-                                    <th>Stock Location</th>
-                                    <th>Delivery Note Ref</th>
-                                </tr>
-
-                                <!-- ── One row per stock move ────────────── -->
-                                <t t-foreach="grp['pickings']" t-as="picking">
-                                    <t t-foreach="picking.move_ids.filtered(lambda m: m.state == 'done' and m.product_id)" t-as="move">
-                                        <tr>
-                                            <td t-out="move.product_id.display_name or ''"/>
-                                            <td class="text-end">
-                                                <t t-out="'%.2f' % (move.sale_line_id.product_uom_qty if move.sale_line_id else move.product_uom_qty)"/>
-                                            </td>
-                                            <td class="text-end">
-                                                <t t-out="'%.2f' % move.quantity"/>
-                                            </td>
-                                            <td t-out="grp['stock_location']"/>
-                                            <td t-out="picking.name"/>
-                                        </tr>
-                                    </t>
-                                </t>
-                            </tbody>
-                        </table>
-
-                    </t><!-- /t-foreach grp -->
+                    <!-- ── Far warehouses section ────────────────────────── -->
+                    <t t-if="sections['far']">
+                        <h4 class="fw-bold mt-4 mb-3">Far Warehouses</h4>
+                        <t t-call="sales_reports.ops_report_group_table" t-foreach="sections['far']" t-as="grp"/>
+                    </t>
 
                 </div>
             </t><!-- /web.external_layout -->
 
         </t>
+    </template>
+
+    <!-- ── Reusable "one group = one table" block, shared by both sections ── -->
+    <template id="ops_report_group_table">
+        <table class="table table-sm table-bordered mb-4"
+               style="table-layout:fixed;width:100%;">
+            <colgroup>
+                <col style="width:18%"/>
+                <col style="width:22%"/>
+                <col style="width:10%"/>
+                <col style="width:20%"/>
+                <col style="width:30%"/>
+            </colgroup>
+
+            <tbody>
+                <!-- ── Meta header rows ──────────────────────────────────── -->
+                <tr>
+                    <td class="fw-bold bg-light">Customer Name</td>
+                    <td colspan="2" t-out="grp['partner_name']"/>
+                    <td class="fw-bold bg-light">Shipping Office</td>
+                    <td t-out="grp['shipping_office']"/>
+                </tr>
+                <tr>
+                    <td class="fw-bold bg-light">SO Ref</td>
+                    <td colspan="2" t-out="grp['so_name']"/>
+                    <td class="fw-bold bg-light">Shipping Office No</td>
+                    <td t-out="', '.join(filter(None, grp['pickings'].mapped('shipping_office_number')))"/>
+                </tr>
+                <tr>
+                    <td class="fw-bold bg-light">Period</td>
+                    <td colspan="2">
+                        <t t-if="wizard.date_from and wizard.date_to">
+                            <span t-field="wizard.date_from"/> - <span t-field="wizard.date_to"/>
+                        </t>
+                        <t t-elif="wizard.date_from">
+                            <span t-field="wizard.date_from"/>
+                        </t>
+                        <t t-elif="wizard.date_to">
+                            <span t-field="wizard.date_to"/>
+                        </t>
+                    </td>
+                    <td class="fw-bold bg-light">Shipping Destination</td>
+                    <td t-out="grp['shipping_destination']"/>
+                </tr>
+
+                <!-- ── Product lines column headers ──────────────────────── -->
+                <tr class="table-secondary">
+                    <th>Product</th>
+                    <th class="text-end">Demand</th>
+                    <th class="text-end">Quantity</th>
+                    <th>Stock Location</th>
+                    <th>Delivery Note Ref</th>
+                </tr>
+
+                <!-- ── One row per stock move ─────────────────────────────── -->
+                <t t-foreach="grp['pickings']" t-as="picking">
+                    <t t-foreach="picking.move_ids.filtered(lambda m: m.state == 'done' and m.product_id)" t-as="move">
+                        <tr>
+                            <td t-out="move.product_id.display_name or ''"/>
+                            <td class="text-end">
+                                <t t-out="'%.2f' % (move.sale_line_id.product_uom_qty if move.sale_line_id else move.product_uom_qty)"/>
+                            </td>
+                            <td class="text-end">
+                                <t t-out="'%.2f' % move.quantity"/>
+                            </td>
+                            <td t-out="grp['stock_location']"/>
+                            <td t-out="picking.name"/>
+                        </tr>
+                    </t>
+                </t>
+            </tbody>
+        </table>
     </template>
 
 </odoo>

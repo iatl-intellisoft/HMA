@@ -46,14 +46,15 @@ class AccountPaymentRegister(models.TransientModel):
         return payments
 class SaleOrder(models.Model):
     _inherit = 'sale.order'  
-    # truck_id = fields.Many2one('fleet.vehicle', string="Truck")
-    # driver_id = fields.Many2one(
-    #         'res.partner',
-    #         string="Driver",
-    #         related="truck_id.driver_id",
-    #         store=True,
-    #         readonly=True
-    #     )
+    
+    has_beneficiary = fields.Boolean(
+        string="لمستفيد اخر"
+    )
+
+    beneficiary_id = fields.Many2one(
+        "res.partner",
+        string="المستفيد"
+    )
     shipping_office_name = fields.Char(string="اسم مكتب الشحن", store=True)
     shipping_office_number = fields.Char(string="رقم مكتب الشحن", store=True)
     shipping_destination = fields.Many2one('shipping.destination', string="مكان ارسال البضاعة", store=True)
@@ -94,6 +95,15 @@ class SaleOrder(models.Model):
   
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+    
+    has_beneficiary = fields.Boolean(
+        string="لمستفيد اخر"
+    )
+
+    beneficiary_id = fields.Many2one(
+        "res.partner",
+        string="المستفيد"
+    )
     truck_id = fields.Many2one('fleet.vehicle' , string="Truck" )
     driver_id = fields.Many2one(
             'res.partner',

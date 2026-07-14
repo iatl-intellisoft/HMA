@@ -63,6 +63,10 @@ class SaleReportWizard(models.TransientModel):
         }
         return report.report_action(moves.ids, data=data)
 
+    def action_generate(self):
+        """اسم بديل لنفس دالة الطباعة، للتوافق مع أي زرار بيستدعي action_generate"""
+        return self.action_print_report()
+
     def action_view_report_screen(self):
         """يفتح نفس التقرير في المتصفح (HTML) قبل الطباعة"""
         self.ensure_one()

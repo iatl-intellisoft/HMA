@@ -46,36 +46,24 @@
         <tbody>
 
             <t t-set="i" t-value="1"/>
-
-            <t t-foreach="inv.invoice_line_ids.filtered(lambda l:not l.display_type)"
-               t-as="line">
-
-                <tr>
-
-                    <td>
-                        <span t-esc="i"/>
-                        <t t-set="i" t-value="i+1"/>
-                    </td>
-
-                    <td>
-                        <span t-field="line.product_id"/>
-                    </td>
-
-                    <td>
-                        <span t-field="line.quantity"/>
-                    </td>
-
-                    <td>
-                        <span t-field="line.price_unit"/>
-                    </td>
-
-                    <td>
-                        <span t-field="line.price_subtotal"/>
-                    </td>
-
-                </tr>
-
+            <t t-foreach="inv.invoice_line_ids" t-as="line">
+                <t t-if="not line.display_type">
+            
+                    <tr>
+                        <td><span t-esc="i"/><t t-set="i" t-value="i+1"/></td>
+                        <td><span t-field="line.product_id"/></td>
+                        <td><span t-field="line.quantity"/></td>
+                        <td><span t-field="line.price_unit"/></td>
+                        <td><span t-field="line.price_subtotal"/></td>
+                    </tr>
+            
+                </t>
             </t>
+
+           
+                    
+
+                    
 
         </tbody>
 

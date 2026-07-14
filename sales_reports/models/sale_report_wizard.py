@@ -127,5 +127,5 @@ class SaleReportWizard(models.TransientModel):
         self.ensure_one()
         self._prepare_lines()
         return self.env.ref(
-            'sale_report_wizard.action_report_sale_details'
+            'sales_reports.action_report_sale_details'
         ).report_action(self)

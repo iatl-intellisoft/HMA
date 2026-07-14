@@ -104,8 +104,10 @@ class StockPicking(models.Model):
 
     beneficiary_id = fields.Many2one(
         "res.partner",
-        related="sale_id.beneficiary_id.id",
-        string="المستفيد"
+        related="sale_id.beneficiary_id",
+        string="المستفيد",
+        readonly=True,
+        store=True,
     )
     truck_id = fields.Many2one('fleet.vehicle' , string="Truck" )
     driver_id = fields.Many2one(

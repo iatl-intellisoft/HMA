@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class SalePaymentReportWizard(models.TransientModel):
     _name = 'sale.payment.report.wizard'
     _description = 'Payment Details Report'
 
-    date = fields.Date(string='Date')
+    date_from = fields.Date(string='Start Date')
+    date_to = fields.Date(string='End Date')
     company_id = fields.Many2one(
         'res.company',
         string='Company',
@@ -46,8 +48,9 @@ class SalePaymentReportWizard(models.TransientModel):
 
         We start from posted customer invoices, walk their reconciliation links
         to find payments, and filter those payments by payment.date (not
-        invoice_date).  This correctly handles the common case where an invoice
-        was issued on a previous date but paid today.
+        invoice_date) so we correctly handle the common case where an invoice
+        was issued on a previous date but paid later. The date filter is now a
+        range (date_from / date_to) rather than a single day.
 
         NOTE: In Odoo 18 payments use state='in_process'/'paid' (not 'posted'),
         so we never filter account.payment by state — we reach payments only
@@ -62,6 +65,12 @@ class SalePaymentReportWizard(models.TransientModel):
             ('state', '=', 'posted'),
         ], order='invoice_user_id, name')
 
+        # If a period was given, an invoice only "counts" for that period when
+        # it actually had a payment inside the period. Otherwise a salesperson
+        # with old, unrelated invoices (but zero activity in the selected
+        # period) would still show up with an empty row.
+        period_filter = bool(self.date_from or self.date_to)
+
         # ── Aggregate by salesperson ──────────────────────────────────────────
         by_user = {}      # {user_id (int|False): {...}}
         user_map = {}     # {user_id: res.users record}
@@ -72,6 +81,7 @@ class SalePaymentReportWizard(models.TransientModel):
 
             # Per-invoice payment buckets (classified before rolling up to user)
             inv_buckets = {'cash': 0.0, 'cheque': 0.0, 'transfer': 0.0}
+            has_payment_in_period = False
 
             for move_line in inv.line_ids.filtered(
                 lambda l: l.account_id.account_type == 'asset_receivable'
@@ -80,10 +90,19 @@ class SalePaymentReportWizard(models.TransientModel):
                     payment = partial.credit_move_id.payment_id
                     if not payment:
                         continue
-                    # Date filter is on payment.date, NOT invoice_date
-                    if self.date and payment.date != self.date:
+                    # Date filter is a range on payment.date, NOT invoice_date
+                    if self.date_from and payment.date < self.date_from:
+                        continue
+                    if self.date_to and payment.date > self.date_to:
                         continue
                     self._classify_payment(payment, partial.amount, inv_buckets)
+                    has_payment_in_period = True
+
+            # Skip invoices with no payment activity inside the requested
+            # period entirely — this is what keeps salespeople with no work
+            # today (or in the chosen range) out of the report.
+            if period_filter and not has_payment_in_period:
+                continue
 
             if uid not in by_user:
                 by_user[uid] = {
@@ -128,6 +147,8 @@ class SalePaymentReportWizard(models.TransientModel):
 
     def action_generate(self):
         self.ensure_one()
+        if self.date_from and self.date_to and self.date_from > self.date_to:
+            raise ValidationError(_("Start Date cannot be after End Date."))
         self._generate_lines()
         return {
             'type': 'ir.actions.act_window',
@@ -147,6 +168,8 @@ class SalePaymentReportWizard(models.TransientModel):
 
     def action_print_pdf(self):
         self.ensure_one()
+        if self.date_from and self.date_to and self.date_from > self.date_to:
+            raise ValidationError(_("Start Date cannot be after End Date."))
         self._generate_lines()
         # Explicitly search for the freshly created lines to avoid a stale
         # One2many cache that would produce a blank PDF.

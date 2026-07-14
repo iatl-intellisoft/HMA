@@ -52,7 +52,7 @@
                 invisible="state != 'sale'"/>              
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after"> 
-                <field name="has_beneficiary"/>
+                <field name="has_beneficiary" invisible="not has_beneficiary"/>
                 <field name="beneficiary_id" invisible="not has_beneficiary"/>
                 <field name="shipping_office_name"/>
                 <field name="shipping_office_number"/>

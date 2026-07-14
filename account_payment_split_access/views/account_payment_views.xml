@@ -113,5 +113,17 @@
             </field>
  
     </record>
-
+        <record id="view_account_payment_tree_inherit_bankak" model="ir.ui.view">
+            <field name="name">account.payment.tree.inherit.bankak</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+        
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="bankak_transaction_number"/>
+                </xpath>
+        
+            </field>
+        </record>
+        
 </odoo>

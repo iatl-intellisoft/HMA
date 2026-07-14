@@ -97,9 +97,9 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
     
     has_beneficiary = fields.Boolean(
-        string="لمستفيد اخر"
+        string="لمستفيد اخر",
         related="sale_id.has_beneficiary",
-        readonly=True,
+        readonly=True
     )
 
     beneficiary_id = fields.Many2one(

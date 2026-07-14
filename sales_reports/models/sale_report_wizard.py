@@ -11,9 +11,12 @@ class SaleReportWizard(models.TransientModel):
     date_from = fields.Date(string='Start Date')
     date_to = fields.Date(string='End Date')
 
-    # ── Generation ────────────────────────────────────────────────────────────
+    # ── Shared logic ─────────────────────────────────────────────────────────
 
-    def action_generate(self):
+    def _prepare_lines(self):
+        """Build (and persist) the sale.report.line records for this wizard.
+        Used by both the 'View' and 'Print' actions so the logic lives in one place.
+        """
         self.ensure_one()
 
         if self.date_from and self.date_to and self.date_from > self.date_to:
@@ -74,9 +77,9 @@ class SaleReportWizard(models.TransientModel):
             bank_references = payments.filtered(
                 lambda p: p.journal_id.type == 'bank' and p.bankak_transaction_number
             ).mapped('bankak_transaction_number')
-            
+
             bank_reference = ', '.join(bank_references)
-            
+
             line_vals.append({
                 'wizard_id': self.id,
                 'move_id': inv.id,
@@ -94,7 +97,14 @@ class SaleReportWizard(models.TransientModel):
                 'bank_reference': bank_reference,
             })
 
-        self.env['sale.report.line'].create(line_vals)
+        return self.env['sale.report.line'].create(line_vals)
+
+    # ── Actions ──────────────────────────────────────────────────────────────
+
+    def action_generate(self):
+        """'View' button: generate the lines and open them in a list view."""
+        self.ensure_one()
+        self._prepare_lines()
 
         return {
             'type': 'ir.actions.act_window',
@@ -111,3 +121,11 @@ class SaleReportWizard(models.TransientModel):
                 delete=False,
             ),
         }
+
+    def action_print(self):
+        """'Print' button: generate the lines and render the PDF report."""
+        self.ensure_one()
+        self._prepare_lines()
+        return self.env.ref(
+            'sale_report_wizard.action_report_sale_details'
+        ).report_action(self)

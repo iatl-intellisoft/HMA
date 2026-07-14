@@ -59,61 +59,43 @@ class SaleOpsReportWizard(models.TransientModel):
 
         return self.env.ref('sales_reports.action_sale_ops_report_pdf').report_action(self)
 
-    def _get_ops_report_groups(self):
-        """Return ordered list of group dicts for the PDF template.
+    def _get_ops_report_order_groups(self):
+        """Return ordered list of "order block" dicts for the PDF template.
 
-        Each group represents one table in the report:
-        - pickings linked to the same SO **and** the same warehouse proximity
-          → merged into one group
-        - pickings with no SO → one group each
-
-        Each group also carries 'proximity_type' ('near'/'far') taken from
-        the warehouse of its picking type, so the template can split the
-        report into a "Near Warehouses" section and a "Far Warehouses"
-        section.
+        Each block represents one customer/sale-order:
+        - pickings with no SO are treated as their own standalone block
+        - inside each block, pickings are split into 'near_pickings' and
+          'far_pickings' (recordsets) based on the proximity_type of their
+          warehouse, so the template can print, per order:
+              1) all near-warehouse deliveries together
+              2) then all far-warehouse deliveries together
         """
-        groups = []
-        group_index = {}
+        orders = []
+        order_index = {}
 
         for p in self.picking_ids.sorted(lambda p: (p.sale_id.id or 0, p.name)):
-            warehouse = p.picking_type_id.warehouse_id
-            proximity = warehouse.proximity_type or 'near'
+            proximity = p.picking_type_id.warehouse_id.proximity_type or 'near'
+            key = p.sale_id.id or ('picking', p.id)
 
-            group_data = {
-                'partner_name': p.partner_id.name or '',
-                'shipping_office': p.shipping_office_name or '',
-                'shipping_office_no': p.shipping_office_number or '',
-                'shipping_destination': p.shipping_destination.name or '',
-                'stock_location': p.location_id.display_name or '',
-                'proximity_type': proximity,
-                'pickings': p,
-            }
+            if key not in order_index:
+                order_index[key] = len(orders)
+                orders.append({
+                    'so_name': p.sale_id.name or '',
+                    'partner_name': p.partner_id.name or '',
+                    'shipping_office': p.shipping_office_name or '',
+                    'shipping_office_no': p.shipping_office_number or '',
+                    'shipping_destination': p.shipping_destination.name or '',
+                    'near_pickings': self.env['stock.picking'],
+                    'far_pickings': self.env['stock.picking'],
+                })
 
-            if p.sale_id:
-                # Same SO can still ship from both a near and a far warehouse,
-                # so the group key includes proximity, not just the SO id.
-                key = (p.sale_id.id, proximity)
-                if key in group_index:
-                    groups[group_index[key]]['pickings'] |= p
-                    continue
-                group_index[key] = len(groups)
-                group_data['so_name'] = p.sale_id.name
+            order = orders[order_index[key]]
+            if proximity == 'far':
+                order['far_pickings'] |= p
             else:
-                group_data['so_name'] = ''
+                order['near_pickings'] |= p
 
-            groups.append(group_data)
-
-        return groups
-
-    def _get_ops_report_sections(self):
-        """Split the groups from _get_ops_report_groups() into two lists,
-        ready for the template to render as two separate sections.
-        """
-        groups = self._get_ops_report_groups()
-        return {
-            'near': [g for g in groups if g['proximity_type'] == 'near'],
-            'far': [g for g in groups if g['proximity_type'] == 'far'],
-        }
+        return orders
 
     # ── List-view generation (kept for quick on-screen review) ───────────────
 

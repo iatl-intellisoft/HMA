@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Wizard Form -->
+    <record id="view_sale_report_wizard_form" model="ir.ui.view">
+        <field name="name">sale.report.wizard.form</field>
+        <field name="model">sale.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تقرير مبيعات الأصناف">
+                <sheet>
+                    <group col="2">
+
+                        <group string="الفترة">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+
+                        <group string="الفلاتر">
+                            <field name="move_type_filter"/>
+                            <field name="partner_id"/>
+                            <field name="salesperson_id"/>
+                        </group>
+
+                    </group>
+                </sheet>
+
+                <footer>
+
+    <button
+        name="action_view_report_screen"
+        type="object"
+        string="معاينة"
+        class="btn-secondary"
+        icon="fa-eye"/>
+
+    <button
+        name="action_print_report"
+        type="object"
+        string="طباعة PDF"
+        class="btn-primary"
+        icon="fa-print"/>
+
+    <button
+        string="إلغاء"
+        special="cancel"/>
+
+</footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sale_report_wizard" model="ir.actions.act_window">
+        <field name="name">تقرير مبيعات الأصناف</field>
+        <field name="res_model">sale.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_sale_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem
+        id="menu_sale_report_wizard_root"
+        name="تقرير مبيعات الأصناف"
+        parent="account.menu_finance_reports"
+        action="action_sale_report_wizard"
+        sequence="50"/>
+
+</odoo>

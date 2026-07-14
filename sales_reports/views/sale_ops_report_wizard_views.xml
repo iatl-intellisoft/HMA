@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <!-- ── Wizard form ──────────────────────────────────────────────────────── -->
     <record id="sale_ops_report_wizard_view_form" model="ir.ui.view">
         <field name="name">sale.ops.report.wizard.form</field>
@@ -8,7 +7,8 @@
         <field name="arch" type="xml">
             <form string="Operations Report">
                 <group>
-                    <field name="date" widget="date"/>
+                    <field name="date_from" widget="date"/>
+                    <field name="date_to" widget="date"/>
                 </group>
                 <footer>
                     <button name="action_print_pdf"
@@ -24,7 +24,6 @@
             </form>
         </field>
     </record>
-
     <!-- ── Window action ────────────────────────────────────────────────────── -->
     <record id="action_sale_ops_report_wizard" model="ir.actions.act_window">
         <field name="name">Operations Report</field>
@@ -32,15 +31,13 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
     <!-- ── Menu: Sales → Reporting → Operations Report ──────────────────────── -->
     <menuitem id="menu_sale_ops_report"
               name="Operations Report"
               parent="sale.menu_sale_report"
               action="action_sale_ops_report_wizard"
               sequence="101"/>
-
-    <!-- ── PDF report action (model = sale.order, used by action_print_pdf) ─── -->
+    <!-- ── PDF report action (model = sale.ops.report.wizard, used by action_print_pdf) ─── -->
     <record id="action_sale_ops_report_pdf" model="ir.actions.report">
         <field name="name">Operation Report</field>
         <field name="model">sale.ops.report.wizard</field>
@@ -49,5 +46,4 @@
         <field name="report_file">sales_reports.ops_report_template</field>
         <field name="print_report_name">'Operation Report'</field>
     </record>
-
 </odoo>

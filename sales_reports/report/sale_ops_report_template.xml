@@ -15,29 +15,29 @@
             <t t-set="orders" t-value="wizard._get_ops_report_order_groups()"/>
 
             <t t-call="web.external_layout">
-                <div class="page">
+                <div class="page" dir="rtl" style="text-align: right;">
 
-                    <!-- ── Report title + period ─────────────────────────── -->
+                    <!-- ── عنوان التقرير + الفترة ─────────────────────────── -->
                     <div class="text-center mb-4">
-                        <h3 class="fw-bold">Operation Report</h3>
+                        <h3 class="fw-bold">تقرير العمليات</h3>
                         <p t-if="wizard.date_from or wizard.date_to" class="text-muted mb-0">
                             <t t-if="wizard.date_from and wizard.date_to">
-                                Period: <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/>
+                                الفترة: <span t-field="wizard.date_from"/> إلى <span t-field="wizard.date_to"/>
                             </t>
                             <t t-elif="wizard.date_from">
-                                From: <span t-field="wizard.date_from"/>
+                                من: <span t-field="wizard.date_from"/>
                             </t>
                             <t t-else="">
-                                Until: <span t-field="wizard.date_to"/>
+                                حتى: <span t-field="wizard.date_to"/>
                             </t>
                         </p>
                     </div>
 
                     <t t-if="not wizard.picking_ids">
-                        <p class="text-center text-muted">No deliveries found for the selected period.</p>
+                        <p class="text-center text-muted">لا توجد عمليات توصيل خلال الفترة المحددة.</p>
                     </t>
 
-                    <!-- ── One block per customer / sale order ───────────── -->
+                    <!-- ── بلوك لكل عميل / أمر بيع ─────────────────────────── -->
                     <t t-foreach="orders" t-as="order">
                         <t t-call="sales_reports.ops_report_order_block"/>
                     </t>
@@ -48,12 +48,12 @@
         </t>
     </template>
 
-    <!-- ── One order block: meta header, then Near table, then Far table ──── -->
+    <!-- ── بلوك أمر بيع واحد: بيانات ثابتة، ثم جدول قريب، ثم جدول بعيد ───────── -->
     <template id="ops_report_order_block">
 
-        <!-- ── Meta header for this order (customer / SO / shipping info) ── -->
-        <table class="table table-sm table-bordered mb-2"
-               style="table-layout:fixed;width:100%;">
+        <!-- ── بيانات العميل / أمر البيع / الشحن ─────────────────────────── -->
+        <table class="table table-sm table-bordered mb-2" dir="rtl"
+               style="table-layout:fixed;width:100%;text-align:right;">
             <colgroup>
                 <col style="width:18%"/>
                 <col style="width:32%"/>
@@ -62,34 +62,34 @@
             </colgroup>
             <tbody>
                 <tr>
-                    <td class="fw-bold bg-light">Customer Name</td>
+                    <td class="fw-bold bg-light">اسم العميل</td>
                     <td t-out="order['partner_name']"/>
-                    <td class="fw-bold bg-light">Shipping Office</td>
+                    <td class="fw-bold bg-light">مكتب الشحن</td>
                     <td t-out="order['shipping_office']"/>
                 </tr>
                 <tr>
-                    <td class="fw-bold bg-light">SO Ref</td>
+                    <td class="fw-bold bg-light">رقم أمر البيع</td>
                     <td t-out="order['so_name']"/>
-                    <td class="fw-bold bg-light">Shipping Office No</td>
+                    <td class="fw-bold bg-light">رقم مكتب الشحن</td>
                     <td t-out="order['shipping_office_no']"/>
                 </tr>
                 <tr>
-                    <td class="fw-bold bg-light">Shipping Destination</td>
+                    <td class="fw-bold bg-light">جهة الشحن</td>
                     <td colspan="3" t-out="order['shipping_destination']"/>
                 </tr>
             </tbody>
         </table>
 
-        <!-- ── Near-warehouse deliveries for this order ──────────────────── -->
+        <!-- ── تسليمات المخازن القريبة لهذا الأمر ──────────────────────────── -->
         <t t-if="order['near_pickings']">
-            <h5 class="fw-bold mt-1 mb-2">Near Warehouses</h5>
+            <h5 class="fw-bold mt-1 mb-2">مخازن قريبة</h5>
             <t t-set="pickings" t-value="order['near_pickings']"/>
             <t t-call="sales_reports.ops_report_pickings_table"/>
         </t>
 
-        <!-- ── Far-warehouse deliveries for this order ───────────────────── -->
+        <!-- ── تسليمات المخازن البعيدة لهذا الأمر ───────────────────────────── -->
         <t t-if="order['far_pickings']">
-            <h5 class="fw-bold mt-3 mb-2">Far Warehouses</h5>
+            <h5 class="fw-bold mt-3 mb-2">مخازن بعيدة</h5>
             <t t-set="pickings" t-value="order['far_pickings']"/>
             <t t-call="sales_reports.ops_report_pickings_table"/>
         </t>
@@ -98,10 +98,10 @@
 
     </template>
 
-    <!-- ── Reusable products table for a given recordset of pickings ───────── -->
+    <!-- ── جدول منتجات قابل لإعادة الاستخدام لأي مجموعة pickings ──────────── -->
     <template id="ops_report_pickings_table">
-        <table class="table table-sm table-bordered mb-2"
-               style="table-layout:fixed;width:100%;">
+        <table class="table table-sm table-bordered mb-2" dir="rtl"
+               style="table-layout:fixed;width:100%;text-align:right;">
             <colgroup>
                 <col style="width:30%"/>
                 <col style="width:12%"/>
@@ -111,11 +111,11 @@
             </colgroup>
             <thead>
                 <tr class="table-secondary">
-                    <th>Product</th>
-                    <th class="text-end">Demand</th>
-                    <th class="text-end">Quantity</th>
-                    <th>Stock Location</th>
-                    <th>Delivery Note Ref</th>
+                    <th>المنتج</th>
+                    <th class="text-end">الكمية المطلوبة</th>
+                    <th class="text-end">الكمية الفعلية</th>
+                    <th>موقع المخزون</th>
+                    <th>رقم إذن التسليم</th>
                 </tr>
             </thead>
             <tbody>

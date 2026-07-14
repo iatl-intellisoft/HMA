@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ── Wizard form ──────────────────────────────────────────────────────── -->
-    <record id="sale_report_wizard_view_form" model="ir.ui.view">
+    <record id="view_sale_report_wizard_form" model="ir.ui.view">
         <field name="name">sale.report.wizard.form</field>
         <field name="model">sale.report.wizard</field>
         <field name="arch" type="xml">
             <form string="Sales Details Report">
                 <group>
-                    <group string="Date Filter">
-                        <field name="date_from" widget="date"/>
-                        <field name="date_to"   widget="date"/>
-                    </group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
                 </group>
                 <footer>
-                    <button name="action_generate"
-                            string="Generate"
-                            type="object"
-                            class="btn-primary"/>
+                    <button name="action_generate" type="object"
+                            string="View" class="btn-primary"/>
+                    <button name="action_print" type="object"
+                            string="Print" class="btn-secondary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
 
-    <!-- ── Window action (opens wizard as a dialog) ─────────────────────────── -->
     <record id="action_sale_report_wizard" model="ir.actions.act_window">
-        <field name="name">Sales Details</field>
+        <field name="name">Sales Details Report</field>
         <field name="res_model">sale.report.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
-    <!-- ── Menu: Sales → Reporting → Sales Details ──────────────────────────── -->
-    <menuitem id="menu_sale_report_details"
-              name="Sales Details"
-              parent="sale.menu_sale_report"
+    <!-- Optional: add an entry under Sales/Reporting menu -->
+    <!--
+    <menuitem id="menu_sale_report_wizard"
+              name="Sales Details Report"
+              parent="sale.sale_menu_root"
               action="action_sale_report_wizard"
               sequence="100"/>
+    -->
 
 </odoo>

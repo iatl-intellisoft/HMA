@@ -102,7 +102,7 @@ class StockPicking(models.Model):
     )
 
     beneficiary_id = fields.Char(
-        string="المستفيد"
+        string="المستفيد",
         related="sale_id.beneficiary_id",
         
     )

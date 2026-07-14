@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="invoice_products_pdf">
+
+<t t-call="web.html_container">
+<t t-call="web.external_layout">
+
+<div class="page">
+
+<h2 style="text-align:center">
+تقرير الفواتير
+</h2>
+
+<t t-foreach="invoices" t-as="inv">
+
+    <br/>
+
+    <table class="table table-sm table-bordered">
+        <tr>
+            <td><strong>الفاتورة</strong></td>
+            <td><span t-field="inv.name"/></td>
+
+            <td><strong>التاريخ</strong></td>
+            <td><span t-field="inv.invoice_date"/></td>
+
+            <td><strong>العميل</strong></td>
+            <td><span t-field="inv.partner_id"/>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-sm table-bordered">
+
+        <thead>
+
+            <tr>
+                <th>#</th>
+                <th>المنتج</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>الإجمالي</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <t t-foreach="inv.line_ids" t-as="line">
+                <t t-if="line.product_id">
+                    <tr>
+                        <td><span t-field="line.product_id"/></td>
+                        <td><span t-field="line.quantity"/></td>
+                        <td><span t-field="line.price_unit"/></td>
+                        <td><span t-field="line.price_subtotal"/></td>
+                    </tr>
+                </t>
+            </t>
+
+            <!-- <t t-set="i" t-value="1"/>
+            <t t-foreach="inv.invoice_line_ids" t-as="line">
+            <p>
+                عدد السطور:
+                <span t-esc="len(inv.invoice_line_ids)"/>
+            </p>
+                <t t-if="not line.display_type">
+            
+                    <tr>
+                        <td><span t-esc="i"/><t t-set="i" t-value="i+1"/></td>
+                        <td><span t-field="line.product_id"/></td>
+                        <td><span t-field="line.quantity"/></td>
+                        <td><span t-field="line.price_unit"/></td>
+                        <td><span t-field="line.price_subtotal"/></td>
+                    </tr>
+            
+                </t>
+            </t> -->
+
+           
+                    
+
+                    
+
+        </tbody>
+
+    </table>
+
+</t>
+
+<hr/>
+
+<h3>الإجماليات</h3>
+
+<table class="table table-bordered">
+
+<tr>
+    <td><strong>إجمالي الكميات</strong></td>
+    <td>
+        <span t-esc="total_qty"/>
+    </td>
+</tr>
+
+<tr>
+    <td><strong>إجمالي المبلغ</strong></td>
+    <td>
+        <span t-esc="total_amount"/>
+    </td>
+</tr>
+
+</table>
+
+</div>
+
+</t>
+</t>
+
+</template>
+
+<record id="action_invoice_products_pdf" model="ir.actions.report">
+    <field name="name">Invoice Products Report</field>
+    <field name="model">invoice.report.wizard</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">invoice_products_report.invoice_products_pdf</field>
+    <field name="report_file">invoice_products_report.invoice_products_pdf</field>
+    <field name="binding_model_id" ref="model_invoice_report_wizard"/>
+</record>
+
+</odoo>

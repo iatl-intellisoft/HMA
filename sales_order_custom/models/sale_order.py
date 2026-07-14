@@ -51,8 +51,7 @@ class SaleOrder(models.Model):
         string="لمستفيد اخر"
     )
 
-    beneficiary_id = fields.Many2one(
-        "res.partner",
+    beneficiary_id = fields.Char(
         string="المستفيد"
     )
     shipping_office_name = fields.Char(string="اسم مكتب الشحن", store=True)
@@ -102,12 +101,10 @@ class StockPicking(models.Model):
         readonly=True
     )
 
-    beneficiary_id = fields.Many2one(
-        "res.partner",
+    beneficiary_id = fields.Char(
+        string="المستفيد"
         related="sale_id.beneficiary_id",
-        string="المستفيد",
-        readonly=True,
-        store=True,
+        
     )
     truck_id = fields.Many2one('fleet.vehicle' , string="Truck" )
     driver_id = fields.Many2one(

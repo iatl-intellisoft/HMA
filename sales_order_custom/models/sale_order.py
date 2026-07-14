@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError , ValidationError
+from odoo.exceptions import UserError
 
 class ShippingDestination(models.Model):
     _name = 'shipping.destination'
@@ -46,14 +46,14 @@ class AccountPaymentRegister(models.TransientModel):
         return payments
 class SaleOrder(models.Model):
     _inherit = 'sale.order'  
-    truck_id = fields.Many2one('fleet.vehicle', string="Truck")
-    driver_id = fields.Many2one(
-            'res.partner',
-            string="Driver",
-            related="truck_id.driver_id",
-            store=True,
-            readonly=True
-        )
+    
+    has_beneficiary = fields.Boolean(
+        string="لمستفيد اخر"
+    )
+
+    beneficiary_id = fields.Char(
+        string="المستفيد"
+    )
     shipping_office_name = fields.Char(string="اسم مكتب الشحن", store=True)
     shipping_office_number = fields.Char(string="رقم مكتب الشحن", store=True)
     shipping_destination = fields.Many2one('shipping.destination', string="مكان ارسال البضاعة", store=True)
@@ -69,8 +69,6 @@ class SaleOrder(models.Model):
         return res
     def action_register_payment(self):
         self.ensure_one()
-
-         
         invoices = self.invoice_ids.filtered(
             lambda inv: inv.state == 'posted' and inv.payment_state != 'paid'
         )
@@ -96,7 +94,19 @@ class SaleOrder(models.Model):
   
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
-    truck_id = fields.Many2one('fleet.vehicle' ,string="Truck")
+    
+    has_beneficiary = fields.Boolean(
+        string="لمستفيد اخر",
+        related="sale_id.has_beneficiary",
+        readonly=True
+    )
+
+    beneficiary_id = fields.Char(
+        string="المستفيد",
+        related="sale_id.beneficiary_id",
+        
+    )
+    truck_id = fields.Many2one('fleet.vehicle' , string="Truck" )
     driver_id = fields.Many2one(
             'res.partner',
             string="Driver",
@@ -109,12 +119,3 @@ class StockPicking(models.Model):
     shipping_destination = fields.Many2one('shipping.destination', related='sale_id.shipping_destination', string="مكان ارسال البضاعة", store=True)
     shipping_receipt = fields.Binary(string="ايصال الشحن")
     shipping_receipt_name = fields.Char(string="اسم الملف")
-
-    # @api.model
-    # def create(self, vals):
-    #     if vals.get('sale_id'):
-    #         sale = self.env['sale.order'].browse(vals['sale_id'])
-    #         if sale.driver_id:
-    #             vals['driver_id'] = sale.driver_id.id 
-
-    #     return super().create(vals) 

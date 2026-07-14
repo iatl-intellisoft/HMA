@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Wizard form ──────────────────────────────────────────────────────── -->
+    <record id="sale_payment_report_wizard_view_form" model="ir.ui.view">
+        <field name="name">sale.payment.report.wizard.form</field>
+        <field name="model">sale.payment.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payment Details Report">
+                <group>
+                    <field name="date_from" widget="date"/>
+                    <field name="date_to" widget="date"/>
+                </group>
+                <footer>
+                    <button name="action_generate"
+                            string="View Report"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_print_pdf"
+                            string="Print PDF"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Window action (opens wizard as dialog) ───────────────────────────── -->
+    <record id="action_sale_payment_report_wizard" model="ir.actions.act_window">
+        <field name="name">Payment Details</field>
+        <field name="res_model">sale.payment.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Menu: Sales → Reporting → Payment Details ────────────────────────── -->
+    <menuitem id="menu_sale_payment_report"
+              name="Payment Details"
+              parent="sale.menu_sale_report"
+              action="action_sale_payment_report_wizard"
+              sequence="102"/>
+
+    <!-- ── List view for report lines ───────────────────────────────────────── -->
+    <record id="sale_payment_report_line_view_list" model="ir.ui.view">
+        <field name="name">sale.payment.report.line.list</field>
+        <field name="model">sale.payment.report.line</field>
+        <field name="arch" type="xml">
+            <list string="Payment Details"
+                  create="0"
+                  edit="0"
+                  delete="0"
+                  export_xlsx="1">
+
+                <field name="currency_id" column_invisible="1"/>
+
+                <field name="sequence"       string="#"              width="50px"/>
+                <field name="user_id"        string="User"/>
+                <field name="invoices_total" string="Invoices Total" sum="Invoices Total"/>
+                <field name="cash_total"     string="Cash Total"     sum="Cash Total"/>
+                <field name="cheque_total"   string="Cheques Total"  sum="Cheques Total"/>
+                <field name="transfer_total" string="Transfers Total" sum="Transfers Total"/>
+                <field name="difference"     string="Difference"     sum="Difference"
+                       decoration-danger="difference &lt; 0"
+                       decoration-success="difference == 0"/>
+
+            </list>
+        </field>
+    </record>
+
+    <!-- ── PDF report action (bound to line model → appears in Print menu) ──── -->
+    <record id="action_sale_payment_report_pdf" model="ir.actions.report">
+        <field name="name">Payment Details</field>
+        <field name="model">sale.payment.report.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sales_reports.payment_report_template</field>
+        <field name="report_file">sales_reports.payment_report_template</field>
+        <field name="print_report_name">'Payment Details'</field>
+        <field name="binding_model_id" ref="model_sale_payment_report_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

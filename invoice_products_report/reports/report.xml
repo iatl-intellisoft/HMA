@@ -44,9 +44,23 @@
         </thead>
 
         <tbody>
+            <t t-foreach="inv.line_ids" t-as="line">
+                <t t-if="line.product_id">
+                    <tr>
+                        <td><span t-field="line.product_id"/></td>
+                        <td><span t-field="line.quantity"/></td>
+                        <td><span t-field="line.price_unit"/></td>
+                        <td><span t-field="line.price_subtotal"/></td>
+                    </tr>
+                </t>
+            </t>
 
-            <t t-set="i" t-value="1"/>
+            <!-- <t t-set="i" t-value="1"/>
             <t t-foreach="inv.invoice_line_ids" t-as="line">
+            <p>
+                عدد السطور:
+                <span t-esc="len(inv.invoice_line_ids)"/>
+            </p>
                 <t t-if="not line.display_type">
             
                     <tr>
@@ -58,7 +72,7 @@
                     </tr>
             
                 </t>
-            </t>
+            </t> -->
 
            
                     

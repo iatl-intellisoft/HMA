@@ -59,6 +59,14 @@ class SaleOrder(models.Model):
     shipping_office_number = fields.Char(string="رقم مكتب الشحن", store=True)
     shipping_destination = fields.Many2one('shipping.destination', string="مكان ارسال البضاعة", store=True)
 
+    def _prepare_picking(self):
+        vals = super()._prepare_picking()
+        vals.update({
+            'has_beneficiary': self.has_beneficiary,
+            'beneficiary_id': self.beneficiary_id.id if self.beneficiary_id else False,
+        })
+        return vals
+
     def action_confirm(self):
         res = super().action_confirm()
 
@@ -117,4 +125,3 @@ class StockPicking(models.Model):
     shipping_destination = fields.Many2one('shipping.destination', related='sale_id.shipping_destination', string="مكان ارسال البضاعة", store=True)
     shipping_receipt = fields.Binary(string="ايصال الشحن")
     shipping_receipt_name = fields.Char(string="اسم الملف")
-

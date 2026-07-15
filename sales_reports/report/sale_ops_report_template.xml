@@ -66,8 +66,8 @@
                 <tr>
                     <td class="fw-bold bg-light">اسم العميل</td>
                     <td colspan="2" t-out="order['partner_name']"/>
-                    <td class="fw-bold bg-light">رقم العميل</td>
-                    <td t-out="order['partner_phone']"/>
+                    <td class="fw-bold bg-light">رقم العميل</td> 
+                    <td t-out="order['partner_phone']" dir="ltr" style="unicode-bidi: bidi-override;"/>
                 </tr>
                 <tr>
                     <td class="fw-bold bg-light">رقم أمر البيع</td>

@@ -82,6 +82,7 @@ class SaleOpsReportWizard(models.TransientModel):
                 orders.append({
                     'so_name': p.sale_id.name or '',
                     'partner_name': p.partner_id.name or '',
+                    'partner_phone': p.partner_id.phone or '',
                     'shipping_office': p.shipping_office_name or '',
                     'shipping_office_no': p.shipping_office_number or '',
                     'shipping_destination': p.shipping_destination.name or '',

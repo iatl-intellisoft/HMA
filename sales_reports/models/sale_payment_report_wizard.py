@@ -46,30 +46,30 @@ class SalePaymentReportWizard(models.TransientModel):
     def _generate_lines(self):
         """(Re)generate report lines grouped by salesperson.
 
-        We start from posted customer invoices, walk their reconciliation links
-        to find payments, and filter those payments by payment.date (not
-        invoice_date) so we correctly handle the common case where an invoice
-        was issued on a previous date but paid later. The date filter is now a
-        range (date_from / date_to) rather than a single day.
+        A salesperson only appears in the report if they have at least one
+        posted customer invoice whose invoice_date falls inside the selected
+        date_from / date_to range. Invoices outside that range are excluded
+        from the search entirely, so a salesperson with old invoices (even if
+        those old invoices got paid today) will NOT show up unless they also
+        invoiced something within the period.
 
-        NOTE: In Odoo 18 payments use state='in_process'/'paid' (not 'posted'),
-        so we never filter account.payment by state — we reach payments only
-        through the reconciliation API (matched_credit_ids → credit_move_id →
-        payment_id) which returns any confirmed payment regardless of its state
-        label.
+        Once an invoice qualifies (its invoice_date is in range), we still
+        pull in ALL of its reconciled payments regardless of the payment's own
+        date, so the cash/cheque/transfer breakdown reflects the full picture
+        for that invoice.
         """
         self.line_ids.unlink()
 
-        invoices = self.env['account.move'].search([
+        domain = [
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
-        ], order='invoice_user_id, name')
+        ]
+        if self.date_from:
+            domain.append(('invoice_date', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('invoice_date', '<=', self.date_to))
 
-        # If a period was given, an invoice only "counts" for that period when
-        # it actually had a payment inside the period. Otherwise a salesperson
-        # with old, unrelated invoices (but zero activity in the selected
-        # period) would still show up with an empty row.
-        period_filter = bool(self.date_from or self.date_to)
+        invoices = self.env['account.move'].search(domain, order='invoice_user_id, name')
 
         # ── Aggregate by salesperson ──────────────────────────────────────────
         by_user = {}      # {user_id (int|False): {...}}
@@ -81,7 +81,6 @@ class SalePaymentReportWizard(models.TransientModel):
 
             # Per-invoice payment buckets (classified before rolling up to user)
             inv_buckets = {'cash': 0.0, 'cheque': 0.0, 'transfer': 0.0}
-            has_payment_in_period = False
 
             for move_line in inv.line_ids.filtered(
                 lambda l: l.account_id.account_type == 'asset_receivable'
@@ -90,19 +89,7 @@ class SalePaymentReportWizard(models.TransientModel):
                     payment = partial.credit_move_id.payment_id
                     if not payment:
                         continue
-                    # Date filter is a range on payment.date, NOT invoice_date
-                    if self.date_from and payment.date < self.date_from:
-                        continue
-                    if self.date_to and payment.date > self.date_to:
-                        continue
                     self._classify_payment(payment, partial.amount, inv_buckets)
-                    has_payment_in_period = True
-
-            # Skip invoices with no payment activity inside the requested
-            # period entirely — this is what keeps salespeople with no work
-            # today (or in the chosen range) out of the report.
-            if period_filter and not has_payment_in_period:
-                continue
 
             if uid not in by_user:
                 by_user[uid] = {

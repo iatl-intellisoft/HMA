@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_custom_currency_rate_tree" model="ir.ui.view">
+        <field name="name">custom.currency.rate.tree</field>
+        <field name="model">custom.currency.rate</field>
+        <field name="arch" type="xml">
+            <list string="Custom Currency Rates" editable="bottom">
+                <field name="from_currency_id" optional="show" width="15%"/>
+                <field name="to_currency_id" optional="show" width="15%"/>
+                <field name="effective_date" optional="show" width="15%"/>
+                <field name="rate" string="To Currency per Unit" width="15%"/>
+                <field name="inverse_rate" string="Unit per To Currency" width="15%"/>
+                <field name="note" optional="show" width="15%"/>
+                <field name="active" optional="show" width="10%"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_currency_rate_form" model="ir.ui.view">
+        <field name="name">custom.currency.rate.form</field>
+        <field name="model">custom.currency.rate</field>
+        <field name="arch" type="xml">
+            <form string="Custom Currency Rate">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="from_currency_id" placeholder="From Currency"/>
+                            <span class="mx-2">→</span>
+                            <field name="to_currency_id" placeholder="To Currency"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Conversion">
+                            <field name="from_currency_id"/>
+                            <field name="to_currency_id"/>
+                            <field name="rate" string="Rate  (1 From = ? To)"/>
+                        </group>
+                        <group string="Options">
+                            <field name="active"/>
+                            <field name="note"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        <strong>How it works:</strong>
+                        Enter the rate so that <em>1 unit of the From Currency</em> equals
+                        the <em>Rate</em> in the To Currency.<br/>
+                        Example: AED → USD with rate 0.272 means 1 AED = 0.272 USD.<br/>
+                        The inverse (USD → AED) is computed automatically from this record —
+                        no need to add a separate entry.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_currency_rate_search" model="ir.ui.view">
+        <field name="name">custom.currency.rate.search</field>
+        <field name="model">custom.currency.rate</field>
+        <field name="arch" type="xml">
+            <search string="Custom Currency Rates">
+                <field name="from_currency_id" string="From Currency"/>
+                <field name="to_currency_id" string="To Currency"/>
+                <filter name="active" string="Active" domain="[('active','=',True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_from" string="From Currency"
+                            context="{'group_by': 'from_currency_id'}"/>
+                    <filter name="group_to" string="To Currency"
+                            context="{'group_by': 'to_currency_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_currency_rate" model="ir.actions.act_window">
+        <field name="name">Custom Currency Rates</field>
+        <field name="res_model">custom.currency.rate</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No custom currency rates configured yet!
+            </p>
+            <p>
+                Add a rate for any currency pair (e.g. AED → USD).
+                Journal entry lines will use this rate instead of the standard
+                Odoo exchange rate when converting amounts.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_custom_currency_rate"
+        name="Custom Currency Rates"
+        parent="account.account_account_menu"
+        action="action_custom_currency_rate"
+        sequence="4"/>
+
+</odoo>

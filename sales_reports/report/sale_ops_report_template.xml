@@ -48,58 +48,9 @@
         </t>
     </template>
 
-    <!-- ── بلوك أمر بيع واحد: بيانات ثابتة، ثم جدول قريب، ثم جدول بعيد ───────── -->
+    <!-- ── بلوك أمر بيع واحد: كل حاجة (بيانات + قريب + بعيد) في جدول واحد ──── -->
     <template id="ops_report_order_block">
 
-        <!-- ── بيانات العميل / أمر البيع / الشحن ─────────────────────────── -->
-        <table class="table table-sm table-bordered mb-2" dir="rtl"
-               style="table-layout:fixed;width:100%;text-align:right;">
-            <colgroup>
-                <col style="width:18%"/>
-                <col style="width:32%"/>
-                <col style="width:20%"/>
-                <col style="width:30%"/>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td class="fw-bold bg-light">اسم العميل</td>
-                    <td t-out="order['partner_name']"/>
-                    <td class="fw-bold bg-light">مكتب الشحن</td>
-                    <td t-out="order['shipping_office']"/>
-                </tr>
-                <tr>
-                    <td class="fw-bold bg-light">رقم أمر البيع</td>
-                    <td t-out="order['so_name']"/>
-                    <td class="fw-bold bg-light">رقم مكتب الشحن</td>
-                    <td t-out="order['shipping_office_no']"/>
-                </tr>
-                <tr>
-                    <td class="fw-bold bg-light">جهة الشحن</td>
-                    <td colspan="3" t-out="order['shipping_destination']"/>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- ── تسليمات المخازن القريبة لهذا الأمر ──────────────────────────── -->
-        <t t-if="order['near_pickings']">
-            <h5 class="fw-bold mt-1 mb-2">مخازن قريبة</h5>
-            <t t-set="pickings" t-value="order['near_pickings']"/>
-            <t t-call="sales_reports.ops_report_pickings_table"/>
-        </t>
-
-        <!-- ── تسليمات المخازن البعيدة لهذا الأمر ───────────────────────────── -->
-        <t t-if="order['far_pickings']">
-            <h5 class="fw-bold mt-3 mb-2">مخازن بعيدة</h5>
-            <t t-set="pickings" t-value="order['far_pickings']"/>
-            <t t-call="sales_reports.ops_report_pickings_table"/>
-        </t>
-
-        <div class="mb-4"/>
-
-    </template>
-
-    <!-- ── جدول منتجات قابل لإعادة الاستخدام لأي مجموعة pickings ──────────── -->
-    <template id="ops_report_pickings_table">
         <table class="table table-sm table-bordered mb-2" dir="rtl"
                style="table-layout:fixed;width:100%;text-align:right;">
             <colgroup>
@@ -109,33 +60,100 @@
                 <col style="width:26%"/>
                 <col style="width:20%"/>
             </colgroup>
-            <thead>
-                <tr class="table-secondary">
-                    <th>المنتج</th>
-                    <th class="text-end">الكمية المطلوبة</th>
-                    <th class="text-end">الكمية الفعلية</th>
-                    <th>موقع المخزون</th>
-                    <th>رقم إذن التسليم</th>
-                </tr>
-            </thead>
             <tbody>
-                <t t-foreach="pickings" t-as="picking">
-                    <t t-foreach="picking.move_ids.filtered(lambda m: m.state == 'done' and m.product_id)" t-as="move">
-                        <tr>
-                            <td t-out="move.product_id.display_name or ''"/>
-                            <td class="text-end">
-                                <t t-out="'%.2f' % (move.sale_line_id.product_uom_qty if move.sale_line_id else move.product_uom_qty)"/>
-                            </td>
-                            <td class="text-end">
-                                <t t-out="'%.2f' % move.quantity"/>
-                            </td>
-                            <td t-out="picking.location_id.display_name or ''"/>
-                            <td t-out="picking.name"/>
-                        </tr>
-                    </t>
+
+                <!-- ── بيانات العميل / أمر البيع / الشحن ─────────────────── -->
+                <tr>
+                    <td class="fw-bold bg-light">اسم العميل</td>
+                    <td colspan="2" t-out="order['partner_name']"/>
+                    <td class="fw-bold bg-light">رقم العميل</td>
+                    <td t-out="order['partner_phone']"/>
+                </tr>
+                <tr>
+                    <td class="fw-bold bg-light">رقم أمر البيع</td>
+                    <td colspan="2" t-out="order['so_name']"/>
+                    <td class="fw-bold bg-light">مكتب الشحن</td>
+                    <td t-out="order['shipping_office']"/>
+                </tr>
+                <tr>
+                    <td class="fw-bold bg-light">رقم مكتب الشحن</td>
+                    <td colspan="2" t-out="order['shipping_office_no']"/>
+                    <td class="fw-bold bg-light">جهة الشحن</td>
+                    <td t-out="order['shipping_destination']"/>
+                </tr>
+
+                <!-- ── مخازن قريبة ──────────────────────────────────────── -->
+                <t t-if="order['near_pickings']">
+                    <tr class="table-info">
+                        <td colspan="5" class="fw-bold">مخازن قريبة</td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <th>المنتج</th>
+                        <th class="text-end">الكمية المطلوبة</th>
+                        <th class="text-end">الكمية الفعلية</th>
+                        <th>موقع المخزون</th>
+                        <th>رقم إذن التسليم</th>
+                    </tr>
+                    <t t-set="pickings" t-value="order['near_pickings']"/>
+                    <t t-call="sales_reports.ops_report_pickings_rows"/>
+                    <t t-set="near_total_ordered"
+                       t-value="sum((m.sale_line_id.product_uom_qty if m.sale_line_id else m.product_uom_qty) for p in order['near_pickings'] for m in p.move_ids.filtered(lambda x: x.state == 'done' and x.product_id))"/>
+                    <t t-set="near_total_done"
+                       t-value="sum(m.quantity for p in order['near_pickings'] for m in p.move_ids.filtered(lambda x: x.state == 'done' and x.product_id))"/>
+                    <tr class="fw-bold">
+                        <td>الإجمالي - مخازن قريبة</td>
+                        <td class="text-end" t-out="int(round(near_total_ordered))"/>
+                        <td class="text-end" t-out="int(round(near_total_done))"/>
+                        <td colspan="2"/>
+                    </tr>
                 </t>
+
+                <!-- ── مخازن بعيدة ──────────────────────────────────────── -->
+                <t t-if="order['far_pickings']">
+                    <tr class="table-info">
+                        <td colspan="5" class="fw-bold">مخازن بعيدة</td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <th>المنتج</th>
+                        <th class="text-end">الكمية المطلوبة</th>
+                        <th class="text-end">الكمية الفعلية</th>
+                        <th>موقع المخزون</th>
+                        <th>رقم إذن التسليم</th>
+                    </tr>
+                    <t t-set="pickings" t-value="order['far_pickings']"/>
+                    <t t-call="sales_reports.ops_report_pickings_rows"/>
+                    <t t-set="far_total_ordered"
+                       t-value="sum((m.sale_line_id.product_uom_qty if m.sale_line_id else m.product_uom_qty) for p in order['far_pickings'] for m in p.move_ids.filtered(lambda x: x.state == 'done' and x.product_id))"/>
+                    <t t-set="far_total_done"
+                       t-value="sum(m.quantity for p in order['far_pickings'] for m in p.move_ids.filtered(lambda x: x.state == 'done' and x.product_id))"/>
+                    <tr class="fw-bold">
+                        <td>الإجمالي - مخازن بعيدة</td>
+                        <td class="text-end" t-out="int(round(far_total_ordered))"/>
+                        <td class="text-end" t-out="int(round(far_total_done))"/>
+                        <td colspan="2"/>
+                    </tr>
+                </t>
+
             </tbody>
         </table>
+
+        <div class="mb-4"/>
+
+    </template>
+
+     <template id="ops_report_pickings_rows">
+        <t t-foreach="pickings" t-as="picking">
+            <t t-foreach="picking.move_ids.filtered(lambda m: m.state == 'done' and m.product_id)" t-as="move">
+                <tr>
+                    <td t-out="move.product_id.display_name or ''"/>
+                    <td class="text-end"
+                        t-out="int(round(move.sale_line_id.product_uom_qty if move.sale_line_id else move.product_uom_qty))"/>
+                    <td class="text-end" t-out="int(round(move.quantity))"/>
+                    <td t-out="picking.location_id.display_name or ''"/>
+                    <td t-out="picking.name"/>
+                </tr>
+            </t>
+        </t>
     </template>
 
 </odoo>

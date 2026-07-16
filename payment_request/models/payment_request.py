@@ -103,13 +103,13 @@ class PaymentRequest(models.Model):
         ('monthly_inspection', 'تفتيش شهري'),
         ('other', 'أخرى'),
     ], string='Type', store=True)
-    is_negative_remaining_amount = fields.Boolean(compute='_is_negative_remaining_amount')
+    is_negative_remaining_amount = fields.Boolean(default=False)
     negative_remaining_amount= fields.Integer(default=0)
     
-    @api.depends('negative_remaining_amount')
-    def _is_negative_remaining_amount(self):
-        if self.negative_remaining_amount and self.negative_remaining_amount < 0:
-            self.is_negative_remaining_amount = True
+    # @api.depends('negative_remaining_amount')
+    # def _is_negative_remaining_amount(self):
+    #     if self.negative_remaining_amount and self.negative_remaining_amount < 0:
+    #         self.is_negative_remaining_amount = True
     
 
   

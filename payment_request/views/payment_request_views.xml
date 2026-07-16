@@ -53,6 +53,11 @@
                                 invisible="state != 'wait_payment'"
                                 string="Register Payment"
                                 groups="account_custom.group_accountant_payable" class="oe_highlight"/>
+                      <button name="%(payment_request.action_account_request_payment)d"
+                                id="account_custody_payment_btn" type="action"
+                                invisible="state != 'wait_payment'"
+                                string="سداد مديونية عهدة سابقة"
+                                groups="account_custom.group_accountant_payable" class="oe_highlight"/>
                         <button name="action_cancel" type="object" string="Cancel"
                                 invisible="state not in ['submit', 'wait_department_manager', 'wait_financial_manager', 'wait_auditing', 'wait_gm', 'wait_payment', 'approve']"
                                 groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"/>

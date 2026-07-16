@@ -17,6 +17,8 @@ class AccountPayment(models.Model):
     custody_clearance_id = fields.Many2one(
         'custody.clearance', string="Custody Clearance", copy=False, )
     is_need_clearance = fields.Boolean(string="Need Clearance", related='payment_request_id.is_need_clearance')
+    is_negative_remaining_amount = fields.Boolean(related='payment_request_id.is_negative_remaining_amount') 
+    negative_remaining_amount = fields.Integer(related='payment_request_id.negative_remaining_amount')
 
     destination_account_id = fields.Many2one('account.account', compute='_compute_destination_account_id',
                                              readonly=True)
@@ -255,8 +257,8 @@ class AccountPayment(models.Model):
         elif active_model == 'payment.request':
             custody_defaults = self.env['payment.request'].browse(active_ids)
             if custody_defaults.is_need_clearance:
-                if self.payment_request_id.is_negative_remaining_amount == 1:
-                    rec['amount'] = self.payment_request_id.negative_remaining_amount
+                if self.is_negative_remaining_amount == 1:
+                    rec['amount'] = self.negative_remaining_amount
                 else:                 
                     rec['amount'] = custody_defaults.amount
             else:

@@ -108,8 +108,8 @@ class PaymentRequest(models.Model):
     
     @api.depends('negative_remaining_amount')
     def _is_negative_remaining_amount(self):
-        if self.negative_remaining_amount < 0:
-            self.is_negative_remaining_amount = 1
+        if self.negative_remaining_amount and self.negative_remaining_amount < 0:
+            self.is_negative_remaining_amount = True
     
 
   

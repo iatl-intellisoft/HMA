@@ -220,7 +220,10 @@ class AccountPayment(models.Model):
             }
 
         elif active_model == 'payment.request' and not close_custody:
-            self.payment_request_id.write({'state': 'paid'})
+            if self.payment_request_id.is_negative_remaining_amount = 1:
+                self.payment_request_id.is_negative_remaining_amount = 0
+            else:                
+                self.payment_request_id.write({'state': 'paid'})
 
         elif active_model == 'custody.clearance':
             self.env['custody.clearance'].browse(active_ids).write({

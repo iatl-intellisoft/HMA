@@ -103,6 +103,7 @@ class PaymentRequest(models.Model):
         ('monthly_inspection', 'تفتيش شهري'),
         ('other', 'أخرى'),
     ], string='Type', store=True)
+    negative_remaining_amount= fields.Integer(default=0)
 
   
     @api.onchange('maintenance_id')
@@ -241,20 +242,11 @@ class PaymentRequest(models.Model):
             self.move_id.button_draft()
         self.write({'state': 'draft'})
 
-    def action_submit(self):        
+    def action_submit(self): 
+        if self.remaining_amount < 0 :
+            self.negative_remaining_amount = self.remaining_amount
         self.write({'state': 'wait_payment'})
-      
-    # def action_depart_manager_approve(self):
-    #     self.write({'state': 'wait_financial_manager'})
-
-    # def action_financial_manager_approve(self):
-    #     self.write({'state': 'approve'})
-
-    # def action_wait_auditing_approve(self):
-    #     self.write({'state': 'wait_gm'})
-
-    # def action_approve_gm(self):
-    #     self.write({'state': 'approve'})
+       
 
     def reset_to_draft(self):
         if self.move_id:

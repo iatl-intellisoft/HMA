@@ -220,7 +220,7 @@ class AccountPayment(models.Model):
             }
 
         elif active_model == 'payment.request' and not close_custody:
-            if self.payment_request_id.is_negative_remaining_amount = 1:
+            if self.payment_request_id.is_negative_remaining_amount == 1:
                 self.payment_request_id.is_negative_remaining_amount = 0
             else:                
                 self.payment_request_id.write({'state': 'paid'})
@@ -255,7 +255,10 @@ class AccountPayment(models.Model):
         elif active_model == 'payment.request':
             custody_defaults = self.env['payment.request'].browse(active_ids)
             if custody_defaults.is_need_clearance:
-                rec['amount'] = custody_defaults.amount
+                if custody_defaults.is_negative_remaining_amount == 1:
+                    rec['amount'] = custody_defaults.negative_remaining_amount
+                else:                 
+                    rec['amount'] = custody_defaults.amount
             else:
                 rec['amount'] = custody_defaults.total_amount
             if self._context.get("close"):

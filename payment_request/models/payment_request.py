@@ -26,8 +26,7 @@ class PaymentRequest(models.Model):
     date = fields.Date(string='Date', required=True, default=fields.Date.context_today)
     clearance_days = fields.Integer(string="Clearance Days", required=False, default='30')
     date_clearance = fields.Date(string='Date Clearance', compute='_compute_clearance_date')
-    account_id = fields.Many2one('account.account', string='Account',related='company_id.custody_account_id',
-                                 tracking=True, readonly=False, )
+    account_id = fields.Many2one('account.account', string='Account',related='company_id.custody_account_id',store=True,tracking=True, readonly=False) 
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=False, )
     company_id = fields.Many2one('res.company', string='Company', store=True, readonly=False, tracking=True,
                                  default=lambda self: self.env.company)
@@ -105,11 +104,12 @@ class PaymentRequest(models.Model):
     ], string='Type', store=True)
     is_negative_remaining_amount = fields.Boolean(default=False)
     negative_remaining_amount= fields.Integer(default=0)
-    
-    # @api.depends('negative_remaining_amount')
-    # def _is_negative_remaining_amount(self):
-    #     if self.negative_remaining_amount and self.negative_remaining_amount < 0:
-    #         self.is_negative_remaining_amount = True
+
+    @api.onchange('remaining_amount')     
+    def _is_negative_remaining_amount(self):
+        if self.remaining_amount and self.remaining_amount < 0:
+            self.negative_remaining_amount = self.remaining_amount
+            self.is_negative_remaining_amount = True
     
 
   

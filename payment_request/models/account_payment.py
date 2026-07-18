@@ -183,7 +183,6 @@ class AccountPayment(models.Model):
         if  active_model == 'payment.request':
             if prev_custody:
                 if custody_defaults.is_negative_remaining_amount == True:   
-                    custody_defaults.is_negative_remaining_amount = False
                     prev_custody.state = 'close'
                     custody_defaults.negative_remaining_amount = 0
                 else:   

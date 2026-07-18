@@ -113,7 +113,9 @@
                                 <field name="amount" invisible="is_need_clearance != True"
                                     readonly="state != 'draft' or is_need_clearance != True"/>
                                 <field name="remaining_amount" invisible="is_need_clearance != True" readonly="1" />
-                                <field name="is_renewable" invisible="1"/>                                 
+                                <field name="is_renewable" invisible="1"/>                                  
+                                <field name="is_negative_remaining_amount" />                                   
+                                <field name="negative_remaining_amount" />                                   
                             </group>
 
 

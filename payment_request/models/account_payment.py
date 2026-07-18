@@ -258,7 +258,7 @@ class AccountPayment(models.Model):
             custody_defaults = self.env['payment.request'].browse(active_ids)
             if custody_defaults.is_need_clearance:
                 if custody_defaults.is_negative_remaining_amount == True:
-                    rec['amount'] = custody_defaults.negative_remaining_amount
+                    rec['amount'] = abs(custody_defaults.negative_remaining_amount)
                 else:                 
                     rec['amount'] = custody_defaults.amount
             else:

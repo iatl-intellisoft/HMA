@@ -334,7 +334,8 @@ class AccountPayment(models.Model):
         for rec in self:
             if rec.payment_request_id and not rec.custody_clearance_id:
                 if rec.payment_request_id.state == 'wait_payment':
-                    rec.payment_request_id.write({'state': 'paid'})
+                    if self.payment_request_id.remaining_amount > 0:             
+                        rec.payment_request_id.write({'state': 'paid'})
             elif rec.custody_clearance_id:
                 if rec.custody_clearance_id.state == 'finance_approval':
                     rec.custody_clearance_id.write({'state': 'done'})
@@ -344,7 +345,7 @@ class AccountPayment(models.Model):
                 if rec.payment_request_id.state == 'close':
                     # self._context.get("close") == True:
                     rec.payment_request_id.write({'state': 'close'})
-                else:
+                elif self.payment_request_id.remaining_amount > 0:          
                     rec.payment_request_id.write({'state': 'paid'})
                     user_id = None
                     if not rec.payment_request_id.employee_id.user_id.id:

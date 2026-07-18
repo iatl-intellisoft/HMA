@@ -178,11 +178,7 @@ class AccountPayment(models.Model):
         active_ids = self._context.get('active_ids', []) or []
         active_model = self._context.get('active_model')
         close_custody = self._context.get('close', False)
-        
         custody_defaults = self.env['payment.request'].browse(active_ids)
-        if custody_defaults.is_need_clearance:
-            
-                rec['amount'] = abs(custody_defaults.negative_remaining_amount)
         prev_custody = self.env['payment.request'].search([('employee_id','=',self.payment_request_id.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
         if  active_model == 'payment.request':
             if prev_custody:

@@ -50,12 +50,12 @@
                        	invisible="state != 'wait_gm'" type="object" groups="account_custom.group_general_manager"/> -->
                         <button name="%(payment_request.action_account_request_payment)d"
                                 id="account_custody_payment_btn" type="action"
-                                invisible="state != 'wait_payment'"
+                                invisible="state != 'wait_payment' and is_negative_remaining_amount "
                                 string="Register Payment"
                                 groups="account_custom.group_accountant_payable" class="oe_highlight"/>
                       <button name="%(payment_request.action_account_request_payment)d"
                                 id="account_custody_payment_btn" type="action"
-                                invisible="state != 'wait_payment'"
+                                invisible="state != 'wait_payment' and not is_negative_remaining_amount"
                                 string="سداد مديونية عهدة سابقة"
                                 groups="account_custom.group_accountant_payable" class="oe_highlight"/>
                         <button name="action_cancel" type="object" string="Cancel"

@@ -130,8 +130,8 @@ class CustodyClearance(models.Model):
         self.write({'state': 'draft'})
 
     def action_submit(self):        
-        if  self.request_id.remaining_amount < self.total_amount:
-            raise ValidationError("عذرا لا يمكن أن تكون التصفية أكبر من مبلغ العهدة")
+        # if  self.request_id.remaining_amount < self.total_amount:
+        #     raise ValidationError("عذرا لا يمكن أن تكون التصفية أكبر من مبلغ العهدة")
         if not self.custody_line_ids:
             raise ValidationError('Please enter clearance details first!')
          

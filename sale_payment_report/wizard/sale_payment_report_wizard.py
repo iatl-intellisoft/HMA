@@ -60,6 +60,7 @@ class SalePaymentReportWizard(models.TransientModel):
                     'sale_order_id': so.id,
                     'sale_order_name': so.name,
                     'payment_method_label': self._get_journal_type_label(pay.journal_id),
+                    'bankak_transaction_number': pay.bankak_transaction_number,
                     'amount': amount_per_order,
                 }))
         return vals_list
@@ -94,6 +95,7 @@ class SalePaymentReportLine(models.TransientModel):
     partner_id = fields.Many2one('res.partner', string='العميل')
     sale_order_id = fields.Many2one('sale.order', string='أمر البيع')
     sale_order_name = fields.Char(string='رقم أمر البيع')
-    payment_method_label = fields.Char(string='طريقة السداد')
+    payment_method_label = fields.Char(string='طريقة السداد') 
+    bankak_transaction_number = fields.Char(string='رقم العملية البنكية')  
     amount = fields.Monetary(string='قيمة السداد', currency_field='currency_id')
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)

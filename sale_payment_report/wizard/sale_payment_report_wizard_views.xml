@@ -28,6 +28,7 @@
                                 <field name="sale_order_name"/>
                                 <field name="partner_id"/>
                                 <field name="payment_method_label"/>
+                                <field name="bankak_transaction_number"/> 
                                 <field name="amount" sum="الإجمالي"/>
                             </list>
                         </field>

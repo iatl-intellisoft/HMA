@@ -28,13 +28,18 @@ class SalePaymentReportWizard(models.TransientModel):
         domain = [
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
-            ('state', '=', 'posted'),
             ('payment_type', '=', 'inbound'),
+            ('partner_type', '=', 'customer'),
         ]
         if self.payment_method != 'all':
             domain.append(('journal_id.type', '=', self.payment_method))
 
         payments = self.env['account.payment'].search(domain, order='date asc')
+        # استبعاد الدفعات الملغاة أو المسودة فقط (بدل الاعتماد على قيمة state محددة
+        # لأنها بتختلف تسميتها بين النسخ: posted / paid / in_process)
+        payments = payments.filtered(
+            lambda p: (not p.move_id or p.move_id.state == 'posted')
+        )
 
         vals_list = []
         for pay in payments:

@@ -80,6 +80,7 @@ class SaleOpsReportWizard(models.TransientModel):
             if key not in order_index:
                 order_index[key] = len(orders)
                 orders.append({
+                    'date_done': p.date_done or '',
                     'so_name': p.sale_id.name or '',
                     'partner_name': p.partner_id.name or '',
                     'partner_phone': p.partner_id.phone or '',

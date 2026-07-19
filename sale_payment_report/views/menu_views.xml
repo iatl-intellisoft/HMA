@@ -3,7 +3,7 @@
 
     <menuitem id="menu_sale_payment_report"
               name="تقرير السداد بالتفصيل"
-              parent="sale.sale_menu_root"
+              parent="sale.menu_sale_report"
               action="sale_payment_report.action_sale_payment_report_wizard"
               sequence="20"/>
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sales_payments_report_wizard_form" model="ir.ui.view">
+        <field name="name">sales.payments.report.wizard.form</field>
+        <field name="model">sales.payments.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تقرير المبيعات مع الدفعات المرتبطة">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="payment_journal_type"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view_report"
+                            string="عرض التقرير"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="إلغاء" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sales_payments_report_wizard" model="ir.actions.act_window">
+        <field name="name">تقرير المبيعات مع الدفعات المرتبطة</field>
+        <field name="res_model">sales.payments.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_sales_payments_report_wizard"
+              name="تقرير المبيعات مع الدفعات المرتبطة"
+              parent="account.menu_finance_reports"
+              action="sales_payments_report.action_sales_payments_report_wizard"
+              sequence="52"/>
+
+</odoo>

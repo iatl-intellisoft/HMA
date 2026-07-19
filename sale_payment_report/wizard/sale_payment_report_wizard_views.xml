@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_payment_report_wizard_form" model="ir.ui.view">
+        <field name="name">sale.payment.report.wizard.form</field>
+        <field name="model">sale.payment.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="تقرير المبيعات - السداد بالتفصيل">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="payment_method"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_preview" type="object" string="عرض" class="btn-primary"/>
+                    <button name="action_print_report" type="object" string="طباعة PDF" class="btn-secondary"/>
+                </footer>
+                <notebook invisible="not line_ids">
+                    <page string="النتائج">
+                        <field name="line_ids" readonly="1">
+                            <list>
+                                <field name="payment_date"/>
+                                <field name="payment_name"/>
+                                <field name="sale_order_name"/>
+                                <field name="partner_id"/>
+                                <field name="payment_method_label"/>
+                                <field name="amount" sum="الإجمالي"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_payment_report_wizard" model="ir.actions.act_window">
+        <field name="name">تقرير المبيعات - السداد بالتفصيل</field>
+        <field name="res_model">sale.payment.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

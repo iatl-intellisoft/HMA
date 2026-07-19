@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_sale_payment" model="ir.actions.report">
+        <field name="name">تقرير سداد المبيعات</field>
+        <field name="model">sale.payment.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_payment_report.report_sale_payment_document</field>
+        <field name="report_file">sale_payment_report.report_sale_payment_document</field>
+        <field name="print_report_name">'تقرير سداد المبيعات'</field>
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+</odoo>

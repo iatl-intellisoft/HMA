@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_payment_report_tree" model="ir.ui.view">
+        <field name="name">account.invoice.payment.report.tree</field>
+        <field name="model">account.invoice.payment.report</field>
+        <field name="arch" type="xml">
+            <list string="تقرير المبيعات مع الدفعات المرتبطة"
+                  default_group_by="move_id"
+                  create="0" edit="0" delete="0" import="0">
+                <field name="move_id" string="رقم الفاتورة"/>
+                <field name="invoice_date" string="تاريخ الفاتورة"/>
+                <field name="partner_id" string="العميل"/>
+                <field name="invoice_origin" string="رقم أمر البيع"/>
+                <field name="amount_total" string="إجمالي الفاتورة"
+                       sum="إجمالي الفواتير"/>
+                <field name="payment_state" string="حالة السداد"/>
+                <field name="payment_date" string="تاريخ السداد"/>
+                <field name="payment_journal_type" string="نوع الدفعية"/>
+                <field name="payment_journal_name" string="الخزينة/البنك"/>
+                <field name="payment_name" string="رقم الإشعار"/>
+                <field name="payment_amount" string="قيمة السداد"
+                       sum="إجمالي المسدد"/>
+                <field name="currency_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_invoice_payment_report_search" model="ir.ui.view">
+        <field name="name">account.invoice.payment.report.search</field>
+        <field name="model">account.invoice.payment.report</field>
+        <field name="arch" type="xml">
+            <search string="بحث في تقرير المبيعات والدفعات">
+                <field name="move_id"/>
+                <field name="partner_id"/>
+                <field name="invoice_origin"/>
+                <field name="payment_name"/>
+                <filter string="مدفوعة بالكامل" name="paid"
+                        domain="[('payment_state','=','paid')]"/>
+                <filter string="مدفوعة جزئياً" name="partial"
+                        domain="[('payment_state','=','partial')]"/>
+                <separator/>
+                <filter string="كاش" name="cash"
+                        domain="[('payment_journal_type','=','cash')]"/>
+                <filter string="بنك" name="bank"
+                        domain="[('payment_journal_type','=','bank')]"/>
+                <group expand="0" string="تجميع حسب">
+                    <filter string="الفاتورة" name="group_move"
+                            context="{'group_by':'move_id'}"/>
+                    <filter string="العميل" name="group_partner"
+                            context="{'group_by':'partner_id'}"/>
+                    <filter string="نوع الدفعية" name="group_payment_type"
+                            context="{'group_by':'payment_journal_type'}"/>
+                    <filter string="شهر الفاتورة" name="group_month"
+                            context="{'group_by':'invoice_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_invoice_payment_report" model="ir.actions.act_window">
+        <field name="name">تقرير المبيعات مع الدفعات المرتبطة</field>
+        <field name="res_model">account.invoice.payment.report</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="search_view_id" ref="view_invoice_payment_report_search"/>
+        <field name="context">{'search_default_group_move': 1}</field>
+    </record>
+
+</odoo>

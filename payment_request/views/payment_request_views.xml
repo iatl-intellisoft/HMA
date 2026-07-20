@@ -121,7 +121,7 @@
                                     readonly="state != 'draft' or is_need_clearance != True"/>
                                 <field name="remaining_amount" invisible="is_need_clearance != True" readonly="1" />
                                 <field name="is_renewable" invisible="1"/>                                  
-                                <!-- <field name="is_negative_remaining_amount" />                                    -->
+                                <field name="is_negative_remaining_amount" readonly="1"/>                                   
                                 <field name="negative_remaining_amount" string="مديونية العهدة السابقة" readonly="1"/>                                   
                             </group>
 

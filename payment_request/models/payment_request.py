@@ -102,8 +102,8 @@ class PaymentRequest(models.Model):
         ('monthly_inspection', 'تفتيش شهري'),
         ('other', 'أخرى'),
     ], string='Type', store=True)
-    is_negative_remaining_amount = fields.Boolean(default=False)
-    negative_remaining_amount= fields.Integer(default=0)
+    is_negative_remaining_amount = fields.Boolean()
+    negative_remaining_amount= fields.Integer()
 
     @api.onchange('remaining_amount')     
     def _is_negative_remaining_amount(self):
@@ -217,17 +217,6 @@ class PaymentRequest(models.Model):
                     total += line.amount_currency
 
         self.balance = total
-
-    #                 total_amount += line.price_subtotal
-    #             rec.total_amount = total_amount
-    #         else:
-    # @api.depends('line_ids.price_subtotal')
-    # def _compute_amount(self):
-    #     total_amount = 0.0
-    #     for rec in self:
-    #         if not rec.is_need_clearance:
-    #             for line in rec.line_ids:
-    #             rec.total_amount = total_amount
 
     def _get_entries(self):
         self.move_line_ids = False

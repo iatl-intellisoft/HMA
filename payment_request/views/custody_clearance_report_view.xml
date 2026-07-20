@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo> 
+    <template id="insurance_report_third_party"> 
+        <t t-call="web.external_layout">            
+            <head> 
+            <style>
+                @font-face {
+                    font-family: 'Amiri';
+                    src: url(/payment_request/static/src/fonts/Amiri-Bold.ttf);
+                }
+            
+                @font-face {
+                    font-family: 'Cairo-Bold';
+                    src: url(/payment_request/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+                }
+                body, table, div, span {
+                        font-family: 'Cairo-Bold' !important;
+                }
+                <!-- img{
+                border: none !important;
+                box-shadow: none !important;
+                outlie: none !important;
+                } -->
+            </style>
+            <meta charset="UTF-8"/>                     
+            </head>  
+            <main class="page"  >
+           
+            <div style="width:100%; direction: rtl;">
+              <table class="table-borderless" style="width:100%;">    
+                  <t t-foreach="docs" t-as="doc">
+                    <tr style="width:100%;">
+                       <td  style="width: 25%; text-align: right;">
+                           <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height:90px;border: none !important;" />
+                       </td> 
+                        <td style="width: 50%; text-align: center;">
+                           <h4>
+                              شركة التأمينات العامة (سودان) المحدودة                  
+                           </h4>
+                       </td> 
+                       <td style="width: 25%; text-align: left; ">
+                           <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height:90px;border: none !important;" />
+                       </td>                                     
+                    </tr>   
+                </t>            
+              </table>
+               
+        <t t-foreach="docs" t-as="doc">
+                <div class="page" style="font-size:11px;"> 
+                    <div style="text-align:center; font-weight:bold; font-size:15px;  width: max-content;">                    
+                        <h4>DEBIT NOTE</h4> 
+                        <h4 style="border:1px solid #000; padding:5px;     width: max-content;"> 7676476  إشعار خصم رقم :</h4> 
+                    </div>
+                        
+                    <div style="text-align:right; font-weight:bold; font-size:15px;">                     
+                   <table class="table-borderless" style="width:100%;">
+                    <tr style="width:100%;">                      
+                            <td  width="25%" align="right"><h5>التاريخ:</h5></td>
+                            <td  width="75%" align="right">
+                            <!-- <t t-esc="doc.issue_date"/> -->
+                            </td> 
+                        </tr>
+                        <tr style="width:100%;">
+                            <td  width="25%" align="right"><h5>المؤمن له:</h5></td>
+                            <td  width="75%" align="right">
+                            <!-- <t t-esc="doc.agent_id.name"/> -->
+                            </td> 
+                        </tr>
+                        <tr style="width:100%;">
+                            <td width="25%" align="right"><h5>العنوان:</h5></td>
+                            <td width="75%" align="right">
+                            <!-- <t t-esc="doc.company_id.name"/> -->
+                            </td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td width="25%" align="right"><h5>رقم وثيقة التأمين:</h5></td>
+                            <td width="75%" align="right">
+                            <!-- <t t-esc="doc.company_id.name"/> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <!-- <t t-if="doc.agent_required"> -->
+                                <td  align="right"><h5>الوكيل :</h5></td>
+                                <td  width="50%"  > 
+                                    <!-- <t t-esc="doc.policy_holder_id.name"/>  -->
+                                </td>
+                            <!-- </t> -->
+                        </tr>
+                       
+                    </table>
+                    <!-- <table style="width:100%; border-collapse: collapse;">
+                    <tr style="width:100%;">                       
+                            <td width="25%" align="right"><b>رقم الاشعار:</b></td>
+                            <td width="25%" align="right">
+                              <t t-esc="doc.invoice_id_agent.name"/>  
+                            </td>
+                           
+                            <td width="25%" align="right"><b>التاريخ:</b></td>
+                            <td width="25%" align="right">
+                            <t t-esc="doc.invoice_id.date"/>
+                            </td>
+                        </tr > 
+                        
+                    </table> -->
+                    </div> 
+                     <div align="center">
+                     <div style="width:80%; border:1px solid #000;"  >
+                    <table class="table-borderless" style="width:100%;"   >
+                        <tr style="  border-bottom:1px solid #000;">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                <h5>البيان </h5>
+                            </td>
+                            <td style=" border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;" align="center">
+                              <h5>  المبلغ بالجنيه</h5>
+                            </td>
+                        </tr>
+                        <tr style="border-top:1px solid #000; border-bottom:1px solid #000;">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                المبلغ المستحق
+                            </td>
+                            <td style="border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;">
+                                <!-- <t t-esc="doc.total_commission_amount_agent"/>  -->
+                            </td>
+                        </tr>
+                        <!-- <t t-foreach="doc.agent_line_ids" t-as="rec"> -->
+                            <tr style="border-top:1px solid #000; border-bottom:1px solid #000;">
+                                <td style="width:80%; padding:5px;">
+                                    <!-- <b><t t-esc="rec.agent_product_id.name"/></b> -->
+                                </td>
+                                <td style="border-right:1px solid #000; width:20%; padding:5px;">
+                                    <!-- <b><t t-esc="rec.agent_fees_amount"/></b> -->
+                                </td>
+                            </tr>
+                        <!-- </t> -->
+                       <tr style="border-top:1px solid #000;  ">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                 اجمالي العمولة  
+                            </td>
+                            <td style="border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;">
+                                <!-- <t t-esc="doc.total_commission_agent + doc.total_commission_amount_agent"/>  -->
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table-borderless"  style="width:100%;">
+                        <tr style="width:100%;">
+                            <td  width="25%" align="right"><h5> المبلغ كتابة:</h5></td>
+                            <td  width="75%" align="right">
+                            <!-- <t t-esc="doc.agent_id.name"/> -->
+                            </td> 
+                        </tr>                    
+                    </table>
+                    </div>  
+                    </div>  
+                    <br/>  
+                    <br/>  
+                    <br/>
+             
+                <table class="table-borderless"  style="width:100%; ">
+                    <tr style="width:100%;">                       
+                        <td width="65%" align="right"> </td>                           
+                        <td width="35%" align="center">
+                            <table class="table-borderless"  style="width:100%;">
+                                <tr style="width:100%;">                       
+                                    <td width="25%" align="center"><h5>التوقيع:.......................................</h5></td>                           
+                                </tr>
+                                <tr style="width:100%;">                       
+                                    <td width="25%" align="center"><h5>شركة التأمينات العامة(سودان) </h5></td> 
+                                </tr>  
+                                 <tr style="width:100%;">                       
+                                    <td width="25%" align="center"><h5> فرع بورتسودان</h5></td> 
+                                </tr>                    
+                            </table>
+                        </td> 
+                    </tr>                     
+                </table>
+                                       
+                </div>
+              </t>
+           </div>    
+            </main>
+            </t>     
+    </template> 
+
+        <record id="action_report_custody_clearance" model="ir.actions.report">
+            <field name="name">Custody Clearance</field>
+            <field name="model">custody.clearance</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">payment_request.insurance_report_third_party</field>
+            <field name="binding_model_id" ref="payment_request.model_custody_clearance"/>
+        </record>
+</odoo> 
+<!-- 
+ <template id="insurance_report_third_party"> 
+        <t t-call="web.external_layout">            
+            <head> 
+            <style>
+                @font-face {
+                    font-family: 'Amiri';
+                    src: url(/payment_request/static/src/fonts/Amiri-Bold.ttf);
+                }
+            
+                @font-face {
+                    font-family: 'Cairo-Bold';
+                    src: url(/payment_request/static/src/fonts/Cairo-VariableFont_slnt,wght.ttf);
+                }
+                body, table, div, span {
+                        font-family: 'Cairo-Bold' !important;
+                }
+                  img{
+                border: none !important;
+                box-shadow: none !important;
+                outlie: none !important;
+                }  
+            </style>
+            <meta charset="UTF-8"/>                     
+            </head>  
+            <main class="page"  >
+           
+            <div style="width:100%; direction: rtl;">
+              <table class="table-borderless" style="width:100%;">    
+                  <t t-foreach="docs" t-as="doc">
+                    <tr style="width:100%;">
+                       <td  style="width: 25%; text-align: right;">
+                           <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height:90px;border: none !important;" />
+                       </td> 
+                        <td style="width: 50%; text-align: center;">
+                           <h4>
+                              شركة التأمينات العامة (سودان) المحدودة                  
+                           </h4>
+                       </td> 
+                       <td style="width: 25%; text-align: left; ">
+                           <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height:90px;border: none !important;" />
+                       </td>                                     
+                    </tr>   
+                </t>            
+              </table>
+               
+        <t t-foreach="docs" t-as="doc">
+                <div class="page" style="font-size:11px;"> 
+                    <div style="text-align:center; font-weight:bold; font-size:15px;  width: max-content;">                    
+                        <h4>CREDIT NOTE</h4> 
+                        <h4 style="border:1px solid #000; padding:5px;     width: max-content;"> 7676476  إشعار إضافة رقم :</h4> 
+                    </div>
+                        
+                    <div style="text-align:right; font-weight:bold; font-size:15px;">                     
+                   <table class="table-borderless" style="width:100%;">
+                    <tr style="width:100%;">                      
+                            <td  width="25%" align="right"><h5>التاريخ:</h5></td>
+                            <td  width="75%" align="right">
+                             <t t-esc="doc.issue_date"/>  
+                            </td> 
+                        </tr>
+                        <tr style="width:100%;">
+                            <td  width="25%" align="right"><h5>المؤمن له:</h5></td>
+                            <td  width="75%" align="right">
+                              <t t-esc="doc.agent_id.name"/>  
+                            </td> 
+                        </tr>
+                        <tr style="width:100%;">
+                            <td width="25%" align="right"><h5>العنوان:</h5></td>
+                            <td width="75%" align="right"> 
+                            </td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td width="25%" align="right"><h5>رقم وثيقة التأمين:</h5></td>
+                            <td width="75%" align="right"> 
+                            </td>
+                        </tr>
+                        <tr> 
+                                <td  align="right"><h5>الوكيل :</h5></td>
+                                <td  width="50%"  >  
+                                </td> 
+                        </tr>
+                       
+                    </table> 
+                    </div> 
+                     <div align="center">
+                     <div style="width:80%; border:1px solid #000;"  >
+                    <table class="table-borderless" style="width:100%;"   >
+                        <tr style="  border-bottom:1px solid #000;">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                <h5>البيان </h5>
+                            </td>
+                            <td style=" border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;" align="center">
+                              <h5>  المبلغ بالجنيه</h5>
+                            </td>
+                        </tr>
+                        <tr style="border-top:1px solid #000; border-bottom:1px solid #000;">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                المبلغ المستحق
+                            </td>
+                            <td style="border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;"> 
+                            </td>
+                        </tr> 
+                            <tr style="border-top:1px solid #000; border-bottom:1px solid #000;">
+                                <td style="width:80%; padding:5px;"> 
+                                </td>
+                                <td style="border-right:1px solid #000; width:20%; padding:5px;"> 
+                                </td>
+                            </tr> 
+                       <tr style="border-top:1px solid #000;  ">
+                            <td style="width:80%; padding:6px; font-weight:bold;">
+                                 اجمالي العمولة  
+                            </td>
+                            <td style="border-right:1px solid #000; width:20%; padding:6px; font-weight:bold;"> 
+                            </td>
+                        </tr>
+                    </table>
+                    </div>  
+                    </div>  
+                    <br/>  
+                    <br/>  
+                    <br/>
+             
+                <table class="table-borderless"  style="width:100%; ">
+                    <tr style="width:100%;">                       
+                        <td width="75%" align="right"> </td>                           
+                        <td width="25%" align="center">
+                            <table class="table-borderless"  style="width:100%;">
+
+                                <tr style="width:100%;">                       
+                                    <td width="25%" align="center"><h5>التوقيع:.......................................</h5></td>                           
+                                </tr>
+                                <tr style="width:100%;">                       
+                                    <td width="25%" align="center"><h5>شركة التأمينات العامة(سودان) </h5></td> 
+                                </tr>                     
+                            </table>
+                        </td> 
+                    </tr>                     
+                </table>
+                                       
+                </div>
+              </t>
+           </div>    
+            </main>
+            </t>     
+    </template>  -->

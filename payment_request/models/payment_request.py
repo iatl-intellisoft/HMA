@@ -108,7 +108,7 @@ class PaymentRequest(models.Model):
     @api.onchange('remaining_amount')     
     def _is_negative_remaining_amount(self):
         if self.remaining_amount and self.remaining_amount < 0:
-            # self.negative_remaining_amount = self.remaining_amount
+            self.negative_remaining_amount = self.remaining_amount
             self.is_negative_remaining_amount = True
     
 

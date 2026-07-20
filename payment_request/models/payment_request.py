@@ -239,8 +239,13 @@ class PaymentRequest(models.Model):
         self.write({'state': 'draft'})
 
     def action_submit(self): 
-        # if self.remaining_amount < 0 :
-        #     self.negative_remaining_amount = self.remaining_amount
+        prev_custody = self.env['payment.request'].search([('employee_id','=',self.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
+        if prev_custody:
+            self.remaining_amount = prev_custody.remaining_amount
+            
+        if self.remaining_amount < 0 :
+            self.is_negative_remaining_amount = True
+            # self.negative_remaining_amount = self.remaining_amount
         self.write({'state': 'wait_payment'})
        
 

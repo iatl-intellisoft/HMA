@@ -245,7 +245,7 @@ class PaymentRequest(models.Model):
             
         if self.remaining_amount < 0 :
             self.is_negative_remaining_amount = True
-            # self.negative_remaining_amount = self.remaining_amount
+            self.negative_remaining_amount = self.remaining_amount
         self.write({'state': 'wait_payment'})
        
 

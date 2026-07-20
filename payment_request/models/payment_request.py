@@ -102,8 +102,8 @@ class PaymentRequest(models.Model):
         ('monthly_inspection', 'تفتيش شهري'),
         ('other', 'أخرى'),
     ], string='Type', store=True)
-    is_negative_remaining_amount = fields.Boolean()
-    negative_remaining_amount= fields.Integer()
+    is_negative_remaining_amount = fields.Boolean(store=True)
+    negative_remaining_amount= fields.Integer(store=True)
 
     @api.onchange('remaining_amount')     
     def _is_negative_remaining_amount(self):

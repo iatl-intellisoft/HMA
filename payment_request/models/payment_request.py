@@ -250,8 +250,8 @@ class PaymentRequest(models.Model):
         self.write({'state': 'draft'})
 
     def action_submit(self): 
-        if self.remaining_amount < 0 :
-            self.negative_remaining_amount = self.remaining_amount
+        # if self.remaining_amount < 0 :
+        #     self.negative_remaining_amount = self.remaining_amount
         self.write({'state': 'wait_payment'})
        
 

@@ -18,8 +18,7 @@ class AccountPayment(models.Model):
         'custody.clearance', string="Custody Clearance", copy=False, )
     is_need_clearance = fields.Boolean(string="Need Clearance", related='payment_request_id.is_need_clearance')
 
-    destination_account_id = fields.Many2one('account.account', compute='_compute_destination_account_id',
-                                             readonly=True)
+    destination_account_id = fields.Many2one('account.account', compute='_compute_destination_account_id')
 
     # journal_id = fields.Many2one('account.journal', compute='_compute_journal_id',
     #                              readonly=True)

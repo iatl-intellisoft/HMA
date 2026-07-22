@@ -11,7 +11,7 @@
                         <thead>
                             <tr style="background-color:#f2f2f2;">
                                 <th class="text-center">الترتيب</th>
-                                <th>كود المنتج</th>
+                                <!-- <th>كود المنتج</th> -->
                                 <th>اسم المنتج</th>
                                 <th class="text-center">الكمية المسلّمة</th>
                             </tr>
@@ -19,7 +19,7 @@
                         <tbody>
                             <tr t-foreach="lines" t-as="line">
                                 <td class="text-center" t-esc="line['rank']"/>
-                                <td t-esc="line['product_code']"/>
+                                <!-- <td t-esc="line['product_code']"/> -->
                                 <td t-esc="line['product_name']"/>
                                 <td class="text-center" t-esc="line['total_qty']"/>
                             </tr>

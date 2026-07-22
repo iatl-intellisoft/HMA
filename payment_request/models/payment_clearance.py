@@ -130,6 +130,8 @@ class CustodyClearance(models.Model):
         self.write({'state': 'draft'})
 
     def action_submit(self):        
+        if  self.request_id.remaining_amount < self.total_amount:
+            raise ValidationError("عذرا لا يمكن أن تكون التصفية أكبر من مبلغ العهدة")
         if not self.custody_line_ids:
             raise ValidationError('Please enter clearance details first!')
          
@@ -230,12 +232,17 @@ class CustodyClearance(models.Model):
             self.create_clearance_move_line(move_id)
             move_id.action_post()
             custody_payment = self.request_id.payment_ids[0]
+
             payment_line = custody_payment.move_id.line_ids.filtered(
-                lambda r: r.account_id == self.account_id)
+                lambda l: l.account_id == self.account_id and not l.reconciled
+            )
+            
             clearance_line = move_id.line_ids.filtered(
-                lambda r: r.account_id == self.account_id)
-            lines_to_reconcile = (payment_line + clearance_line)
-            lines_to_reconcile.reconcile()
+                lambda l: l.account_id == self.account_id and not l.reconciled
+            )
+            
+            if payment_line and clearance_line:
+                (payment_line + clearance_line).reconcile()
             self.write({'move_id': move_id.id, 'move_created': False})
             self.request_id.remaining_amount = self.request_id.remaining_amount - self.total_amount  
             self.request_remaining_amount = self.request_id.remaining_amount 

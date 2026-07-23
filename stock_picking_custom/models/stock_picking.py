@@ -27,7 +27,19 @@ class StockPicking(models.Model):
         string='Delivery Amount',
         compute='_compute_delivery_amount',
         store=True, 
+    ) 
+    delivered_cartons = fields.Float(
+        string="عدد الكراتين المنجزة",
+        compute="_compute_delivered_cartons",
+        store=True,
     )
+
+    @api.depends("move_ids.quantity")
+    def _compute_delivered_cartons(self):
+        for picking in self:
+            picking.delivered_cartons = sum(
+                picking.move_ids.mapped("quantity")
+            )
  
 
     @api.depends(

@@ -398,8 +398,7 @@ class PerformanceReport(models.TransientModel):
                 sheet.write(row, 8, f'{"{:.2f}".format(all_result_not_done[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  
                 sheet.write(row, 9, result[month]['trucks'][truck]['count'], content_format)  
                 sheet.write(row, 10, result[month]['trucks'][truck]['delivered_cartons'], content_format)  
-                sheet.write(row, 11, (vehicle_month[month][truck_id]['amount']+operating_cost[license_plate][month]['cost'])/400 if  month in operating_cost[license_plate] else vehicle_month[month][truck_id]['amount']/400, content_format) 
-
+                sheet.write(row, 11, (result[month]['trucks'][truck]['amount']+operating_cost[license_plate][month]['cost'])/600 if  month in operating_cost[license_plate] else result[month]['trucks'][truck]['amount']/600, content_format) 
                 sheet.write(row, 12, f'{"{:.2f}".format(result[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  
                 
                 row+=1

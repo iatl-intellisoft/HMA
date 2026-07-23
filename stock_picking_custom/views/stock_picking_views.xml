@@ -13,7 +13,7 @@
                 <field name="vat_id"/>  
                 <field name="phone"/> 
             </xpath>  
-            <xpath expr="//field[@name='sale_payment_state']" position="after">  
+            <xpath expr="//field[@name='shipping_receipt']" position="after">  
                 <field name="handling_price"/>  
                 <field name="handling_amount"/>   
             </xpath> 

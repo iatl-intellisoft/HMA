@@ -6,12 +6,17 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='location_id']" position="after">  
                 <field name="delivery_amount"/>  
+                <field name="delivered_cartons"/>    
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">  
                 <field name="national_id"/>  
                 <field name="vat_id"/>  
-     <field name="phone"/> 
-            </xpath>
+                <field name="phone"/> 
+            </xpath>  
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="handling_price"/>  
+                <field name="handling_amount"/>   
+            </xpath> 
 
         </field>
     </record>

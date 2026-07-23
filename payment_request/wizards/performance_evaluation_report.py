@@ -370,7 +370,7 @@ class PerformanceReport(models.TransientModel):
             sheet.write(row, 9, "عدد اذوانات التسليم المنجزة", heading)
             sheet.write(row, 10, "عدد الطرود المنجزة", heading)
             sheet.write(row, 11, "نقطة التعادل", heading)
-            sheet.write(row, 12, "نسبة الطرود المنجزة", heading) 
+            sheet.write(row, 12, "نسبة اذوانات التسليم المنجزة", heading) 
             row+=1 
             all_result=0
             for vehicle, data in vehicles.items(): 

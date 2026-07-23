@@ -104,8 +104,8 @@ class PerformanceReport(models.TransientModel):
 
             if picking.state == 'done':
                 picking_done += 1
- 
-                result[month]['trucks'][truck]['count'] += picking.delivered_cartons
+                result[month]['trucks'][truck]['count'] += 1
+                result[month]['trucks'][truck]['delivered_cartons'] += picking.delivered_cartons
                 result[month]['trucks'][truck]['amount'] += picking.handling_amount
  
                 result[month]['total']['count'] += 1
@@ -396,7 +396,7 @@ class PerformanceReport(models.TransientModel):
                 sheet.write(row, 7, f'{"{:.2f}".format(monthly_cost/(all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'])*100)}%' if all_operating_cost_monthly[month]['cost']+all_vehicles[month]['amount'] > 0 else 0.0, content_format)  
                 sheet.write(row, 8, f'{"{:.2f}".format(all_result_not_done[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  
                 sheet.write(row, 9, result[month]['trucks'][truck]['count'], content_format)  
-                sheet.write(row, 10, result[month]['trucks'][truck]['count'], content_format)  
+                sheet.write(row, 10, result[month]['trucks'][truck]['delivered_cartons'], content_format)  
                 sheet.write(row, 11, (vehicle_month[month][truck_id]['amount']+operating_cost[license_plate][month]['cost'])/400 if  month in operating_cost[license_plate] else vehicle_month[month][truck_id]['amount']/400, content_format) 
 
                 sheet.write(row, 12, f'{"{:.2f}".format(result[month]['trucks'][truck]['count']/(all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])*100)}%' if (all_result_not_done[month]['trucks'][truck]['count']+result[month]['trucks'][truck]['count'])>0 else 0.0, content_format)  

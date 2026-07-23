@@ -14,7 +14,8 @@
             </xpath>  
             <xpath expr="//field[@name='delivery_amount']" position="after">  
                 <field name="handling_price"/>  
-                <field name="handling_amount"/>  
+                <field name="handling_amount"/>   
+                <field name="delivered_cartons"/>    
             </xpath> 
 
         </field>

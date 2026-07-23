@@ -26,7 +26,7 @@
                             invisible="state in ('approve','refuse')"/>
                     <button name="action_draft" type="object"
                             string="Set to Draft" class="oe_highlight"
-                            invisible="state not in ('draft')"/>
+                            invisible="state != 'draft'"/>
                     <button name="action_submit" type="object" string="Submit" invisible="state != 'draft'"
                             class="oe_highlight"/>
                     <button name="action_approve" type="object"

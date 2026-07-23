@@ -266,7 +266,8 @@ class PerformanceReport(models.TransientModel):
             truck=self.env['fleet.vehicle'].search([
                 ('license_plate', '=', license_plate), 
             ],)
-            truck = truck.name
+            if truck:
+                truck = truck.name
             name = data['name']  
             if license_plate in truck_odometer :
                 distance=truck_odometer[license_plate]['distance']  

@@ -27,7 +27,19 @@ class StockPicking(models.Model):
         string='Delivery Amount',
         compute='_compute_delivery_amount',
         store=True, 
+    ) 
+    delivered_cartons = fields.Float(
+        string="عدد الكراتين المنجزة",
+        compute="_compute_delivered_cartons",
+        store=True,
     )
+
+    @api.depends("move_ids.quantity")
+    def _compute_delivered_cartons(self):
+        for picking in self:
+            picking.delivered_cartons = sum(
+                picking.move_ids.mapped("quantity")
+            )
  
 
     @api.depends(
@@ -64,3 +76,31 @@ class StockPicking(models.Model):
                 # total += taxes['total_excluded']
 
             picking.delivery_amount = total
+ 
+
+    handling_price = fields.Float(
+        string='سعر العتالة للكرتونة',
+        default=400.0 
+    )
+
+    handling_amount = fields.Float(
+        string='إجمالي العتالة',
+        compute='_compute_handling_amount',
+        store=True,
+    )
+
+    @api.depends(
+        'move_ids_without_package.quantity',
+        'move_ids_without_package.product_uom_qty',
+        'handling_price',
+        'state'
+    )
+    def _compute_handling_amount(self):
+        for picking in self:
+            total_cartons = 0
+
+            for move in picking.move_ids_without_package:
+                qty = move.quantity if picking.state == 'done' else move.product_uom_qty
+                total_cartons += qty
+
+            picking.handling_amount = total_cartons * picking.handling_price

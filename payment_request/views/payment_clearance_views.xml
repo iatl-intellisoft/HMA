@@ -22,7 +22,7 @@
                                 class="oe_highlight"/>
                         <button name="action_refuse" type="object" string="Refuse" invisible="state != 'finance_approval'" 
                                 groups="account.group_account_manager" class="oe_highlight"/>
-                        <button name="action_draft" type="object" string="Set to Draft" 
+                        <button name="action_draft" type="object" string="Set to Draft" invisible="state not in ['submit', 'finance_approval']"
                                 class="oe_highlight"/>
                         <button name="action_create_journal" groups="account.group_account_manager" type="object"
                                 invisible="state != 'finance_approval' or move_id != False"

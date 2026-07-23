@@ -86,12 +86,15 @@ class PerformanceReport(models.TransientModel):
  
         result = defaultdict(lambda: {
             'total': {'count': 0, 'amount': 0},
-            'trucks': defaultdict(lambda: {'count': 0, 'amount': 0})
+            'trucks': defaultdict(lambda: {'count': 0, 'amount': 0}),
+            'trucks': defaultdict(lambda: {'delivered_cartons': 0})
+            
         })
  
         all_result_not_done = defaultdict(lambda: {
             'total': {'count': 0},
-            'trucks': defaultdict(lambda: {'count': 0})
+            'trucks': defaultdict(lambda: {'count': 0}),
+            'trucks': defaultdict(lambda: {'delivered_cartons': 0})
         })
 
         result_total = 0

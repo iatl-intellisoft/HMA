@@ -64,7 +64,7 @@
                         <field name="clearance_ids" invisible="1"/>
                         <field name="can_reset_to_draft" invisible="1"/>
                        <button name="action_set_to_draft" class="oe_highlight" type="object" string="Set To Draft"
-                        invisible="state != 'paid'" groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"
+                        invisible="state not in ['submit', 'wait_payment']" groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"
                                />
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,wait_department_manager,wait_financial_manager"/>

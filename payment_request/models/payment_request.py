@@ -69,7 +69,7 @@ class PaymentRequest(models.Model):
     remaining_amount = fields.Float(
     string="Remaining", 
     store=True,
-    compute="_onchange_employee_id"
+    # compute="_onchange_employee_id"
     )
 
 

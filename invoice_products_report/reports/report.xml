@@ -82,39 +82,6 @@
                     </tr>
                 </t>
             </t>
-            <t t-foreach="invoice_data" t-as="data">
-                <tr>
-                    <td><span t-esc="data['invoice'].name"/></td>
-                    <td><span t-esc="data['total']"/></td>
-                    <td><span t-esc="data['paid']"/></td>
-                    <td><span t-esc="data['due']"/></td>
-                </tr>
-            </t>
-
-            <!-- <t t-set="i" t-value="1"/>
-            <t t-foreach="inv.invoice_line_ids" t-as="line">
-            <p>
-                عدد السطور:
-                <span t-esc="len(inv.invoice_line_ids)"/>
-            </p>
-                <t t-if="not line.display_type">
-            
-                    <tr>
-                        <td><span t-esc="i"/><t t-set="i" t-value="i+1"/></td>
-                        <td><span t-field="line.product_id"/></td>
-                        <td><span t-field="line.quantity"/></td>
-                        <td><span t-field="line.price_unit"/></td>
-                        <td><span t-field="line.price_subtotal"/></td>
-                    </tr>
-            
-                </t>
-            </t> -->
-
-           
-                    
-
-                    
-
         </tbody>
 
     </table>
@@ -139,25 +106,6 @@
         <span t-esc="grand_due"/>
     </td>
 </tr>
-<!-- <tr>
-    <td><strong>الإجمالي</strong></td>
-    <td><strong t-esc="grand_total"/></td>
-    <td><strong t-esc="grand_paid"/></td>
-    <td><strong t-esc="grand_due"/></td>
-</tr> -->
-<!-- <tr>
-    <td><strong>إجمالي الكميات</strong></td>
-    <td>
-        <span t-esc="total_qty"/>
-    </td>
-</tr>
-
-<tr>
-    <td><strong>إجمالي المبلغ</strong></td>
-    <td>
-        <span t-esc="total_amount"/>
-    </td>
-</tr> -->
 
 </table>
 

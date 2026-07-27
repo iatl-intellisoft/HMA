@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <template id="invoice_products_pdf">
-
 <t t-call="web.html_container">
 <t t-call="web.external_layout">
-
-<div class="page">
-
+<div class="page" style="direction: rtl; text-align: right;">
 <h2 style="text-align:center">
 تقرير الفواتير
 </h2>
-
 <t t-foreach="invoice_data" t-as="data">
-
 <t t-set="inv" t-value="data['invoice']"/>
-
     <br/>
-
-    <table class="table table-sm table-bordered">
-
+    <table class="table table-sm table-bordered" style="direction: rtl;">
         <tr>
             <td><strong>الفاتورة</strong></td>
             <td><span t-field="inv.name"/></td>
-
             <td><strong>التاريخ</strong></td>
             <td><span t-field="inv.invoice_date"/></td>
-
             <td><strong>العميل</strong></td>
             <td><span t-field="inv.partner_id"/></td>
         </tr>
-
         <tr>
             <th>#</th>
             <th>المنتج</th>
@@ -38,7 +27,6 @@
             <th>الإجمالي</th>
             <th></th>
         </tr>
-
         <t t-set="i" t-value="1"/>
         <t t-foreach="inv.invoice_line_ids" t-as="line">
             <t t-if="line.product_id">
@@ -52,51 +40,38 @@
                 </tr>
             </t>
         </t>
-
         <tr>
             <td colspan="2"><strong>إجمالي الفاتورة</strong></td>
-            <td colspan="2"><span t-esc="data['total']"/></td>
+            <td colspan="2"><span t-esc="'{:,.2f}'.format(data['total'])"/></td>
             <td><strong>المدفوع</strong></td>
-            <td><span t-esc="data['paid']"/></td>
+            <td><span t-esc="'{:,.2f}'.format(data['paid'])"/></td>
         </tr>
-
         <tr>
             <td colspan="5"><strong>المتبقي</strong></td>
-            <td><span t-esc="data['due']"/></td>
+            <td><span t-esc="'{:,.2f}'.format(data['due'])"/></td>
         </tr>
-
     </table>
-
 </t>
-
 <hr/>
-
 <h3>الإجماليات</h3>
-
-<table class="table table-bordered">
+<table class="table table-bordered" style="direction: rtl;">
     <tr>
     <td><strong>إجمالي المدفوع</strong></td>
     <td>
-        <span t-esc="grand_paid"/>
+        <span t-esc="'{:,.2f}'.format(grand_paid)"/>
     </td>
 </tr>
-
 <tr>
     <td><strong>إجمالي المتبقي</strong></td>
     <td>
-        <span t-esc="grand_due"/>
+        <span t-esc="'{:,.2f}'.format(grand_due)"/>
     </td>
 </tr>
-
 </table>
-
 </div>
-
 </t>
 </t>
-
 </template>
-
 <record id="action_invoice_products_pdf" model="ir.actions.report">
     <field name="name">Invoice Products Report</field>
     <field name="model">invoice.report.wizard</field>
@@ -105,5 +80,4 @@
     <field name="report_file">invoice_products_report.invoice_products_pdf</field>
     <field name="binding_model_id" ref="model_invoice_report_wizard"/>
 </record>
-
 </odoo>

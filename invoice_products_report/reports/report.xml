@@ -11,7 +11,9 @@
 تقرير الفواتير
 </h2>
 
-<t t-foreach="invoices" t-as="inv">
+<t t-foreach="invoice_data" t-as="data">
+
+<t t-set="inv" t-value="data['invoice']"/>
 
     <br/>
 
@@ -28,6 +30,32 @@
             </td>
         </tr>
     </table>
+    <table class="table table-sm table-bordered">
+
+<tr>
+    <td>
+        <strong>إجمالي الفاتورة</strong>
+    </td>
+    <td>
+        <span t-esc="data['total']"/>
+    </td>
+
+    <td>
+        <strong>المدفوع</strong>
+    </td>
+    <td>
+        <span t-esc="data['paid']"/>
+    </td>
+
+    <td>
+        <strong>المتبقي</strong>
+    </td>
+    <td>
+        <span t-esc="data['due']"/>
+    </td>
+</tr>
+
+</table>
 
     <table class="table table-sm table-bordered">
 
@@ -44,7 +72,7 @@
         </thead>
 
         <tbody>
-            <t t-foreach="inv.line_ids" t-as="line">
+            <t t-foreach="inv.invoice_line_ids" t-as="line">
                 <t t-if="line.product_id">
                     <tr>
                         <td><span t-field="line.product_id"/></td>
@@ -98,12 +126,25 @@
 <h3>الإجماليات</h3>
 
 <table class="table table-bordered">
+    <tr>
+    <td><strong>إجمالي المدفوع</strong></td>
+    <td>
+        <span t-esc="grand_paid"/>
+    </td>
+</tr>
+
 <tr>
+    <td><strong>إجمالي المتبقي</strong></td>
+    <td>
+        <span t-esc="grand_due"/>
+    </td>
+</tr>
+<!-- <tr>
     <td><strong>الإجمالي</strong></td>
     <td><strong t-esc="grand_total"/></td>
     <td><strong t-esc="grand_paid"/></td>
     <td><strong t-esc="grand_due"/></td>
-</tr>
+</tr> -->
 <!-- <tr>
     <td><strong>إجمالي الكميات</strong></td>
     <td>

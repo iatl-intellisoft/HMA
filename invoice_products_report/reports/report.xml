@@ -54,6 +54,14 @@
                     </tr>
                 </t>
             </t>
+            <t t-foreach="invoice_data" t-as="data">
+                <tr>
+                    <td><span t-esc="data['invoice'].name"/></td>
+                    <td><span t-esc="data['total']"/></td>
+                    <td><span t-esc="data['paid']"/></td>
+                    <td><span t-esc="data['due']"/></td>
+                </tr>
+            </t>
 
             <!-- <t t-set="i" t-value="1"/>
             <t t-foreach="inv.invoice_line_ids" t-as="line">
@@ -90,8 +98,13 @@
 <h3>الإجماليات</h3>
 
 <table class="table table-bordered">
-
 <tr>
+    <td><strong>الإجمالي</strong></td>
+    <td><strong t-esc="grand_total"/></td>
+    <td><strong t-esc="grand_paid"/></td>
+    <td><strong t-esc="grand_due"/></td>
+</tr>
+<!-- <tr>
     <td><strong>إجمالي الكميات</strong></td>
     <td>
         <span t-esc="total_qty"/>
@@ -103,7 +116,7 @@
     <td>
         <span t-esc="total_amount"/>
     </td>
-</tr>
+</tr> -->
 
 </table>
 

@@ -20,12 +20,12 @@
             <td><span t-field="inv.partner_id"/></td>
         </tr>
         <tr>
-            <th>#</th>
-            <th>المنتج</th>
-            <th>الكمية</th>
-            <th>السعر</th>
-            <th>الإجمالي</th>
-            <th></th>
+            <td>#</td>
+            <td>المنتج</td>
+            <td>الكمية</td>
+            <td>السعر</td>
+            <td>الإجمالي</td>
+            <td></td>
         </tr>
         <t t-set="i" t-value="1"/>
         <t t-foreach="inv.invoice_line_ids" t-as="line">

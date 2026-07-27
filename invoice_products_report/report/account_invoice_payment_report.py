@@ -1,92 +1,94 @@
-# -*- coding: utf-8 -*-
-from odoo import fields, models, tools
+from odoo import api, models
 
 
-class AccountInvoicePaymentReport(models.Model):
-    _name = 'account.invoice.payment.report'
-    _description = 'تقرير المبيعات مع الدفعات المرتبطة'
-    _auto = False
-    _order = 'invoice_date desc, move_id, payment_date'
+class InvoiceProductsPdf(models.AbstractModel):
+    _name = 'report.invoice_products_report.invoice_products_pdf'
+    _description = 'Invoice Products PDF'
 
-    move_id = fields.Many2one('account.move', string='رقم الفاتورة', readonly=True)
-    invoice_date = fields.Date(string='تاريخ الفاتورة', readonly=True)
-    partner_id = fields.Many2one('res.partner', string='العميل', readonly=True)
-    invoice_origin = fields.Char(string='رقم أمر البيع', readonly=True)
-    amount_total = fields.Monetary(string='إجمالي الفاتورة', readonly=True)
-    amount_residual = fields.Monetary(string='المتبقي', readonly=True)
-    payment_state = fields.Selection(
-        [
-            ('not_paid', 'غير مدفوعة'),
-            ('in_payment', 'قيد الدفع'),
-            ('paid', 'مدفوعة'),
-            ('partial', 'مدفوعة جزئياً'),
-            ('reversed', 'ملغاة'),
-            ('invoicing_legacy', 'قديم'),
-        ],
-        string='حالة السداد', readonly=True,
-    )
-    move_type = fields.Selection(
-        [
-            ('out_invoice', 'فاتورة مبيعات'),
-            ('out_refund', 'إشعار دائن مبيعات'),
-        ],
-        string='نوع المستند', readonly=True,
-    )
-    payment_id = fields.Many2one('account.payment', string='الدفعة', readonly=True)
-    payment_name = fields.Char(string='رقم الإشعار', readonly=True)
-    payment_date = fields.Date(string='تاريخ السداد', readonly=True)
-    payment_amount = fields.Monetary(string='قيمة السداد', readonly=True)
-    payment_journal_type = fields.Selection(
-        [
-            ('cash', 'كاش'),
-            ('bank', 'بنك'),
-        ],
-        string='نوع الدفعية', readonly=True,
-    )
-    payment_journal_name = fields.Char(string='الخزينة/البنك', readonly=True)
-    currency_id = fields.Many2one('res.currency', string='العملة', readonly=True)
-    company_id = fields.Many2one('res.company', string='الشركة', readonly=True)
+    @api.model
+    def _get_report_values(self, docids, data=None):
 
-    def init(self):
-        tools.drop_view_if_exists(self._cr, self._table)
-        self._cr.execute("""
-            CREATE OR REPLACE VIEW %s AS (
-                SELECT
-                    apr.id AS id,
-                    am.id AS move_id,
-                    am.invoice_date AS invoice_date,
-                    am.partner_id AS partner_id,
-                    am.invoice_origin AS invoice_origin,
-                    am.amount_total AS amount_total,
-                    am.amount_residual AS amount_residual,
-                    am.payment_state AS payment_state,
-                    am.move_type AS move_type,
-                    am.currency_id AS currency_id,
-                    am.company_id AS company_id,
-                    ap.id AS payment_id,
-                    pay_move.name AS payment_name,
-                    ap.date AS payment_date,
-                    apr.amount AS payment_amount,
-                    aj.type AS payment_journal_type,
-                    aj.name AS payment_journal_name
-                FROM account_move am
-                JOIN account_move_line aml_inv
-                    ON aml_inv.move_id = am.id
-                JOIN account_account acc
-                    ON acc.id = aml_inv.account_id
-                    AND acc.account_type IN ('asset_receivable', 'liability_payable')
-                JOIN account_partial_reconcile apr
-                    ON apr.debit_move_id = aml_inv.id OR apr.credit_move_id = aml_inv.id
-                JOIN account_move_line aml_pay
-                    ON (apr.debit_move_id = aml_pay.id AND apr.credit_move_id = aml_inv.id)
-                    OR (apr.credit_move_id = aml_pay.id AND apr.debit_move_id = aml_inv.id)
-                JOIN account_payment ap
-                    ON ap.id = aml_pay.payment_id
-                JOIN account_move pay_move
-                    ON pay_move.id = ap.move_id
-                JOIN account_journal aj
-                    ON aj.id = ap.journal_id
-                WHERE am.move_type IN ('out_invoice', 'out_refund')
-                AND am.state = 'posted'
+        wizard = self.env['invoice.report.wizard'].browse(docids)
+
+        domain = [
+            ('invoice_date', '>=', wizard.date_from),
+            ('invoice_date', '<=', wizard.date_to),
+            ('state', '=', 'posted') if wizard.only_posted else ('id', '!=', 0),
+        ]
+
+        if wizard.move_type != 'all':
+            domain.append(('move_type', '=', wizard.move_type))
+        else:
+            domain.append(('move_type', 'in', ['out_invoice', 'in_invoice']))
+
+        if wizard.partner_id:
+            domain.append(('partner_id', '=', wizard.partner_id.id))
+
+        invoices = self.env['account.move'].search(
+            domain,
+            order='invoice_date,name'
+        )
+
+        if wizard.product_id:
+            invoices = invoices.filtered(
+                lambda m: any(
+                    l.product_id == wizard.product_id
+                    for l in m.invoice_line_ids.filtered(
+                        lambda x: not x.display_type
+                    )
+                )
             )
-        """ % self._table)
+
+        total_qty = 0
+    total_products_amount = 0
+    
+    grand_total = 0
+    grand_paid = 0
+    grand_due = 0
+    
+    invoice_data = []
+    
+    for inv in invoices:
+        invoice_qty = 0
+        invoice_products_amount = 0
+    
+        for line in inv.invoice_line_ids.filtered(
+            lambda x: not x.display_type
+        ):
+    
+            if wizard.product_id and line.product_id != wizard.product_id:
+                continue
+    
+            invoice_qty += line.quantity
+            invoice_products_amount += line.price_subtotal
+    
+        paid_amount = inv.amount_total - inv.amount_residual
+    
+        invoice_data.append({
+            'invoice': inv,
+            'qty': invoice_qty,
+            'products_amount': invoice_products_amount,
+            'total': inv.amount_total,
+            'paid': paid_amount,
+            'due': inv.amount_residual,
+        })
+    
+        total_qty += invoice_qty
+        total_products_amount += invoice_products_amount
+    
+        grand_total += inv.amount_total
+        grand_paid += paid_amount
+        grand_due += inv.amount_residual
+        return {
+            'doc_ids': wizard.ids,
+            'doc_model': 'invoice.report.wizard',
+            'docs': wizard,
+            'invoice_data': invoice_data,
+        
+            'total_qty': total_qty,
+            'total_products_amount': total_products_amount,
+        
+            'grand_total': grand_total,
+            'grand_paid': grand_paid,
+            'grand_due': grand_due,
+        }

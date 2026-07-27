@@ -79,16 +79,16 @@ class InvoiceProductsPdf(models.AbstractModel):
         grand_total += inv.amount_total
         grand_paid += paid_amount
         grand_due += inv.amount_residual
-        return {
-            'doc_ids': wizard.ids,
-            'doc_model': 'invoice.report.wizard',
-            'docs': wizard,
-            'invoice_data': invoice_data,
-        
-            'total_qty': total_qty,
-            'total_products_amount': total_products_amount,
-        
-            'grand_total': grand_total,
-            'grand_paid': grand_paid,
-            'grand_due': grand_due,
-        }
+    return {
+        'doc_ids': wizard.ids,
+        'doc_model': 'invoice.report.wizard',
+        'docs': wizard,
+        'invoice_data': invoice_data,
+    
+        'total_qty': total_qty,
+        'total_products_amount': total_products_amount,
+    
+        'grand_total': grand_total,
+        'grand_paid': grand_paid,
+        'grand_due': grand_due,
+    }

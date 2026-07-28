@@ -40,24 +40,55 @@ class InvoiceProductsPdf(models.AbstractModel):
             )
 
         total_qty = 0
-        total_amount = 0
-
+        total_products_amount = 0
+        grand_total = 0
+        grand_paid = 0
+        grand_due = 0
+        
+        invoice_data = []
+        
         for inv in invoices:
+            invoice_qty = 0
+            invoice_products_amount = 0
+        
             for line in inv.invoice_line_ids.filtered(
                 lambda x: not x.display_type
             ):
-
+        
                 if wizard.product_id and line.product_id != wizard.product_id:
                     continue
-
-                total_qty += line.quantity
-                total_amount += line.price_subtotal
-
+        
+                invoice_qty += line.quantity
+                invoice_products_amount += line.price_subtotal
+        
+            paid_amount = inv.amount_total - inv.amount_residual
+        
+            invoice_data.append({
+                'invoice': inv,
+                'qty': invoice_qty,
+                'products_amount': invoice_products_amount,
+                'total': inv.amount_total,
+                'paid': paid_amount,
+                'due': inv.amount_residual,
+            })
+        
+            total_qty += invoice_qty
+            total_products_amount += invoice_products_amount
+        
+            grand_total += inv.amount_total
+            grand_paid += paid_amount
+            grand_due += inv.amount_residual
+            
         return {
-            'doc_ids': wizard.ids,
-            'doc_model': 'invoice.report.wizard',
-            'docs': wizard,
-            'invoices': invoices,
-            'total_qty': total_qty,
-            'total_amount': total_amount,
-        }
+                'doc_ids': wizard.ids,
+                'doc_model': 'invoice.report.wizard',
+                'docs': wizard,
+                'invoice_data': invoice_data,
+            
+                'total_qty': total_qty,
+                'total_products_amount': total_products_amount,
+            
+                'grand_total': grand_total,
+                'grand_paid': grand_paid,
+                'grand_due': grand_due,
+            }

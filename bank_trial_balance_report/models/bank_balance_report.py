@@ -16,11 +16,20 @@ class BankBalanceReportWizard(models.TransientModel):
         required=True,
         default=fields.Date.context_today,
     )
+    # أصبح اختياريًا فقط لتضييق النتائج إن أراد المستخدم ذلك،
+    # لم يعد هو المصدر الأساسي لتحديد الحسابات البنكية
     journal_ids = fields.Many2many(
         'account.journal',
-        string='البنوك',
+        string='البنوك (اختياري - لتصفية إضافية)',
         domain=[('type', '=', 'bank')],
-        help='اتركه خاليًا لعرض كل حسابات البنوك',
+        help='اتركه خاليًا لعرض كل الحسابات البنكية بغض النظر عن الدفتر',
+    )
+    # الحقل الجديد: يسمح باختيار حسابات بنكية محددة مباشرة من شجرة الحسابات
+    account_ids = fields.Many2many(
+        'account.account',
+        string='الحسابات البنكية (اختياري)',
+        domain=[('account_type', '=', 'asset_cash')],
+        help='اتركه خاليًا لعرض كل حسابات النوع "بنك/نقدية" في الشركة',
     )
     company_id = fields.Many2one(
         'res.company',
@@ -38,50 +47,60 @@ class BankBalanceReportWizard(models.TransientModel):
             'company_name': self.company_id.name,
             'lines': lines,
         }
-        
+
         return self.env.ref(
             'bank_trial_balance_report.action_report_bank_balance'
         ).report_action(self, data=data)
 
-    def _get_journals(self):
+    def _get_bank_accounts(self):
+        """يرجع كل حسابات البنوك/النقدية المرتبطة بالشركة المختارة،
+        بغض النظر عن وجود دفتر (journal) مربوط بيها أو لا."""
         self.ensure_one()
-        journals = self.journal_ids
-        if not journals:
-            journals = self.env['account.journal'].search([
-                ('type', '=', 'bank'),
-                ('company_id', '=', self.company_id.id),
+        Account = self.env['account.account']
+
+        if self.account_ids:
+            accounts = self.account_ids
+        else:
+            accounts = Account.search([
+                ('account_type', '=', 'asset_cash'),
+                ('company_ids', 'in', self.company_id.id),
             ])
-        return journals
+
+        # لو المستخدم حدد دفاتر بنكية بعينها، نستخدمها فقط لتضييق
+        # قائمة الحسابات (وليس لتضييق الحركات المالية نفسها)
+        if self.journal_ids:
+            journal_accounts = self.journal_ids.mapped('default_account_id')
+            accounts = accounts & journal_accounts if accounts else journal_accounts
+
+        return accounts
 
     def _compute_lines(self):
         self.ensure_one()
         AML = self.env['account.move.line']
-        journals = self._get_journals()
+        accounts = self._get_bank_accounts()
         lines = []
-    
-        for journal in journals:
-            account = journal.default_account_id
-            if not account:
-                continue
-     
+
+        for account in accounts:
+            # نفس منطق دفتر الأستاذ العام تمامًا: فلترة على الحساب
+            # والشركة فقط، بدون قيد على الدفتر (journal_id)
             base_domain = [
                 ('account_id', '=', account.id),
                 ('parent_state', '=', 'posted'),
-                ('company_id', 'child_of', self.company_id.id),
+                ('company_id', '=', self.company_id.id),
             ]
-    
+
             initial_lines = AML.search(base_domain + [('date', '<', self.date_from)])
             initial_balance = sum(initial_lines.mapped('debit')) - sum(initial_lines.mapped('credit'))
-    
+
             period_lines = AML.search(
                 base_domain + [('date', '>=', self.date_from), ('date', '<=', self.date_to)]
             )
             debit = sum(period_lines.mapped('debit'))
             credit = sum(period_lines.mapped('credit'))
             ending_balance = initial_balance + debit - credit
-    
+
             lines.append({
-                'journal_name': journal.name,
+                'journal_name': account.name,
                 'account_code': account.code,
                 'account_name': account.name,
                 'initial_balance': initial_balance,

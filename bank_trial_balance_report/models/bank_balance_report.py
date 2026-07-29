@@ -66,7 +66,6 @@ class BankBalanceReportWizard(models.TransientModel):
      
             base_domain = [
                 ('account_id', '=', account.id),
-                ('journal_id', '=', journal.id),
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]

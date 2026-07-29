@@ -66,6 +66,7 @@ class BankBalanceReportWizard(models.TransientModel):
      
             base_domain = [
                 ('account_id', '=', account.id),
+                # ('journal_id', '=', journal.id),
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]
@@ -81,6 +82,7 @@ class BankBalanceReportWizard(models.TransientModel):
             ending_balance = initial_balance + debit - credit
     
             lines.append({
+                'journal_name': journal.name,
                 'account_code': account.code,
                 'account_name': account.name,
                 'initial_balance': initial_balance,

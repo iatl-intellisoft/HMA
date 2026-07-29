@@ -1,11 +1,9 @@
 import base64
 from io import BytesIO
 from locale import currency
-
 import xlwt
 from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
-
 
 class ClearnceReport(models.TransientModel): 
     _name = 'clearnce.report'
@@ -23,25 +21,7 @@ class ClearnceReport(models.TransientModel):
 
     def action_generate_clearnce_excel(self):
         """Generate and return Excel file for clearnce"""
-        records = self.env['custody.clearance'].search([
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date),
-        ])
-        operating_costs = self.env['payment.request'].search([ 
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date)
-        ])
-        payment_requests = self.env['payment.request'].search([ 
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date),
-            ('state', 'in', ['paid','close']),
-            ('is_need_clearance', '=', True),
-        ], order='date asc, id asc')
-        truck_odometers = self.env['fleet.vehicle.odometer'].search([
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date), 
-        ])
-
+         
         workbook = xlwt.Workbook(encoding='utf-8')
         sheet = workbook.add_sheet('Clearance', cell_overwrite_ok=True)
         sheet.cols_right_to_left = True
@@ -85,13 +65,18 @@ class ClearnceReport(models.TransientModel):
         sheet.write(1, 6, "نوع الحركة", heading)
         sheet.write(1, 7, "المرجع", heading)
         sheet.write(1, 8, "البيان", heading)
-        truck_odometer={}
      
         requests = []
-        vehicles = {}
         custody_amount = 0
         expenses_amount = 0
         row = 2
+        payment_requests = self.env['payment.request'].search([ 
+            ('date', '>=', self.start_date),
+            ('date', '<=', self.end_date),
+            ('state', 'in', ['paid','close']),
+            ('is_need_clearance', '=', True),
+        ], order='date asc, id asc')
+
         for payment_request in payment_requests:
             if requests==[]:
                 ref="رصيد افتتاحي"
@@ -106,7 +91,7 @@ class ClearnceReport(models.TransientModel):
             sheet.write(row, 4, "-", content_format)
             sheet.write(row, 5, payment_request.base_amount, content_format)
             sheet.write(row, 6, "استلام", content_format1)
-            sheet.write(row, 7, "" , content_format)
+            sheet.write(row, 7, "-" , content_format)
             sheet.write(row, 8, ref, content_format)
             custody_amount +=payment_request.amount
             row += 1
@@ -119,13 +104,13 @@ class ClearnceReport(models.TransientModel):
             for clearance in clearances:           
                 sheet.row(row).height = 400
                 sheet.write(row, 0, clearance.date.strftime('%d/%m/%Y'), content_format)
-                sheet.write(row, 1, clearance.request_id.name, content_format)
+                sheet.write(row, 1, clearance.sequence, content_format)
                 sheet.write(row, 2, clearance.employee_id.name, content_format)
                 sheet.write(row, 3, "-", content_format)
                 sheet.write(row, 4, clearance.total_amount, content_format)
                 sheet.write(row, 5, clearance.request_remaining_amount, content_format)
                 sheet.write(row, 6, "صرف", content_format2)
-                sheet.write(row, 7,  clearance.custody_line_ids.clearance_type, content_format)
+                sheet.write(row, 7, "-", content_format)
                 sheet.write(row, 8, clearance.custody_line_ids.desc, content_format)
                 expenses_amount += clearance.total_amount
                 row += 1

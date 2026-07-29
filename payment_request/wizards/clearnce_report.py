@@ -36,7 +36,7 @@ class ClearnceReport(models.TransientModel):
             ('date', '<=', self.end_date),
             ('state', 'in', ['paid','close']),
             ('is_need_clearance', '=', True),
-        ])
+        ], order='date asc, id asc')
         truck_odometers = self.env['fleet.vehicle.odometer'].search([
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date), 
@@ -115,7 +115,7 @@ class ClearnceReport(models.TransientModel):
                 ('date', '<=', self.end_date),
                 ('state', '=', 'done'),
                 ('request_id', '=', payment_request.id),
-            ])
+            ], order='date asc, id asc')
             for clearance in clearances:           
                 sheet.row(row).height = 400
                 sheet.write(row, 0, clearance.date.strftime('%d/%m/%Y'), content_format)

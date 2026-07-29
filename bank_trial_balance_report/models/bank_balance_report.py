@@ -28,6 +28,18 @@ class BankBalanceReportWizard(models.TransientModel):
         required=True,
         default=lambda self: self.env.company,
     )
+    strict_journal_match = fields.Boolean(
+        string='فلترة صارمة بالجورنال',
+        default=False,
+        help=(
+            'اتركها بدون تفعيل عشان الأرقام تطابق دفتر الأستاذ '
+            '(كل حركة على حساب البنك، من أي جورنال، هتتحسب).\n\n'
+            'فعّلها فقط لو أكتر من بنك بيشتركوا في نفس الحساب المحاسبي '
+            'وعايز كل بنك ياخد حركته هو بس (من جورنال البنك نفسه)، '
+            'مع العلم إن ده هيستبعد القيود اليدوية أو التسويات '
+            'المتسجلة من جورنال تاني على نفس الحساب.'
+        ),
+    )
 
     def action_print_pdf(self):
         self.ensure_one()
@@ -62,9 +74,18 @@ class BankBalanceReportWizard(models.TransientModel):
 
         - كل البنوك بتظهر حتى لو معهاش أي حركة خلال الفترة المحددة
           (بيظهر آخر رصيد كان عليه البنك، سواء كان فيه حركة أو لأ).
-        - بيتم الفلترة بـ journal_id مع account_id مع بعض، عشان لو أكتر
-          من بنك بيشتركوا في نفس الحساب المحاسبي، كل بنك ياخد رصيده
-          الفعلي بناءً على حركاته هو بس (مش يتدمج مع بنك تاني).
+
+        - الفلترة الافتراضية بقت بـ account_id بس (زي دفتر الأستاذ
+          تمامًا)، عشان الأرقام تطابق المحاسبة. يعني أي قيد يدوي أو
+          تسوية أو رصيد افتتاحي متسجل من جورنال تاني (زي "القيود
+          اليومية" Miscellaneous) على نفس حساب البنك هيتحسب برضه.
+
+        - لو عندك أكتر من بنك بيشتركوا في نفس الحساب المحاسبي، وعايز
+          تفصل حركة كل بنك عن التاني (بدل ما تتجمع)، فعّل خاصية
+          'strict_journal_match' من الويزارد. في الحالة دي هيرجع
+          الفلترة بالجورنال زي الكود الأصلي، لكن اعرف إن ده هيستبعد
+          أي قيد يدوي متسجل من جورنال غير جورنال البنك، وممكن الأرقام
+          تختلف عن دفتر الأستاذ في الحالة دي.
         """
         self.ensure_one()
         AML = self.env['account.move.line']
@@ -91,10 +112,13 @@ class BankBalanceReportWizard(models.TransientModel):
 
             base_domain = [
                 ('account_id', '=', account.id),
-                ('journal_id', '=', journal.id),
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]
+
+            # الفلترة بالجورنال اختيارية دلوقتي، مش إجبارية
+            if self.strict_journal_match:
+                base_domain.append(('journal_id', '=', journal.id))
 
             initial_lines = AML.search(base_domain + [('date', '<', self.date_from)])
             initial_balance = sum(initial_lines.mapped('debit')) - sum(initial_lines.mapped('credit'))

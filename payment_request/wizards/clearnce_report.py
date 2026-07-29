@@ -102,13 +102,13 @@ class ClearnceReport(models.TransientModel):
             sheet.write(row, 0, payment_request.date.strftime('%d/%m/%Y'), content_format)
             sheet.write(row, 1, payment_request.name, content_format)
             sheet.write(row, 2, payment_request.employee_id.name, content_format)
-            sheet.write(row, 3, payment_request.custody_amount, content_format)
+            sheet.write(row, 3, payment_request.amount, content_format)
             sheet.write(row, 4, "-", content_format)
             sheet.write(row, 5, payment_request.base_amount, content_format)
             sheet.write(row, 6, "استلام", content_format1)
             sheet.write(row, 7, "" , content_format)
             sheet.write(row, 8, ref, content_format)
-            custody_amount +=payment_request.custody_amount
+            custody_amount +=payment_request.amount
             row += 1
             clearances = self.env['custody.clearance'].search([
                 ('date', '>=', self.start_date),

@@ -114,7 +114,7 @@ class ClearnceReport(models.TransientModel):
                 ('date', '>=', self.start_date),
                 ('date', '<=', self.end_date),
                 ('state', '=', 'done'),
-                ('request_id', '=', payment_request),
+                ('request_id', '=', payment_request.id),
             ])
             for clearance in clearances:           
                 sheet.row(row).height = 400

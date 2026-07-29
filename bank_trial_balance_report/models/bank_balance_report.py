@@ -55,36 +55,43 @@ class BankBalanceReportWizard(models.TransientModel):
 
     def _compute_lines(self):
         """
-        يحسب آخر رصيد لكل بنك حتى تاريخ 'إلى تاريخ':
+        يحسب آخر رصيد لكل بنك (كل journal بيظهر بسطر مستقل بيه)
+        حتى تاريخ 'إلى تاريخ':
         آخر رصيد = الرصيد الافتتاحي (كل الحركة قبل 'من تاريخ')
                   + صافي الحركة (مدين - دائن) بين 'من تاريخ' و 'إلى تاريخ'
 
-        ملحوظة مهمة: لو أكتر من بنك (journal) بيشتركوا في نفس الحساب
-        المحاسبي (default_account_id)، بيتم حساب الحساب مرة واحدة بس
-        عشان الإجمالي (Total) في آخر التقرير يفضل مضبوط ومفيش تكرار
-        في الأرصدة.
+        - كل البنوك بتظهر حتى لو معهاش أي حركة خلال الفترة المحددة
+          (بيظهر آخر رصيد كان عليه البنك، سواء كان فيه حركة أو لأ).
+        - بيتم الفلترة بـ journal_id مع account_id مع بعض، عشان لو أكتر
+          من بنك بيشتركوا في نفس الحساب المحاسبي، كل بنك ياخد رصيده
+          الفعلي بناءً على حركاته هو بس (مش يتدمج مع بنك تاني).
         """
         self.ensure_one()
         AML = self.env['account.move.line']
         journals = self._get_journals()
         lines = []
-        processed_accounts = {}  # account.id -> line dict (لتفادي التكرار)
 
         for journal in journals:
             account = journal.default_account_id
-            if not account:
-                continue
 
-            # لو الحساب اتحسب قبل كده مع بنك تاني، منكررش الحساب
-            # وبس نضيف اسم الجورنال ده للسطر الموجود
-            if account.id in processed_accounts:
-                existing = processed_accounts[account.id]
-                if journal.name not in existing['journal_name']:
-                    existing['journal_name'] = f"{existing['journal_name']} / {journal.name}"
+            if not account:
+                # البنك ده مالوش حساب افتراضي مربوط - بيظهر في التقرير
+                # برصيد فاضي بدل ما يختفي بصمت، عشان تلاحظ إنه محتاج
+                # ربط حساب في إعدادات الجورنال
+                lines.append({
+                    'journal_name': f"{journal.name} (لا يوجد حساب مربوط)",
+                    'account_code': '',
+                    'account_name': '',
+                    'initial_balance': 0.0,
+                    'debit': 0.0,
+                    'credit': 0.0,
+                    'ending_balance': 0.0,
+                })
                 continue
 
             base_domain = [
                 ('account_id', '=', account.id),
+                ('journal_id', '=', journal.id),
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]
@@ -98,10 +105,12 @@ class BankBalanceReportWizard(models.TransientModel):
             debit = sum(period_lines.mapped('debit'))
             credit = sum(period_lines.mapped('credit'))
 
-            # آخر رصيد (الرصيد الختامي) حتى "إلى تاريخ"
+            # آخر رصيد (الرصيد الختامي) حتى "إلى تاريخ" - بيظهر حتى لو
+            # debit و credit = 0 (يعني مفيش حركة في الفترة) لأنه بياخد
+            # في اعتباره الرصيد الافتتاحي المرحّل من قبل
             ending_balance = initial_balance + debit - credit
 
-            line_vals = {
+            lines.append({
                 'journal_name': journal.name,
                 'account_code': account.code,
                 'account_name': account.name,
@@ -109,9 +118,7 @@ class BankBalanceReportWizard(models.TransientModel):
                 'debit': debit,
                 'credit': credit,
                 'ending_balance': ending_balance,
-            }
-            processed_accounts[account.id] = line_vals
-            lines.append(line_vals)
+            })
 
         return lines
 

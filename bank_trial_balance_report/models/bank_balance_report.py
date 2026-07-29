@@ -38,7 +38,7 @@ class BankBalanceReportWizard(models.TransientModel):
             'company_name': self.company_id.name,
             'lines': lines,
         }
-        
+
         return self.env.ref(
             'bank_trial_balance_report.action_report_bank_balance'
         ).report_action(self, data=data)
@@ -54,34 +54,54 @@ class BankBalanceReportWizard(models.TransientModel):
         return journals
 
     def _compute_lines(self):
+        """
+        يحسب آخر رصيد لكل بنك حتى تاريخ 'إلى تاريخ':
+        آخر رصيد = الرصيد الافتتاحي (كل الحركة قبل 'من تاريخ')
+                  + صافي الحركة (مدين - دائن) بين 'من تاريخ' و 'إلى تاريخ'
+
+        ملحوظة مهمة: لو أكتر من بنك (journal) بيشتركوا في نفس الحساب
+        المحاسبي (default_account_id)، بيتم حساب الحساب مرة واحدة بس
+        عشان الإجمالي (Total) في آخر التقرير يفضل مضبوط ومفيش تكرار
+        في الأرصدة.
+        """
         self.ensure_one()
         AML = self.env['account.move.line']
         journals = self._get_journals()
         lines = []
-    
+        processed_accounts = {}  # account.id -> line dict (لتفادي التكرار)
+
         for journal in journals:
             account = journal.default_account_id
             if not account:
                 continue
-     
+
+            # لو الحساب اتحسب قبل كده مع بنك تاني، منكررش الحساب
+            # وبس نضيف اسم الجورنال ده للسطر الموجود
+            if account.id in processed_accounts:
+                existing = processed_accounts[account.id]
+                if journal.name not in existing['journal_name']:
+                    existing['journal_name'] = f"{existing['journal_name']} / {journal.name}"
+                continue
+
             base_domain = [
                 ('account_id', '=', account.id),
-                # ('journal_id', '=', journal.id),
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]
-    
+
             initial_lines = AML.search(base_domain + [('date', '<', self.date_from)])
             initial_balance = sum(initial_lines.mapped('debit')) - sum(initial_lines.mapped('credit'))
-    
+
             period_lines = AML.search(
                 base_domain + [('date', '>=', self.date_from), ('date', '<=', self.date_to)]
             )
             debit = sum(period_lines.mapped('debit'))
             credit = sum(period_lines.mapped('credit'))
+
+            # آخر رصيد (الرصيد الختامي) حتى "إلى تاريخ"
             ending_balance = initial_balance + debit - credit
-    
-            lines.append({
+
+            line_vals = {
                 'journal_name': journal.name,
                 'account_code': account.code,
                 'account_name': account.name,
@@ -89,7 +109,10 @@ class BankBalanceReportWizard(models.TransientModel):
                 'debit': debit,
                 'credit': credit,
                 'ending_balance': ending_balance,
-            })
+            }
+            processed_accounts[account.id] = line_vals
+            lines.append(line_vals)
+
         return lines
 
 

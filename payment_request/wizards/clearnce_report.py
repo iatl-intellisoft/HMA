@@ -91,6 +91,7 @@ class ClearnceReport(models.TransientModel):
         vehicles = {}
         custody_amount = 0
         expenses_amount = 0
+        row = 2
         for payment_request in payment_requests:
             if requests==[]:
                 ref="رصيد افتتاحي"

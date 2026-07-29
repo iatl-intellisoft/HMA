@@ -1,11 +1,9 @@
 import base64
 from io import BytesIO
 from locale import currency
-
 import xlwt
 from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
-
 
 class ClearnceReport(models.TransientModel): 
     _name = 'clearnce.report'
@@ -23,21 +21,7 @@ class ClearnceReport(models.TransientModel):
 
     def action_generate_clearnce_excel(self):
         """Generate and return Excel file for clearnce"""
-        records = self.env['custody.clearance'].search([
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date),
-        ])
-        operating_costs = self.env['payment.request'].search([ 
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date),
-            # ('state', '==', 'paid'),
-            # ('is_need_clearance', '==', False),
-        ])
-        truck_odometers = self.env['fleet.vehicle.odometer'].search([
-            ('date', '>=', self.start_date),
-            ('date', '<=', self.end_date), 
-        ])
-
+         
         workbook = xlwt.Workbook(encoding='utf-8')
         sheet = workbook.add_sheet('Clearance', cell_overwrite_ok=True)
         sheet.cols_right_to_left = True
@@ -81,86 +65,54 @@ class ClearnceReport(models.TransientModel):
         sheet.write(1, 6, "نوع الحركة", heading)
         sheet.write(1, 7, "المرجع", heading)
         sheet.write(1, 8, "البيان", heading)
-        truck_odometer={}
-        for rec in truck_odometers: 
-            if rec.vehicle_id.license_plate not in truck_odometer:
-                truck_odometer[rec.vehicle_id.license_plate]={
-                            'license_plate': rec.vehicle_id.license_plate,
-                            'odometer':[],
-                            'distance' : 0, 
-                            'days':[],
-                    }
-            truck_odometer[rec.vehicle_id.license_plate]['odometer'].append(rec.value)
-            max_odometer = max(truck_odometer[rec.vehicle_id.license_plate]['odometer'])
-            min_odometer = min(truck_odometer[rec.vehicle_id.license_plate]['odometer'])
-            distance = max_odometer - min_odometer
-            if rec.date not in truck_odometer[rec.vehicle_id.license_plate]['days']:
-                truck_odometer[rec.vehicle_id.license_plate]['days'].append(rec.date)
-
-            truck_odometer[rec.vehicle_id.license_plate]['distance'] = distance 
-        
-
-                
-        operating_cost = {} 
-        for rec in operating_costs:
-            if rec.state == "paid":    
-                if rec.vehicle_id.license_plate not in operating_cost:
-                    operating_cost[rec.vehicle_id.license_plate]={
-                            'cost':0,
-                        }
-                operating_cost[rec.vehicle_id.license_plate]['cost']+=rec.total_amount
-        print(operating_cost)
-                
-        # Write data rows
-        row = 2
-        custodys = []
-        vehicles = {}
+     
+        requests = []
         custody_amount = 0
         expenses_amount = 0
-        for rec in records:
-            if rec.state == "done":    
-                if rec.vehicle_id not in vehicles:
-                    vehicles[rec.vehicle_id]={
-                            'vehicle':rec.vehicle_id,
-                            'name': rec.vehicle_id.model_id.name,
-                            'driver': rec.vehicle_id.driver_id.name,
-                            'license_plate': rec.vehicle_id.license_plate,
-                            'fuel':0,
-                            'amount':0
-                        }
-                vehicles[rec.vehicle_id]['fuel']+=rec.custody_line_ids.quantity
-                vehicles[rec.vehicle_id]['amount']+=rec.custody_line_ids.amount
-                print(vehicles)
-            if rec.state == "done":          
-                if rec.request_id not in custodys:
-                    if custodys==[]:
-                        ref="رصيد افتتاحي"
-                    else:
-                        ref="تجديد العهدة"
-                    custodys.append(rec.request_id)
-                    sheet.row(row).height = 400
-                    sheet.write(row, 0, rec.date.strftime('%d/%m/%Y'), content_format)
-                    sheet.write(row, 1, rec.request_id.name, content_format)
-                    sheet.write(row, 2, rec.employee_id.name, content_format)
-                    sheet.write(row, 3, rec.custody_amount, content_format)
-                    sheet.write(row, 4, "-", content_format)
-                    sheet.write(row, 5, rec.request_id.base_amount, content_format)
-                    sheet.write(row, 6, "استلام", content_format1)
-                    sheet.write(row, 7, "" , content_format)
-                    sheet.write(row, 8, ref, content_format)
-                    custody_amount +=rec.custody_amount
-                    row += 1
+        row = 2
+        payment_requests = self.env['payment.request'].search([ 
+            ('date', '>=', self.start_date),
+            ('date', '<=', self.end_date),
+            ('state', 'in', ['paid','close']),
+            ('is_need_clearance', '=', True),
+        ], order='date asc, id asc')
+
+        for payment_request in payment_requests:
+            if requests==[]:
+                ref="رصيد افتتاحي"
+            else:
+                ref="تجديد العهدة"
+            requests.append(payment_request.name)
+            sheet.row(row).height = 400
+            sheet.write(row, 0, payment_request.date.strftime('%d/%m/%Y'), content_format)
+            sheet.write(row, 1, payment_request.name, content_format)
+            sheet.write(row, 2, payment_request.employee_id.name, content_format)
+            sheet.write(row, 3, payment_request.amount, content_format)
+            sheet.write(row, 4, "-", content_format)
+            sheet.write(row, 5, payment_request.base_amount, content_format)
+            sheet.write(row, 6, "استلام", content_format1)
+            sheet.write(row, 7, "-" , content_format)
+            sheet.write(row, 8, ref, content_format)
+            custody_amount +=payment_request.amount
+            row += 1
+            clearances = self.env['custody.clearance'].search([
+                ('date', '>=', self.start_date),
+                ('date', '<=', self.end_date),
+                ('state', '=', 'done'),
+                ('request_id', '=', payment_request.id),
+            ], order='date asc, id asc')
+            for clearance in clearances:           
                 sheet.row(row).height = 400
-                sheet.write(row, 0, rec.date.strftime('%d/%m/%Y'), content_format)
-                sheet.write(row, 1, rec.request_id.name, content_format)
-                sheet.write(row, 2, rec.employee_id.name, content_format)
+                sheet.write(row, 0, clearance.date.strftime('%d/%m/%Y'), content_format)
+                sheet.write(row, 1, clearance.sequence, content_format)
+                sheet.write(row, 2, clearance.employee_id.name, content_format)
                 sheet.write(row, 3, "-", content_format)
-                sheet.write(row, 4, rec.total_amount, content_format)
-                sheet.write(row, 5, rec.request_remaining_amount, content_format)
+                sheet.write(row, 4, clearance.total_amount, content_format)
+                sheet.write(row, 5, clearance.request_remaining_amount, content_format)
                 sheet.write(row, 6, "صرف", content_format2)
-                sheet.write(row, 7,  rec.custody_line_ids.clearance_type, content_format)
-                sheet.write(row, 8, rec.custody_line_ids.desc, content_format)
-                expenses_amount += rec.total_amount
+                sheet.write(row, 7, "-", content_format)
+                sheet.write(row, 8, clearance.custody_line_ids.desc, content_format)
+                expenses_amount += clearance.total_amount
                 row += 1
                 new_row= row
                 rema_amount = custody_amount - expenses_amount

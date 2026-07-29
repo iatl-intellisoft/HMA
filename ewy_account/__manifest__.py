@@ -26,7 +26,7 @@
     'data': [
         'views/account_journal_dashboard_view.xml',
         'views/account_views.xml',
-        'views/account_payment_views.xml',
+        # 'views/account_payment_views.xml',
     ],
     'installable': True,
     'application': False,

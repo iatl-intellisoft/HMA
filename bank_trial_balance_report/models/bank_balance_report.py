@@ -52,11 +52,16 @@ class BankBalanceReportWizard(models.TransientModel):
             'bank_trial_balance_report.action_report_bank_balance'
         ).report_action(self, data=data)
 
+    # كلمات تدل على إن الحساب "خزينة/نقدية" مش "بنك"، تُستخدم فقط
+    # للحسابات اللي مالها دفتر (journal) مربوط بيها بشكل مباشر
+    _CASH_NAME_MARKERS = ['خزنة', 'خزينة', 'الخزينة', 'الخزنة']
+
     def _get_bank_accounts(self):
-        """يرجع كل حسابات البنوك/النقدية المرتبطة بالشركة المختارة،
-        بغض النظر عن وجود دفتر (journal) مربوط بيها أو لا."""
+        """يرجع حسابات البنوك فقط (يستبعد الخزن/النقدية) المرتبطة
+        بالشركة المختارة، بغض النظر عن وجود دفتر مربوط بيها أو لا."""
         self.ensure_one()
         Account = self.env['account.account']
+        Journal = self.env['account.journal']
 
         if self.account_ids:
             accounts = self.account_ids
@@ -65,6 +70,27 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('account_type', '=', 'asset_cash'),
                 ('company_ids', 'in', self.company_id.id),
             ])
+
+            # الحسابات المرتبطة بدفاتر نوعها "نقدية/خزينة" - نستبعدها
+            cash_journal_accounts = Journal.search([
+                ('type', '=', 'cash'),
+                ('company_id', '=', self.company_id.id),
+            ]).mapped('default_account_id')
+
+            # الحسابات المرتبطة بدفاتر نوعها "بنك" - نضمّها أكيد
+            bank_journal_accounts = Journal.search([
+                ('type', '=', 'bank'),
+                ('company_id', '=', self.company_id.id),
+            ]).mapped('default_account_id')
+
+            unlinked_accounts = accounts - cash_journal_accounts - bank_journal_accounts
+            # من الحسابات غير المرتبطة بأي دفتر، نستبعد اللي اسمها
+            # بيدل على إنها خزينة/نقدية (وليست بنك)
+            cash_like_unlinked = unlinked_accounts.filtered(
+                lambda a: any(marker in (a.name or '') for marker in self._CASH_NAME_MARKERS)
+            )
+
+            accounts = accounts - cash_journal_accounts - cash_like_unlinked
 
         # لو المستخدم حدد دفاتر بنكية بعينها، نستخدمها فقط لتضييق
         # قائمة الحسابات (وليس لتضييق الحركات المالية نفسها)

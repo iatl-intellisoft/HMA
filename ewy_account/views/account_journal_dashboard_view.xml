@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="custom_account_reports_journal_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">custom.account.journal.dashboard.kanban</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account_reports.account_reports_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='dashboard_bank_cash_balance']/a[last()]" position="replace">
+                <br/>
+                <a type="object" name="action_open_bank_balance_in_gl" title="Last Statement balance">
+                    GL Balance
+                </a>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_journal_dashboard_gl_balance" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.gl.balance</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='dashboard_bank_cash_balance']/following-sibling::div[1]/span" position="replace">
+                <br/>
+                <span dir="ltr"><t t-out="dashboard.gl_balance"/></span>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -38,11 +38,7 @@ class BankBalanceReportWizard(models.TransientModel):
             'company_name': self.company_id.name,
             'lines': lines,
         }
-        # نمرر البيانات المحسوبة جاهزة عبر data بدل الاعتماد على قراءة
-        # الـ wizard تاني من docids، لأن آلية الطباعة بتاعة أودو ممكن
-        # تستدعي get_report_values بأكتر من سجل أو بدون سجلات في حالة
-        # التقارير اللي مصدرها TransientModel، وده كان بيسبب خطأ
-        # "Expected singleton".
+        
         return self.env.ref(
             'bank_trial_balance_report.action_report_bank_balance'
         ).report_action(self, data=data)
@@ -58,35 +54,33 @@ class BankBalanceReportWizard(models.TransientModel):
         return journals
 
     def _compute_lines(self):
-        """يحسب رصيد أول المدة، المدين، الدائن، ورصيد آخر المدة
-        لكل حساب بنك، بالاعتماد على نفس بيانات دفتر الأستاذ العام
-        (account.move.line) لكن مجمّعة بدون سطور تفصيلية."""
         self.ensure_one()
         AML = self.env['account.move.line']
         journals = self._get_journals()
         lines = []
-
+    
         for journal in journals:
             account = journal.default_account_id
             if not account:
                 continue
-
+     
             base_domain = [
                 ('account_id', '=', account.id),
-                ('move_id.state', '=', 'posted'),
-                ('company_id', '=', self.company_id.id),
+                # ('journal_id', '=', journal.id),
+                ('parent_state', '=', 'posted'),
+                ('company_id', 'child_of', self.company_id.id),
             ]
-
+    
             initial_lines = AML.search(base_domain + [('date', '<', self.date_from)])
             initial_balance = sum(initial_lines.mapped('debit')) - sum(initial_lines.mapped('credit'))
-
+    
             period_lines = AML.search(
                 base_domain + [('date', '>=', self.date_from), ('date', '<=', self.date_to)]
             )
             debit = sum(period_lines.mapped('debit'))
             credit = sum(period_lines.mapped('credit'))
             ending_balance = initial_balance + debit - credit
-
+    
             lines.append({
                 'journal_name': journal.name,
                 'account_code': account.code,
@@ -96,7 +90,6 @@ class BankBalanceReportWizard(models.TransientModel):
                 'credit': credit,
                 'ending_balance': ending_balance,
             })
-
         return lines
 
 

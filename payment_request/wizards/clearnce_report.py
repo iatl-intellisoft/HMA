@@ -35,7 +35,7 @@ class ClearnceReport(models.TransientModel):
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
             ('state', 'in', ['paid','close']),
-            ('is_need_clearance', '==', True),
+            ('is_need_clearance', '=', True),
         ])
         truck_odometers = self.env['fleet.vehicle.odometer'].search([
             ('date', '>=', self.start_date),

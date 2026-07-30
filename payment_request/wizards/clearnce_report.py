@@ -124,8 +124,9 @@ class ClearnceReport(models.TransientModel):
                 sheet.write(row, 8, clearance.custody_line_ids.desc, content_format)
                 expenses_amount += clearance.total_amount
                 row += 1
-                new_row= row
-                rema_amount = custody_amount - expenses_amount
+            print(payment_request.name, row)
+        new_row= row
+        rema_amount = custody_amount - expenses_amount
  
         sheet.row(new_row).height = 400
         sheet.write(new_row, 0, "المجموع", heading)

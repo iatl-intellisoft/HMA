@@ -82,23 +82,10 @@ class ClearnceReport(models.TransientModel):
         
         print("Total =", len(paymentrequests))
         print("Total =", len(payment_requests))
+        sheet.write(2, 0, len(paymentrequests), content_format)
+        sheet.write(3, 0, len(payment_requests), content_format)
+        row = 4
         
-        for p in payment_requests:
-            print(
-                p.name,
-                p.date,
-                p.state,
-                p.is_need_clearance,
-                p.company_id.name,
-            )
-        for p in paymentrequests:
-            print(
-                p.name,
-                p.date,
-                p.state,
-                p.is_need_clearance,
-                p.company_id.name,
-            )
 
         for payment_request in payment_requests:
             if requests==[]:

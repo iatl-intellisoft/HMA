@@ -76,6 +76,29 @@ class ClearnceReport(models.TransientModel):
             ('state', 'in', ['paid','close']),
             ('is_need_clearance', '=', True),
         ], order='date asc, id asc')
+        paymentrequests = self.env['payment.request'].search([
+            ('state', 'in', ['paid', 'close']),
+        ])
+        
+        print("Total =", len(paymentrequests))
+        print("Total =", len(payment_requests))
+        
+        for p in payment_requests:
+            print(
+                p.name,
+                p.date,
+                p.state,
+                p.is_need_clearance,
+                p.company_id.name,
+            )
+        for p in paymentrequests:
+            print(
+                p.name,
+                p.date,
+                p.state,
+                p.is_need_clearance,
+                p.company_id.name,
+            )
 
         for payment_request in payment_requests:
             if requests==[]:

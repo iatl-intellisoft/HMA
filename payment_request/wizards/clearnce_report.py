@@ -34,7 +34,6 @@ class ClearnceReport(models.TransientModel):
         content_format3 = xlwt.easyxf('align:horiz center,  vert center; font: height 270;pattern:pattern solid,fore_colour red;',num_format_str="#,##0.00")
         currency_format = xlwt.easyxf('align:horiz center, vert center; font: height 220;',num_format_str="#,##0.00")
 
-
         # Define styles
         date_format = xlwt.XFStyle()
         date_format.num_format_str = 'dd/mm/yyyy'
@@ -57,7 +56,7 @@ class ClearnceReport(models.TransientModel):
         # Write header
         sheet.write_merge(0, 0, 0, 8, f'({self.start_date})/({self.end_date}) Fuel Inventory (عهدة الوقود)', main_heading)
         sheet.write(1, 0, "التاريخ", heading)
-        sheet.write(1, 1, "رقم العهدة", heading)
+        sheet.write(1, 1, "الرقم المتسلسل", heading)
         sheet.write(1, 2, "اسم المستلم", heading)
         sheet.write(1, 3, "المبلغ المسلم(العهدة)", heading)
         sheet.write(1, 4, "المبلغ المصروف", heading)
@@ -75,17 +74,7 @@ class ClearnceReport(models.TransientModel):
             ('date', '<=', self.end_date),
             ('state', 'in', ['paid','close']),
             ('is_need_clearance', '=', True),
-        ], order='date asc, id asc')
-        paymentrequests = self.env['payment.request'].search([
-            ('state', 'in', ['paid', 'close']),
-        ])
-        
-        print("Total =", len(paymentrequests))
-        print("Total =", len(payment_requests))
-        sheet.write(2, 0, len(paymentrequests), content_format)
-        sheet.write(3, 0, len(payment_requests), content_format)
-        row = 4
-        
+        ], order='date asc, id asc')        
 
         for payment_request in payment_requests:
             if requests==[]:
@@ -139,6 +128,7 @@ class ClearnceReport(models.TransientModel):
         sheet.write(new_row, 7, row-2, heading)
         sheet.write(new_row, 8, "-", heading)
         new_row+= 1
+        
         # Save to stream and encode
         sheet.row(new_row).height = 400
         sheet.write(new_row, 0,)
@@ -151,7 +141,6 @@ class ClearnceReport(models.TransientModel):
         sheet.write(new_row, 7,)
         sheet.write(new_row, 8,)
 
-    
         stream = BytesIO()
         workbook.save(stream)
         out = base64.encodebytes(stream.getvalue())

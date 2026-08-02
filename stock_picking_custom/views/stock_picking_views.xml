@@ -24,21 +24,19 @@
     <record id="res_config_settings_view_form_inherit_stock" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.stock</field>
         <field name="model">res.config.settings</field> 
-        <field name="inherit_id"  ref="stock.res_config_settings_view_form"/>
-        <field name="arch" type="xml">
-            <!-- XPath targets the Operations block inside the Inventory page -->
-            <xpath expr="//setting[@id='production_lot']" position="after">
-                <setting>
-                    <div class="col-xs-12 col-md-6 o_setting_box">
-                        <div class="o_setting_left_pane"/>
-                        <div class="o_setting_right_pane">
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <div id="production_lot_info" position="after">
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"> 
                             <label for="handling_price_default_value" string="سعر العتالة الافتراضي"/>
                             <div class="content-group">
                                 <field name="handling_price_default_value"/>
                             </div>
                         </div>
                     </div>
-                </setting>
+                </div>
             </xpath>
         </field>
     </record>

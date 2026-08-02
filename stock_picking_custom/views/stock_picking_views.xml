@@ -20,5 +20,18 @@
 
         </field>
     </record>
+    
+    <record id="res_config_settings_view_form_inherit_delivery" model="ir.ui.view">
+        <field name="name">res.config.settings.delivery</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='warehouse_settings']" position="inside">
+                <setting string="Default Delivery Value">
+                    <field name="delivery_default_value"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
 
 </odoo> 

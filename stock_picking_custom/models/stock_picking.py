@@ -80,9 +80,16 @@ class StockPicking(models.Model):
 
     handling_price = fields.Float(
         string='سعر العتالة للكرتونة',
-        default=400.0 
+        default=lambda self: self._default_handling_price_value()
     )
 
+    def _default_handling_price_value(self):
+        return float(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'stock_picking_custom.handling_price_default_value',
+                default='400'
+            )
+        )
     handling_amount = fields.Float(
         string='إجمالي العتالة',
         compute='_compute_handling_amount',
@@ -104,3 +111,11 @@ class StockPicking(models.Model):
                 total_cartons += qty
 
             picking.handling_amount = total_cartons * picking.handling_price
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    handling_price_default_value = fields.Float(
+        string='سعر العتالة للكرتونة',
+        config_parameter='stock_picking_custom.handling_price_default_value'
+    )

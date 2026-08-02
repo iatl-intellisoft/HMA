@@ -27,8 +27,8 @@
         <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='warehouse_settings']" position="inside">
-                <setting string="Default Delivery Value">
-                    <field name="delivery_default_value"/>
+                <setting string="سعر العتالة الافتراضي">
+                    <field name="handling_price_default_value "/>
                 </setting>
             </xpath>
         </field>

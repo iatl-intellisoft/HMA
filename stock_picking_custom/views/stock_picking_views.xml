@@ -22,10 +22,10 @@
     </record>
  
     <record id="res_config_settings_view_form_inherit_stock" model="ir.ui.view">
-        <name>res.config.settings.view.form.inherit.stock</name>
-        <model>res.config.settings</model>
-        <inherit_id ref="stock.res_config_settings_view_form"/>
-        <arch type="xml">
+        <field name="name">res.config.settings.view.form.inherit.stock</field>
+        <field name="model">res.config.settings</field> 
+        <field name="inherit_id"  ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
             <!-- XPath targets the Operations block inside the Inventory page -->
             <xpath expr="//setting[@id='production_lot']" position="after">
                 <setting>

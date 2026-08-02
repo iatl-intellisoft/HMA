@@ -30,9 +30,10 @@
                     <div class="row mt16 o_settings_container">
                         <div class="col-xs-12 col-md-6 o_setting_box">
                             <div class="o_setting_left_pane"> 
-                            <label for="handling_price_default_value" string="سعر العتالة الافتراضي"/>
-                            <div class="content-group">
-                                <field name="handling_price_default_value"/>
+                                <label for="handling_price_default_value" string="سعر العتالة الافتراضي"/>
+                                <div class="content-group">
+                                    <field name="handling_price_default_value"/>
+                                </div>
                             </div>
                         </div>
                     </div>

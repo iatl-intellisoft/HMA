@@ -1,0 +1,86 @@
+<odoo>
+    <data>
+        <record id="deduction_teamplate_id" model="mail.template">
+            <field name="name">Hr Deduction :Deduction template</field>
+            <field name="model_id" ref="hr_deduction.model_hr_deduction_batch"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <table width='800'>
+                            <tr>
+                                <td>
+                                    <strong>Date:</strong>
+                                </td>
+                                <td>${object.date}</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Type:</strong>
+                                </td>
+                                % if object.batch_type == 'all_staff':
+                                <td>All Staff</td>
+                                % endif
+                                % if object.batch_type == 'employee':
+                                <td>Employee</td>
+                                % endif
+                                % if object.batch_type == 'selected_employee':
+                                <td>Selected Employees</td>
+                                % endif
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Company:</strong>
+                                </td>
+                                <td>${object.company_id.name}</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Deduction Type:</strong>
+                                </td>
+                                <td>${object.type_id.name}</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Deducted By:</strong>
+                                </td>
+                                <td>${object.deducted_by}</td>
+                            </tr>
+
+                        </table>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    % if object.deducted_by == 'hours':
+                                    <th>Deduct Hours</th>
+                                    % endif
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                % for con in object.dedcution_ids:
+                                <tr>
+                                    <td>${con.employee_id.name}</td>
+                                    % if object.deducted_by == 'hours':
+                                    <td>${con.hours_ded}</td>
+                                    % endif
+                                    <td>${con.amount}</td>
+                                </tr>
+                                % endfor
+                            </tbody>
+                        </table>
+                    </p>
+                </div>
+            </field>
+            <field name="report_name">${(object.name or '').replace('/','_')}</field>
+            <!--<field name="user_signature" eval="False"/>-->
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

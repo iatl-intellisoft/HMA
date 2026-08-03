@@ -1,0 +1,250 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_deduction
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-14 11:40+0000\n"
+"PO-Revision-Date: 2017-12-14 11:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_amount
+msgid " Amount"
+msgstr "المبلغ"
+
+#. module: hr_deduction
+#: selection:hr.deduction,deducted_by:0
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Approve"
+msgstr "تصديق"
+
+#. module: hr_deduction
+#: selection:hr.deduction,state:0
+msgid "Approved"
+msgstr "مصدقة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_wage
+msgid "Basic Salary of the employee"
+msgstr "الراتب الأساسي للموظف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_create_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_create_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_date
+msgid "Date Request"
+msgstr "التاريخ"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_de_amount
+msgid "Deduct Amount"
+msgstr "مبلغ الخصم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_deducted_by
+msgid "Deduct By"
+msgstr "خصم بـ "
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_hours_ded
+msgid "Deduct Hours"
+msgstr "الساعات"
+
+#. module: hr_deduction
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_tree
+msgid "Deduction"
+msgstr "الخصومات"
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.action_hr_deduction_conf
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction_conf
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_conf_tree
+msgid "Deduction Configuration"
+msgstr "إعدادات الخصومات"
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.action_hr_deduction
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction_request
+msgid "Deduction Request"
+msgstr "طلب خصم"
+
+#. module: hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.form_hr_deduction_conf_view
+msgid "Deduction Structure"
+msgstr "هيكلية الخصومات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_department_id
+msgid "Department"
+msgstr "القسم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: hr_deduction
+#: selection:hr.deduction,state:0
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Done"
+msgstr "تم"
+
+#. module: hr_deduction
+#: selection:hr.deduction,state:0
+msgid "Draft"
+msgstr "مبدئية"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_wage
+msgid "Employee Salary"
+msgstr "راتب الموظف"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduction
+msgid "HR Deduction"
+msgstr "الخصومات"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduction_line
+msgid "HR deduction Line"
+msgstr "HR deduction Line"
+
+#. module: hr_deduction
+#: selection:hr.deduction,deducted_by:0
+msgid "Hours"
+msgstr "الساعات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_job_id
+msgid "Job Position"
+msgstr "المناصب الوظيفية"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر يومية"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf___last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction___last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_write_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_write_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_parent_id
+msgid "Manager"
+msgstr "المدير"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Notes"
+msgstr "الملاحظات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_hours_ded
+msgid "Number of houres"
+msgstr "عدد الساعات"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_payslip
+msgid "Pay Slip"
+msgstr "ظرف المرتب"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_name
+msgid "Ref:"
+msgstr "مرجع:"
+
+#. module: hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Refuse"
+msgstr "رفض"
+
+#. module: hr_deduction
+#: selection:hr.deduction,state:0
+msgid "Refused"
+msgstr "مرفوضة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf_rule_id
+msgid "Rule salary "
+msgstr "قاعدة المرتب "
+
+#. module: hr_deduction
+#: model:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Set To Draft"
+msgstr "إعاده الى مبدئية"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_state
+msgid "State"
+msgstr "الحالة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_type_id
+msgid "Type"
+msgstr "نوع"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduct_conf
+msgid "hr.deduct.conf"
+msgstr "إعدادات الخصومات"
+

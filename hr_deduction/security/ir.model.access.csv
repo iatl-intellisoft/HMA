@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_deduction_user,hr.deduction.user,model_hr_deduction,hr.group_hr_manager,1,1,1,1
+access_hr_deduction_user_config,hr.deduction.user.config,model_hr_deduct_conf,hr.group_hr_manager,1,1,1,1
+access_hr_deduction_batch,hr.deduction.batch,model_hr_deduction_batch,hr.group_hr_manager,1,1,1,1

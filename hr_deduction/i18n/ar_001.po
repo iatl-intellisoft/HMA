@@ -1,0 +1,697 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_deduction
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-16 07:26+0000\n"
+"PO-Revision-Date: 2021-11-16 07:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__amount
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__amount
+msgid " Amount"
+msgstr "المبلغ"
+
+#. module: hr_deduction
+#: model:mail.template,report_name:hr_deduction.deduction_teamplate_id
+msgid "${(object.name or '').replace('/','_')}"
+msgstr ""
+
+#. module: hr_deduction
+#: model:mail.template,body_html:hr_deduction.deduction_teamplate_id
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <table width=\"800\">\n"
+"                            <tr>\n"
+"                                <td>\n"
+"                                    <strong>Date:</strong>\n"
+"                                </td>\n"
+"                                <td>${object.date}</td>\n"
+"                            </tr>\n"
+"\n"
+"                            <tr>\n"
+"                                <td>\n"
+"                                    <strong>Type:</strong>\n"
+"                                </td>\n"
+"                                % if object.batch_type == 'all_staff':\n"
+"                                <td>All Staff</td>\n"
+"                                % endif\n"
+"                                % if object.batch_type == 'employee':\n"
+"                                <td>Employee</td>\n"
+"                                % endif\n"
+"                                % if object.batch_type == 'selected_employee':\n"
+"                                <td>Selected Employees</td>\n"
+"                                % endif\n"
+"                            </tr>\n"
+"\n"
+"                            <tr>\n"
+"                                <td>\n"
+"                                    <strong>Company:</strong>\n"
+"                                </td>\n"
+"                                <td>${object.company_id.name}</td>\n"
+"                            </tr>\n"
+"\n"
+"                            <tr>\n"
+"                                <td>\n"
+"                                    <strong>Deduction Type:</strong>\n"
+"                                </td>\n"
+"                                <td>${object.type_id.name}</td>\n"
+"                            </tr>\n"
+"\n"
+"                            <tr>\n"
+"                                <td>\n"
+"                                    <strong>Deducted By:</strong>\n"
+"                                </td>\n"
+"                                <td>${object.deducted_by}</td>\n"
+"                            </tr>\n"
+"\n"
+"                        </table>\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        <table class=\"table table-bordered\">\n"
+"                            <thead>\n"
+"                                <tr>\n"
+"                                    <th>Employee</th>\n"
+"                                    % if object.deducted_by == 'hours':\n"
+"                                    <th>Deduct Hours</th>\n"
+"                                    % endif\n"
+"                                    <th>Amount</th>\n"
+"                                </tr>\n"
+"                            </thead>\n"
+"                            <tbody>\n"
+"                                % for con in object.dedcution_ids:\n"
+"                                <tr>\n"
+"                                    <td>${con.employee_id.name}</td>\n"
+"                                    % if object.deducted_by == 'hours':\n"
+"                                    <td>${con.hours_ded}</td>\n"
+"                                    % endif\n"
+"                                    <td>${con.amount}</td>\n"
+"                                </tr>\n"
+"                                % endfor\n"
+"                            </tbody>\n"
+"                        </table>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr ""
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_res_config_setting_form
+msgid "<span class=\"o_form_label\">Deduction Template</span>"
+msgstr ""
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.report_deduction
+msgid "<strong>Approved By</strong>"
+msgstr ""
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.report_deduction
+msgid "<strong>At</strong>"
+msgstr ""
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.report_deduction
+msgid "<strong>Confirmed By</strong>"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_needaction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__batch_type__all_staff
+msgid "All Staff"
+msgstr "كل الموظفين"
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduct_conf__deducted_by__amount
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Approve"
+msgstr "تصديق"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__approve_date
+msgid "Approve Date"
+msgstr "تاريخ التصديق"
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction__state__approve
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__state__approve
+msgid "Approved"
+msgstr "تم التصديق"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__approve_date
+msgid "Approved Date"
+msgstr "تاريخ التصديق"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_attachment_count
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__batch_type
+msgid "Batch Type"
+msgstr "نوع الحزمه"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__deduction_website_description
+msgid "Body Template"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction__state__cancel
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__state__cancel
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_res_config_setting_form
+msgid "Choose your Template"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__code
+msgid "Code"
+msgstr "كود"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_res_company
+msgid "Companies"
+msgstr "شركات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__company_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__company_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__company_id
+msgid "Company"
+msgstr "الشركه"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+msgid "Compute"
+msgstr "حساب"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__rule_id
+msgid "Compute "
+msgstr "حساب"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الاعدادات"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__create_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__create_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__create_uid
+msgid "Created by"
+msgstr "تم الانشاء بواسطه"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__create_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__create_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__create_date
+msgid "Created on"
+msgstr "انشئ في"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__date
+msgid "Date"
+msgstr "تاريخ"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__date
+msgid "Date Request"
+msgstr "تاريخ الطلب"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__de_amount
+msgid "Deduct Amount"
+msgstr "مبلغ الخصم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__deducted_by
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__deducted_by
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__deducted_by
+msgid "Deduct By"
+msgstr "تم الخصم بواسطه"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__hours_ded
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__hours_ded
+msgid "Deduct Hours"
+msgstr "ساعات الخصم"
+
+#. module: hr_deduction
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction_request
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_pivot
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_tree
+msgid "Deduction"
+msgstr "الخصومات"
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.action_hr_deduction_batch
+#: model:ir.ui.menu,name:hr_deduction.menu_hr_deduction_batch
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_tree
+msgid "Deduction Batch"
+msgstr "حزم الخصومات"
+
+#. module: hr_deduction
+#: model:ir.actions.report,name:hr_deduction.action_deduction_report
+msgid "Deduction Form"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.action_hr_deduction
+msgid "Deduction Request"
+msgstr "طلبات الخصم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__deduction_template_id
+#: model:ir.model.fields,field_description:hr_deduction.field_res_company__deduction_template_id
+#: model:ir.model.fields,field_description:hr_deduction.field_res_config_settings__deduction_template_id
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+msgid "Deduction Template"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.action_hr_deduction_conf
+#: model:ir.ui.menu,name:hr_deduction.view_hr_deduction_conf_menu
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_conf_tree
+msgid "Deduction Types"
+msgstr "انواع الخصومات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_payslip__deduct_ids
+#: model_terms:ir.ui.view,arch_db:hr_deduction.hr_payslip_form_inherit_view
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+msgid "Deductions"
+msgstr "الخصومات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__department_id
+msgid "Department"
+msgstr "الاداره"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__description
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_payslip__display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_res_company__display_name
+#: model:ir.model.fields,field_description:hr_deduction.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction__state__draft
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__employee_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__employee_id
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__batch_type__employee
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_search
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_deduction
+#: model:hr.salary.rule,name:hr_deduction.hr_deduction_rule
+msgid "Employee Deductions"
+msgstr "خصومات الموظف"
+
+#. module: hr_deduction
+#: model:ir.actions.act_window,name:hr_deduction.act_employee_deduct
+msgid "Employee Deductions Details"
+msgstr "تفاصيل خصومات الموظف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__employee_ids
+msgid "Employees"
+msgstr "الموظفين"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__end_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__end_date
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_follower_ids
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_channel_ids
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_partner_ids
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduction
+msgid "HR Deduction"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduction_batch
+msgid "HR Deduction Batch"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduct_conf__deducted_by__hours
+msgid "Hours"
+msgstr "الساعات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_payslip__id
+#: model:ir.model.fields,field_description:hr_deduction.field_res_company__id
+#: model:ir.model.fields,field_description:hr_deduction.field_res_config_settings__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_needaction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_unread
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_needaction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_has_error
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_has_sms_error
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_has_error
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_is_follower
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__job_id
+msgid "Job Position"
+msgstr "الوظيفه"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf____last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction____last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch____last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_payslip____last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_res_company____last_update
+#: model:ir.model.fields,field_description:hr_deduction.field_res_config_settings____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__write_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__write_uid
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__write_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__write_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_main_attachment_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__parent_id
+msgid "Manager"
+msgstr "المدير"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_has_error
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_ids
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduct_conf__name
+msgid "Name"
+msgstr "اسم الخصم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_needaction_counter
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_has_error_counter
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__hours_ded
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__hours_ded
+msgid "Number of houres"
+msgstr "عدد الساعات"
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_needaction_counter
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_has_error_counter
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__message_unread_counter
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_payslip
+msgid "Pay Slip"
+msgstr "إيصال المرتب"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__payslip_id
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Payslips"
+msgstr "المرتبات"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Period"
+msgstr "الفتره"
+
+#. module: hr_deduction
+#: code:addons/hr_deduction/models/models.py:0
+#, python-format
+msgid "Please add Reason before you approve"
+msgstr "الرجاء قم بادخال السبب قيل التصديق"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Reason"
+msgstr "السبب"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__name
+msgid "Ref:"
+msgstr "المرجع"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Refuse"
+msgstr "رفض"
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction__state__refuse
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__state__refuse
+msgid "Refused"
+msgstr "تم الر"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_has_sms_error
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__batch_type__selected_employee
+msgid "Selected Employees"
+msgstr "الموظفين المحددين"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "Set To Draft"
+msgstr "ارجاع الي مسوده"
+
+#. module: hr_deduction
+#: code:addons/hr_deduction/models/models.py:0
+#, python-format
+msgid ""
+"Sorry! you can't cancel this record; There is a payslip /s for this record!"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__start_date
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__start_date
+msgid "Start Date"
+msgstr "تاريخ البدايه"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__state
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__state
+msgid "State"
+msgstr "الحاله"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_batch_form
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_hr_deduction_form
+msgid "TO"
+msgstr "الى"
+
+#. module: hr_deduction
+#: model_terms:ir.ui.view,arch_db:hr_deduction.view_res_config_setting_form
+msgid "Template"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_payslip__total_deduct_amount
+msgid "Total Deduction Amount"
+msgstr "اجمالي مبلغ الخصم"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__type_id
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__type_id
+msgid "Type"
+msgstr "النوع"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_unread
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__message_unread_counter
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__website_message_ids
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction__website_message_ids
+#: model:ir.model.fields,help:hr_deduction.field_hr_deduction_batch__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: hr_deduction
+#: code:addons/hr_deduction/models/hr_dedcution_batch.py:0
+#: code:addons/hr_deduction/models/models.py:0
+#, python-format
+msgid "You can not delete record not in draft state."
+msgstr "لا يمكنك حذف سجل ليس في حاله مسوده"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction__batch_id
+msgid "batch"
+msgstr "الحزمه"
+
+#. module: hr_deduction
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction__state__confirm
+#: model:ir.model.fields.selection,name:hr_deduction.selection__hr_deduction_batch__state__confirm
+msgid "confirm"
+msgstr "مؤكد"
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__dedcution_ids
+msgid "dedcution"
+msgstr "الخصومات"
+
+#. module: hr_deduction
+#: model:ir.model,name:hr_deduction.model_hr_deduct_conf
+msgid "hr.deduct.conf"
+msgstr ""
+
+#. module: hr_deduction
+#: model:ir.model.fields,field_description:hr_deduction.field_hr_deduction_batch__name
+msgid "name"
+msgstr "اسم الحزمه"

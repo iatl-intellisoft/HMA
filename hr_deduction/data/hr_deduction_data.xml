@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="hr_penalty_deduct_rule" model="hr.salary.rule">
+            <field name="name">Penalty Deductions</field>
+            <field name="sequence" eval="30"/>
+            <field name="code">penalty_deduct</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result=payslip.total_penalty_deduct</field>
+            <field name="use_type">general</field>
+            <field name="struct_id" ref="hr_payroll_mega.structure_mega"/>
+        </record>
+
+        <record id="hr_other_deduct_rule" model="hr.salary.rule">
+            <field name="name">Other Deductions</field>
+            <field name="sequence" eval="31"/>
+            <field name="code">other_deduct</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result=payslip.total_other_deduct</field>
+            <field name="use_type">general</field>
+            <field name="struct_id" ref="hr_payroll_mega.structure_mega"/>
+        </record>
+</odoo>

@@ -1,0 +1,131 @@
+<odoo>
+
+    <record id="view_hr_deduction_form" model="ir.ui.view">
+        <field name="name">hr.deduction.form</field>
+        <field name="model">hr.deduction</field>
+        <field name="arch" type="xml">
+            <form string="Deduction">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_approve" type="object" string="Approve" invisible="state != 'confirm'"  class="oe_highlight"/>
+                    <button name="action_refuse" type="object" string="Refuse" invisible="state != 'confirm'" class="oe_highlight"/>
+                    <button name="action_set_to_draft" type="object" string="Set To Draft" invisible="state not in ('confirm', 'refuse', 'cancel')"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state != 'approve'" groups="hr_custom.group_hr_cancel"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+
+                            <label for="date" string="Period"/>
+                                    <div clas="o_row" colspan="2">
+                                        <field name="start_date" class="oe_inline" widget="daterange" readonly="state != 'draft'" required="1" options="{'related_end_date': 'end_date'}"/> TO
+                                        <field name="end_date" class="oe_inline" widget="daterange"  readonly="state != 'draft'" required="1" options="{'related_start_date': 'start_date'}"/>
+                                    </div>
+
+                            <field name="approve_date" readonly="1"/>
+                            <field name="type_id" readonly="state != 'draft'"/>
+                            <field name="deducted_by" widget="radio" invisible="1"/>
+                            <field name="amount"  readonly="state != 'draft'"  required="deducted_by != 'hours'" invisible="deducted_by == 'hours'"/>
+
+                            <field name="hours_ded" readonly="state != 'draft'"  required="deducted_by == 'hours'" invisible="deducted_by != 'hours'"/>
+                            <field name="company_id" readonly="state != 'draft'"/>
+
+                            <field name="de_amount"  invisible="deducted_by == 'amount'" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Reason">
+                            <group>
+                                <field name="description" colspan="4" nolabel="1"
+                                    readonly="state != 'draft'" required="1"/>
+                            </group>
+                        </page>
+                        <page string="Payslips" invisible="1">
+                            <group>
+                                <field name="payslip_id" readonly="1" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_deduction_tree" model="ir.ui.view">
+        <field name="name">hr.deduction.tree</field>
+        <field name="model">hr.deduction</field>
+        <field name="arch" type="xml">
+            <list string="Deduction ">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="type_id"/>
+                <field name="deducted_by"/>
+                <field name="hours_ded"/>
+                <field name="de_amount"/>
+                <field name="state"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_deduction_pivot" model="ir.ui.view">
+        <field name="name">hr.deduction.pivot</field>
+        <field name="model">hr.deduction</field>
+        <field name="arch" type="xml">
+            <pivot string="Deduction">
+                <field name="approve_date" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_hr_deduction_search" model="ir.ui.view">
+        <field name="name">hr.deduction.search</field>
+        <field name="model">hr.deduction</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Employee" name="employee_id" domain="[]" context="{'group_by':'employee_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_hr_deduction">
+        <field name="name">Deduction Request</field>
+        <field name="res_model">hr.deduction</field>
+        <field name="view_mode">list,form,pivot</field>
+        <field name="view_id" ref="view_hr_deduction_tree"/>
+    </record>
+
+    <menuitem
+            id="menu_hr_deduction"
+            name="Deduction"
+            parent="hr_custom.menu_hr_employee_process"
+            sequence="4"
+            groups="hr.group_hr_manager"/>
+
+    <menuitem
+            id="menu_hr_deduction_request"
+            name="Deduction"
+            parent="menu_hr_deduction"
+            action="action_hr_deduction"
+            sequence="1"
+            groups="hr.group_hr_manager"/>
+            
+</odoo>

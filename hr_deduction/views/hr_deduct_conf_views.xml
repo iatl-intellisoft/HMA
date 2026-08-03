@@ -1,0 +1,68 @@
+<odoo>
+
+    <record id="tree_hr_deduction_conf_view" model="ir.ui.view">
+        <field name="name">hr.deduct.conf</field>
+        <field name="model">hr.deduct.conf</field>
+        <field name="arch" type="xml">
+            <form tring="Deduction Type">
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="name"/>
+                            <field name="code" required="1"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="rule_id" required="deducted_by == 'hours'" invisible="deducted_by != 'hours'"/>
+                            <field name="deducted_by"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_deduction_conf_tree" model="ir.ui.view">
+        <field name="name">hr.deduct.conf.tree</field>
+        <field name="model">hr.deduct.conf</field>
+        <field name="arch" type="xml">
+            <list string="Deduction Types">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="deducted_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_res_config_setting_form" model="ir.ui.view">
+        <field name="name">hr_pen_res_config_settings_view_form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_custom.view_res_config_settings_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='hr_template']" position="inside">
+                <setting string="Deduction Template">
+                    <div class="text-muted">
+                        Choose your Template
+                    </div>
+                    <div class="content-group">
+                        <div class="mt16">
+                            <label for="deduction_template_id" string="Template"
+                                   class="col-3 col-lg-3 o_light_label"/>
+                            <field name="deduction_template_id" class="oe_inline"/>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_hr_deduction_conf">
+        <field name="name">Deduction Types</field>
+        <field name="res_model">hr.deduct.conf</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="view_hr_deduction_conf_menu" name="Deduction Types" parent="hr.menu_human_resources_configuration"
+              action="action_hr_deduction_conf"/>
+
+</odoo>

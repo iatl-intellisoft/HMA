@@ -49,9 +49,9 @@
                 <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
                     <attribute name="readonly">state not in ('draft')</attribute>
                 </xpath>
-                <xpath expr="//field[@name='wage']" position="attributes">
+                <!-- <xpath expr="//field[@name='wage']" position="attributes">
                     <attribute name="readonly">state not in ('draft')</attribute>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//field[@name='notes']" position="attributes">
                     <attribute name="readonly">state not in ('draft')</attribute>
                 </xpath>

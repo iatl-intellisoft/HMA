@@ -23,14 +23,14 @@
 
     'data': [
         'security/ir.model.access.csv',
-        'security/deduction_security.xml',
-        'views/hr_deduction_views.xml',
-        # 'views/dedcution_batch_view.xml',
-        # 'views/hr_deduct_conf_views.xml',
-        # 'views/hr_payroll_view.xml',
+        # 'security/deduction_security.xml',
+        # 'views/hr_deduction_views.xml',
+        'views/dedcution_batch_view.xml',
+        'views/hr_deduct_conf_views.xml',
+        'views/hr_payroll_view.xml',
         # 'data/hr_deduction_data.xml',
         # 'data/deduction_tempate.xml',
-        # 'report/hr_deduction_report.xml',
+        'report/hr_deduction_report.xml',
 
     ],
 

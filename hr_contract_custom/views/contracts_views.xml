@@ -18,9 +18,9 @@
                     </header>
                 </xpath>
 
-                <xpath expr="//field[@name='hr_responsible_id']" position="before">
+                <!-- <xpath expr="//field[@name='hr_responsible_id']" position="before">
                     <field name="joining_date"  required="1" readonly="state not in ('draft','offer')"/>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="readonly">state not in ('draft')</attribute>
                 </xpath>

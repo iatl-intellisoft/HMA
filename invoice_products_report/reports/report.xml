@@ -56,17 +56,23 @@
 <h3>الإجماليات</h3>
 <table class="table table-bordered" style="direction: rtl;">
     <tr>
-    <td><strong>إجمالي المدفوع</strong></td>
-    <td>
-        <span t-esc="'{:,.2f}'.format(grand_paid)"/>
-    </td>
-</tr>
-<tr>
-    <td><strong>إجمالي المتبقي</strong></td>
-    <td>
-        <span t-esc="'{:,.2f}'.format(grand_due)"/>
-    </td>
-</tr>
+        <td><strong>الإجمالي الكلي</strong></td>
+        <td>
+            <span t-esc="'{:,.2f}'.format(grand_total)"/>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>إجمالي المدفوع</strong></td>
+        <td>
+            <span t-esc="'{:,.2f}'.format(grand_paid)"/>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>إجمالي المتبقي</strong></td>
+        <td>
+            <span t-esc="'{:,.2f}'.format(grand_due)"/>
+        </td>
+    </tr>
 </table>
 </div>
 </t>

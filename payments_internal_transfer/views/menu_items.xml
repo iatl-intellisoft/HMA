@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Internal Transfers menu under Accounting > Accounting -->
+    <menuitem
+        id="menu_action_account_payments_transfer"
+        name="Internal Transfers"
+        parent="account.menu_finance_entries"
+        action="account.action_account_payments_transfer"
+        sequence="20"
+        groups="account.group_account_user"/>
+
+</odoo>

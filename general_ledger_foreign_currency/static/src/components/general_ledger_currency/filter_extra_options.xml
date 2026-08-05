@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <!--
+        Extend the General Ledger "Options" dropdown with a
+        "Display Foreign Currencies" toggle.
+        The t-if guard ensures the item only appears when the option has been
+        registered by the Python handler (i.e. on the General Ledger report).
+        Other reports are unaffected.
+    -->
+    <t t-inherit="account_reports.AccountReportFilterExtraOptions" t-inherit-mode="extension">
+        <xpath expr="//DropdownItem[contains(@class, 'filter_show_all_hook')]" position="before">
+            <DropdownItem
+                t-if="'display_foreign_currency' in controller.options"
+                class="{ 'selected': controller.options.display_foreign_currency }"
+                onSelected="() => this.filterClicked({ optionKey: 'display_foreign_currency', reload: true })"
+                closingMode="'none'"
+            >
+                Display Foreign Currencies
+            </DropdownItem>
+        </xpath>
+    </t>
+</templates>

@@ -243,8 +243,8 @@ class PaymentRequest(models.Model):
     def action_submit(self):        
         self.write({'state': 'wait_payment'})
       
-    # def action_depart_manager_approve(self):
-    #     self.write({'state': 'wait_financial_manager'})
+    def action_paid(self):
+        self.write({'state': 'paid'})
 
     # def action_financial_manager_approve(self):
     #     self.write({'state': 'approve'})

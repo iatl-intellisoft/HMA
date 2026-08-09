@@ -152,7 +152,7 @@ class PaymentRequest(models.Model):
             res.append((payment.id, name))
         return res
 
-    @api.onchange('employee_id')
+    @api.onchange('employee_id','partner_id')
     def _onchange_employee_id(self):
         self.department_id = self.employee_id.department_id.id
         self.partner_id = self.employee_id.user_id.partner_id.id

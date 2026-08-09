@@ -90,7 +90,7 @@
                                 <field name="custody_type"  invisible="is_need_clearance != False" readonly="state != 'draft'"/>
                                 <field name="employee_id" readonly="state != 'draft'" required="1"/>
                                 <field name="partner_id"
-                                       readonly="state != 'draft' and is_purchase == True"
+                                       readonly="state != 'draft'"
                                        required="state == 'approve' or is_need_clearance == True"/>
                                 <field name="department_id" invisible="1"  readonly="state != 'draft'"/>
                                 <field name="creator" invisible="1"/>
@@ -114,7 +114,7 @@
 
                             <group>
                                 <field name="date" readonly="state != 'draft'"/>
-                                <field name="company_id"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
                                 <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"
                                        readonly="state in ['paid', 'close']" required="state == 'wait_payment'" groups="account_custom.group_accountant_payable" />
                                 <field name="account_id" readonly="state == 'paid'" required="state == 'wait_payment'" groups="account_custom.group_accountant_payable"/>
@@ -126,7 +126,7 @@
                                  
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
-                                <field name="niration" />  
+                                <field name="niration" readonly="state != 'draft'" />  
                                 <field name="total_amount" invisible="is_need_clearance == True" />
                                 </group>
                         </group>

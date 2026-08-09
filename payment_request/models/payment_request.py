@@ -21,8 +21,8 @@ class PaymentRequest(models.Model):
                               default=lambda self: self.env.user.employee_id.id)
     department_id = fields.Many2one('hr.department', string='Department',
                                     default=lambda self: self.env.user.employee_id.department_id.id)
-    partner_id = fields.Many2one('res.partner', string="Partner", required=False, tracking=True,
-                                 default=lambda self: self.env.user.partner_id.id)  ###
+    partner_id = fields.Many2one('res.partner', string="Partner", required=False, tracking=True)
+                                 # default=lambda self: self.env.user.partner_id.id)  ###
     date = fields.Date(string='Date', required=True, default=fields.Date.context_today)
     clearance_days = fields.Integer(string="Clearance Days", required=False, default='30')
     date_clearance = fields.Date(string='Date Clearance', compute='_compute_clearance_date')

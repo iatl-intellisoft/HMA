@@ -21,14 +21,14 @@ class PaymentRequest(models.Model):
                               default=lambda self: self.env.user.employee_id.id)
     department_id = fields.Many2one('hr.department', string='Department',
                                     default=lambda self: self.env.user.employee_id.department_id.id)
-    partner_id = fields.Many2one('res.partner', string="Partner", required=False, tracking=True)
-                                 # default=lambda self: self.env.user.partner_id.id)  ###
+    partner_id = fields.Many2one('res.partner', string="Partner", required=False, tracking=True,
+                                 default=lambda self: self.env.user.partner_id.id)  ###
     date = fields.Date(string='Date', required=True, default=fields.Date.context_today)
     clearance_days = fields.Integer(string="Clearance Days", required=False, default='30')
     date_clearance = fields.Date(string='Date Clearance', compute='_compute_clearance_date')
     account_id = fields.Many2one('account.account', string='Account',related='company_id.custody_account_id',
                                  tracking=True, readonly=False, )
-    journal_id = fields.Many2one('account.journal', string='Journal', readonly=False, )
+    journal_id = fields.Many2one('account.journal', string='Journal', store=True, readonly=False, )
     company_id = fields.Many2one('res.company', string='Company', store=True, readonly=False, tracking=True,
                                  default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string="Currency", required=True,
@@ -125,38 +125,38 @@ class PaymentRequest(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('payment.request') or _('New')
         return super(PaymentRequest, self).create(vals_list)
 
-    # @api.model
-    # def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-    #     """
-    #     Override name search in order to make custody requests searchable using employee name.
-    #     :return: Financial custody filtered objects
-    #     """
-    #     if operator == 'ilike' and not (name or '').strip():
-    #         pass
-    #     elif operator in ('ilike', 'like', '=', '=like', '=ilike'):
-    #         domain = expression.AND([
-    #             args or [],
-    #             ['|', ('name', operator, name), ('partner_id.name', operator, name)]
-    #         ])
-    #         payment_ids = self._search(domain, limit=limit, access_rights_uid=name_get_uid)
-    #         return self.browse(payment_ids).name_get()
-    #     return super(PaymentRequest, self)._name_search(name, args=args, operator=operator, limit=limit,
-    #                                                     name_get_uid=name_get_uid)
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+        """
+        Override name search in order to make custody requests searchable using employee name.
+        :return: Financial custody filtered objects
+        """
+        if operator == 'ilike' and not (name or '').strip():
+            pass
+        elif operator in ('ilike', 'like', '=', '=like', '=ilike'):
+            domain = expression.AND([
+                args or [],
+                ['|', ('name', operator, name), ('partner_id.name', operator, name)]
+            ])
+            payment_ids = self._search(domain, limit=limit, access_rights_uid=name_get_uid)
+            return self.browse(payment_ids).name_get()
+        return super(PaymentRequest, self)._name_search(name, args=args, operator=operator, limit=limit,
+                                                        name_get_uid=name_get_uid)
 
-    # def name_get(self):
-    #     res = []
-    #     for payment in self:
-    #         name = payment.name
-    #         if payment.partner_id.name:
-    #             name = '%s - %s - %s - %s' % (name, payment.partner_id.name, payment.date, payment.amount)
-    #         res.append((payment.id, name))
-    #     return res
+    def name_get(self):
+        res = []
+        for payment in self:
+            name = payment.name
+            if payment.partner_id.name:
+                name = '%s - %s - %s - %s' % (name, payment.partner_id.name, payment.date, payment.amount)
+            res.append((payment.id, name))
+        return res
 
-    @api.onchange('employee_id','partner_id')
+    @api.onchange('employee_id')
     def _onchange_employee_id(self):
         self.department_id = self.employee_id.department_id.id
         self.partner_id = self.employee_id.user_id.partner_id.id
-        prev_custody = self.env['payment.request'].search([('employee_id','=',self.employee_id.id),('partner_id','=',self.partner_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
+        prev_custody = self.env['payment.request'].search([('employee_id','=',self.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
         if prev_custody:
             self.remaining_amount = prev_custody.remaining_amount
 
@@ -243,8 +243,8 @@ class PaymentRequest(models.Model):
     def action_submit(self):        
         self.write({'state': 'wait_payment'})
       
-    # def action_depart_manager_approve(self):
-    #     self.write({'state': 'wait_financial_manager'})
+    def action_paid(self):
+        self.write({'state': 'paid'})
 
     # def action_financial_manager_approve(self):
     #     self.write({'state': 'approve'})

@@ -155,11 +155,21 @@ class PaymentRequest(models.Model):
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         self.department_id = self.employee_id.department_id.id
-        self.partner_id = self.employee_id.user_id.partner_id.id
-        prev_custody = self.env['payment.request'].search([('employee_id','=',self.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
-        if prev_custody:
-            self.remaining_amount = prev_custody.remaining_amount
-
+        if not self.partner_id:
+            self.partner_id = self.employee_id.user_id.partner_id.id
+    
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if not self.employee_id or not self.partner_id:
+            return
+        prev_custody = self.env['payment.request'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('partner_id', '=', self.partner_id.id),
+            ('state', '=', 'paid'),
+            ('is_need_clearance', '=', True),
+        ], limit=1)
+        self.remaining_amount = prev_custody.remaining_amount if prev_custody else 0.0
+    
     @api.depends('line_ids.price_total')
     def _amount_all(self):
         """

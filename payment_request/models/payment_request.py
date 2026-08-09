@@ -102,22 +102,6 @@ class PaymentRequest(models.Model):
         ('car_tire_repair', 'بنشر'),
         ('car_wash', 'مغسلة'),
     ], string='Type', store=True)
-    
-    @api.constrains('employee_id', 'partner_id', 'state')
-    def _check_duplicate_open_custody(self):
-        for rec in self:
-            if rec.employee_id and rec.partner_id and rec.state not in ('close', 'cancel'):
-                existing = self.search([
-                    ('id', '!=', rec.id),
-                    ('employee_id', '=', rec.employee_id.id),
-                    ('partner_id', '=', rec.partner_id.id),
-                    ('state', 'not in', ('close', 'cancel')),
-                ], limit=1)
-                if existing:
-                    raise ValidationError(_(
-                        "لا يمكن إنشاء طلب عهدة جديد لنفس الموظف (%(employee)s) بنفس الشريك (%(partner)s) "
-                        "لأن العهدة %(name)s لسه مفتوحة"
-                    ) % {'employee': rec.employee_id.name, 'partner': rec.partner_id.name, 'name': existing.name})
 
   
     @api.onchange('maintenance_id')

@@ -102,6 +102,22 @@ class PaymentRequest(models.Model):
         ('car_tire_repair', 'بنشر'),
         ('car_wash', 'مغسلة'),
     ], string='Type', store=True)
+    
+    @api.constrains('employee_id', 'partner_id', 'state')
+    def _check_duplicate_open_custody(self):
+        for rec in self:
+            if rec.employee_id and rec.partner_id and rec.state not in ('close', 'cancel'):
+                existing = self.search([
+                    ('id', '!=', rec.id),
+                    ('employee_id', '=', rec.employee_id.id),
+                    ('partner_id', '=', rec.partner_id.id),
+                    ('state', 'not in', ('close', 'cancel')),
+                ], limit=1)
+                if existing:
+                    raise ValidationError(_(
+                        "لا يمكن إنشاء طلب عهدة جديد لنفس الموظف (%(employee)s) بنفس الشريك (%(partner)s) "
+                        "لأن العهدة %(name)s لسه مفتوحة"
+                    ) % {'employee': rec.employee_id.name, 'partner': rec.partner_id.name, 'name': existing.name})
 
   
     @api.onchange('maintenance_id')
@@ -152,14 +168,24 @@ class PaymentRequest(models.Model):
             res.append((payment.id, name))
         return res
 
-    @api.onchange('partner_id')
+    @api.onchange('employee_id')
     def _onchange_employee_id(self):
         self.department_id = self.employee_id.department_id.id
-        self.partner_id = self.employee_id.user_id.partner_id.id
-        prev_custody = self.env['payment.request'].search([('partner_id','=',self.partner_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
-        if prev_custody:
-            self.remaining_amount = prev_custody.remaining_amount
-
+        if not self.partner_id:
+            self.partner_id = self.employee_id.user_id.partner_id.id
+    
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if not self.employee_id or not self.partner_id:
+            return
+        prev_custody = self.env['payment.request'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('partner_id', '=', self.partner_id.id),
+            ('state', '=', 'paid'),
+            ('is_need_clearance', '=', True),
+        ], limit=1)
+        self.remaining_amount = prev_custody.remaining_amount if prev_custody else 0.0
+    
     @api.depends('line_ids.price_total')
     def _amount_all(self):
         """

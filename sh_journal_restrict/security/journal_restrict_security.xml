@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_journal_restrict_feature" model="res.groups">
+        <field name="name">Enable Journal Restrict Feature</field>
+    </record>
+
+    <record id="group_access_of_assign_user" model="res.groups">
+        <field name="name">Access of Assign User in Journal</field>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_hide_restricted_journal" model="res.groups">
+        <field name="name">Hide Restricted Journal Record</field>
+    </record>
+
+
+    <record id="rule_restrict_account_move_by_journal" model="ir.rule">
+        <field name="name">Restrict Invoices by Journal Access</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="groups" eval="[(4, ref('sh_journal_restrict.group_hide_restricted_journal'))]"/>
+        <field name="domain_force">[('journal_id.user_ids', 'in', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="rule_restrict_account_payment_by_journal" model="ir.rule">
+        <field name="name">Restrict Payments by Journal Access</field>
+        <field name="model_id" ref="account.model_account_payment"/>
+        <field name="groups" eval="[(4, ref('sh_journal_restrict.group_hide_restricted_journal'))]"/>
+        <field name="domain_force">['|', ('journal_id.user_ids','in',user.id), ('journal_id.type','=','bank')]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

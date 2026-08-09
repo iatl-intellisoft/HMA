@@ -18,7 +18,8 @@ class AccountPayment(models.Model):
         'custody.clearance', string="Custody Clearance", copy=False, )
     is_need_clearance = fields.Boolean(string="Need Clearance", related='payment_request_id.is_need_clearance')
 
-    destination_account_id = fields.Many2one('account.account', compute='_compute_destination_account_id')
+    destination_account_id = fields.Many2one('account.account', compute='_compute_destination_account_id',
+                                             readonly=True)
 
     # journal_id = fields.Many2one('account.journal', compute='_compute_journal_id',
     #                              readonly=True)
@@ -410,7 +411,7 @@ class AccountPayment(models.Model):
         active_ids = self._context.get('active_ids', []) or []
         active_model = self._context.get('active_model')
         close_custody = self._context.get('close', False)
-        prev_custody = self.env['payment.request'].search([('employee_id', '=', self.payment_request_id.employee_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
+        prev_custody = self.env['payment.request'].search([('employee_id','=',self.payment_request_id.employee_id.id),('partner_id','=',self.payment_request_id.partner_id.id),('state','=','paid'),('is_need_clearance','=',True)],limit=1)
         if  active_model == 'payment.request':
             if prev_custody:                
                 prev_custody.state = 'close'

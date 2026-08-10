@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             Statement Lines: custom list view with Reconcile button
+             ============================================================ -->
+        <record id="view_bank_statement_line_reconcile_list" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.reconcile.list</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="arch" type="xml">
+                <list string="Statement Lines" create="false" delete="false" edit="false">
+                    <field name="date"/>
+                    <field name="payment_ref" string="Label"/>
+                    <field name="partner_id"/>
+                    <field name="amount"/>
+                    <field name="running_balance"/>
+                    <field name="is_reconciled" string="Reconciled" widget="boolean"/>
+                    <field name="matched_move_id"
+                           string="Transaction Reference"
+                           readonly="1"
+                           optional="show"
+                           invisible="not is_reconciled"
+                           options="{'no_open': False}"
+                    />
+                    <field name="currency_id" column_invisible="True"/>
+                    <button
+                        name="action_open_reconciliation_wizard"
+                        string="Reconcile"
+                        type="object"
+                        icon="fa-exchange"
+                        invisible="is_reconciled"
+                        class="btn-primary"
+                    />
+                    <button
+                        name="action_undo_reconciliation"
+                        string="Reset"
+                        type="object"
+                        icon="fa-undo"
+                        invisible="not is_reconciled"
+                        class="btn-warning"
+                    />
+                </list>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Bank Statement Form View
+             ============================================================ -->
+        <record id="view_bank_statement_form" model="ir.ui.view">
+            <field name="name">account.bank.statement.form.custom</field>
+            <field name="model">account.bank.statement</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement">
+                    <header>
+                        <!-- Workflow actions -->
+                        <button
+                            name="action_set_done"
+                            string="Done"
+                            type="object"
+                            class="btn-primary"
+                            invisible="reconciliation_state == 'done'"
+                        />
+                        <button
+                            name="action_set_draft"
+                            string="Set to Draft"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="reconciliation_state == 'under_reconciliation'"
+                        />
+                        <!-- Import / Reconcile helpers -->
+                        <button
+                            name="action_import_lines"
+                            string="Import Lines"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="reconciliation_state == 'done'"
+                        />
+                        <button
+                            name="action_open_statement_lines"
+                            string="Reconcile Lines"
+                            type="object"
+                            class="btn-secondary"
+                        />
+                        <field name="reconciliation_state"
+                               widget="statusbar"
+                               statusbar_visible="under_reconciliation,done"/>
+                        <field name="is_complete" invisible="1"/>
+                        <field name="is_valid" invisible="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"
+                                       placeholder="Reference"
+                                       readonly="reconciliation_state == 'done'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="journal_id"
+                                       options="{'no_create': True}"
+                                       readonly="reconciliation_state == 'done'"/>
+                                <field name="date"
+                                       readonly="reconciliation_state == 'done'"/>
+                            </group>
+                            <group>
+                                <field name="balance_start"
+                                       readonly="reconciliation_state == 'done'"/>
+                                <field name="balance_end"
+                                       string="Ending Balance"
+                                       readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Transactions" name="transactions">
+                                <field name="line_ids"
+                                       widget="one2many"
+                                       options="{'delete': False}"
+                                       context="{'default_journal_id': journal_id, 'default_statement_id': id}"
+                                       readonly="reconciliation_state == 'done'"
+                                       nolabel="1">
+                                    <!--
+                                        editable="bottom": new rows appear inline in the list.
+                                        Without this, Odoo opens the default form view for
+                                        account.bank.statement.line which, on enterprise, is the
+                                        reconciliation widget. That widget uses action_save_close()
+                                        (returns act_window_close without committing) instead of
+                                        the standard form save, so the new record is lost.
+                                    -->
+                                    <list string="Statement Lines" editable="bottom" create="1" delete="0">
+                                        <field name="date"/>
+                                        <field name="journal_id"
+                                               options="{'no_create': True}"
+                                               optional="show"/>
+                                        <field name="payment_ref" string="Label"/>
+                                        <field name="partner_id"/>
+                                        <field name="amount"/>
+                                        <field name="running_balance" optional="show" readonly="1"/>
+                                        <field name="is_reconciled" string="Reconciled" widget="boolean" readonly="1"/>
+                                        <field name="matched_move_id"
+                                               string="Transaction Reference"
+                                               readonly="1"
+                                               optional="show"
+                                               invisible="not is_reconciled"
+                                               options="{'no_open': False}"
+                                        />
+                                        <field name="currency_id" column_invisible="True"/>
+                                        <button
+                                            name="action_open_reconciliation_wizard"
+                                            string="Reconcile"
+                                            type="object"
+                                            icon="fa-exchange"
+                                            invisible="is_reconciled or parent.reconciliation_state == 'done'"
+                                        />
+                                        <button
+                                            name="action_undo_reconciliation"
+                                            string="Reset"
+                                            type="object"
+                                            icon="fa-undo"
+                                            invisible="not is_reconciled or parent.reconciliation_state == 'done'"
+                                        />
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Other Info" name="other_info">
+                                <group>
+                                    <field name="reference"
+                                           string="External Reference"
+                                           readonly="reconciliation_state == 'done'"/>
+                                    <field name="company_id"
+                                           groups="base.group_multi_company"
+                                           readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="attachment_ids" widget="many2many_binary"
+                               string="Attachments"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Override the existing list view to allow creation
+             ============================================================ -->
+        <record id="view_bank_statement_tree_allow_create" model="ir.ui.view">
+            <field name="name">account.bank.statement.list.allow.create</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="open_form_view">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Custom action that includes the form view
+             ============================================================ -->
+        <record id="action_bank_statement_reconciliation" model="ir.actions.act_window">
+            <field name="name">Bank Statements</field>
+            <field name="res_model">account.bank.statement</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('journal_id.type', 'in', ['bank', 'cash'])]</field>
+            <field name="context">{'journal_type': 'bank'}</field>
+            <field name="search_view_id" ref="account.view_bank_statement_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new bank statement
+                </p>
+                <p>
+                    Create and reconcile bank statements with your payments,
+                    invoices, or manual account entries.
+                </p>
+            </field>
+        </record>
+
+        <!-- Link specific views to the action -->
+        <record model="ir.actions.act_window.view" id="action_bank_statement_reconciliation_list">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="account.view_bank_statement_tree"/>
+            <field name="act_window_id" ref="action_bank_statement_reconciliation"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_bank_statement_reconciliation_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bank_statement_form"/>
+            <field name="act_window_id" ref="action_bank_statement_reconciliation"/>
+        </record>
+
+    </data>
+</odoo>

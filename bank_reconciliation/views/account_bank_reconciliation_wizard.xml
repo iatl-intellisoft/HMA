@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_bank_reconciliation_wizard_form" model="ir.ui.view">
+            <field name="name">account.bank.reconciliation.wizard.form</field>
+            <field name="model">account.bank.reconciliation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reconcile Transaction">
+
+                    <!-- ── Hidden / technical fields ─────────────────────── -->
+                    <field name="st_line_id"            invisible="1"/>
+                    <field name="company_id"            invisible="1"/>
+                    <field name="currency_id"           invisible="1"/>
+                    <field name="is_reconciled"         invisible="1"/>
+                    <field name="is_statement_done"     invisible="1"/>
+                    <field name="expected_payment_type" invisible="1"/>
+
+                    <!-- ── Transaction details (always read-only) ─────────── -->
+                    <group string="Transaction Details" col="2">
+                        <field name="st_line_date"         readonly="1"/>
+                        <field name="payment_ref"          readonly="1" string="Label"/>
+                        <field name="partner_id"           readonly="1"/>
+                        <field name="transaction_amount"   readonly="1" widget="monetary"/>
+                        <field name="journal_id"           readonly="1"/>
+                    </group>
+
+                    <!-- ── Status notices ────────────────────────────────── -->
+                    <div class="alert alert-info"
+                         invisible="not is_reconciled"
+                         role="alert">
+                        This transaction is already reconciled. The matched details are
+                        shown below for review. Reset the line first if you need to
+                        re-reconcile.
+                    </div>
+                    <div class="alert alert-warning"
+                         invisible="not is_statement_done or is_reconciled"
+                         role="alert">
+                        The bank statement is marked as Done. No further reconciliation
+                        is allowed.
+                    </div>
+
+                    <!-- ── Reconciliation type ───────────────────────────── -->
+                    <group string="Reconciliation Type">
+                        <field name="reconciliation_type"
+                               widget="radio"
+                               nolabel="1"
+                               readonly="is_reconciled or is_statement_done"/>
+                    </group>
+
+                    <!-- ── Payment matching ──────────────────────────────── -->
+                    <group invisible="reconciliation_type != 'payment'">
+                        <field name="payment_id"
+                               string="Payment"
+                               options="{'no_create': True, 'no_open': True}"
+                               domain="[('company_id', '=', company_id),
+                                        ('state', 'in', ['in_process', 'paid']),
+                                        ('bank_stmt_reconciled', '=', False),
+                                        ('payment_type', '=', expected_payment_type)]"
+                               readonly="is_reconciled or is_statement_done"
+                        />
+                    </group>
+
+                    <!-- ── Invoice / Bill matching ───────────────────────── -->
+                    <group invisible="reconciliation_type != 'invoice'">
+                        <field name="invoice_id"
+                               string="Invoice / Bill"
+                               options="{'no_create': True, 'no_open': True}"
+                               domain="[('company_id', '=', company_id),
+                                        ('move_type', 'in', ['out_invoice', 'in_invoice',
+                                                             'out_refund', 'in_refund']),
+                                        ('state', '=', 'posted'),
+                                        ('payment_state', 'in', ['not_paid', 'in_payment',
+                                                                  'partial'])]"
+                               readonly="is_reconciled or is_statement_done"
+                        />
+                    </group>
+
+                    <!-- ── Manual journal entry matching ─────────────────── -->
+                    <group invisible="reconciliation_type != 'manual'">
+                        <field name="manual_move_id"
+                               string="Journal Entry"
+                               options="{'no_create': True, 'no_open': True}"
+                               domain="[('company_id', '=', company_id),
+                                        ('state', '=', 'posted'),
+                                        ('move_type', '=', 'entry'),
+                                        ('origin_payment_id', '=', False),
+                                        ('statement_line_id', '=', False)]"
+                               readonly="is_reconciled or is_statement_done"
+                        />
+                    </group>
+
+                    <!-- ── Write-off ──────────────────────────────────────── -->
+                    <group invisible="reconciliation_type != 'writeoff'">
+                        <field name="account_id"
+                               string="Write-off Account"
+                               domain="[('company_ids', 'in', [company_id]),
+                                        ('deprecated', '=', False)]"
+                               options="{'no_create': True}"
+                               readonly="is_reconciled or is_statement_done"
+                        />
+                        <field name="writeoff_label"
+                               string="Write-off Label"
+                               readonly="is_reconciled or is_statement_done"
+                        />
+                    </group>
+
+                    <footer>
+                        <button
+                            name="action_reconcile"
+                            string="Reconcile"
+                            type="object"
+                            class="btn-primary"
+                            invisible="is_reconciled or is_statement_done"
+                        />
+                        <button
+                            string="Close"
+                            class="btn-secondary"
+                            special="cancel"
+                        />
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -20,7 +20,7 @@ class BankBalanceReportWizard(models.TransientModel):
         'account.journal',
         string='البنوك',
         domain=[('type', '=', 'bank')],
-        help='اتركه خاليًا لعرض كل حسابات البنوك (سواء ليها جورنال مربوط أو لأ)',
+        help='اتركه خاليًا لعرض كل الحسابات البنكية (حتى لو مالهاش جورنال مربوط)',
     )
     company_id = fields.Many2one(
         'res.company',
@@ -38,8 +38,7 @@ class BankBalanceReportWizard(models.TransientModel):
             'وعايز كل بنك ياخد حركته هو بس (من جورنال البنك نفسه)، '
             'مع العلم إن ده هيستبعد القيود اليدوية أو التسويات '
             'المتسجلة من جورنال تاني على نفس الحساب. الحسابات اللي '
-            'مالهاش جورنال مربوط مش هتتأثر بالخيار ده (هتفضل تتحسب '
-            'بالحساب بس لأنه مفيش جورنال يتفلتر بيه).'
+            'مالهاش جورنال مربوط مش هتتأثر بالخيار ده.'
         ),
     )
 
@@ -59,33 +58,36 @@ class BankBalanceReportWizard(models.TransientModel):
 
     def _get_bank_accounts(self):
         """
-        بيرجع (account, journal_or_empty) لكل حساب بنكي/نقدي.
-
-        - لو المستخدم اختار جورنالات معينة: بناخد حساب كل جورنال منهم
-          بس (زي ما كان بالظبط).
-        - لو مفيش جورنالات مختارة (الحالة الافتراضية): بناخد *كل*
-          حسابات الأستاذ من نوع بنك/نقدية (account_type = asset_cash)
-          في الشركة، سواء كانت مربوطة بجورنال ولا لأ، عشان ولا حساب
-          بنكي يتجاهل.
+        بيرجع list من (account, journal_or_False) بحيث كل حساب بنكي
+        يظهر مرة واحدة بس، حتى لو ملوش جورنال مربوط، أو حتى لو أكتر
+        من جورنال بيستخدموا نفس الحساب (السطر بيفضل واحد لكل حساب،
+        والحركة كلها بتتجمع عليه إلا لو strict_journal_match مفعّلة).
         """
         self.ensure_one()
         Account = self.env['account.account']
         Journal = self.env['account.journal']
 
-        result = []
-
         if self.journal_ids:
+            accounts = self.journal_ids.mapped('default_account_id')
+            # لو فيه جورنالات من غيرهم مالهاش حساب، هنسيبهم يظهروا برسالة تنبيه
+            result = []
+            seen = set()
             for journal in self.journal_ids:
-                result.append((journal.default_account_id, journal))
+                account = journal.default_account_id
+                if account and account.id in seen:
+                    continue
+                if account:
+                    seen.add(account.id)
+                result.append((account, journal))
             return result
 
+        company_field = 'company_ids' if 'company_ids' in Account._fields else 'company_id'
         accounts = Account.search([
             ('account_type', '=', 'asset_cash'),
-            ('company_ids', 'child_of', self.company_id.id)
-            if 'company_ids' in Account._fields
-            else ('company_id', 'child_of', self.company_id.id),
+            (company_field, 'child_of', self.company_id.id),
         ])
 
+        result = []
         for account in accounts:
             journal = Journal.search([
                 ('default_account_id', '=', account.id),
@@ -93,29 +95,24 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('company_id', 'child_of', self.company_id.id),
             ], limit=1)
             result.append((account, journal))
-
         return result
 
     def _compute_lines(self):
         """
-        يحسب آخر رصيد لكل حساب بنكي (كل حساب بيظهر بسطر مستقل بيه)
-        حتى تاريخ 'إلى تاريخ':
+        يحسب آخر رصيد لكل بنك (كل حساب بيظهر بسطر مستقل بيه) حتى
+        تاريخ 'إلى تاريخ':
         آخر رصيد = الرصيد الافتتاحي (كل الحركة قبل 'من تاريخ')
                   + صافي الحركة (مدين - دائن) بين 'من تاريخ' و 'إلى تاريخ'
 
-        - المصدر الأساسي بقى *حسابات الأستاذ* من نوع بنك/نقدية
-          (asset_cash) مش الجورنالات، عشان أي حساب بنكي يظهر حتى لو
-          مالوش جورنال مربوط بيه أو الجورنال اسمه/نوعه مش متظبط.
+        - كل البنوك بتظهر حتى لو معهاش أي حركة خلال الفترة المحددة.
 
-        - لو اخترت جورنالات معينة من الويزارد، هيرجع يشتغل بنفس
-          منطق الجورنالات القديم (حساب كل جورنال منهم).
+        - الفلترة الافتراضية بـ account_id بس (زي دفتر الأستاذ تمامًا)،
+          عشان الأرقام تطابق المحاسبة. يعني أي قيد يدوي أو تسوية أو
+          رصيد افتتاحي متسجل من جورنال تاني (زي "القيود اليومية"
+          Miscellaneous) على نفس حساب البنك هيتحسب برضه.
 
-        - الفلترة الافتراضية بقت بـ account_id بس (زي دفتر الأستاذ
-          تمامًا)، عشان الأرقام تطابق المحاسبة.
-
-        - لو عايز تفصل حركة كل بنك عن التاني في حالة اشتراك أكتر من
-          بنك في نفس الحساب، فعّل 'strict_journal_match'. الحسابات
-          اللي مالهاش جورنال مربوط مش هيتأثر فيها الخيار ده.
+        - فعّل 'strict_journal_match' بس لو عايز تفصل حركة كل بنك عن
+          التاني في حالة اشتراك أكتر من بنك في نفس الحساب المحاسبي.
         """
         self.ensure_one()
         AML = self.env['account.move.line']
@@ -143,7 +140,6 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('company_id', 'child_of', self.company_id.id),
             ]
 
-            # الفلترة بالجورنال اختيارية، وتتطلب وجود جورنال أصلاً
             if self.strict_journal_match and journal:
                 base_domain.append(('journal_id', '=', journal.id))
 

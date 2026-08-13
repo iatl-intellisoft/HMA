@@ -35,21 +35,18 @@ class BankBalanceReportWizard(models.TransientModel):
             'اتركها بدون تفعيل عشان الأرقام تطابق دفتر الأستاذ '
             '(كل حركة على حساب البنك، من أي جورنال، هتتحسب).\n\n'
             'فعّلها فقط لو أكتر من بنك بيشتركوا في نفس الحساب المحاسبي '
-            'وعايز كل بنك ياخد حركته هو بس (من جورنال البنك نفسه)، '
-            'مع العلم إن ده هيستبعد القيود اليدوية أو التسويات '
-            'المتسجلة من جورنال تاني على نفس الحساب. الحسابات اللي '
-            'مالهاش جورنال مربوط مش هتتأثر بالخيار ده.'
+            'وعايز كل بنك ياخد حركته هو بس (من جورنال البنك نفسه).'
         ),
     )
 
     def action_print_pdf(self):
         self.ensure_one()
-        lines = self._compute_lines()
+        groups = self._compute_lines()
         data = {
             'date_from': self.date_from,
             'date_to': self.date_to,
             'company_name': self.company_id.name,
-            'lines': lines,
+            'groups': groups,
         }
 
         return self.env.ref(
@@ -59,17 +56,13 @@ class BankBalanceReportWizard(models.TransientModel):
     def _get_bank_accounts(self):
         """
         بيرجع list من (account, journal_or_False) بحيث كل حساب بنكي
-        يظهر مرة واحدة بس، حتى لو ملوش جورنال مربوط، أو حتى لو أكتر
-        من جورنال بيستخدموا نفس الحساب (السطر بيفضل واحد لكل حساب،
-        والحركة كلها بتتجمع عليه إلا لو strict_journal_match مفعّلة).
+        يظهر مرة واحدة بس.
         """
         self.ensure_one()
         Account = self.env['account.account']
         Journal = self.env['account.journal']
 
         if self.journal_ids:
-            accounts = self.journal_ids.mapped('default_account_id')
-            # لو فيه جورنالات من غيرهم مالهاش حساب، هنسيبهم يظهروا برسالة تنبيه
             result = []
             seen = set()
             for journal in self.journal_ids:
@@ -97,33 +90,55 @@ class BankBalanceReportWizard(models.TransientModel):
             result.append((account, journal))
         return result
 
+    def _get_line_currency(self, account, journal):
+        """
+        بيحدد عملة البنك: بياخد عملة الجورنال لو موجودة، وإلا عملة
+        الحساب لو موجودة (currency_id)، وإلا عملة الشركة الافتراضية.
+        """
+        currency = False
+        if journal and journal.currency_id:
+            currency = journal.currency_id
+        elif account and account.currency_id:
+            currency = account.currency_id
+
+        if not currency:
+            currency = self.company_id.currency_id
+
+        return currency
+
     def _compute_lines(self):
         """
-        يحسب آخر رصيد لكل بنك (كل حساب بيظهر بسطر مستقل بيه) حتى
-        تاريخ 'إلى تاريخ':
+        يحسب آخر رصيد لكل بنك (كل حساب بيظهر بسطر مستقل بيه)، وبيجمع
+        البنوك في مجموعات حسب العملة (جنيه سوداني - دولار - درهم...
+        إلخ)، وكل مجموعة ليها إجمالي منفصل خاص بيها فقط (من غير خلط
+        العملات مع بعض).
+
         آخر رصيد = الرصيد الافتتاحي (كل الحركة قبل 'من تاريخ')
                   + صافي الحركة (مدين - دائن) بين 'من تاريخ' و 'إلى تاريخ'
 
-        - كل البنوك بتظهر حتى لو معهاش أي حركة خلال الفترة المحددة.
-
-        - الفلترة الافتراضية بـ account_id بس (زي دفتر الأستاذ تمامًا)،
-          عشان الأرقام تطابق المحاسبة. يعني أي قيد يدوي أو تسوية أو
-          رصيد افتتاحي متسجل من جورنال تاني (زي "القيود اليومية"
-          Miscellaneous) على نفس حساب البنك هيتحسب برضه.
-
-        - فعّل 'strict_journal_match' بس لو عايز تفصل حركة كل بنك عن
+        - الفلترة الافتراضية بـ account_id بس (زي دفتر الأستاذ تمامًا).
+        - فعّل 'strict_journal_match' لو عايز تفصل حركة كل بنك عن
           التاني في حالة اشتراك أكتر من بنك في نفس الحساب المحاسبي.
+
+        الإرجاع: list of dict، كل dict فيه:
+            currency_name, currency_symbol, lines (list),
+            total_initial, total_debit, total_credit, total_ending
         """
         self.ensure_one()
         AML = self.env['account.move.line']
         accounts_and_journals = self._get_bank_accounts()
-        lines = []
+
+        # هنجمع كل سطر تحت مفتاح العملة بتاعته
+        grouped = {}  # currency_id -> {'currency': record, 'lines': [...]}
 
         for account, journal in accounts_and_journals:
             journal_name = journal.name if journal else False
+            currency = self._get_line_currency(account, journal)
 
             if not account:
-                lines.append({
+                key = currency.id
+                grouped.setdefault(key, {'currency': currency, 'lines': []})
+                grouped[key]['lines'].append({
                     'journal_name': f"{journal_name or 'بنك بدون حساب'} (لا يوجد حساب مربوط)",
                     'account_code': '',
                     'account_name': '',
@@ -154,7 +169,9 @@ class BankBalanceReportWizard(models.TransientModel):
 
             ending_balance = initial_balance + debit - credit
 
-            lines.append({
+            key = currency.id
+            grouped.setdefault(key, {'currency': currency, 'lines': []})
+            grouped[key]['lines'].append({
                 'journal_name': journal_name or account.name,
                 'account_code': account.code,
                 'account_name': account.name,
@@ -164,7 +181,27 @@ class BankBalanceReportWizard(models.TransientModel):
                 'ending_balance': ending_balance,
             })
 
-        return lines
+        # نبني اللستة النهائية، مع ترتيب عملة الشركة أولاً ثم الباقي أبجديًا
+        company_currency_id = self.company_id.currency_id.id
+        groups = []
+        for key, data in sorted(
+            grouped.items(),
+            key=lambda item: (item[1]['currency'].id != company_currency_id, item[1]['currency'].name)
+        ):
+            currency = data['currency']
+            lines = data['lines']
+            groups.append({
+                'currency_id': currency.id,
+                'currency_name': currency.name,
+                'currency_symbol': currency.symbol,
+                'lines': lines,
+                'total_initial': sum(l['initial_balance'] for l in lines),
+                'total_debit': sum(l['debit'] for l in lines),
+                'total_credit': sum(l['credit'] for l in lines),
+                'total_ending': sum(l['ending_balance'] for l in lines),
+            })
+
+        return groups
 
 
 class BankBalanceReportParser(models.AbstractModel):
@@ -174,23 +211,14 @@ class BankBalanceReportParser(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         data = data or {}
-        lines = data.get('lines', [])
-
-        total_initial = sum(l['initial_balance'] for l in lines)
-        total_debit = sum(l['debit'] for l in lines)
-        total_credit = sum(l['credit'] for l in lines)
-        total_ending = sum(l['ending_balance'] for l in lines)
+        groups = data.get('groups', [])
 
         return {
             'doc_ids': docids,
             'doc_model': 'bank.balance.report.wizard',
             'docs': [],
-            'lines': lines,
+            'groups': groups,
             'date_from': data.get('date_from'),
             'date_to': data.get('date_to'),
             'company_name': data.get('company_name'),
-            'total_initial': total_initial,
-            'total_debit': total_debit,
-            'total_credit': total_credit,
-            'total_ending': total_ending,
         }

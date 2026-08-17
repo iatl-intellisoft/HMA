@@ -60,7 +60,7 @@
                                                                invisible="1"
                                 class="oe_highlight"/>
                         <button name="reset_to_draft" id="reset_to_draft_button" type="object" string="Reset to draft"
-                                                                invisible="can_reset_to_draft == False" groups="payment_request.group_payment_request_manager"/>
+                                                                invisible="can_reset_to_draft == False" groups="payment_request.group_payment_request_manager,payment_request.group_payment_request_user"/>
                         <field name="clearance_ids" invisible="1"/>
                         <field name="can_reset_to_draft" invisible="1"/>
                        <button name="action_set_to_draft" class="oe_highlight" type="object" string="Set To Draft"

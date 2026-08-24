@@ -23,8 +23,8 @@
 
     'data': [
         'security/ir.model.access.csv',
-        # 'security/deduction_security.xml',
-        # 'views/hr_deduction_views.xml',
+        'security/deduction_security.xml',
+        'views/hr_deduction_views.xml',
         'views/dedcution_batch_view.xml',
         'views/hr_deduct_conf_views.xml',
         'views/hr_payroll_view.xml',

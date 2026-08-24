@@ -1,4 +1,5 @@
 <odoo>
+    <data>
         <report
                 string="Deduction Form"
                 id="action_deduction_report"
@@ -59,4 +60,5 @@
                 </t>
             </t>
         </template>
+    </data>
 </odoo>

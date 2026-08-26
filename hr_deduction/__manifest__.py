@@ -30,7 +30,7 @@
         'views/hr_payroll_view.xml',
         # 'data/hr_deduction_data.xml',
         # 'data/deduction_tempate.xml',
-        'report/hr_deduction_report.xml',
+        # 'report/hr_deduction_report.xml',
 
     ],
 

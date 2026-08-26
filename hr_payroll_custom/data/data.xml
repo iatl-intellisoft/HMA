@@ -1,5 +1,4 @@
-<odoo>
-    <data>
+<odoo> 
         <!-- Create structure type -->
         <record id="employee_structure_type" model="hr.payroll.structure.type">
             <field name="name">Employee</field>
@@ -16,6 +15,5 @@
             <field name="type_id" ref="hr_payroll_custom.employee_structure_type" />
             <field name="use_worked_day_lines">True</field>
             <field name="schedule_pay">monthly</field>
-        </record>
-    </data>
+        </record> 
 </odoo>

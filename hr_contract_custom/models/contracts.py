@@ -47,6 +47,7 @@ class Contracts(models.Model):
                            help="End date of the contract (if it's a fixed-term contract).")
     trial_date_end = fields.Date('End of Trial Period', track_visibility='onchange',
                                  help="End date of the trial period (if there is one).")
+    insentive = fields.Float(string="الحافز", store=True)
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'Working Schedule', track_visibility='onchange',

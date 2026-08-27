@@ -61,7 +61,9 @@
                     <field name='service_years' />
                 </xpath>
                 <xpath expr="//group[@name='salary_info']" position="after">
-                    <field name='insentive' />
+                    <group>
+                        <field name="insentive" string="الحافز"/>
+                    </group>
                 </xpath>
             </field>
         </record>

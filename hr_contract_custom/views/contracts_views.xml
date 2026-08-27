@@ -60,7 +60,7 @@
                 <xpath expr="//field[@name='date_end']" position="after">
                     <field name='service_years' />
                 </xpath>
-                <xpath expr="//field[@name='wage']" position="before">
+                <xpath expr="//field[@name='schedule_pay']" position="after">
                     <field name='insentive' />
                 </xpath>
             </field>

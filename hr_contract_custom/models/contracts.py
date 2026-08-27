@@ -64,6 +64,7 @@ class Contracts(models.Model):
     age = fields.Integer(string="Age", related="employee_id.age",store=True)
     joining_date = fields.Date(string="Actual Joining Date", track_visibility='onchange')
     service_years = fields.Float(string='Service Years', compute='get_service_years', store=True)
+    insentive = fields.Float(string="الحافز", store=True)
 
     
     @api.depends('date_start','date_end')

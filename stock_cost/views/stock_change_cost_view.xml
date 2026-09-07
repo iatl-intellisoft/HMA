@@ -1,0 +1,96 @@
+<odoo>
+    <data>
+
+        <record id="view_stock_change_cost_form" model="ir.ui.view">
+            <field name="name">stock.change.foreign.cost.form</field>
+            <field name="model">stock.change.foreign.cost</field>
+            <field name="arch" type="xml">
+                <form string="Product Change Cost">
+                    <header>
+                        <button name="action_confirm" state="draft" string="Confirm" type="object" class="oe_highlight"
+                                groups="stock.group_stock_user"/>
+                        <button name="action_validate" state="confirm" string="Validate" type="object"
+                                class="oe_highlight" groups="stock.group_stock_manager"/>
+                        <button name="action_cancel_draft" state="cancel" string="Set to Draft" type="object"
+                                groups="stock.group_stock_manager"/>
+                        <button name="action_cancel" state="confirm" string="Cancel" type="object"
+                                groups="stock.group_stock_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="state != 'draft'" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" readonly="1"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_create': True}"/>
+                                <field name="accounting_date" groups="base.group_multi_company"
+                                        readonly="state != 'draft'"
+                                       options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Product Details">
+                                <field name="line_ids" string="Product Details"
+                                       readonly="state != 'draft'" mode="list">
+                                    <list string="Product Details" editable="bottom">
+                                        <field name="product_id"
+                                               domain="[('type','=','product'),('valuation','=','real_time')]"
+                                               force_save="1"/>
+                                        <field name="product_categ_id" force_save="1" readonly="1"/>
+                                        <field name="qty_available" force_save="1" readonly="1"/>
+                                        <field name="foreign_standard_price" widget='monetary'
+                                               options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                                               class="float-left" force_save="1" readonly="1"/>
+                                        <field name="force_currency_id" force_save="1"
+                                               readonly="1"/>
+                                        <field name="counterpart_account_id"/>
+                                        <field name="new_foreign_standard_price"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_change_cost_list" model="ir.ui.view">
+            <field name="name">stock.change.cost.list</field>
+            <field name="model">stock.change.foreign.cost</field>
+            <field name="arch" type="xml">
+                <list string="Update Products Cost" decoration-muted="state == 'cancel'">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_stock_change_cost" model="ir.actions.act_window">
+            <field name="name">Update Products Cost</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.change.foreign.cost</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_stock_change_cost_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Update Products Cost
+                </p>
+                <p>
+                    This is used to correct the product Cost you have in stock.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_action_stock_change_cost" action="action_stock_change_cost"
+                  parent="stock.menu_stock_warehouse_mgmt" sequence="40"/>
+
+    </data>
+</odoo>

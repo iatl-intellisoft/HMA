@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_inherit_stock_valuation_layer_revaluation_form_inherit" model="ir.ui.view">
+            <field name="name">view.inherit.stock.valuation.layer.revaluation.form</field>
+            <field name="model">stock.valuation.layer.revaluation</field>
+            <field name="inherit_id" ref="stock_account.stock_valuation_layer_revaluation_form_view"/>
+            <field name="arch" type="xml">
+                <field name="added_value" position="attributes">
+                    <attribute name="string">Foreign Cost</attribute>
+                    <attribute name="options">{'currency_field': 'force_currency_id'}</attribute>
+                </field>
+                <field name="currency_id" position="after">
+                    <field name="force_currency_id" invisible="1"/>
+                </field>
+                <xpath expr="//label[@for='added_value']" position="before">
+                    <label for="current_foreign_value_svl" string="Foreign Current Value"/>
+                    <div class="o_row">
+                        <span><field name="current_foreign_value_svl" options="{'currency_field': 'force_currency_id'}" widget="monetary"/> for <field name="current_quantity_svl"/> <field name="product_uom_name" class="mx-1"/> </span>
+                    </div>
+                </xpath>
+                <xpath expr="//group[1]/div[3]" position="replace">
+                    <div class="o_row">
+                        <span><field name="added_value" options="{'currency_field': 'force_currency_id'}" class="oe_inline"/> = <field name="current_foreign_value_svl"/> (<field name="new_foreign_value_by_qty"/> by <field name="product_uom_name" class="mx-1"/>)
+                        <small class="mx-2 font-italic">Use a negative added value to record a decrease in the product value</small></span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+                
+
+    </data>
+</odoo>

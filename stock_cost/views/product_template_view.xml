@@ -1,0 +1,116 @@
+<odoo>
+    <data>
+
+        <record id="view_category_property_form" model="ir.ui.view">
+            <field name="name">product.category.stock.property.form.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="stock_account.view_category_property_form" />
+            <field name="arch" type="xml">
+                <field name="property_stock_valuation_account_id" position="after">
+                    <field name="property_stock_account_currency_adjustment"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_template_only_form_view_inherit_id" model="ir.ui.view">
+            <field name="name">product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='standard_price_uom']" position="after">
+                    <field name="foreign_standard_price" 
+                           widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                           class="float-left" readonly="valuation == 'real_time'"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="valuation" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="readonly">[('valuation','=','real_time')]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_only_form_view_inherit_id_product" model="ir.ui.view">
+            <field name="name">product.prod.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+              <!--   <xpath expr="//div[@name='standard_price_uom']" position="after">
+                    <field name="foreign_standard_price" readonly="1"
+                           widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                           class="float-left"/>
+                </xpath> -->
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="valuation" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="readonly">[('valuation','=','real_time')]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_stock_quant_list_inherit2">
+            <field name="name">stock.quant.list</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='quantity']" position="before">
+                    <field name="force_currency_id" groups="stock.group_stock_manager"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--Price List -->
+        <record id="inherit_product_pricelist_item_form_view" model="ir.ui.view">
+            <field name="name">product.pricelist.item.form</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <field name="base" position="replace">
+                    <field name="base" colspan="6"/>
+                </field>
+                <xpath expr="//group[@name='pricelist_rule_base']//group[1]" position="inside">
+                    <div class="o_row" invisible="base != 'foreign_standard_price'" style="width: 40% !important;">
+                    <span>Forgen Cost -</span>
+                </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.view.form.easy.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="foreign_value_svl"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_variant_easy_edit_view_inherit_id_product" model="ir.ui.view">
+            <field name="name">product.prod.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+
+                 <xpath expr="//field[@name='standard_price']" position="after">
+                           <field name="foreign_standard_price"
+                           widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                           class="float-left"/>
+                </xpath>
+
+
+                <xpath expr="//field[@name='currency_id']" position="after">
+                                                                <field name="force_currency_id"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

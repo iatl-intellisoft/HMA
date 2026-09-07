@@ -1,0 +1,12 @@
+<odoo>
+    <!-- Enable multi currency if not already configured -->
+    <record id="base.group_user" model="res.groups">
+        <field eval="[(4, ref('base.group_multi_currency'))]" name="implied_ids"/>
+    </record>
+
+    <record id="group_product_cost" model="res.groups">
+            <field name="name">Show Cost On Product</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+</odoo>
+

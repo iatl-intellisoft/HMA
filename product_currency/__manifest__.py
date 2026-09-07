@@ -33,7 +33,7 @@ and calculate product price in sale order base on force currency not company cur
     'images': ['static/description/multi_currency.jpeg'],
     'depends': ['sale', 'product', ],
     'data': [
-        'security/product_currency_security.xml',
+        #'security/product_currency_security.xml',
         'views/product_template_views.xml',
     ],
     'demo': [

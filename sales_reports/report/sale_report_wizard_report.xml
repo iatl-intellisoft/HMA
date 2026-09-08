@@ -60,13 +60,33 @@
                                     <td class="text-end">
                                         <span t-esc="line.net_total" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
                                     </td>
-                                    <td class="text-end">
-                                        <span t-esc="line.paid" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                    <!-- Paid: split by payment when multiple exist -->
+                                    <td class="text-end" style="white-space: nowrap;">
+                                        <t t-if="line.payment_line_ids">
+                                            <t t-foreach="line.payment_line_ids" t-as="pmt">
+                                                <div>
+                                                    <span t-esc="pmt.amount" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                                </div>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="line.paid" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                        </t>
                                     </td>
                                     <td class="text-end">
                                         <span t-esc="line.net" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
                                     </td>
-                                    <td><span t-esc="line.bank_reference"/></td>
+                                    <!-- Bank Ref: aligned row-by-row with split payments -->
+                                    <td style="white-space: nowrap;">
+                                        <t t-if="line.payment_line_ids">
+                                            <t t-foreach="line.payment_line_ids" t-as="pmt">
+                                                <div><span t-esc="pmt.bank_reference or ''"/></div>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="line.bank_reference"/>
+                                        </t>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>

@@ -3,6 +3,30 @@
 from odoo import models, fields
 
 
+class SaleReportPaymentLine(models.TransientModel):
+    """One record per reconciled payment for a sales report line."""
+    _name = 'sale.report.payment.line'
+    _description = 'Sales Report Payment Detail'
+
+    line_id = fields.Many2one(
+        'sale.report.line',
+        string='Report Line',
+        required=True,
+        ondelete='cascade',
+    )
+    currency_id = fields.Many2one(
+        'res.currency',
+        related='line_id.currency_id',
+        store=True,
+    )
+    amount = fields.Monetary(
+        string='Amount',
+        currency_field='currency_id',
+        readonly=True,
+    )
+    bank_reference = fields.Char(string='Bank Reference', readonly=True)
+
+
 class SaleReportLine(models.TransientModel):
     _name = 'sale.report.line'
     _description = 'Sales Details Report Line'
@@ -56,4 +80,12 @@ class SaleReportLine(models.TransientModel):
     )
     bank_reference = fields.Char(
         string="Bank Transaction Number"
+    )
+
+    # ── Per-payment breakdown ─────────────────────────────────────────────────
+    payment_line_ids = fields.One2many(
+        'sale.report.payment.line',
+        'line_id',
+        string='Payment Details',
+        readonly=True,
     )

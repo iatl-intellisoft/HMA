@@ -72,13 +72,36 @@ class SaleReportWizard(models.TransientModel):
                 ', '.join(sale_orders.mapped('name'))
                 if sale_orders else (inv.invoice_origin or '')
             )
-            payments = inv._get_reconciled_payments()
+            # ── Per-payment breakdown via partial reconciles ──────────────────
+            # Iterate over the invoice's receivable lines and their matched
+            # credit partials to obtain the exact amount reconciled by each
+            # payment (avoids double-counting when a payment covers many invoices).
+            payment_line_items = []
+            receivable_lines = inv.line_ids.filtered(
+                lambda l: l.account_id.account_type == 'asset_receivable'
+            )
+            for move_line in receivable_lines:
+                for partial in move_line.matched_credit_ids:
+                    # Skip reconciliations coming from refund credit notes
+                    payment = partial.credit_move_id.payment_id
+                    if not payment:
+                        continue
+                    bank_ref = ''
+                    if payment.journal_id.type == 'bank':
+                        bank_ref = getattr(payment, 'bankak_transaction_number', '') or ''
+                    payment_line_items.append({
+                        # debit_amount_currency = matched amount in the
+                        # receivable line's currency (= invoice currency)
+                        'amount': partial.debit_amount_currency,
+                        'bank_reference': bank_ref,
+                    })
 
-            bank_references = payments.filtered(
-                lambda p: p.journal_id.type == 'bank' and p.bankak_transaction_number
-            ).mapped('bankak_transaction_number')
-
-            bank_reference = ', '.join(bank_references)
+            # Fallback: aggregate bank refs for the plain Char field (list view)
+            bank_reference = ', '.join(
+                item['bank_reference']
+                for item in payment_line_items
+                if item['bank_reference']
+            )
 
             line_vals.append({
                 'wizard_id': self.id,
@@ -95,6 +118,7 @@ class SaleReportWizard(models.TransientModel):
                 'paid': paid,
                 'net': net,
                 'bank_reference': bank_reference,
+                'payment_line_ids': [(0, 0, item) for item in payment_line_items],
             })
 
         return self.env['sale.report.line'].create(line_vals)

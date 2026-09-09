@@ -112,6 +112,11 @@ class AccountBankReconciliationWizard(models.TransientModel):
         related='st_line_id.payment_ref',
         string='Label',
     )
+    bank_ref = fields.Char(
+        related='st_line_id.bank_ref',
+        string='Bank Ref',
+        readonly=True,
+    )
     st_line_date = fields.Date(
         related='st_line_id.date',
         string='Date',
@@ -168,22 +173,40 @@ class AccountBankReconciliationWizard(models.TransientModel):
             return defaults
 
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)
-        if not (st_line.is_reconciled and st_line.matched_reconciliation_type):
-            return defaults
 
-        defaults['reconciliation_type'] = st_line.matched_reconciliation_type
-
-        if st_line.matched_payment_id:
-            defaults['payment_id'] = st_line.matched_payment_id.id
-        if st_line.matched_invoice_id:
-            defaults['invoice_id'] = st_line.matched_invoice_id.id
-        if st_line.matched_manual_move_id:
-            defaults['manual_move_id'] = st_line.matched_manual_move_id.id
-        if st_line.matched_writeoff_account_id:
-            defaults['account_id'] = st_line.matched_writeoff_account_id.id
-        if st_line.matched_writeoff_label:
-            defaults['writeoff_label'] = st_line.matched_writeoff_label
-        # manual_move_id is also handled via matched_manual_move_id above.
+        if st_line.is_reconciled and st_line.matched_reconciliation_type:
+            # ── Already reconciled: pre-fill for read-only review ────────────
+            defaults['reconciliation_type'] = st_line.matched_reconciliation_type
+            if st_line.matched_payment_id:
+                defaults['payment_id'] = st_line.matched_payment_id.id
+            if st_line.matched_invoice_id:
+                defaults['invoice_id'] = st_line.matched_invoice_id.id
+            if st_line.matched_manual_move_id:
+                defaults['manual_move_id'] = st_line.matched_manual_move_id.id
+            if st_line.matched_writeoff_account_id:
+                defaults['account_id'] = st_line.matched_writeoff_account_id.id
+            if st_line.matched_writeoff_label:
+                defaults['writeoff_label'] = st_line.matched_writeoff_label
+        elif st_line.bank_ref:
+            # ── Not yet reconciled but has a bank ref: suggest a payment ─────
+            # (This path is reached only when auto-reconcile was skipped, e.g.
+            #  when the amount did not match perfectly and the user opened the
+            #  wizard manually to inspect the suggestion.)
+            suggested = st_line._find_matching_payment()
+            if not suggested:
+                # Relax the amount constraint and suggest by ref alone so the
+                # user can still pick the right payment quickly.
+                expected_type = 'inbound' if (st_line.amount or 0) >= 0 else 'outbound'
+                suggested = self.env['account.payment'].search([
+                    ('bankak_transaction_number', '=', st_line.bank_ref),
+                    ('state', 'in', ['in_process', 'paid']),
+                    ('bank_stmt_reconciled', '=', False),
+                    ('payment_type', '=', expected_type),
+                    ('company_id', '=', st_line.company_id.id),
+                ], limit=1)
+            if suggested:
+                defaults['payment_id'] = suggested.id
+                defaults['reconciliation_type'] = 'payment'
 
         return defaults
 

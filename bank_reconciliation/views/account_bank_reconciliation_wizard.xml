@@ -23,6 +23,8 @@
                         <field name="partner_id"           readonly="1"/>
                         <field name="transaction_amount"   readonly="1" widget="monetary"/>
                         <field name="journal_id"           readonly="1"/>
+                        <field name="bank_ref"             readonly="1"
+                               invisible="not bank_ref"/>
                     </group>
 
                     <!-- ── Status notices ────────────────────────────────── -->

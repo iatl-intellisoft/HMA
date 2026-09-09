@@ -14,6 +14,7 @@
                     <field name="payment_ref" string="Label"/>
                     <field name="partner_id"/>
                     <field name="amount"/>
+                    <field name="bank_ref" string="Bank Ref" optional="show"/>
                     <field name="running_balance"/>
                     <field name="is_reconciled" string="Reconciled" widget="boolean"/>
                     <field name="matched_move_id"
@@ -137,6 +138,7 @@
                                         <field name="payment_ref" string="Label"/>
                                         <field name="partner_id"/>
                                         <field name="amount"/>
+                                        <field name="bank_ref" string="Bank Ref" optional="show"/>
                                         <field name="running_balance" optional="show" readonly="1"/>
                                         <field name="is_reconciled" string="Reconciled" widget="boolean" readonly="1"/>
                                         <field name="matched_move_id"

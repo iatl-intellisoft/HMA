@@ -14,7 +14,7 @@ manual account entry, or write-off).
 Menu: Accounting → Accounting → Bank Statements
     """,
     'author': 'IATL Intellisoft',
-    'depends': ['account', 'base_import'],
+    'depends': ['account', 'base_import', 'bankak_transaction_number'],
     'data': [
         'security/ir.model.access.csv',
         'views/account_bank_statement_form.xml',

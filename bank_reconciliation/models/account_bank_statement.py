@@ -39,8 +39,47 @@ class AccountBankStatement(models.Model):
     )
 
     # -------------------------------------------------------------------------
-    # COMPUTED BALANCE – reconciled lines only
+    # COMPUTED BALANCES
     # -------------------------------------------------------------------------
+
+    def _compute_balance_start(self):
+        """Extend the core computation: when a statement has no lines yet
+        (first_line_index is empty), fall back to the ending balance of the
+        most recent 'done' statement on the same journal so the opening balance
+        is pre-filled automatically on new statements."""
+        super()._compute_balance_start()
+
+        for stmt in self:
+            if stmt.first_line_index:
+                # Core already computed a meaningful value; leave it.
+                continue
+            stmt._set_balance_start_from_last_done()
+
+    def _set_balance_start_from_last_done(self):
+        """Set balance_start to the balance_end_real of the most recent Done
+        statement on the same journal.  Shared by the compute override and the
+        onchange so the logic lives in one place."""
+        self.ensure_one()
+        journal_id = self.journal_id.id
+        if not journal_id:
+            return
+
+        last_done = self.search([
+            ('journal_id', '=', journal_id),
+            ('reconciliation_state', '=', 'done'),
+            ('id', '!=', self._origin.id or 0),
+        ], order='id desc', limit=1)
+
+        if last_done:
+            self.balance_start = last_done.balance_end_real
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id_balance_start(self):
+        """When the user picks a journal on a new (unsaved) statement, fill
+        balance_start immediately from the last Done statement so they don't
+        have to save first to see the value."""
+        if not self.first_line_index:
+            self._set_balance_start_from_last_done()
 
     @api.depends('balance_start', 'line_ids.amount', 'line_ids.state', 'line_ids.is_reconciled')
     def _compute_balance_end(self):
@@ -213,6 +252,15 @@ class AccountBankStatementLine(models.Model):
         help="The write-off journal entry created for this statement line.",
     )
 
+    # Bank reference entered by the user; used for automatic payment matching.
+    bank_ref = fields.Char(
+        string='Bank Ref',
+        copy=False,
+        help="Bank transaction reference (e.g. Bankak transaction number). "
+             "When set, clicking 'Reconcile' will automatically match a payment "
+             "that shares the same reference and amount.",
+    )
+
     # Single unified reference shown in the list/form for quick review.
     # Set to:
     #   payment  → payment.move_id (payment's journal entry)
@@ -230,6 +278,28 @@ class AccountBankStatementLine(models.Model):
     )
 
     # ------------------------------------------------------------------
+
+    def _find_matching_payment(self):
+        """Return a single unreconciled payment whose bankak_transaction_number
+        equals this line's bank_ref AND whose amount matches (within 0.01).
+
+        Returns an empty recordset when no confident match is found.
+        """
+        self.ensure_one()
+        if not self.bank_ref:
+            return self.env['account.payment']
+
+        expected_type = 'inbound' if (self.amount or 0) >= 0 else 'outbound'
+        candidates = self.env['account.payment'].search([
+            ('bankak_transaction_number', '=', self.bank_ref),
+            ('state', 'in', ['in_process', 'paid']),
+            ('bank_stmt_reconciled', '=', False),
+            ('payment_type', '=', expected_type),
+            ('company_id', '=', self.company_id.id),
+        ])
+        stmt_amount = abs(self.amount or 0.0)
+        matched = candidates.filtered(lambda p: abs(p.amount - stmt_amount) < 0.01)
+        return matched[:1]
 
     def action_save_new(self):
         """Fix for enterprise account_accountant's action_save_new which assumes
@@ -291,8 +361,27 @@ class AccountBankStatementLine(models.Model):
         return result
 
     def action_open_reconciliation_wizard(self):
-        """Open the reconciliation wizard for this statement line."""
+        """Open the reconciliation wizard for this statement line.
+
+        If the line has a bank_ref and a payment matching both the reference
+        and the amount is found, the line is auto-reconciled immediately
+        without requiring the user to interact with the wizard.
+        """
         self.ensure_one()
+
+        if self.bank_ref and not self.is_reconciled:
+            matched = self._find_matching_payment()
+            if matched:
+                wizard = self.env['account.bank.reconciliation.wizard'].create({
+                    'st_line_id': self.id,
+                    'reconciliation_type': 'payment',
+                    'payment_id': matched.id,
+                })
+                wizard.action_reconcile()
+                # Return False so the list/form view reloads the record and
+                # immediately reflects the new reconciled state.
+                return False
+
         return {
             'type': 'ir.actions.act_window',
             'name': _('Reconcile Transaction'),

@@ -112,6 +112,11 @@ class AccountBankReconciliationWizard(models.TransientModel):
         related='st_line_id.payment_ref',
         string='Label',
     )
+    bank_ref = fields.Char(
+        related='st_line_id.bank_ref',
+        string='Bank Ref',
+        readonly=True,
+    )
     st_line_date = fields.Date(
         related='st_line_id.date',
         string='Date',
@@ -168,22 +173,40 @@ class AccountBankReconciliationWizard(models.TransientModel):
             return defaults
 
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)
-        if not (st_line.is_reconciled and st_line.matched_reconciliation_type):
-            return defaults
 
-        defaults['reconciliation_type'] = st_line.matched_reconciliation_type
-
-        if st_line.matched_payment_id:
-            defaults['payment_id'] = st_line.matched_payment_id.id
-        if st_line.matched_invoice_id:
-            defaults['invoice_id'] = st_line.matched_invoice_id.id
-        if st_line.matched_manual_move_id:
-            defaults['manual_move_id'] = st_line.matched_manual_move_id.id
-        if st_line.matched_writeoff_account_id:
-            defaults['account_id'] = st_line.matched_writeoff_account_id.id
-        if st_line.matched_writeoff_label:
-            defaults['writeoff_label'] = st_line.matched_writeoff_label
-        # manual_move_id is also handled via matched_manual_move_id above.
+        if st_line.is_reconciled and st_line.matched_reconciliation_type:
+            # ── Already reconciled: pre-fill for read-only review ────────────
+            defaults['reconciliation_type'] = st_line.matched_reconciliation_type
+            if st_line.matched_payment_id:
+                defaults['payment_id'] = st_line.matched_payment_id.id
+            if st_line.matched_invoice_id:
+                defaults['invoice_id'] = st_line.matched_invoice_id.id
+            if st_line.matched_manual_move_id:
+                defaults['manual_move_id'] = st_line.matched_manual_move_id.id
+            if st_line.matched_writeoff_account_id:
+                defaults['account_id'] = st_line.matched_writeoff_account_id.id
+            if st_line.matched_writeoff_label:
+                defaults['writeoff_label'] = st_line.matched_writeoff_label
+        elif st_line.bank_ref:
+            # ── Not yet reconciled but has a bank ref: suggest a payment ─────
+            # (This path is reached only when auto-reconcile was skipped, e.g.
+            #  when the amount did not match perfectly and the user opened the
+            #  wizard manually to inspect the suggestion.)
+            suggested = st_line._find_matching_payment()
+            if not suggested:
+                # Relax the amount constraint and suggest by ref alone so the
+                # user can still pick the right payment quickly.
+                expected_type = 'inbound' if (st_line.amount or 0) >= 0 else 'outbound'
+                suggested = self.env['account.payment'].search([
+                    ('bankak_transaction_number', '=', st_line.bank_ref),
+                    ('state', 'in', ['in_process', 'paid']),
+                    ('bank_stmt_reconciled', '=', False),
+                    ('payment_type', '=', expected_type),
+                    ('company_id', '=', st_line.company_id.id),
+                ], limit=1)
+            if suggested:
+                defaults['payment_id'] = suggested.id
+                defaults['reconciliation_type'] = 'payment'
 
         return defaults
 
@@ -285,22 +308,38 @@ class AccountBankReconciliationWizard(models.TransientModel):
         payment = self.payment_id
         st_line = self.st_line_id
 
-        # Payments on non-reconcilable bank journals have no outstanding account.
-        # The bank entry and the payment entry share the same bank account and
-        # there is nothing to cross-reconcile — just mark the line as checked.
-        if not payment.outstanding_account_id:
-            st_line.with_context(
-                force_delete=True,
-                skip_readonly_check=True,
-            ).write({'checked': True, 'matched_payment_id': payment.id})
+        # ── Detect whether the payment has a *separate* outstanding account ──
+        # When outstanding_account_id is absent or equals the bank/cash account
+        # of the statement journal, switching the suspense line to it would
+        # create two lines on the bank account.  _seek_for_lines() (used by
+        # both this module and Odoo's enterprise bank_rec_widget) expects
+        # exactly ONE liquidity line → ValueError: Expected singleton.
+        # In this situation we switch the suspense to destination_account_id
+        # (the AR/AP account) so the entry becomes Bank DR | AR CR.
+        bank_account = st_line.journal_id.default_account_id
+        outstanding = payment.outstanding_account_id
+
+        if not outstanding or outstanding == bank_account:
+            target_account = payment.destination_account_id
+            if not target_account or target_account == bank_account:
+                raise UserError(_(
+                    "Cannot reconcile payment '%s': it has no separate "
+                    "outstanding account and no destination account is "
+                    "configured. Please check the bank journal setup.",
+                    payment.display_name,
+                ))
+            suspense_line = self._get_suspense_line(st_line)
+            self._switch_suspense_account(suspense_line, target_account)
             payment.bank_stmt_reconciled = True
             st_line.write({
+                'matched_payment_id': payment.id,
                 'matched_reconciliation_type': 'payment',
-                'matched_move_id': payment.move_id.id,
+                'matched_move_id': payment.move_id.id if payment.move_id else False,
             })
             return
 
-        target_account = payment.outstanding_account_id
+        # ── Standard path: outstanding account is a proper intermediary ───────
+        target_account = outstanding
 
         payment_line = payment.move_id.line_ids.filtered(
             lambda l: l.account_id.id == target_account.id and not l.reconciled

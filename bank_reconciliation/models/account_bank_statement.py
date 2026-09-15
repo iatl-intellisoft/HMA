@@ -53,19 +53,33 @@ class AccountBankStatement(models.Model):
             if stmt.first_line_index:
                 # Core already computed a meaningful value; leave it.
                 continue
+            stmt._set_balance_start_from_last_done()
 
-            journal_id = stmt.journal_id.id
-            if not journal_id:
-                continue
+    def _set_balance_start_from_last_done(self):
+        """Set balance_start to the balance_end_real of the most recent Done
+        statement on the same journal.  Shared by the compute override and the
+        onchange so the logic lives in one place."""
+        self.ensure_one()
+        journal_id = self.journal_id.id
+        if not journal_id:
+            return
 
-            last_done = self.search([
-                ('journal_id', '=', journal_id),
-                ('reconciliation_state', '=', 'done'),
-                ('id', '!=', stmt._origin.id or 0),
-            ], order='date desc, id desc', limit=1)
+        last_done = self.search([
+            ('journal_id', '=', journal_id),
+            ('reconciliation_state', '=', 'done'),
+            ('id', '!=', self._origin.id or 0),
+        ], order='id desc', limit=1)
 
-            if last_done:
-                stmt.balance_start = last_done.balance_end_real
+        if last_done:
+            self.balance_start = last_done.balance_end_real
+
+    @api.onchange('journal_id')
+    def _onchange_journal_id_balance_start(self):
+        """When the user picks a journal on a new (unsaved) statement, fill
+        balance_start immediately from the last Done statement so they don't
+        have to save first to see the value."""
+        if not self.first_line_index:
+            self._set_balance_start_from_last_done()
 
     @api.depends('balance_start', 'line_ids.amount', 'line_ids.state', 'line_ids.is_reconciled')
     def _compute_balance_end(self):

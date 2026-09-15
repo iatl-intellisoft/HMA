@@ -1,0 +1,422 @@
+# Arabic translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bank_reconciliation
+#
+# Translators:
+# IATL Intellisoft, 2026
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-10 00:00+0000\n"
+"PO-Revision-Date: 2026-08-10 00:00+0000\n"
+"Last-Translator: IATL Intellisoft <isra.adel@iatl-intellisoft.com>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: bank_reconciliation
+#: model:ir.model,name:bank_reconciliation.model_account_bank_reconciliation_wizard
+msgid "Bank Statement Line Reconciliation Wizard"
+msgstr "معالج تسوية بند كشف الحساب البنكي"
+
+#. module: bank_reconciliation
+#: model:ir.actions.act_window,name:bank_reconciliation.action_bank_statement_reconciliation
+#: model:ir.ui.menu,name:bank_reconciliation.menu_bank_statements_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Bank Statements"
+msgstr "كشوفات الحسابات البنكية"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Bank Statement"
+msgstr "كشف الحساب البنكي"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Reconcile Lines"
+msgstr "تسوية البنود"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Ending Balance"
+msgstr "الرصيد الختامي"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Ending Balance"
+msgstr "الرصيد الختامي"
+
+msgid "Computed Balance"
+msgstr "الرصيد المحتسب"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Transactions"
+msgstr "المعاملات"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Other Info"
+msgstr "معلومات أخرى"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "External Reference"
+msgstr "المرجع الخارجي"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_line_reconcile_list
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Label"
+msgstr "التسمية"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_line_reconcile_list
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Reconciled"
+msgstr "مُسوَّى"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_line_reconcile_list
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Reconcile"
+msgstr "تسوية"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_line_reconcile_list
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.action_bank_statement_reconciliation
+msgid "Create a new bank statement"
+msgstr "إنشاء كشف حساب بنكي جديد"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.action_bank_statement_reconciliation
+msgid ""
+"Create and reconcile bank statements with your payments, invoices, or manual "
+"account entries."
+msgstr ""
+"قم بإنشاء وتسوية كشوفات الحسابات البنكية مع مدفوعاتك وفواتيرك "
+"أو القيود اليدوية."
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__st_line_id
+msgid "Statement Line"
+msgstr "بند الكشف"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__reconciliation_type
+msgid "Reconciliation Type"
+msgstr "نوع التسوية"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_reconciliation_wizard__reconciliation_type__payment
+msgid "Match Payment"
+msgstr "مطابقة دفعة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_reconciliation_wizard__reconciliation_type__invoice
+msgid "Match Invoice / Bill"
+msgstr "مطابقة فاتورة / فاتورة مورد"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_reconciliation_wizard__reconciliation_type__manual
+msgid "Match Journal Entry"
+msgstr "مطابقة قيد يومية"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_reconciliation_wizard__reconciliation_type__writeoff
+msgid "Write-off"
+msgstr "شطب"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__payment_id
+msgid "Payment"
+msgstr "الدفعة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__invoice_id
+msgid "Invoice / Bill"
+msgstr "فاتورة / فاتورة مورد"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__manual_move_id
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__account_id
+msgid "Account"
+msgstr "الحساب"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__writeoff_label
+msgid "Write-off Label"
+msgstr "تسمية الشطب"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__transaction_amount
+msgid "Transaction Amount"
+msgstr "مبلغ المعاملة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__is_reconciled
+msgid "Already Reconciled"
+msgstr "مُسوَّى مسبقاً"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__is_statement_done
+msgid "Statement Done"
+msgstr "الكشف مكتمل"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_reconciliation_wizard__expected_payment_type
+msgid "Expected Payment Type"
+msgstr "نوع الدفعة المتوقع"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_reconciliation_type
+msgid "Reconciliation Method"
+msgstr "طريقة التسوية"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_payment_id
+msgid "Matched Payment"
+msgstr "الدفعة المطابِقة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_invoice_id
+msgid "Matched Invoice"
+msgstr "الفاتورة المطابِقة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_manual_move_id
+msgid "Matched Journal Entry"
+msgstr "قيد اليومية المطابِق"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_writeoff_account_id
+msgid "Write-off Account Used"
+msgstr "حساب الشطب المُستخدَم"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_writeoff_label
+msgid "Write-off Label Used"
+msgstr "تسمية الشطب المُستخدَمة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_writeoff_move_id
+msgid "Write-off Entry"
+msgstr "قيد الشطب"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement_line__matched_move_id
+msgid "Transaction Reference"
+msgstr "مرجع المعاملة"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Reconcile Transaction"
+msgstr "تسوية المعاملة"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Transaction Details"
+msgstr "تفاصيل المعاملة"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid ""
+"This transaction is already reconciled. The matched details are shown below "
+"for review. Reset the line first if you need to re-reconcile."
+msgstr ""
+"هذه المعاملة مُسوَّاة بالفعل. تفاصيل المطابقة معروضة أدناه للمراجعة. "
+"أعد تعيين البند أولاً إذا كنت بحاجة إلى إعادة التسوية."
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid ""
+"The bank statement is marked as Done. No further reconciliation is allowed."
+msgstr "كشف الحساب البنكي مُعلَّم بحالة مكتمل. لا يُسمح بأي تسوية إضافية."
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Reconciliation Type"
+msgstr "نوع التسوية"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Write-off Account"
+msgstr "حساب الشطب"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Write-off Label"
+msgstr "تسمية الشطب"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_account_bank_reconciliation_wizard_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_statement.py:0
+msgid "Statement Lines: %s"
+msgstr "بنود الكشف: %s"
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_statement.py:0
+msgid "Reconcile Transaction"
+msgstr "تسوية المعاملة"
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "No statement line selected."
+msgstr "لم يتم تحديد بند كشف."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"This statement line is already reconciled.\n"
+"Use the 'Reset to Draft' option before reconciling again."
+msgstr ""
+"بند الكشف هذا مُسوَّى بالفعل.\n"
+"استخدم خيار 'إعادة إلى المسودة' قبل التسوية مجدداً."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"The bank statement is marked as Done. "
+"No further reconciliation is allowed."
+msgstr "كشف الحساب البنكي مُعلَّم بحالة مكتمل. لا يُسمح بأي تسوية إضافية."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Please select a payment to match."
+msgstr "يرجى تحديد دفعة للمطابقة."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"Could not find an unreconciled journal item in the payment '%s' "
+"for account '%s'. The payment may already be fully matched."
+msgstr ""
+"تعذر العثور على بند يومية غير مُسوَّى في الدفعة '%s' "
+"للحساب '%s'. قد تكون الدفعة مطابَقة بالكامل بالفعل."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"Could not find the journal item for account '%s' after switching. "
+"Please check the journal configuration."
+msgstr ""
+"تعذر العثور على بند اليومية للحساب '%s' بعد التبديل. "
+"يرجى التحقق من إعدادات اليومية."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Please select an invoice or bill to match."
+msgstr "يرجى تحديد فاتورة أو فاتورة مورد للمطابقة."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"Could not find an unreconciled receivable/payable line on "
+"invoice '%s'. The invoice may already be fully paid."
+msgstr ""
+"تعذر العثور على بند مدين/دائن غير مُسوَّى في الفاتورة '%s'. "
+"قد تكون الفاتورة مدفوعة بالكامل بالفعل."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Could not find the journal item for account '%s' after switching."
+msgstr "تعذر العثور على بند اليومية للحساب '%s' بعد التبديل."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Please select a journal entry to match."
+msgstr "يرجى تحديد قيد يومية للمطابقة."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "No unreconciled journal items found in '%s'."
+msgstr "لم يتم العثور على بنود يومية غير مُسوَّاة في '%s'."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Please select an account for the write-off."
+msgstr "يرجى تحديد حساب للشطب."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid ""
+"No miscellaneous journal found in company '%s'.\n"
+"Please create a journal of type 'Miscellaneous' to process write-offs."
+msgstr ""
+"لم يتم العثور على يومية متنوعات في الشركة '%s'.\n"
+"يرجى إنشاء يومية من نوع 'متنوعات' لمعالجة عمليات الشطب."
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Unknown reconciliation type: %s"
+msgstr "نوع التسوية غير معروف: %s"
+
+#. module: bank_reconciliation
+#. odoo-python
+#: code:addons/bank_reconciliation/models/account_bank_reconciliation_wizard.py:0
+msgid "Write-off"
+msgstr "شطب"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields,field_description:bank_reconciliation.field_account_bank_statement__reconciliation_state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_statement__reconciliation_state__under_reconciliation
+msgid "Under Reconciliation"
+msgstr "قيد التسوية"
+
+#. module: bank_reconciliation
+#: model:ir.model.fields.selection,name:bank_reconciliation.selection__account_bank_statement__reconciliation_state__done
+msgid "Done"
+msgstr "مكتمل"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Set to Draft"
+msgstr "إعادة إلى المسودة"
+
+#. module: bank_reconciliation
+#: model_terms:ir.ui.view,arch_db:bank_reconciliation.view_bank_statement_form
+msgid "Import Lines"
+msgstr "استيراد البنود"

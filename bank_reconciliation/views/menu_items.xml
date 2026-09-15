@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Bank Statements under Accounting → Accounting -->
+        <menuitem
+            id="menu_bank_statements_reconciliation"
+            name="Bank Statements"
+            parent="account.menu_finance_entries"
+            action="bank_reconciliation.action_bank_statement_reconciliation"
+            sequence="10"
+            groups="account.group_account_user"
+        />
+
+    </data>
+</odoo>

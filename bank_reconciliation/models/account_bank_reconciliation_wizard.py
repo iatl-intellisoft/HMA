@@ -308,20 +308,27 @@ class AccountBankReconciliationWizard(models.TransientModel):
         payment = self.payment_id
         st_line = self.st_line_id
 
-        # Payments on non-reconcilable bank journals (or payments registered
-        # without a proper Odoo journal entry) have no outstanding account.
-        # We can't do a standard partial-reconcile, so we clear the suspense
-        # line by switching its account.  Once the suspense account line is
-        # gone, Odoo's _compute_is_reconciled marks the statement line as
-        # reconciled automatically.
-        if not payment.outstanding_account_id:
+        # ── Detect whether the payment has a *separate* outstanding account ──
+        # When outstanding_account_id is absent or equals the bank/cash account
+        # of the statement journal, switching the suspense line to it would
+        # create two lines on the bank account.  _seek_for_lines() (used by
+        # both this module and Odoo's enterprise bank_rec_widget) expects
+        # exactly ONE liquidity line → ValueError: Expected singleton.
+        # In this situation we switch the suspense to destination_account_id
+        # (the AR/AP account) so the entry becomes Bank DR | AR CR.
+        bank_account = st_line.journal_id.default_account_id
+        outstanding = payment.outstanding_account_id
+
+        if not outstanding or outstanding == bank_account:
+            target_account = payment.destination_account_id
+            if not target_account or target_account == bank_account:
+                raise UserError(_(
+                    "Cannot reconcile payment '%s': it has no separate "
+                    "outstanding account and no destination account is "
+                    "configured. Please check the bank journal setup.",
+                    payment.display_name,
+                ))
             suspense_line = self._get_suspense_line(st_line)
-            # Prefer the payment's destination account (AR/AP); fall back to
-            # the journal's own bank/cash account (neutral wash entry).
-            target_account = (
-                payment.destination_account_id
-                or st_line.journal_id.default_account_id
-            )
             self._switch_suspense_account(suspense_line, target_account)
             payment.bank_stmt_reconciled = True
             st_line.write({
@@ -331,7 +338,8 @@ class AccountBankReconciliationWizard(models.TransientModel):
             })
             return
 
-        target_account = payment.outstanding_account_id
+        # ── Standard path: outstanding account is a proper intermediary ───────
+        target_account = outstanding
 
         payment_line = payment.move_id.line_ids.filtered(
             lambda l: l.account_id.id == target_account.id and not l.reconciled

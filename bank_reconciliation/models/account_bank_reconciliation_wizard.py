@@ -308,18 +308,26 @@ class AccountBankReconciliationWizard(models.TransientModel):
         payment = self.payment_id
         st_line = self.st_line_id
 
-        # Payments on non-reconcilable bank journals have no outstanding account.
-        # The bank entry and the payment entry share the same bank account and
-        # there is nothing to cross-reconcile — just mark the line as checked.
+        # Payments on non-reconcilable bank journals (or payments registered
+        # without a proper Odoo journal entry) have no outstanding account.
+        # We can't do a standard partial-reconcile, so we clear the suspense
+        # line by switching its account.  Once the suspense account line is
+        # gone, Odoo's _compute_is_reconciled marks the statement line as
+        # reconciled automatically.
         if not payment.outstanding_account_id:
-            st_line.with_context(
-                force_delete=True,
-                skip_readonly_check=True,
-            ).write({'checked': True, 'matched_payment_id': payment.id})
+            suspense_line = self._get_suspense_line(st_line)
+            # Prefer the payment's destination account (AR/AP); fall back to
+            # the journal's own bank/cash account (neutral wash entry).
+            target_account = (
+                payment.destination_account_id
+                or st_line.journal_id.default_account_id
+            )
+            self._switch_suspense_account(suspense_line, target_account)
             payment.bank_stmt_reconciled = True
             st_line.write({
+                'matched_payment_id': payment.id,
                 'matched_reconciliation_type': 'payment',
-                'matched_move_id': payment.move_id.id,
+                'matched_move_id': payment.move_id.id if payment.move_id else False,
             })
             return
 

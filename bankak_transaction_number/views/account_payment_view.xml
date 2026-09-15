@@ -8,13 +8,13 @@
                 <field name="show_partner_bank_account" invisible="1"/>
                 <field name="require_partner_bank_account" invisible="1"/>
                 
-                <field name="bankak_transaction_number"
+                <!--field name="bankak_transaction_number"
                        invisible="not show_partner_bank_account"
                        required="require_partner_bank_account"/>
                 
                 <field name="bank_transaction_notification"
                        invisible="not show_partner_bank_account"
-                       required="require_partner_bank_account"/>
+                       required="require_partner_bank_account"/-->
             </xpath>
         </field>
     </record>

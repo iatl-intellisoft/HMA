@@ -26,32 +26,6 @@ class AccountBankStatement(models.Model):
         index=True,
     )
 
-    @api.model
-    def default_get(self, fields_list):
-        """Pre-fill balance_start with the ending balance of the most recent
-        Done statement on the same journal, if one exists."""
-        defaults = super().default_get(fields_list)
-        if 'balance_start' not in fields_list:
-            return defaults
-
-        # Try to detect the journal from context (set by our form view / action)
-        journal_id = (
-            defaults.get('journal_id')
-            or self._context.get('default_journal_id')
-        )
-        if not journal_id:
-            return defaults
-
-        last_stmt = self.search([
-            ('journal_id', '=', journal_id),
-            ('reconciliation_state', '=', 'done'),
-        ], order='date desc, id desc', limit=1)
-
-        if last_stmt:
-            defaults['balance_start'] = last_stmt.balance_end_real
-
-        return defaults
-
     reconciliation_state = fields.Selection(
         selection=[
             ('under_reconciliation', 'Under Reconciliation'),
@@ -65,8 +39,33 @@ class AccountBankStatement(models.Model):
     )
 
     # -------------------------------------------------------------------------
-    # COMPUTED BALANCE – reconciled lines only
+    # COMPUTED BALANCES
     # -------------------------------------------------------------------------
+
+    def _compute_balance_start(self):
+        """Extend the core computation: when a statement has no lines yet
+        (first_line_index is empty), fall back to the ending balance of the
+        most recent 'done' statement on the same journal so the opening balance
+        is pre-filled automatically on new statements."""
+        super()._compute_balance_start()
+
+        for stmt in self:
+            if stmt.first_line_index:
+                # Core already computed a meaningful value; leave it.
+                continue
+
+            journal_id = stmt.journal_id.id
+            if not journal_id:
+                continue
+
+            last_done = self.search([
+                ('journal_id', '=', journal_id),
+                ('reconciliation_state', '=', 'done'),
+                ('id', '!=', stmt._origin.id or 0),
+            ], order='date desc, id desc', limit=1)
+
+            if last_done:
+                stmt.balance_start = last_done.balance_end_real
 
     @api.depends('balance_start', 'line_ids.amount', 'line_ids.state', 'line_ids.is_reconciled')
     def _compute_balance_end(self):

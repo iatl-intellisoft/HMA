@@ -24,11 +24,20 @@ class AccountMove(models.Model):
           amount; recalculate balance (→ debit/credit) using the new rate.
         - Line already has a balance → user typed debit/credit; recalculate
           amount_currency using the new rate.
+
+        We iterate over self_ctx (with skip_balance_compute=True) so that
+        _compute_balance's auto-rebalancing is suppressed during this update:
+        without the flag, setting line 1's balance triggers _compute_balance
+        on line 2 (setting it to the negative sum), and then setting line 2's
+        balance re-triggers line 1's recompute — an endless fight.
         """
         if self.is_invoice(include_receipts=True) or not self.custom_rate:
             return
         company_currency = self.company_id.currency_id
-        for line in self.line_ids:
+        # Retrieve lines in an environment that skips the auto-balance compute,
+        # so all line records in the loop share the same flagged environment.
+        self_ctx = self.with_context(skip_balance_compute=True)
+        for line in self_ctx.line_ids:
             if not line.currency_id or line.currency_id == company_currency:
                 continue
             if line.amount_currency and not line.balance:

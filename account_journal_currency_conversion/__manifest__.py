@@ -16,7 +16,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/custom_currency_rate_views.xml',
-        'views/account_move_line_views.xml',
     ],
     'installable': True,
     'application': False,

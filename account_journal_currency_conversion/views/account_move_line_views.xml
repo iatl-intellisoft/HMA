@@ -3,28 +3,23 @@
     <data>
 
         <!--
-            Add the custom exchange rate column to the Journal Items list
-            inside the journal entry form (account.move).
-
-            The column is:
-            - Visible by default (optional="show")
-            - Hidden automatically for invoices/bills (column_invisible)
-            - Shown after the "Amount in Currency" column
-            - Only relevant when base.group_multi_currency is active, but
-              we show it unconditionally so users can set a rate before
-              picking the currency.
+            Show the Exchange Rate field on the journal entry form header,
+            only for journal entries (move_type = 'entry').
+            Placed in header_right_group after the Accounting Date field.
         -->
         <record id="view_move_form_custom_rate" model="ir.ui.view">
             <field name="name">account.move.form.custom.rate</field>
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='line_ids']/list/field[@name='amount_currency']" position="after">
+                <xpath expr="//group[@id='header_right_group']/field[@name='date']" position="after">
+                    <label for="custom_rate"
+                           string="Exchange Rate"
+                           invisible="move_type != 'entry'"/>
                     <field name="custom_rate"
-                           string="Rate"
-                           optional="show"
                            digits="[16, 6]"
-                           column_invisible="parent.move_type != 'entry'"/>
+                           invisible="move_type != 'entry'"
+                           readonly="state != 'draft'"/>
                 </xpath>
             </field>
         </record>

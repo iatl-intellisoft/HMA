@@ -4,10 +4,24 @@ from odoo import models, fields, api
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
+    @api.onchange('amount_currency', 'currency_id')
     def _inverse_amount_currency(self):
-        invoice_lines = self.filtered(lambda l: l.move_id.is_invoice(include_receipts=True))
-        if invoice_lines:
-            super(AccountMoveLine, invoice_lines)._inverse_amount_currency()
+        for line in self:
+            if line.move_id.is_invoice(include_receipts=True):
+                super(AccountMoveLine, line)._inverse_amount_currency()
+                continue
+
+            company_currency = line.company_id.currency_id
+
+            if line.currency_id == company_currency:
+                if line.balance != line.amount_currency:
+                    line.balance = line.amount_currency
+
+            elif not line.debit and not line.credit:
+                if line.amount_currency and line.currency_rate:
+                    line.balance = line.company_id.currency_id.round(
+                        line.amount_currency / line.currency_rate
+                    )
 
     def _get_computed_amount_currency(self):
         self.ensure_one()
@@ -58,7 +72,12 @@ class AccountMoveLine(models.Model):
     def _compute_amount_currency(self):
         super()._compute_amount_currency()
         for line in self:
-            if not line.move_id.is_invoice(include_receipts=True) and line.currency_id and line.currency_id != line.company_id.currency_id:
+            if (
+                not line.move_id.is_invoice(include_receipts=True)
+                and line.currency_id
+                and line.currency_id != line.company_id.currency_id
+                and (line.debit or line.credit)
+            ):
                 new_amt = line._get_computed_amount_currency()
                 if line.amount_currency != new_amt:
                     line.amount_currency = new_amt

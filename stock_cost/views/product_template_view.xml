@@ -23,6 +23,13 @@
                     <field name="force_currency_id" invisible="1"/>
                     <field name="valuation" invisible="1"/>
                 </xpath>
+                <!-- Restrict standard_price (label + field div) to group_product_cost -->
+                <xpath expr="//label[@id='standard_price_label']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//div[@name='standard_price_uom']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
                 <!-- Foreign Cost: displayed directly below the Cost (standard_price) row -->
                 <xpath expr="//div[@name='standard_price_uom']" position="after">
                     <label for="foreign_standard_price" string="Foreign Cost"
@@ -49,6 +56,13 @@
                 <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="valuation" invisible="1"/>
                     <field name="force_currency_id" invisible="1"/>
+                </xpath>
+                <!-- Restrict standard_price (label + field div) to group_product_cost -->
+                <xpath expr="//label[@id='standard_price_label']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//div[@name='standard_price_uom']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
                 </xpath>
                 <xpath expr="//field[@name='standard_price']" position="attributes">
                     <attribute name="readonly">[('valuation','=','real_time')]</attribute>
@@ -105,8 +119,15 @@
             <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
             <field name="arch" type="xml">
 
-                 <xpath expr="//field[@name='standard_price']" position="after">
-                           <field name="foreign_standard_price"
+                <!-- Restrict standard_price label + field to group_product_cost -->
+                <xpath expr="//label[@for='standard_price']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="foreign_standard_price"
                            widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
                            class="float-left"/>
                 </xpath>

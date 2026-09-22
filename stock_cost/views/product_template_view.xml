@@ -17,16 +17,31 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[@name='standard_price_uom']" position="after">
-                    <field name="foreign_standard_price" 
-                           widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
-                           class="float-left" readonly="valuation == 'real_time'"/>
-                </xpath>
-                <xpath expr="//field[@name='categ_id']" position="after">
+                <!-- Load force_currency_id and valuation as invisible so they can
+                     be used by currency_field option and readonly expression. -->
+                <xpath expr="//field[@name='cost_currency_id']" position="after">
+                    <field name="force_currency_id" invisible="1"/>
                     <field name="valuation" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='standard_price']" position="attributes">
-                    <attribute name="readonly">[('valuation','=','real_time')]</attribute>
+                <!-- Restrict standard_price (label + field div) to group_product_cost -->
+                <xpath expr="//label[@id='standard_price_label']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//div[@name='standard_price_uom']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <!-- Foreign Cost: displayed directly below the Cost (standard_price) row -->
+                <xpath expr="//div[@name='standard_price_uom']" position="after">
+                    <label for="foreign_standard_price" string="Foreign Cost"
+                           invisible="(id and product_variant_count != 1 and not is_product_variant) or type == 'combo'"/>
+                    <div name="foreign_standard_price_uom"
+                         invisible="(id and product_variant_count != 1 and not is_product_variant) or type == 'combo'">
+                        <field name="foreign_standard_price"
+                               class="oe_inline"
+                               widget="monetary"
+                               options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                               readonly="valuation == 'real_time'"/>
+                    </div>
                 </xpath>
             </field>
         </record>
@@ -36,16 +51,34 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-              <!--   <xpath expr="//div[@name='standard_price_uom']" position="after">
-                    <field name="foreign_standard_price" readonly="1"
-                           widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
-                           class="float-left"/>
-                </xpath> -->
+                <!-- Load force_currency_id and valuation as invisible so they can
+                     be used by currency_field option and readonly expression. -->
                 <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="valuation" invisible="1"/>
+                    <field name="force_currency_id" invisible="1"/>
+                </xpath>
+                <!-- Restrict standard_price (label + field div) to group_product_cost -->
+                <xpath expr="//label[@id='standard_price_label']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//div[@name='standard_price_uom']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
                 </xpath>
                 <xpath expr="//field[@name='standard_price']" position="attributes">
                     <attribute name="readonly">[('valuation','=','real_time')]</attribute>
+                </xpath>
+                <!-- Foreign Cost: displayed directly below the standard cost -->
+                <xpath expr="//div[@name='standard_price_uom']" position="after">
+                    <label for="foreign_standard_price" string="Foreign Cost"
+                           invisible="(id and product_variant_count != 1 and not is_product_variant) or type == 'combo'"/>
+                    <div name="foreign_standard_price_uom"
+                         invisible="(id and product_variant_count != 1 and not is_product_variant) or type == 'combo'">
+                        <field name="foreign_standard_price"
+                               class="oe_inline"
+                               widget="monetary"
+                               options="{'currency_field': 'force_currency_id', 'field_digits': True}"
+                               readonly="valuation == 'real_time'"/>
+                    </div>
                 </xpath>
             </field>
         </record>
@@ -63,42 +96,21 @@
         </record>
 
 
-        <!--Price List -->
-        <record id="inherit_product_pricelist_item_form_view" model="ir.ui.view">
-            <field name="name">product.pricelist.item.form</field>
-            <field name="model">product.pricelist.item</field>
-            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
-            <field name="arch" type="xml">
-                <field name="base" position="replace">
-                    <field name="base" colspan="6"/>
-                </field>
-                <xpath expr="//group[@name='pricelist_rule_base']//group[1]" position="inside">
-                    <div class="o_row" invisible="base != 'foreign_standard_price'" style="width: 40% !important;">
-                    <span>Forgen Cost -</span>
-                </div>
-                </xpath>
-            </field>
-        </record>
-
-        <record id="product_normal_form_view_inherit" model="ir.ui.view">
-            <field name="name">product.product.view.form.easy.inherit</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_normal_form_view" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='standard_price']" position="after">
-                    <field name="foreign_value_svl"/>
-                </xpath>
-            </field>
-        </record>
-
         <record id="product_variant_easy_edit_view_inherit_id_product" model="ir.ui.view">
             <field name="name">product.prod.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
             <field name="arch" type="xml">
 
-                 <xpath expr="//field[@name='standard_price']" position="after">
-                           <field name="foreign_standard_price"
+                <!-- Restrict standard_price label + field to group_product_cost -->
+                <xpath expr="//label[@for='standard_price']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="groups">stock_cost.group_product_cost</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="foreign_standard_price"
                            widget='monetary' options="{'currency_field': 'force_currency_id', 'field_digits': True}"
                            class="float-left"/>
                 </xpath>

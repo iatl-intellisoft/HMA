@@ -109,7 +109,8 @@ class PriceList(models.Model):
                                                                                             self.env.company,
                                                                                             date, round=False)'''
             if compute_price:
-                price = suitable_rule._compute_price(product, quantity, target_uom, date=date, currency=currency)    
+                price = suitable_rule._compute_price(product, quantity, target_uom, date=date, currency=currency)  
+                
             else:
                 # Skip price computation when only the rule is requested.
                 price = 0.0

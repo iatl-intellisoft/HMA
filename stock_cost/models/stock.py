@@ -135,7 +135,6 @@ class StockMove(models.Model):
             qty_done = move.product_uom._compute_quantity(move.quantity, move.product_id.uom_id)
             qty = forced_qty or qty_done
             move_cost = move._get_price_unit()
-            print('+++++++++++++++++++++++++++++++++++++++++', move_cost)
             if float_is_zero(product_tot_qty_available, precision_rounding=rounding) \
                     or float_is_zero(product_tot_qty_available + move.product_qty, precision_rounding=rounding) \
                     or float_is_zero(product_tot_qty_available + qty, precision_rounding=rounding):
@@ -155,8 +154,9 @@ class StockMove(models.Model):
                 tmpl_dict[move.product_id.id] += qty
             # Write the standard price, as SUPERUSER_ID because a warehouse manager may not have the right to write on products
             move.product_id.with_company(move.company_id.id).with_context(disable_auto_svl=True).sudo().write(
-                {'standard_price': new_std_price})
+                {'standard_price': new_std_price, 'foreign_standard_price': new_foreign_std_price})
             std_price_update[move.company_id.id, move.product_id.id] = new_std_price
+            std_foreign_price_update[move.company_id.id, move.product_id.id] = new_foreign_std_price
 
             # Update the standard price of the lot
             if not move.product_id.lot_valuated:
@@ -224,7 +224,6 @@ class StockMove(models.Model):
             price_unit = move._get_price_unit().get('price_unit', 0.0)
             unit_cost = abs(price_unit)
             unit_foreign = abs(move._get_foreign_price_unit())
-            print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', unit_foreign)
             if forced_quantity:
                 quantities[forced_quantity[0]] += forced_quantity[1]
             else:
@@ -238,8 +237,12 @@ class StockMove(models.Model):
 
             if move.product_id.cost_method != 'standard':
                 unit_cost_map = {None: move.product_id.standard_price}
+                # For AVCO/FIFO keep unit_foreign from the actual purchase price
+                # (computed above via _get_foreign_price_unit).
+                # Only for standard cost do we fall back to the product's stored
+                # foreign_standard_price (because standard cost ignores purchase price).
+            else:
                 unit_foreign = move.product_id.foreign_standard_price
-                print('---------------------------------------unit_foreign',unit_foreign, unit_cost_map)
 
             vals = []
             if move.product_id.lot_valuated:
@@ -249,20 +252,18 @@ class StockMove(models.Model):
                             qty,
                             abs(unit_cost_map.get(lot_id, move.product_id.standard_price)),
                             lot=lot_id,
-                            unit_foreign=unit_foreign,
-                            unit_cost=unit_cost_map.get(lot_id)
+                            foreign_price_unit=unit_foreign,
                         )
                     )
-                    print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', vals)
             else:
                 total_qty = sum(quantities.values())
                 vals = [
                     move.product_id._prepare_in_svl_vals(
                         total_qty,
-                        abs(unit_cost_map.get(None, move.product_id.standard_price))
+                        abs(unit_cost_map.get(None, move.product_id.standard_price)),
+                        foreign_price_unit=unit_foreign,
                     )
                 ]
-                print('@@@@@@@@@@@@@@@@@@@@@@@@@',vals)
             for val in vals:
                 val.update(move._prepare_common_svl_vals())
                 if forced_quantity:

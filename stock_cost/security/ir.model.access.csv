@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_change_foreign_cost,stock_stock_change_foreign_cost,model_stock_change_foreign_cost,stock.group_stock_manager,1,1,1,1
+access_stock_change_foreign_cost_lines,stock_stock_change_foreign_cost_lines,model_stock_change_foreign_cost_lines,stock.group_stock_manager,1,1,1,1
+access_stock_change_standard_price_stock_user,stock.change.standard.price stock user,stock_cost.model_stock_change_standard_price,stock.group_stock_user,1,1,1,1

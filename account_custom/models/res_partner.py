@@ -13,13 +13,15 @@ class ResPartner(models.Model):
 
     @api.constrains('phone')
     def _check_phone_no(self):
-        phone_count = self.env['res.partner'].search_count([('phone', '=', self.phone)])
-        # phone_no = len(self.phone)
-        if phone_count > 1:
-            raise ValidationError(_('Phone Number should be unique in company'))
-        # elif phone_no != 10:
-        #     raise ValidationError(_('Phone Number should be 10 number!'))
-        #
+        for record in self:
+            if not record.phone:
+                continue
+            phone_count = self.env['res.partner'].search_count([('phone', '=', record.phone)])
+            if phone_count > 1:
+                raise ValidationError(_('Phone Number should be unique in company'))
+            # elif phone_no != 10:
+            #     raise ValidationError(_('Phone Number should be 10 number!'))
+            
 
     @api.onchange('vendor')
     def fill_is_vendor(self):

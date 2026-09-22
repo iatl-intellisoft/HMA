@@ -627,7 +627,8 @@ class ProductProduct(models.Model):
             new_foreign_standard_price = candidate_foreign_unit_cost
             foreign_value_taken_on_candidate = qty_taken_on_candidate * \
                                                candidate_foreign_unit_cost
-            foreign_value_taken_on_candidate = candidate.product_id.force_currency_id.round(
+            foreign_currency = candidate.product_id.force_currency_id or candidate.currency_id
+            foreign_value_taken_on_candidate = foreign_currency.round(
                 foreign_value_taken_on_candidate)
             new_foreign_remaining_value = candidate.foreign_remaining_value - \
                                           foreign_value_taken_on_candidate

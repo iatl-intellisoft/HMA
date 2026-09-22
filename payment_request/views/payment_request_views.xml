@@ -12,7 +12,6 @@
             <field name="name">Financial Approval</field>
             <field name="model">payment.request</field>
             <field name="arch" type="xml">
-                
                 <list string="Financel Approval" >
                     <field name="on_time" column_invisible="1"/>
                     <field name="name"/>
@@ -35,19 +34,7 @@
             <field name="arch" type="xml">
                 <form string="Financial Approval">
                     <header>
-                        <button name="action_submit" string="Submit" class="oe_highlight"
-                                invisible="state != 'draft'" type="object"/>
-
-                        <!-- <button name="action_depart_manager_approve" string="Approve" class="oe_highlight"
-                                invisible="state != 'wait_department_manager'" type="object"
-                                groups="payment_request.group_payment_request_manager"/> -->
-                         <!-- <button name="action_financial_manager_approve" string="Approve" class="oe_highlight"
-                                invisible="state != 'wait_financial_manager'" type="object"
-                                groups="account_custom.group_account_financial_manager"/> -->
-                      <!--  <button name="action_wait_auditing_approve" string="Approve" class="oe_highlight"
-                                invisible="state != 'wait_auditing'" type="object" groups="account.group_account_manager"/> -->
-                        <!-- <button name="action_paid" string="paid" class="oe_highlight"
-                       	 type="object" groups="account_custom.group_general_manager"/> -->
+                        <button name="action_submit" string="Submit" class="oe_highlight" invisible="state != 'draft'" type="object"/>
                         <button name="%(payment_request.action_account_request_payment)d"
                                 id="account_custody_payment_btn" type="action"
                                 invisible="state != 'wait_payment'"
@@ -56,18 +43,15 @@
                         <button name="action_cancel" type="object" string="Cancel"
                                 invisible="state not in ['submit', 'wait_department_manager', 'wait_financial_manager', 'wait_auditing', 'wait_gm', 'wait_payment', 'approve']"
                                 groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"/>
-                        <button name="action_close" id="close_btn" type="object" string="Close"
-                                                               invisible="1"
-                                class="oe_highlight"/>
-                        <button name="reset_to_draft" id="reset_to_draft_button" type="object" string="Reset to draft"
-                                                                invisible="can_reset_to_draft == False" groups="payment_request.group_payment_request_manager,payment_request.group_payment_request_user"/>
+                        <button name="action_close" id="close_btn" type="object" string="Close" invisible="1" class="oe_highlight"/>
+                        <button name="reset_to_draft" id="reset_to_draft_button" type="object" string="Reset to draft" invisible="can_reset_to_draft == False" groups="payment_request.grouppayment_request_manager"/>
+                        <button name="action_paid" id="reset_to_paid" type="object" string="Reset to Paid" invisible="state not in ['close']" groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"/> 
                         <field name="clearance_ids" invisible="1"/>
                         <field name="can_reset_to_draft" invisible="1"/>
-                       <button name="action_set_to_draft" class="oe_highlight" type="object" string="Set To Draft"
-                        invisible="state not in ['submit', 'wait_payment', 'close']" groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"
+                        <button name="action_set_to_draft" class="oe_highlight" type="object" string="Set To Draft"
+                                invisible="state not in ['submit', 'wait_payment']" groups="payment_request.group_payment_request_manager,account_custom.group_account_financial_manager,account.group_account_manager"
                                />
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft,wait_department_manager,wait_financial_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,wait_department_manager,wait_financial_manager"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -88,68 +72,50 @@
                                 <field name="on_time" invisible="1"/>
                                 <field name="custody_type"  invisible="is_need_clearance != False" readonly="state != 'draft'"/>
                                 <field name="employee_id" readonly="state != 'draft'" required="1"/>
-                                <field name="partner_id" readonly="state != 'draft'" required="state == 'approve' or is_need_clearance == True"/>
+                                <field name="partner_id"
+                                       readonly="state != 'draft' and is_purchase == True"
+                                       required="state == 'approve' or is_need_clearance == True"/>
                                 <field name="department_id" invisible="1"  readonly="state != 'draft'"/>
                                 <field name="creator" invisible="1"/>
-                                <field name="maintenance_id"  readonly="state != 'draft'" invisible=" custody_type != 'maintenance'" /> 
-                                <field name="vehicle_id"  readonly="state != 'draft'" invisible="is_need_clearance != False" required="is_need_clearance == False"/>
+                                <field name="maintenance_id"  readonly="state != 'draft'"
+                                       invisible=" custody_type != 'maintenance'"
+                                       required="custody_type == 'maintenance'"/> _
+                                <field name="vehicle_id"  readonly="state != 'draft'"
+                                       invisible="is_need_clearance != False"
+                                       required="is_need_clearance == False"/>
                                 <field name="driver_id" readonly="1" invisible="is_need_clearance != False" /> 
                                 <field name="req_amount" invisible=" custody_type != 'maintenance'"/>
                                 <field name="base_amount" invisible="1"  /> 
                                 <field name="invoice_id" invisible="invoice_id != True"/>
                                 <field name="is_need_clearance" invisible="1"/>
-                                <field name="amount" invisible="is_need_clearance != True" readonly="state != 'draft' or is_need_clearance != True"/>
-                                <field name="remaining_amount" invisible="is_need_clearance != True"   />
+                                <field name="amount" invisible="is_need_clearance != True"
+                                       readonly="state != 'draft' or is_need_clearance != True"/>
+                                <field name="remaining_amount" invisible="is_need_clearance != True"  />
                                 <field name="is_renewable" invisible="1"/>                                 
                             </group>
-
-
                             <group>
                                 <field name="date" readonly="state != 'draft'"/>
-                                <field name="company_id" readonly="state != 'draft'"/>
+                                <field name="company_id"/>
                                 <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"
                                        readonly="state in ['paid', 'close']" required="state == 'wait_payment'" groups="account_custom.group_accountant_payable" />
                                 <field name="account_id" readonly="state == 'paid'" required="state == 'wait_payment'" groups="account_custom.group_accountant_payable"/>
                                 <field name="clearance_days" invisible="is_need_clearance != True"
                                        readonly="state != 'draft'"/>
                                 <field name="date_clearance" invisible="1"/> 
-                            
                                 <field name="balance" invisible="1"/>
-                                 
                                 <field name="is_purchase" invisible="is_purchase != True"/>
                                 <field name="move_id" invisible="is_purchase != True" readonly="is_purchase == True"/>
-                                <field name="niration" readonly="state != 'draft'" />  
+                                <field name="niration" />  
                                 <field name="total_amount" invisible="is_need_clearance == True" />
-                                </group>
+                            </group>
                         </group>
                         <notebook>
-                            <!-- <page string="Details" invisible="is_need_clearance == True">
-                                <field name="line_ids" readonly="state == 'paid'">
-                                    <list editable="bottom"> 
-                                        <field name="expense_account_id" domain="[('deprecated', '=', False),
-                                                 ('account_type', 'not in', ('asset_receivable', 'liability_payable')),
-                                                     ('company_ids', 'parent_of', company_id),
-                                                     ('account_type', '!=', 'off_balance')]"/>                                                     
-                                        <field name="niration"   />  
-                                        <field name="total_amount"   />
-                                                       
-                                    </list>
-                                </field> 
-                            </page> -->
-                                
- 
-                           
                             <page string="Move Line" invisible="is_need_clearance != True">
                                 <field name="move_line_ids" readonly="1"/>
                             </page>
-                            <!-- <page string="Notes" name="note">
-                                <field name="note"/>
-                            </page> -->
                         </notebook>
                     </sheet>
-                     <chatter/>
-                    <!-- <chatter reload_on_follower="True"/> -->
-
+                <chatter/>
                 </form>
             </field>
         </record>

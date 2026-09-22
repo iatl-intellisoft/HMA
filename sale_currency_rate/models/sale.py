@@ -1,46 +1,89 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.tools import float_round
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    sale_currency_rate = fields.Float("Sale Currency Rate", compute='_compute_sale_currency_rate', compute_sudo=True,
-                                      store=True,
-                                      digits=(12, 6),
-                                      readonly=True,
-                                      help='The rate of the currency to the currency of \
-                                      rate 1 applicable at the date of the order')
+    # Always display the quotation in the company's own currency,
+    # regardless of which pricelist is selected.
+    currency_id = fields.Many2one(
+        'res.currency',
+        compute='_compute_currency_id',
+        store=True,
+        readonly=False,
+        ondelete='restrict',
+    )
 
-    # function to fetch the sale currency rate based on order date
+    sale_currency_rate = fields.Float(
+        "Sale Currency Rate",
+        compute='_compute_sale_currency_rate',
+        store=True,
+        digits=(12, 6),
+        readonly=True,
+        help='The sale rate of the pricelist currency relative to the company currency '
+             'at the date of the order.',
+    )
+
+    @api.depends('company_id', 'pricelist_id')
+    def _compute_currency_id(self):
+        """Force the order currency to always be the company currency."""
+        for order in self:
+            order.currency_id = order.company_id.currency_id
+
     @api.depends('pricelist_id', 'date_order', 'company_id')
     def _compute_sale_currency_rate(self):
+        """
+        Show the sale rate of the pricelist currency against the company currency.
+        This is informational — 1.0 when pricelist is already in company currency.
+        """
         for order in self:
-            order.sale_currency_rate = self.env['res.currency']._get_conversion_sale_rate \
-                (order.company_id.currency_id, order.currency_id, order.company_id, order.date_order)
+            pricelist_currency = (
+                order.pricelist_id.currency_id if order.pricelist_id
+                else order.company_id.currency_id
+            )
+            if pricelist_currency == order.company_id.currency_id:
+                order.sale_currency_rate = 1.0
+            else:
+                order.sale_currency_rate = (
+                    self.env['res.currency'].sudo()._get_conversion_sale_rate(
+                        order.company_id.currency_id,
+                        pricelist_currency,
+                        order.company_id,
+                        order.date_order or fields.Datetime.now(),
+                    ) or 1.0
+                )
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    # function to fetch price based on sale currency rate for sale order line (product)
     def _get_display_price(self):
-        price = super(SaleOrderLine, self)._get_display_price()
+        """
+        Return the price in company currency, converted at the sale rate to the
+        pricelist currency.
+
+        Because order.currency_id is now forced to the company currency, we pass
+        pricelist_currency explicitly so the sale-rate conversion still applies:
+            company_currency._convert(price, pricelist_currency)
+            = price × (rates[company] / rates[pricelist])
+        e.g. 100 USD × 550 SDG/USD = 55,000 SDG
+        """
+        price = super()._get_display_price()
         company_currency = self.order_id.company_id.currency_id
-        order_currency = self.order_id.currency_id
-        new_price = company_currency.with_context(sale=True)._convert(
+        pricelist = self.order_id.pricelist_id
+        pricelist_currency = pricelist.currency_id if pricelist else company_currency
+
+        return company_currency.with_context(sale=True)._convert(
             price,
-            order_currency,
+            pricelist_currency,
             self.order_id.company_id,
             self.order_id.date_order or fields.Date.today(),
-            round=False
+            round=False,
         )
 
-        return new_price
 
-    
 class PriceList(models.Model):
     _inherit = 'product.pricelist'
 
@@ -102,20 +145,15 @@ class PriceList(models.Model):
                     suitable_rule = rule
                     break
 
-            '''if compute_price:
-                price_tmp = suitable_rule._compute_price(
-                    product, quantity, target_uom, date=date, currency=currency)
-                price = suitable_rule.base_pricelist_id.currency_id.with_context(sale=True)._convert(price_tmp, self.currency_id,
-                                                                                            self.env.company,
-                                                                                            date, round=False)'''
             if compute_price:
-                price = suitable_rule._compute_price(product, quantity, target_uom, date=date, currency=currency)    
+                price = suitable_rule._compute_price(product, quantity, target_uom, date=date, currency=currency)
             else:
                 # Skip price computation when only the rule is requested.
                 price = 0.0
             results[product.id] = (price, suitable_rule.id)
 
         return results
+
 
 class PricelistItem(models.Model):
     _inherit = 'product.pricelist.item'
@@ -150,6 +188,7 @@ class PricelistItem(models.Model):
         if src_currency != currency:
             price = src_currency.with_context(sale=True)._convert(price, currency, self.env.company, date, round=False)
         return price
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -187,6 +226,7 @@ class ProductTemplate(models.Model):
             prices[template.id] = price
         return prices
 
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
@@ -221,6 +261,3 @@ class ProductProduct(models.Model):
             prices[product.id] = price
 
         return prices
-
-
-

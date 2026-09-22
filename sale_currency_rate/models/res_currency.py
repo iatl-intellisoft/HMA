@@ -3,14 +3,13 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-import time
-from odoo.tools import parse_date, SQL
+from odoo.tools import parse_date
 
 
 class Currency(models.Model):
     _inherit = 'res.currency'
 
-    name = fields.Char(string='Currency', size=3, required=True, help="Currency Code (ISO 4217)", )
+    name = fields.Char(string='Currency', size=3, required=True, help="Currency Code (ISO 4217)")
     sale_currency_rate = fields.Float(string="Sale Currency Rate", digits=(12, 6), change_default=True,
                                       compute='_compute_sale_current_rate')
     inverse_sale_rate = fields.Float(compute='_compute_sale_current_rate', digits=0, readonly=True,
@@ -24,63 +23,58 @@ class Currency(models.Model):
                                  default=lambda self: self.env.company.root_id)
     is_sale_currency = fields.Boolean(string="Is Sale Currency", default=True)
 
-    # This Method to get sale rate
     def _get_sale_rates(self, company, date):
+        """Return a dict {currency_id: sale_rate} for all currencies in self."""
         if not self.ids:
             return {}
-        currency_query = self.env['res.currency']._where_calc([
-            ('id', 'in', self.ids),
-        ], active_test=False)
-        currency_id = self.env['res.currency']._field_to_sql(currency_query.table, 'id')
-        rate_query = self.env['res.sale.currency.rate']._search([
-            ('name', '<=', date),
-            ('company_id', 'in', (False, company.root_id.id)),
-            ('currency_id', '=', currency_id),
-        ], order='company_id.id, name DESC', limit=1)
-        rate_fallback = self.env['res.sale.currency.rate']._search([
-            ('company_id', 'in', (False, company.root_id.id)),
-            ('currency_id', '=', currency_id),
-        ], order='company_id.id, name ASC', limit=1)
-        rate = self.env['res.sale.currency.rate']._field_to_sql(rate_query.table, 'sale_currency_rate')
-        return dict(self.env.execute_query(currency_query.select(
-            currency_id,
-            SQL("COALESCE((%s), (%s), 1.0)", rate_query.select(rate), rate_fallback.select(rate))
-        )))
+        Rate = self.env['res.sale.currency.rate']
+        company_ids = [False, company.root_id.id]
+        result = {}
+        for currency in self:
+            rate = Rate.search([
+                ('currency_id', '=', currency.id),
+                ('name', '<=', date),
+                ('company_id', 'in', company_ids),
+            ], order='company_id, name DESC', limit=1)
+            if not rate:
+                rate = Rate.search([
+                    ('currency_id', '=', currency.id),
+                    ('company_id', 'in', company_ids),
+                ], order='company_id, name ASC', limit=1)
+            result[currency.id] = rate.sale_currency_rate if rate else 1.0
+        return result
 
-    # Compute sale current rate
     @api.depends('sale_rate_ids.sale_currency_rate')
     @api.depends_context('to_currency', 'date', 'company', 'company_id')
     def _compute_sale_current_rate(self):
         date = self._context.get('date') or fields.Date.context_today(self)
         company = self.env['res.company'].browse(self._context.get('company_id')) or self.env.company
         to_currency = self.browse(self.env.context.get('to_currency')) or company.currency_id
-        # the subquery selects the last rate before 'date' for the given currency/company
         currency_rates = (self + to_currency)._get_sale_rates(self.env.company, date)
 
         for currency in self:
-            currency.sale_currency_rate = (currency_rates.get(currency.id) or 1.0) / currency_rates.get(to_currency.id)
-            currency.inverse_sale_rate = 1 / currency.sale_currency_rate
+            currency.sale_currency_rate = (currency_rates.get(currency.id) or 1.0) / (currency_rates.get(to_currency.id) or 1.0)
+            currency.inverse_sale_rate = 1 / currency.sale_currency_rate if currency.sale_currency_rate else 0.0
             if currency != company.currency_id:
                 currency.sale_rate_string = '1 %s = %.6f %s' % (to_currency.name, currency.sale_currency_rate, currency.name)
             else:
                 currency.sale_rate_string = ''
-            # return currency.sale_currency_rate
 
-    # conversion sale rate from currency to another
     @api.model
     def _get_conversion_sale_rate(self, from_currency, to_currency, company, date):
         currency_rates = (from_currency + to_currency)._get_sale_rates(company, date)
-        if to_currency:
+        if to_currency and currency_rates.get(from_currency.id):
             res = currency_rates.get(to_currency.id) / currency_rates.get(from_currency.id)
             return 1 / res
+        return 1.0
 
-    def _convert_sale_rate(self, from_amount, to_currency, company=None, date=None,round=True):
-        """Returns the converted amount of ``from_amount``` from the currency
+    def _convert_sale_rate(self, from_amount, to_currency, company=None, date=None, round=True):
+        """Returns the converted amount of ``from_amount`` from the currency
            ``self`` to the currency ``to_currency`` for the given ``date`` and
            company.
 
-           :param company: The company from which we retrieve the convertion rate
-           :param date: The nearest date from which we retriev the conversion rate.
+           :param company: The company from which we retrieve the conversion rate
+           :param date: The nearest date from which we retrieve the conversion rate.
            :param round: Round the result or not
         """
         self, to_currency = self or to_currency, to_currency or self
@@ -97,14 +91,10 @@ class Currency(models.Model):
         # apply rounding
         return to_currency.round(to_amount) if round else to_amount
 
-    def _convert(self, from_amount, to_currency, company=None, date=None,round=True):  # noqa: A002 builtin-argument-shadowing
-
-        """
-        """
-        if 'sale' in self._context and self._context['sale'] == True:
+    def _convert(self, from_amount, to_currency, company=None, date=None, round=True):  # noqa: A002 builtin-argument-shadowing
+        if self._context.get('sale'):
             return self._convert_sale_rate(from_amount, to_currency, company, date, round=False)
-        else:
-            return super()._convert(from_amount, to_currency, company, date,round)
+        return super()._convert(from_amount, to_currency, company, date, round)
 
 
 class SaleCurrencyRate(models.Model):
@@ -132,7 +122,7 @@ class SaleCurrencyRate(models.Model):
         compute="_compute_inverse_company_rate",
         inverse="_inverse_inverse_company_rate",
         aggregator="avg",
-        help="The rate of the currency to the currency of rate 1 ",
+        help="The rate of the currency to the currency of rate 1.",
     )
     _sql_constraints = [
         ('unique_name_per_day', 'unique (name,currency_id,company_id)', 'Only one currency rate per day allowed!'),
@@ -144,16 +134,16 @@ class SaleCurrencyRate(models.Model):
         if not self.name:
             raise UserError(_("The name for the current sale rate is empty.\nPlease set it."))
         return self.currency_id.sale_rate_ids.sudo().filtered(lambda x: (
-                x.sale_currency_rate
-                and x.company_id == (self.company_id or self.env.company.root_id)
-                and x.name < (self.name or fields.Date.today())
+            x.sale_currency_rate
+            and x.company_id == (self.company_id or self.env.company.root_id)
+            and x.name < (self.name or fields.Date.today())
         )).sorted('name')[-1:]
 
     def _get_last_rates_for_companies(self, companies):
         return {
             company: company.sudo().currency_id.sale_rate_ids.filtered(lambda x: (
-                    x.sale_currency_rate
-                    and x.company_id == company or not x.company_id
+                x.sale_currency_rate
+                and x.company_id == company or not x.company_id
             )).sorted('name')[-1:].sale_currency_rate or 1
             for company in companies
         }
@@ -167,8 +157,8 @@ class SaleCurrencyRate(models.Model):
         for currency_rate in self:
             company = currency_rate.company_id or self.env.company.root_id
             currency_rate.company_rate = (
-                                                 currency_rate.sale_currency_rate or currency_rate._get_latest_rate().sale_currency_rate or 1.0) / \
-                                         last_rate[company]
+                currency_rate.sale_currency_rate or currency_rate._get_latest_rate().sale_currency_rate or 1.0
+            ) / last_rate[company]
 
     @api.onchange('company_rate')
     def _inverse_company_rate(self):
@@ -236,32 +226,10 @@ class SaleCurrencyRate(models.Model):
                     self._context.get('company_id')) or self.env.company).currency_id.name,
                 'rate_currency_name': self.env['res.currency'].browse(self._context.get('active_id')).name or 'Unit',
             }
-            for name, label in [['company_rate', _('%(rate_currency_name)s per %(company_currency_name)s', **names)],
-                                ['inverse_company_rate',
-                                 _('%(company_currency_name)s per %(rate_currency_name)s', **names)]]:
-
+            for name, label in [
+                ['company_rate', _('%(rate_currency_name)s per %(company_currency_name)s', **names)],
+                ['inverse_company_rate', _('%(company_currency_name)s per %(rate_currency_name)s', **names)],
+            ]:
                 if (node := arch.find(f"./field[@name='{name}']")) is not None:
                     node.set('string', label)
         return arch, view
-
-    # Add rate in name search
-    # @api.model
-    # def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-    #     if operator in ['=', '!=']:
-    #         try:
-    #             date_format = '%Y-%m-%d'
-    #             if self._context.get('lang'):
-    #                 lang_id = self.env['res.lang'].search([('code', '=', self._context['lang'])],
-    #                                                       access_rights_uid=name_get_uid)
-    #                 if lang_id:
-    #                     date_format = self.browse(lang_id).date_format
-    #             name = time.strftime('%Y-%m-%d', time.strptime(name, date_format))
-    #         except ValueError:
-    #             try:
-    #                 args.append(('rate', operator, float(name)))
-    #             except ValueError:
-    #                 return []
-    #             name = ''
-    #             operator = 'ilike'
-    #     return super(SaleCurrencyRate, self).search(name, args=args, operator=operator,
-    #                                                 limit=limit, name_get_uid=name_get_uid)

@@ -225,7 +225,7 @@ class ProductProduct(models.Model):
                     to_date_dt = fields.Datetime.to_datetime(to_date)
                     svl = svl.filtered(lambda l: l.create_date <= to_date_dt)
                 foreign_value = sum(svl.mapped('foreign_value'))
-                foreign_value = product.force_currency_id.round(foreign_value)
+                foreign_value = (product.force_currency_id or self.env.company.currency_id).round(foreign_value)
 
             product.foreign_value_svl = foreign_value
 
@@ -330,7 +330,7 @@ class ProductProduct(models.Model):
             # If it is bigger than the (smallest number of the currency * quantity) / 2,
             # then it isn't a rounding error but a stock valuation error, we shouldn't fix it under the hood ...
             threshold = currency.round(max((abs(quantity) * currency.rounding) / 2, currency.rounding))
-            foreign_currency = self.force_currency_id
+            foreign_currency = self.force_currency_id or currency
             foreign_rounding_error = foreign_currency.round(
                 self.foreign_standard_price * self.quantity_svl - self.foreign_value_svl
             )
@@ -819,7 +819,7 @@ class ProductProduct(models.Model):
                     # update foreign value
                     candidate_foreign_unit_cost = candidate.foreign_remaining_value / candidate.remaining_qty
                     foreign_value_taken_on_candidate = qty_taken_on_candidate * candidate_foreign_unit_cost
-                    foreign_value_taken_on_candidate = candidate.product_id.force_currency_id.round(
+                    foreign_value_taken_on_candidate = (candidate.product_id.force_currency_id or candidate.currency_id).round(
                         foreign_value_taken_on_candidate)
                     new_foreign_remaining_value = candidate.foreign_remaining_value - \
                         foreign_value_taken_on_candidate
@@ -853,7 +853,7 @@ class ProductProduct(models.Model):
                     continue
 
                 corrected_value = svl_to_vacuum.currency_id.round(corrected_value)
-                foreign_corrected_value = svl_to_vacuum.product_id.force_currency_id.round(
+                foreign_corrected_value = (svl_to_vacuum.product_id.force_currency_id or svl_to_vacuum.currency_id).round(
                     foreign_corrected_value)
                 move = svl_to_vacuum.stock_move_id
                 vals = {

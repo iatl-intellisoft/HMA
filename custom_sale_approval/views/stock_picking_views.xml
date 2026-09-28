@@ -6,8 +6,7 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="sale_payment_state"
-                       invisible="not sale_id or not sale_payment_state"/>
+                <field name="sale_payment_state" invisible="not sale_id"/>
             </xpath>
         </field>
     </record>

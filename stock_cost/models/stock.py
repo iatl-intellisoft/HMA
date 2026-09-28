@@ -30,37 +30,66 @@ class StockMove(models.Model):
     rate = fields.Float(string='Accounting Rate')
 
     def _get_foreign_price_unit(self):
-        """ Returns the unit foreign price to store on the quant """
-        # self.ensure_one()
+        """Returns the unit foreign price to store on the quant."""
         if self.purchase_line_id and self.product_id.id == self.purchase_line_id.product_id.id:
             line = self.purchase_line_id
             order = line.order_id
-            date_order = self.purchase_line_id.order_id.date_order
-            date_approve = self.purchase_line_id.order_id.date_approve
+            date_order = order.date_order
+            date_approve = order.date_approve
             accounting_date = self.picking_id.accounting_date
             foreign_price_unit = line.price_unit
             if line.taxes_id:
-                foreign_price_unit = line.taxes_id.with_context(round=False).compute_all(
-                    foreign_price_unit, currency=line.order_id.currency_id, quantity=1.0)['total_void']
+                foreign_price_unit = line.taxes_id.with_context(
+                    round=False
+                ).compute_all(
+                    foreign_price_unit,
+                    currency=order.currency_id,
+                    quantity=1.0,
+                )['total_void']
+    
             if line.product_uom.id != line.product_id.uom_id.id:
-                foreign_price_unit *= line.product_uom.factor / line.product_id.uom_id.factor
-            if line.product_id.force_currency_id and line.product_id.force_currency_id != order.currency_id:
-                # The date must be today, and not the date of the move since the move move is still
-                # in assigned state. However, the move date is the scheduled date until move is
-                # done, then date of actual move processing. See:
-                # https://github.com/odoo/odoo/blob/2f789b6863407e63f90b3a2d4cc3be09815f7002/addons/stock/models/stock_move.py#L36
+                foreign_price_unit *= (
+                    line.product_uom.factor /
+                    line.product_id.uom_id.factor
+                )
+            if (
+                line.product_id.force_currency_id
+                and line.product_id.force_currency_id != order.currency_id
+            ):
                 foreign_price_unit = order.currency_id._convert(
-                    foreign_price_unit, line.product_id.force_currency_id, order.company_id,
-                    accounting_date or date_approve or date_order or fields.Date.context_today(self), round=False)
+                    foreign_price_unit,
+                    line.product_id.force_currency_id,
+                    order.company_id,
+                    accounting_date
+                    or date_approve
+                    or date_order
+                    or fields.Date.context_today(self),
+                    round=False,
+                )
             return foreign_price_unit
-        else:
-            foreign_price_unit = self.foreign_price_unit
-            # If the move is a return, use the original move's price unit.
-            if self.origin_returned_move_id and self.origin_returned_move_id.sudo().stock_valuation_layer_ids:
-                foreign_price_unit = self.origin_returned_move_id.stock_valuation_layer_ids[-1].foreign_price_unit
-            return not self.product_id.force_currency_id.is_zero(
-                foreign_price_unit) and foreign_price_unit or self.product_id.foreign_standard_price
-
+        foreign_price_unit = self.foreign_price_unit
+        # If the move is a return, use the original move's price unit.
+        if (
+            self.origin_returned_move_id
+            and self.origin_returned_move_id.sudo().stock_valuation_layer_ids
+        ):
+            foreign_price_unit = (
+                self.origin_returned_move_id
+                .stock_valuation_layer_ids[-1]
+                .foreign_price_unit
+            )
+        # Product has no foreign/forced currency.
+        # Avoid calling res.currency.is_zero() on an empty recordset.
+        if not self.product_id.force_currency_id:
+            return (
+                foreign_price_unit
+                or self.product_id.foreign_standard_price
+            )
+        return (
+            foreign_price_unit
+            if not self.product_id.force_currency_id.is_zero(foreign_price_unit)
+            else self.product_id.foreign_standard_price
+        )
     def _generate_valuation_lines_data(self, partner_id, qty, debit_value, credit_value, debit_account_id,
                                        credit_account_id, svl_id, description):
         """

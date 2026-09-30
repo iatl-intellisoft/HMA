@@ -22,12 +22,13 @@ class Contracts(models.Model):
        store=True)
 
     contract_stage = fields.Selection([
-        ('draft', 'Draft'),
+        ('draft', 'New'),
         ('offer', 'Offer'),
+        ('pending', 'Pending'),
         ('open', 'Running'),
-    ], string='Contract Stage',
-       default='draft',
-       tracking=True)
+        ('close', 'Expired'),
+        ('cancel', 'Cancelled'),
+    ], default='draft', tracking=True)
     ##### this field will be replaced 
     #### struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure', track_visibility='onchange')
     #### with a domain that "structes" are  in "structure_type_id.struct_ids" 

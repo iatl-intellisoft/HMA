@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <!-- Inherit Form View to Modify  Employee Contract Form--> 
+        <!-- Inherit Form View to Modify  Employee Contract Form-->
         <record id="view_hr_contract_view_form_inherit" model="ir.ui.view">
             <field name="name">hr_contract_view_form</field>
             <field name="model">hr.contract</field>
@@ -8,21 +8,19 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="replace">
                     <header >
-                        <button string="Set to Draft" name="action_draft" invisible="contract_stage not in ('offer', 'cancel')" type="object" class="oe_highlight"/>
-                        <button string="Offer" name="action_offer" invisible="contract_stage != 'draft'" type="object" class="oe_highlight"/>                        
-                        <button string="Open" name="action_open" invisible="contract_stage not in ('pending', 'offer')" type="object" class="oe_highlight"/>                        
-                        <button string="Close" name="action_close" invisible="contract_stage != 'open'" type="object" class="oe_highlight"/>                        
-                        <button string="Cancel" name="action_cancel" invisible="contract_stage not in ('draft', 'offer')" type="object" class="oe_highlight"/>
-                        <field name="state" invisible="1"/>
-                        <field name="contract_stage"
-                               widget="statusbar"
-                               statusbar_visible="draft,offer,pending,open,close,cancel"/>
+                        <button string="set to Draft" name="action_draft" invisible="state not in ('offer','cancel','close')" type="object" class="oe_highlight"/>
+                        <button string="Offer" name="action_offer" invisible="state != 'draft'"  type="object" class="oe_highlight"/>
+                        <button string="Open" name="action_open" invisible="state not in ('pending','offer')" type="object" class="oe_highlight"/>
+                        <!-- <button string="To Renew" name="action_pending" states="close" type="object" class="oe_highlight"/> -->
+                        <button string="Close" name="action_close" invisible="state != 'open'" type="object" class="oe_highlight"/>
+                        <button string="Cancel" name="action_cancel" invisible="state not in ('draft','offer')" type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,offer,open,close,cancel"/>
                     </header>
                 </xpath>
 
                 <xpath expr="//field[@name='hr_responsible_id']" position="before">
                     <!-- <field name="joining_date"  required="1" readonly="state not in ('draft','offer')"/> -->
-                    <field name="joining_date"  readonly="state not in ('draft','offer')"/>
+                    <field name="joining_date" />
                 </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="readonly">state not in ('draft')</attribute>

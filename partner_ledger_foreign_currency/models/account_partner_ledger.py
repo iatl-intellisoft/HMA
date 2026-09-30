@@ -35,6 +35,41 @@ class PartnerLedgerForeignCurrencyHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['display_foreign_currency'] = (previous_options or {}).get('display_foreign_currency', False)
+        self._drop_unrelated_no_partner_catch_all(options)
+
+    def _drop_unrelated_no_partner_catch_all(self, options):
+        """
+        The base Partner Ledger handler (account_reports) widens the print
+        domain with an unconditional ('partner_id', '=', False) clause
+        whenever printing while a partner search-bar filter is active:
+
+            OR(matched via debit reconciliation,
+               OR(matched via credit reconciliation,
+                  OR(partner name matches search, ANY line with no partner)))
+
+        That last branch drags *every* no-partner journal item in the
+        company (e.g. manual entries posted straight to a
+        receivable/payable account) into a single-partner printout, even
+        when they have no relation to the printed partner at all.
+
+        We keep the two legitimate cases — entries reconciled with the
+        searched partner, or whose own partner name matches — and drop
+        only the unconditional catch-all, restoring balanced polish
+        notation:
+            ['|', A, '|', B, '|', C, D]  ->  ['|', A, '|', B, C]
+
+        If the base domain shape ever changes, the pattern simply won't
+        match and this is a no-op (fails open, never raises).
+        """
+        if options.get('export_mode') != 'print' or not options.get('filter_search_bar'):
+            return
+        domain = options.get('forced_domain')
+        if not domain:
+            return
+        catch_all = ('partner_id', '=', False)
+        if len(domain) >= 7 and domain[-1] == catch_all and domain[-3] == '|':
+            del domain[-1]  # drop the catch-all tuple
+            del domain[-2]  # drop the now-redundant '|' operator before it
 
     # ─────────────────────────────────────────────────────────────────────────
     # TOP-LEVEL LINES GENERATOR

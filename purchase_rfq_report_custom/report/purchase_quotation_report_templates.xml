@@ -4,8 +4,8 @@
     <template id="report_purchasequotation_document_custom_columns"
               inherit_id="purchase.report_purchasequotation_document">
 
-        <!-- ═══ Header: add "Reference" after "Description" ═══ -->
-        <xpath expr="//th[@name='th_description']" position="after">
+        <!-- ═══ Header: add "Reference" as the first column, before "Description" ═══ -->
+        <xpath expr="//th[@name='th_description']" position="before">
             <th name="th_reference"><strong>Reference</strong></th>
         </xpath>
 
@@ -22,8 +22,8 @@
             <span t-field="order_line.product_id.name"/>
         </xpath>
 
-        <!-- ═══ Body: add "Reference" cell right after the description cell ═══ -->
-        <xpath expr="//td[@id='product']" position="after">
+        <!-- ═══ Body: add "Reference" cell as the first column, before the description cell ═══ -->
+        <xpath expr="//td[@id='product']" position="before">
             <td>
                 <span t-field="order_line.product_id.default_code"/>
             </td>

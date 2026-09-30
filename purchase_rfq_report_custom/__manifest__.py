@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase RFQ Report Custom Columns',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.1.0',
     'category': 'Inventory/Purchase',
     'summary': 'Customize the RFQ report lines table columns',
     'description': """
         Adjusts the Request for Quotation (RFQ) printed report
         (purchase.report_purchasequotation_document):
-        - New "Reference" column showing the product's internal reference.
+        - New "Reference" column showing the product's internal reference,
+          placed as the first column.
         - "Description" column now shows only the product name (instead of
           the order line's free-text name/description).
         - "Expected Date" column moved to be the last column, after Qty.
 
-        Final column order: Description | Reference | Qty | Expected Date
+        Final column order: Reference | Description | Qty | Expected Date
     """,
     'author': 'Custom Development',
     'depends': ['purchase'],

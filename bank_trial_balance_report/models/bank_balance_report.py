@@ -107,6 +107,11 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('type', 'in', journal_types),
                 ('company_id', 'child_of', self.company_id.id),
             ], limit=1)
+            if self.journal_type and not journal:
+                # لما المستخدم يحدد نوع معين (بنك أو نقدية) والحساب ده
+                # مالوش جورنال من النوع ده، يبقى الحساب مش له علاقة بالتقرير
+                # المطلوب -- تجاهله خالص بدل ما يظهر كسطر بصفر قيم.
+                continue
             result.append((account, journal))
         return result
 

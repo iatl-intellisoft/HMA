@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Picking Custom States',
-    'version': '18.0.1.3.0',
+    'version': '18.0.1.4.0',
     'category': 'Inventory/Purchase',
     'summary': 'Add custom picking states and PO line quantity fields',
     'description': """
@@ -15,6 +15,8 @@
           Shipment Status (Under Preparation, Loaded, In Transit,
           Arrived at Port, Under Clearance, Received), Loading Date,
           Shipment Date, ETD, ETA
+        - Fix: hide the native Validate button while a custom shipment
+          state is active, so it no longer renders twice
     """,
     'author': 'Custom Development',
     'depends': ['purchase', 'stock'],

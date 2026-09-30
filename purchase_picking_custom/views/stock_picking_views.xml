@@ -60,7 +60,19 @@
                     invisible="picking_type_code != 'incoming' or not custom_state"
                 />
             </xpath>
- 
+
+            <!-- Our custom states (under_manufacturing/under_shipping/under_clearance)
+                 are stored in the real 'state' field but aren't covered by either of
+                 Odoo's two native Validate button invisible domains, so both native
+                 Validate buttons show at once while one of these states is active.
+                 Extend both domains to also hide Validate for our custom states. -->
+            <xpath expr="//button[@name='button_validate'][hasclass('oe_highlight')]" position="attributes">
+                <attribute name="invisible">state in ('draft', 'confirmed', 'done', 'cancel', 'under_manufacturing', 'under_shipping', 'under_clearance')</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate'][hasclass('o_btn_validate')]" position="attributes">
+                <attribute name="invisible">state in ('waiting', 'assigned', 'done', 'cancel', 'under_manufacturing', 'under_shipping', 'under_clearance')</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='origin']" position="after">
                 <field
                     name="bill_of_lading_number"

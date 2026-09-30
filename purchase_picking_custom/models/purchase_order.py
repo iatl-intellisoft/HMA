@@ -19,3 +19,28 @@ class PurchaseOrder(models.Model):
         tracking=True,
         help='Tracks the shipment/import status of the goods for this purchase order.',
     )
+
+    loading_date = fields.Date(
+        string='Loading Date',
+        copy=False,
+        tracking=True,
+        help='Date the goods were loaded for shipment.',
+    )
+    shipment_date = fields.Date(
+        string='Shipment Date',
+        copy=False,
+        tracking=True,
+        help='Date the shipment departed.',
+    )
+    etd = fields.Date(
+        string='ETD',
+        copy=False,
+        tracking=True,
+        help='Estimated Time of Departure.',
+    )
+    eta = fields.Date(
+        string='ETA',
+        copy=False,
+        tracking=True,
+        help='Estimated Time of Arrival.',
+    )

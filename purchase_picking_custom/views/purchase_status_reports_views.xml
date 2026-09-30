@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════
+         Shipments Status Report
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_purchase_shipment_status_report_list" model="ir.ui.view">
+        <field name="name">purchase.shipment.status.report.list</field>
+        <field name="model">purchase.shipment.status.report</field>
+        <field name="arch" type="xml">
+            <list string="Shipments Status" create="false" edit="false" delete="false" default_order="sequence">
+                <field name="sequence" string="No."/>
+                <field name="partner_id"/>
+                <field name="invoice_number"/>
+                <field name="loading_date"/>
+                <field name="amount_total" widget="monetary"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="shipment_date"/>
+                <field name="etd"/>
+                <field name="eta"/>
+                <field name="shipping_line"/>
+                <field name="shipment_status"/>
+                <field name="free_days"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_shipment_status_report_search" model="ir.ui.view">
+        <field name="name">purchase.shipment.status.report.search</field>
+        <field name="model">purchase.shipment.status.report</field>
+        <field name="arch" type="xml">
+            <search string="Shipments Status">
+                <field name="partner_id"/>
+                <field name="invoice_number"/>
+                <field name="shipping_line"/>
+                <filter string="Shipment Status" name="group_shipment_status" context="{'group_by': 'shipment_status'}"/>
+                <filter string="Supplier" name="group_partner" context="{'group_by': 'partner_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_shipment_status_report" model="ir.actions.act_window">
+        <field name="name">Shipments Status</field>
+        <field name="res_model">purchase.shipment.status.report</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_purchase_shipment_status_report_search"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         Items Status Report
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_purchase_items_status_report_list" model="ir.ui.view">
+        <field name="name">purchase.items.status.report.list</field>
+        <field name="model">purchase.items.status.report</field>
+        <field name="arch" type="xml">
+            <list string="Items Status" create="false" edit="false" delete="false" default_order="sequence">
+                <field name="sequence" string="No."/>
+                <field name="product_id" string="Product Name"/>
+                <field name="under_preparation_qty" string="Under Preparation"/>
+                <field name="in_transit_qty" string="In Transit"/>
+                <field name="under_clearance_qty" string="Under Clearance"/>
+                <field name="stock_qty" string="Stock"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_items_status_report_search" model="ir.ui.view">
+        <field name="name">purchase.items.status.report.search</field>
+        <field name="model">purchase.items.status.report</field>
+        <field name="arch" type="xml">
+            <search string="Items Status">
+                <field name="product_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_items_status_report" model="ir.actions.act_window">
+        <field name="name">Items Status</field>
+        <field name="res_model">purchase.items.status.report</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_purchase_items_status_report_search"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         Menu items under Purchase > Reporting
+         ═══════════════════════════════════════════════════ -->
+    <menuitem id="menu_purchase_shipment_status_report"
+              name="Shipments Status"
+              parent="purchase.purchase_report_main"
+              action="action_purchase_shipment_status_report"
+              sequence="10"/>
+
+    <menuitem id="menu_purchase_items_status_report"
+              name="Items Status"
+              parent="purchase.purchase_report_main"
+              action="action_purchase_items_status_report"
+              sequence="11"/>
+
+</odoo>

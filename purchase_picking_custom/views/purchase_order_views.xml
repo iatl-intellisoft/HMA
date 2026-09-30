@@ -17,6 +17,7 @@
                     <group>
                         <group>
                             <field name="shipment_status"/>
+                            <field name="shipping_line"/>
                         </group>
                         <group>
                             <field name="loading_date"/>

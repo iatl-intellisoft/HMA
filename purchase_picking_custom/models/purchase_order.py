@@ -44,3 +44,9 @@ class PurchaseOrder(models.Model):
         tracking=True,
         help='Estimated Time of Arrival.',
     )
+    shipping_line = fields.Char(
+        string='Shipping Line',
+        copy=False,
+        tracking=True,
+        help='Name of the shipping line / carrier handling this shipment.',
+    )

@@ -8,23 +8,26 @@ from dateutil.relativedelta import relativedelta
 
 class Contracts(models.Model):
     _inherit = 'hr.contract'
-
-    _sql_constraints = [
-        ('state_unique', 'unique(employee_id, date, state)',
-         _('Date + End Date Cannot be repeated in one employee!'))]
-
-
-    #### adding offer state 
+    _sql_constraints = [('state_unique','unique(employee_id, date, state)',_('Date + End Date Cannot be repeated in one employee!'))]
     state = fields.Selection([
         ('draft', 'New'),
-        ('offer', 'Offer'),
         ('open', 'Running'),
         ('close', 'Expired'),
-        ('cancel', 'Cancelled')
-    ], string='Status', group_expand='_expand_states',
-        track_visibility='onchange', help='Status of the contract', default='draft', store='True')
-    
+        ('cancel', 'Cancelled'),
+    ], string='Status',
+       group_expand='_expand_states',
+       tracking=True,
+       help='Status of the contract',
+       default='draft',
+       store=True)
 
+    contract_stage = fields.Selection([
+        ('draft', 'Draft'),
+        ('offer', 'Offer'),
+        ('open', 'Running'),
+    ], string='Contract Stage',
+       default='draft',
+       tracking=True)
     ##### this field will be replaced 
     #### struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure', track_visibility='onchange')
     #### with a domain that "structes" are  in "structure_type_id.struct_ids" 
@@ -133,14 +136,19 @@ class Contracts(models.Model):
 
     
     def action_offer(self):
-        self.write({'state': 'offer'})
+        self.write({
+            'contract_stage': 'offer',
+        })
         # return self._create_mail_activity()
 
     
     def action_open(self):
         if not self.joining_date:
             raise UserError(_('Please Enter actual employee join date.'))
-        self.write({'state': 'open'})
+        self.write({
+            'state': 'open',
+            'contract_stage': 'open',
+        })
         # return self._create_mail_activity()
 
     # def action_pending(self):

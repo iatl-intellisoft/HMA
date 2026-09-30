@@ -50,9 +50,13 @@ class PurchaseOrderLine(models.Model):
             """)
             cols = [r[0] for r in self.env.cr.fetchall()]
 
-            # Get all receipt pickings for this PO via group by on move level
+            # Get all receipt pickings for this PO via group by on move level.
+            # Grouped by custom_state (our tracking overlay), not the real
+            # 'state' column: the real workflow state is left untouched by
+            # the action_set_under_* buttons, so it never carries these
+            # custom values.
             self.env.cr.execute("""
-                SELECT DISTINCT sm.picking_id, sp.state, SUM(sm.quantity) as qty
+                SELECT DISTINCT sm.picking_id, sp.custom_state, SUM(sm.quantity) as qty
                 FROM stock_move sm
                 JOIN stock_picking sp ON sm.picking_id = sp.id
                 JOIN stock_picking_type spt ON sp.picking_type_id = spt.id
@@ -66,7 +70,7 @@ class PurchaseOrderLine(models.Model):
                     WHERE product_id = %s
                         AND origin ILIKE %s
                 )
-                GROUP BY sm.picking_id, sp.state
+                GROUP BY sm.picking_id, sp.custom_state
             """, (line.product_id.id, line.product_id.id, '%' + (line.order_id.name or '') + '%'))
 
             for row in self.env.cr.fetchall():

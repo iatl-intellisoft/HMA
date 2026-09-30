@@ -61,17 +61,12 @@
                 />
             </xpath>
 
-            <!-- Our custom states (under_manufacturing/under_shipping/under_clearance)
-                 are stored in the real 'state' field but aren't covered by either of
-                 Odoo's two native Validate button invisible domains, so both native
-                 Validate buttons show at once while one of these states is active.
-                 Extend both domains to also hide Validate for our custom states. -->
-            <xpath expr="//button[@name='button_validate'][hasclass('oe_highlight')]" position="attributes">
-                <attribute name="invisible">state in ('draft', 'confirmed', 'done', 'cancel', 'under_manufacturing', 'under_shipping', 'under_clearance')</attribute>
-            </xpath>
-            <xpath expr="//button[@name='button_validate'][hasclass('o_btn_validate')]" position="attributes">
-                <attribute name="invisible">state in ('waiting', 'assigned', 'done', 'cancel', 'under_manufacturing', 'under_shipping', 'under_clearance')</attribute>
-            </xpath>
+            <!-- NOTE: our custom tracking states (under_manufacturing,
+                 under_shipping, under_clearance) now live exclusively in
+                 'custom_state' as a pure overlay; the real 'state' field
+                 is never touched, so Odoo's two native Validate button
+                 invisible domains (which only ever cover standard state
+                 values) work correctly as-is, with no override needed here. -->
 
             <xpath expr="//field[@name='origin']" position="after">
                 <field

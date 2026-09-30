@@ -5,14 +5,18 @@ from odoo import fields, models
 class PurchaseItemsStatusReport(models.Model):
     """Read-only reporting model: one row per product, summarizing the
     quantity currently sitting at each stage of the shipment/import
-    pipeline based on the state of its related incoming stock pickings
-    (SQL view, see _table_query).
+    pipeline based on its related incoming stock pickings (SQL view, see
+    _table_query).
 
-    - Under Preparation -> pickings in the 'under_manufacturing' state
-    - In Transit         -> pickings in the 'under_shipping' state
-    - Under Clearance    -> pickings in the 'under_clearance' state
-    - Stock              -> pickings in the 'done' state (i.e. received
-                             quantity)
+    - Under Preparation -> pickings with custom_state = 'under_manufacturing'
+    - In Transit         -> pickings with custom_state = 'under_shipping'
+    - Under Clearance    -> pickings with custom_state = 'under_clearance'
+    - Stock              -> pickings in the real 'done' state (i.e.
+                             received quantity)
+
+    custom_state is a pure tracking overlay (see stock_picking.py); the
+    real 'state' field is only ever used here for the 'done' (received)
+    bucket, since that one is a genuine standard workflow state.
     """
     _name = 'purchase.items.status.report'
     _description = 'Items Status Report'
@@ -37,9 +41,9 @@ class PurchaseItemsStatusReport(models.Model):
                 pp.id AS id,
                 ROW_NUMBER() OVER (ORDER BY pt.name) AS sequence,
                 pp.id AS product_id,
-                COALESCE(SUM(CASE WHEN sp.state = 'under_manufacturing' THEN sm.quantity ELSE 0 END), 0) AS under_preparation_qty,
-                COALESCE(SUM(CASE WHEN sp.state = 'under_shipping' THEN sm.quantity ELSE 0 END), 0) AS in_transit_qty,
-                COALESCE(SUM(CASE WHEN sp.state = 'under_clearance' THEN sm.quantity ELSE 0 END), 0) AS under_clearance_qty,
+                COALESCE(SUM(CASE WHEN sp.custom_state = 'under_manufacturing' THEN sm.quantity ELSE 0 END), 0) AS under_preparation_qty,
+                COALESCE(SUM(CASE WHEN sp.custom_state = 'under_shipping' THEN sm.quantity ELSE 0 END), 0) AS in_transit_qty,
+                COALESCE(SUM(CASE WHEN sp.custom_state = 'under_clearance' THEN sm.quantity ELSE 0 END), 0) AS under_clearance_qty,
                 COALESCE(SUM(CASE WHEN sp.state = 'done' THEN sm.quantity ELSE 0 END), 0) AS stock_qty
             FROM stock_move sm
             JOIN stock_picking sp ON sp.id = sm.picking_id

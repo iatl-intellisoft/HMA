@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Picking Custom States',
-    'version': '18.0.1.5.0',
+    'version': '18.0.1.6.0',
     'category': 'Inventory/Purchase',
     'summary': 'Add custom picking states and PO line quantity fields',
     'description': """
         This module adds:
         - Custom picking states: Under Manufacturing, Under Shipping, Under Clearance
+          -- tracked as a pure overlay in custom_state, never overwriting the
+          real workflow 'state' field, so the native Validate button and the
+          rest of the stock workflow always keep working normally.
         - Rename 'Done' to 'Received' for Receipt operations
         - PO line computed fields: Qty Under Manufacturing, Qty Under Shipping,
           Qty Under Clearance
@@ -15,16 +18,14 @@
           Shipment Status (Under Preparation, Loaded, In Transit,
           Arrived at Port, Under Clearance, Received), Loading Date,
           Shipment Date, ETD, ETA, Shipping Line
-        - Fix: hide the native Validate button while a custom shipment
-          state is active, so it no longer renders twice
         - Shipments Status report (Purchase > Reporting): one row per
           confirmed PO with invoice number(s), shipment dates, shipping
-          line, status and free days vs ETA. List view + PDF export
-          (native list Export also gives Excel).
+          line, status and free days vs ETA. Bordered/striped landscape
+          PDF export (native list Export also gives Excel).
         - Items Status report (Purchase > Reporting): one row per product
           with quantity Under Preparation / In Transit / Under Clearance
           / Stock (received), based on the state of related incoming
-          receipts. List view + PDF export.
+          receipts. Bordered/striped PDF export.
     """,
     'author': 'Custom Development',
     'depends': ['purchase', 'stock'],

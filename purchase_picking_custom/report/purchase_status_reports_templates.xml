@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- Landscape paper format: the Shipments Status report has 11 columns
+         and needs the extra width. -->
+    <record id="paperformat_purchase_status_reports_landscape" model="report.paperformat">
+        <field name="name">Purchase Status Reports (Landscape)</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">90</field>
+    </record>
+
     <!-- ═══════════════════════════════════════════════════
          Shipments Status Report (PDF)
          ═══════════════════════════════════════════════════ -->
@@ -8,42 +24,62 @@
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h2>Shipments Status Report</h2>
-                    <table class="table table-sm o_main_table">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Supplier</th>
-                                <th>Invoice Number</th>
-                                <th>Loading Date</th>
-                                <th>Actual Value + Freight</th>
-                                <th>Shipment Date</th>
-                                <th>ETD</th>
-                                <th>ETA</th>
-                                <th>Shipping Line</th>
-                                <th>Shipment Status</th>
-                                <th>Free Days</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="docs" t-as="line">
-                                <td><span t-esc="line.sequence"/></td>
-                                <td><span t-field="line.partner_id"/></td>
-                                <td><span t-esc="line.invoice_number"/></td>
-                                <td><span t-field="line.loading_date"/></td>
-                                <td>
-                                    <span t-field="line.amount_total"
-                                          t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
-                                </td>
-                                <td><span t-field="line.shipment_date"/></td>
-                                <td><span t-field="line.etd"/></td>
-                                <td><span t-field="line.eta"/></td>
-                                <td><span t-esc="line.shipping_line"/></td>
-                                <td><span t-field="line.shipment_status"/></td>
-                                <td><span t-esc="line.free_days"/></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <style>
+                        .o_purchase_status_report h2 { margin-bottom: 16px; }
+                        .o_purchase_status_report table { border-collapse: collapse; width: 100%; }
+                        .o_purchase_status_report th, .o_purchase_status_report td {
+                            border: 1px solid #999999;
+                            padding: 5px 8px;
+                            font-size: 11px;
+                            vertical-align: middle;
+                        }
+                        .o_purchase_status_report thead th {
+                            background-color: #eeeeee;
+                            font-weight: bold;
+                            text-align: center;
+                        }
+                        .o_purchase_status_report tbody tr:nth-child(even) { background-color: #f8f8f8; }
+                        .o_purchase_status_report .text-center { text-align: center; }
+                        .o_purchase_status_report .text-end { text-align: right; }
+                    </style>
+                    <div class="o_purchase_status_report">
+                        <h2>Shipments Status Report</h2>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Supplier</th>
+                                    <th>Invoice Number</th>
+                                    <th>Loading Date</th>
+                                    <th>Actual Value + Freight</th>
+                                    <th>Shipment Date</th>
+                                    <th>ETD</th>
+                                    <th>ETA</th>
+                                    <th>Shipping Line</th>
+                                    <th>Shipment Status</th>
+                                    <th>Free Days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="docs" t-as="line">
+                                    <td class="text-center"><span t-esc="line.sequence"/></td>
+                                    <td><span t-field="line.partner_id"/></td>
+                                    <td><span t-esc="line.invoice_number or ''"/></td>
+                                    <td class="text-center"><span t-field="line.loading_date"/></td>
+                                    <td class="text-end">
+                                        <span t-field="line.amount_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                    </td>
+                                    <td class="text-center"><span t-field="line.shipment_date"/></td>
+                                    <td class="text-center"><span t-field="line.etd"/></td>
+                                    <td class="text-center"><span t-field="line.eta"/></td>
+                                    <td><span t-esc="line.shipping_line or ''"/></td>
+                                    <td><span t-field="line.shipment_status"/></td>
+                                    <td class="text-center"><span t-esc="line.free_days"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </t>
         </t>
@@ -56,6 +92,7 @@
         <field name="report_name">purchase_picking_custom.report_purchase_shipment_status_document</field>
         <field name="report_file">purchase_picking_custom.report_purchase_shipment_status_document</field>
         <field name="print_report_name">'Shipments Status Report'</field>
+        <field name="paperformat_id" ref="paperformat_purchase_status_reports_landscape"/>
         <field name="binding_model_id" ref="model_purchase_shipment_status_report"/>
         <field name="binding_type">report</field>
     </record>
@@ -67,29 +104,48 @@
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h2>Items Status Report</h2>
-                    <table class="table table-sm o_main_table">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Product Name</th>
-                                <th>Under Preparation</th>
-                                <th>In Transit</th>
-                                <th>Under Clearance</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="docs" t-as="line">
-                                <td><span t-esc="line.sequence"/></td>
-                                <td><span t-field="line.product_id"/></td>
-                                <td><span t-esc="line.under_preparation_qty"/></td>
-                                <td><span t-esc="line.in_transit_qty"/></td>
-                                <td><span t-esc="line.under_clearance_qty"/></td>
-                                <td><span t-esc="line.stock_qty"/></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <style>
+                        .o_purchase_status_report h2 { margin-bottom: 16px; }
+                        .o_purchase_status_report table { border-collapse: collapse; width: 100%; }
+                        .o_purchase_status_report th, .o_purchase_status_report td {
+                            border: 1px solid #999999;
+                            padding: 5px 8px;
+                            font-size: 11px;
+                            vertical-align: middle;
+                        }
+                        .o_purchase_status_report thead th {
+                            background-color: #eeeeee;
+                            font-weight: bold;
+                            text-align: center;
+                        }
+                        .o_purchase_status_report tbody tr:nth-child(even) { background-color: #f8f8f8; }
+                        .o_purchase_status_report .text-center { text-align: center; }
+                    </style>
+                    <div class="o_purchase_status_report">
+                        <h2>Items Status Report</h2>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Product Name</th>
+                                    <th>Under Preparation</th>
+                                    <th>In Transit</th>
+                                    <th>Under Clearance</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="docs" t-as="line">
+                                    <td class="text-center"><span t-esc="line.sequence"/></td>
+                                    <td><span t-field="line.product_id"/></td>
+                                    <td class="text-center"><span t-esc="line.under_preparation_qty"/></td>
+                                    <td class="text-center"><span t-esc="line.in_transit_qty"/></td>
+                                    <td class="text-center"><span t-esc="line.under_clearance_qty"/></td>
+                                    <td class="text-center"><span t-esc="line.stock_qty"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </t>
         </t>

@@ -6,18 +6,14 @@ from odoo.exceptions import UserError
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
     
-    state = fields.Selection(
-        selection_add=[
-            ('under_manufacturing', 'تحت التصنيع'),
-            ('under_shipping', 'تحت الشحن'),
-            ('under_clearance', 'تحت التخليص'),
-        ],
-        ondelete={
-            'under_manufacturing': 'cascade',
-            'under_shipping': 'cascade',
-            'under_clearance': 'cascade',
-        },
-    )
+    # NOTE: the real 'state' field is intentionally left untouched here.
+    # It is a computed+stored field on stock.picking (compute='_compute_state',
+    # driven by the related stock moves), so writing custom values directly
+    # into it is unsafe: Odoo can silently recompute and overwrite it, and
+    # doing so also breaks the native Validate button (its visibility rules
+    # only account for the standard state values). Our custom tracking
+    # states live exclusively in 'custom_state' below, which is a pure
+    # overlay on top of the real workflow state.
 
     state_display = fields.Char(
         string='State Label',
@@ -79,23 +75,17 @@ class StockPicking(models.Model):
             picking.is_receipt = picking.picking_type_code == 'incoming'
 
     def action_set_under_manufacturing(self):
+        """Set custom state to Under Manufacturing (Receipt operations only)."""
         for picking in self:
             if picking.picking_type_code != 'incoming':
-                raise UserError('يمكن تطبيق الحالة على عمليات الاستلام فقط.')
+                raise UserError(
+                    _('يمكن تطبيق حالة "تحت التصنيع" على عمليات الاستلام فقط.')
+                )
             if picking.state == 'cancel':
-                raise UserError('لا يمكن تغيير حالة عملية ملغاة.')
-    
-            picking.state = 'under_manufacturing'
-
-
-    def action_set_under_shipping(self):
-        for picking in self:
-            if picking.picking_type_code != 'incoming':
-                raise UserError('يمكن تطبيق الحالة على عمليات الاستلام فقط.')
-            if picking.state == 'cancel':
-                raise UserError('لا يمكن تغيير حالة عملية ملغاة.')
-    
-            picking.state = 'under_shipping'
+                raise UserError(
+                    _('لا يمكن تغيير حالة عملية ملغاة.')
+                )
+            picking.custom_state = 'under_manufacturing'
 
     def action_set_under_shipping(self):
         """Set custom state to Under Shipping (Receipt operations only)."""
@@ -109,7 +99,6 @@ class StockPicking(models.Model):
                     _('لا يمكن تغيير حالة عملية ملغاة.')
                 )
             picking.custom_state = 'under_shipping'
-            picking.state = 'under_shipping'
 
     def action_set_under_clearance(self):
         """Set custom state to Under Clearance (Receipt operations only)."""
@@ -123,7 +112,6 @@ class StockPicking(models.Model):
                     _('لا يمكن تغيير حالة عملية ملغاة.')
                 )
             picking.custom_state = 'under_clearance'
-            picking.state = 'under_clearance'
 
     def action_reset_custom_state(self):
         """Reset custom state."""
@@ -154,23 +142,20 @@ class StockPicking(models.Model):
         compute="_compute_display_state",
     )
 
-    @api.depends('state')
+    @api.depends('state', 'custom_state')
     def _compute_display_state(self):
         for rec in self:
-            if rec.state == 'draft':
+            # custom_state is a pure overlay on top of the real workflow
+            # state: it never replaces 'state' itself, so Validate and the
+            # rest of Odoo's stock workflow keep working normally underneath.
+            if rec.custom_state:
+                rec.display_state = rec.custom_state
+
+            elif rec.state == 'draft':
                 rec.display_state = 'draft'
 
             elif rec.state == 'assigned':
                 rec.display_state = 'assigned'
-
-            elif rec.state == 'under_manufacturing':
-                rec.display_state = 'under_manufacturing'
-
-            elif rec.state == 'under_shipping':
-                rec.display_state = 'under_shipping'
-
-            elif rec.state == 'under_clearance':
-                rec.display_state = 'under_clearance'
 
             elif rec.state == 'done':
                 rec.display_state = 'done'

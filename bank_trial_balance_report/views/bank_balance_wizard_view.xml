@@ -13,8 +13,9 @@
                     </group>
                     <group>
                         <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="journal_type" widget="radio" options="{'horizontal': true}"/>
                         <field name="journal_ids" widget="many2many_tags"
-                               placeholder="كل حسابات البنوك (اتركه خاليًا)"/>
+                               placeholder="كل حسابات البنوك والنقدية (اتركه خاليًا)"/>
                     </group>
                 </group>
                 <footer>

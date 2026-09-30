@@ -16,11 +16,19 @@ class BankBalanceReportWizard(models.TransientModel):
         required=True,
         default=fields.Date.context_today,
     )
+    journal_type = fields.Selection(
+        selection=[
+            ('bank', 'بنك'),
+            ('cash', 'نقدية'),
+        ],
+        string='نوع الحساب',
+        help='اختر بنك لعرض جورنالات البنوك بس، أو نقدية لعرض جورنالات النقدية بس. اتركه فارغًا لعرض الاثنين معًا.',
+    )
     journal_ids = fields.Many2many(
         'account.journal',
-        string='البنوك',
-        domain=[('type', '=', 'bank')],
-        help='اتركه خاليًا لعرض كل الحسابات البنكية (حتى لو مالهاش جورنال مربوط)',
+        string='البنوك / النقدية',
+        domain="[('type', 'in', [journal_type] if journal_type else ['bank', 'cash'])]",
+        help='اتركه خاليًا لعرض كل الحسابات البنكية والنقدية (حتى لو مالهاش جورنال مربوط)',
     )
     company_id = fields.Many2one(
         'res.company',
@@ -38,6 +46,14 @@ class BankBalanceReportWizard(models.TransientModel):
             'وعايز كل بنك ياخد حركته هو بس (من جورنال البنك نفسه).'
         ),
     )
+
+    @api.onchange('journal_type')
+    def _onchange_journal_type(self):
+        # Drop any previously selected journal that no longer matches the
+        # chosen type (bank/cash/blank=both), so the selection never gets
+        # out of sync with the domain shown above.
+        allowed_types = [self.journal_type] if self.journal_type else ['bank', 'cash']
+        self.journal_ids = self.journal_ids.filtered(lambda j: j.type in allowed_types)
 
     def action_print_pdf(self):
         self.ensure_one()
@@ -62,6 +78,10 @@ class BankBalanceReportWizard(models.TransientModel):
         Account = self.env['account.account']
         Journal = self.env['account.journal']
 
+        # journal_type filters which journal type(s) we're after: a specific
+        # one ('bank' or 'cash'), or both when left blank.
+        journal_types = [self.journal_type] if self.journal_type else ['bank', 'cash']
+
         if self.journal_ids:
             result = []
             seen = set()
@@ -84,9 +104,14 @@ class BankBalanceReportWizard(models.TransientModel):
         for account in accounts:
             journal = Journal.search([
                 ('default_account_id', '=', account.id),
-                ('type', '=', 'bank'),
+                ('type', 'in', journal_types),
                 ('company_id', 'child_of', self.company_id.id),
             ], limit=1)
+            if self.journal_type and not journal:
+                # لما المستخدم يحدد نوع معين (بنك أو نقدية) والحساب ده
+                # مالوش جورنال من النوع ده، يبقى الحساب مش له علاقة بالتقرير
+                # المطلوب -- تجاهله خالص بدل ما يظهر كسطر بصفر قيم.
+                continue
             result.append((account, journal))
         return result
 
@@ -154,6 +179,11 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('parent_state', '=', 'posted'),
                 ('company_id', 'child_of', self.company_id.id),
             ]
+
+            # لو المستخدم اختار بنك أو نقدية، اقتصر على حركات الجورنالات
+            # من النوع ده بس (حتى لو الحساب مشترك بين أكتر من نوع جورنال).
+            if self.journal_type:
+                base_domain.append(('journal_id.type', '=', self.journal_type))
 
             if self.strict_journal_match and journal:
                 base_domain.append(('journal_id', '=', journal.id))

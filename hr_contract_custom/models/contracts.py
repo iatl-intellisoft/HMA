@@ -8,27 +8,23 @@ from dateutil.relativedelta import relativedelta
 
 class Contracts(models.Model):
     _inherit = 'hr.contract'
-    _sql_constraints = [('state_unique','unique(employee_id, date, state)',_('Date + End Date Cannot be repeated in one employee!'))]
+
+    _sql_constraints = [
+        ('state_unique', 'unique(employee_id, date, state)',
+         _('Date + End Date Cannot be repeated in one employee!'))]
+
+
+    #### adding offer state 
     state = fields.Selection([
         ('draft', 'New'),
-        ('open', 'Running'),
-        ('close', 'Expired'),
-        ('cancel', 'Cancelled'),
-    ], string='Status',
-       group_expand='_expand_states',
-       tracking=True,
-       help='Status of the contract',
-       default='draft',
-       store=True)
-
-    contract_stage = fields.Selection([
-        ('draft', 'New'),
         ('offer', 'Offer'),
-        ('pending', 'Pending'),
         ('open', 'Running'),
         ('close', 'Expired'),
-        ('cancel', 'Cancelled'),
-    ], default='draft', tracking=True)
+        ('cancel', 'Cancelled')
+    ], string='Status', group_expand='_expand_states',
+        track_visibility='onchange', help='Status of the contract', default='draft', store='True')
+    
+
     ##### this field will be replaced 
     #### struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure', track_visibility='onchange')
     #### with a domain that "structes" are  in "structure_type_id.struct_ids" 
@@ -51,7 +47,6 @@ class Contracts(models.Model):
                            help="End date of the contract (if it's a fixed-term contract).")
     trial_date_end = fields.Date('End of Trial Period', track_visibility='onchange',
                                  help="End date of the trial period (if there is one).")
-    insentive = fields.Float(string="الحافز", store=True)
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'Working Schedule', track_visibility='onchange',
@@ -69,6 +64,7 @@ class Contracts(models.Model):
     age = fields.Integer(string="Age", related="employee_id.age",store=True)
     joining_date = fields.Date(string="Actual Joining Date", track_visibility='onchange')
     service_years = fields.Float(string='Service Years', compute='get_service_years', store=True)
+    insentive = fields.Float(string="الحافز", store=True)
 
     
     @api.depends('date_start','date_end')
@@ -137,19 +133,14 @@ class Contracts(models.Model):
 
     
     def action_offer(self):
-        self.write({
-            'contract_stage': 'offer',
-        })
+        self.write({'state': 'offer'})
         # return self._create_mail_activity()
 
     
     def action_open(self):
         if not self.joining_date:
             raise UserError(_('Please Enter actual employee join date.'))
-        self.write({
-            'state': 'open',
-            'contract_stage': 'open',
-        })
+        self.write({'state': 'open'})
         # return self._create_mail_activity()
 
     # def action_pending(self):
@@ -188,7 +179,3 @@ class Contracts(models.Model):
 #                                 help="number of days to send notification before end of contract.")
 #     trail_period = fields.Integer(string="Trail Period ( month ) ", track_visibility='onchange', default='3',
 #                                   help="Trail Period in Months")
-
-
-
-

@@ -11,6 +11,24 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
 
+            <!-- New "Shipment Details" tab: status + shipment dates -->
+            <xpath expr="//page[@name='products']" position="after">
+                <page string="Shipment Details" name="shipment_details">
+                    <group>
+                        <group>
+                            <field name="shipment_status"/>
+                            <field name="shipping_line"/>
+                        </group>
+                        <group>
+                            <field name="loading_date"/>
+                            <field name="shipment_date"/>
+                            <field name="etd"/>
+                            <field name="eta"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
             <!-- Add two new columns after qty_received in the PO lines tree -->
             <xpath expr="//field[@name='order_line']/list//field[@name='qty_received']" position="after">
                 <field
@@ -26,6 +44,13 @@
                     optional="show"
                     readonly="1"
                     decoration-warning="qty_under_shipping &gt; 0"
+                />
+                <field
+                    name="qty_under_clearance"
+                    string="Under Clearance"
+                    optional="show"
+                    readonly="1"
+                    decoration-warning="qty_under_clearance &gt; 0"
                 />
             </xpath>
 

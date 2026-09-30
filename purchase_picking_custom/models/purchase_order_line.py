@@ -21,14 +21,24 @@ class PurchaseOrderLine(models.Model):
         help='Quantity from related receipts currently Under Shipping.',
     )
 
+    qty_under_clearance = fields.Float(
+        string='Qty Under Clearance',
+        compute='_compute_custom_picking_qtys',
+        store=False,
+        digits='Product Unit of Measure',
+        help='Quantity from related receipts currently Under Clearance.',
+    )
+
     def _compute_custom_picking_qtys(self):
         for line in self:
             qty_manufacturing = 0.0
             qty_shipping = 0.0
+            qty_clearance = 0.0
 
             if not line.order_id or not line.product_id:
                 line.qty_under_manufacturing = 0.0
                 line.qty_under_shipping = 0.0
+                line.qty_under_clearance = 0.0
                 continue
 
             # Find the correct column name for purchase link in stock_move
@@ -40,9 +50,13 @@ class PurchaseOrderLine(models.Model):
             """)
             cols = [r[0] for r in self.env.cr.fetchall()]
 
-            # Get all receipt pickings for this PO via group by on move level
+            # Get all receipt pickings for this PO via group by on move level.
+            # Grouped by custom_state (our tracking overlay), not the real
+            # 'state' column: the real workflow state is left untouched by
+            # the action_set_under_* buttons, so it never carries these
+            # custom values.
             self.env.cr.execute("""
-                SELECT DISTINCT sm.picking_id, sp.state, SUM(sm.quantity) as qty
+                SELECT DISTINCT sm.picking_id, sp.custom_state, SUM(sm.quantity) as qty
                 FROM stock_move sm
                 JOIN stock_picking sp ON sm.picking_id = sp.id
                 JOIN stock_picking_type spt ON sp.picking_type_id = spt.id
@@ -56,7 +70,7 @@ class PurchaseOrderLine(models.Model):
                     WHERE product_id = %s
                         AND origin ILIKE %s
                 )
-                GROUP BY sm.picking_id, sp.state
+                GROUP BY sm.picking_id, sp.custom_state
             """, (line.product_id.id, line.product_id.id, '%' + (line.order_id.name or '') + '%'))
 
             for row in self.env.cr.fetchall():
@@ -66,6 +80,9 @@ class PurchaseOrderLine(models.Model):
                     qty_manufacturing += qty
                 elif cs == 'under_shipping':
                     qty_shipping += qty
+                elif cs == 'under_clearance':
+                    qty_clearance += qty
 
             line.qty_under_manufacturing = qty_manufacturing
             line.qty_under_shipping = qty_shipping
+            line.qty_under_clearance = qty_clearance

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_purchasequotation_document_custom_columns"
+              inherit_id="purchase.report_purchasequotation_document">
+
+        <!-- ═══ Header: add "Reference" after "Description" ═══ -->
+        <xpath expr="//th[@name='th_description']" position="after">
+            <th name="th_reference"><strong>Reference</strong></th>
+        </xpath>
+
+        <!-- ═══ Header: drop "Expected Date" from its current spot ═══ -->
+        <xpath expr="//th[@name='th_expected_date']" position="replace"/>
+
+        <!-- ═══ Header: re-add "Expected Date" as the last column ═══ -->
+        <xpath expr="//th[@name='th_quantity']" position="after">
+            <th name="th_expected_date" class="text-center"><strong>Expected Date</strong></th>
+        </xpath>
+
+        <!-- ═══ Body: Description shows only the product name ═══ -->
+        <xpath expr="//td[@id='product']/span[@t-field='order_line.name']" position="replace">
+            <span t-field="order_line.product_id.name"/>
+        </xpath>
+
+        <!-- ═══ Body: add "Reference" cell right after the description cell ═══ -->
+        <xpath expr="//td[@id='product']" position="after">
+            <td>
+                <span t-field="order_line.product_id.default_code"/>
+            </td>
+        </xpath>
+
+        <!-- ═══ Body: drop the "Expected Date" cell from its current spot ═══ -->
+        <xpath expr="//td[span[@t-field='order_line.date_planned']]" position="replace"/>
+
+        <!-- ═══ Body: re-add "Expected Date" cell as the last column ═══ -->
+        <xpath expr="//td[span[@t-field='order_line.product_qty']]" position="after">
+            <td class="text-center">
+                <span t-field="order_line.date_planned"/>
+            </td>
+        </xpath>
+
+    </template>
+
+</odoo>

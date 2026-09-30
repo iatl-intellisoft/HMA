@@ -11,6 +11,11 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
 
+            <!-- Add Shipment Status next to the planned/approval dates -->
+            <xpath expr="//div[@name='date_planned_div']" position="after">
+                <field name="shipment_status"/>
+            </xpath>
+
             <!-- Add two new columns after qty_received in the PO lines tree -->
             <xpath expr="//field[@name='order_line']/list//field[@name='qty_received']" position="after">
                 <field

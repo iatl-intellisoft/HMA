@@ -11,7 +11,7 @@
     <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code != 'incoming'"
-           statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
+           statusbar_visible="draft,assigned,under_manufacturing,under_shipping,under_clearance,done,cancel"/>
    <!-- <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code == 'incoming'"
@@ -45,6 +45,14 @@
                     confirm="هل تريد تغيير الحالة إلى تحت الشحن؟"
                 />
                 <button
+                    name="action_set_under_clearance"
+                    string="تحت التخليص"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت التخليص؟"
+                />
+                <button
                     name="action_reset_custom_state"
                     string="إعادة تعيين الحالة"
                     type="object"
@@ -52,7 +60,14 @@
                     invisible="picking_type_code != 'incoming' or not custom_state"
                 />
             </xpath>
- 
+
+            <!-- NOTE: our custom tracking states (under_manufacturing,
+                 under_shipping, under_clearance) now live exclusively in
+                 'custom_state' as a pure overlay; the real 'state' field
+                 is never touched, so Odoo's two native Validate button
+                 invisible domains (which only ever cover standard state
+                 values) work correctly as-is, with no override needed here. -->
+
             <xpath expr="//field[@name='origin']" position="after">
                 <field
                     name="bill_of_lading_number"

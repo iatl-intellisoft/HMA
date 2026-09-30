@@ -175,6 +175,11 @@ class BankBalanceReportWizard(models.TransientModel):
                 ('company_id', 'child_of', self.company_id.id),
             ]
 
+            # لو المستخدم اختار بنك أو نقدية، اقتصر على حركات الجورنالات
+            # من النوع ده بس (حتى لو الحساب مشترك بين أكتر من نوع جورنال).
+            if self.journal_type:
+                base_domain.append(('journal_id.type', '=', self.journal_type))
+
             if self.strict_journal_match and journal:
                 base_domain.append(('journal_id', '=', journal.id))
 

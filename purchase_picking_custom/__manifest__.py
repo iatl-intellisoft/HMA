@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Picking Custom States',
-    'version': '18.0.1.6.0',
+    'version': '18.0.1.7.0',
     'category': 'Inventory/Purchase',
     'summary': 'Add custom picking states and PO line quantity fields',
     'description': """
@@ -26,6 +26,10 @@
           with quantity Under Preparation / In Transit / Under Clearance
           / Stock (received), based on the state of related incoming
           receipts. Bordered/striped PDF export.
+        - Both PDF reports now show an explicit company name + logo
+          header.
+        - Arabic (ar) translations for all recently added labels: fields,
+          views, menus, buttons and report titles/columns.
     """,
     'author': 'Custom Development',
     'depends': ['purchase', 'stock'],

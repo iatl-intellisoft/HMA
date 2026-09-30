@@ -1,0 +1,394 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* purchase_picking_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-30 12:06+0000\n"
+"PO-Revision-Date: 2026-09-30 12:06+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.report,print_report_name:purchase_picking_custom.action_report_purchase_items_status
+msgid "'Items Status Report'"
+msgstr "'تقرير حالة الأصناف'"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.report,print_report_name:purchase_picking_custom.action_report_purchase_shipment_status
+msgid "'Shipments Status Report'"
+msgstr "'تقرير حالة الشحنات'"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__amount_total
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Actual Value + Freight"
+msgstr "القيمة الفعلية + الشحن"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__arrived_at_port
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__arrived_at_port
+msgid "Arrived at Port"
+msgstr "وصلت إلى الميناء"
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__stock_picking__display_state__cancel
+msgid "Cancelled"
+msgstr "تم الإلغاء"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_stock_picking__custom_state
+msgid "Custom State"
+msgstr "الحالة المخصصة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__loading_date
+msgid "Date the goods were loaded for shipment."
+msgstr "تاريخ تحميل البضاعة للشحن."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__shipment_date
+msgid "Date the shipment departed."
+msgstr "تاريخ مغادرة الشحنة."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_shipment_status_report__free_days
+msgid ""
+"Days remaining between today and the ETA (negative if the ETA has passed)."
+msgstr ""
+"عدد الأيام المتبقية بين اليوم والتاريخ المتوقع للوصول (رقم سالب إذا تم "
+"تجاوز هذا التاريخ)."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__display_name
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__stock_picking__display_state__done
+msgid "Done"
+msgstr "منتهي"
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__stock_picking__display_state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__eta
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__eta
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "ETA"
+msgstr "التاريخ المتوقع للوصول"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__etd
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__etd
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "ETD"
+msgstr "التاريخ المتوقع للمغادرة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__eta
+msgid "Estimated Time of Arrival."
+msgstr "الوقت المتوقع للوصول."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__etd
+msgid "Estimated Time of Departure."
+msgstr "الوقت المتوقع للمغادرة."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__free_days
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Free Days"
+msgstr "الأيام المجانية"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__id
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__in_transit_qty
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__in_transit
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__in_transit
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+msgid "In Transit"
+msgstr "في الطريق"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__invoice_number
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Invoice Number"
+msgstr "رقم الفاتورة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_stock_picking__is_incoming
+msgid "Is Incoming"
+msgstr "وارد"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_stock_picking__is_receipt
+msgid "Is Receipt"
+msgstr "عملية استلام"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.act_window,name:purchase_picking_custom.action_purchase_items_status_report
+#: model:ir.ui.menu,name:purchase_picking_custom.menu_purchase_items_status_report
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_search
+msgid "Items Status"
+msgstr "حالة الأصناف"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.report,name:purchase_picking_custom.action_report_purchase_items_status
+#: model:ir.model,name:purchase_picking_custom.model_purchase_items_status_report
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+msgid "Items Status Report"
+msgstr "تقرير حالة الأصناف"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__loaded
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__loaded
+msgid "Loaded"
+msgstr "تم التحميل"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__loading_date
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__loading_date
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Loading Date"
+msgstr "تاريخ التحميل"
+
+#. module: purchase_picking_custom
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Logo"
+msgstr "الشعار"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__shipping_line
+msgid "Name of the shipping line / carrier handling this shipment."
+msgstr "اسم خط الشحن / الناقل المسؤول عن هذه الشحنة."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__sequence
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__sequence
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_shipment_status_report_list
+msgid "No."
+msgstr "الرقم"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__product_id
+msgid "Product"
+msgstr "المنتج"
+
+#. module: purchase_picking_custom
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+msgid "Product Name"
+msgstr "اسم المنتج"
+
+#. module: purchase_picking_custom
+#: model:ir.model,name:purchase_picking_custom.model_purchase_order
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__order_id
+msgid "Purchase Order"
+msgstr "أمر شراء"
+
+#. module: purchase_picking_custom
+#: model:ir.model,name:purchase_picking_custom.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "بند أمر الشراء"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order_line__qty_under_clearance
+msgid "Qty Under Clearance"
+msgstr "الكمية تحت التخليص"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order_line__qty_under_manufacturing
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_order_form_inherit_custom
+msgid "Qty Under Manufacturing"
+msgstr "الكمية تحت التصنيع"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order_line__qty_under_shipping
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_order_form_inherit_custom
+msgid "Qty Under Shipping"
+msgstr "الكمية تحت الشحن"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order_line__qty_under_clearance
+msgid "Quantity from related receipts currently Under Clearance."
+msgstr "الكمية من عمليات الاستلام المرتبطة والتي هي حاليًا تحت التخليص."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order_line__qty_under_manufacturing
+msgid "Quantity from related receipts currently Under Manufacturing."
+msgstr "الكمية من عمليات الاستلام المرتبطة والتي هي حاليًا تحت التصنيع."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order_line__qty_under_shipping
+msgid "Quantity from related receipts currently Under Shipping."
+msgstr "الكمية من عمليات الاستلام المرتبطة والتي هي حاليًا تحت الشحن."
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__stock_picking__display_state__assigned
+msgid "Ready"
+msgstr "جاهز"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__received
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__received
+msgid "Received"
+msgstr "تم الاستلام"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_items_status_report__stock_qty
+msgid "Received quantity (from incoming receipts already validated/done)."
+msgstr "الكمية المستلمة (من عمليات الاستلام الواردة التي تم اعتمادها بالفعل)."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_shipment_status_report__invoice_number
+msgid "Related vendor bill number(s) for this purchase order."
+msgstr "رقم (أو أرقام) فاتورة المورد المرتبطة بأمر الشراء هذا."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__shipment_date
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__shipment_date
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Shipment Date"
+msgstr "تاريخ الشحن"
+
+#. module: purchase_picking_custom
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_order_form_inherit_custom
+msgid "Shipment Details"
+msgstr "تفاصيل الشحنة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__shipment_status
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__shipment_status
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_shipment_status_report_search
+msgid "Shipment Status"
+msgstr "حالة الشحنة"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.act_window,name:purchase_picking_custom.action_purchase_shipment_status_report
+#: model:ir.ui.menu,name:purchase_picking_custom.menu_purchase_shipment_status_report
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_shipment_status_report_list
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_shipment_status_report_search
+msgid "Shipments Status"
+msgstr "حالة الشحنات"
+
+#. module: purchase_picking_custom
+#: model:ir.actions.report,name:purchase_picking_custom.action_report_purchase_shipment_status
+#: model:ir.model,name:purchase_picking_custom.model_purchase_shipment_status_report
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Shipments Status Report"
+msgstr "تقرير حالة الشحنات"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_order__shipping_line
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__shipping_line
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+msgid "Shipping Line"
+msgstr "خط الشحن"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_stock_picking__state_display
+msgid "State Label"
+msgstr "تسمية الحالة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_stock_picking__display_state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__stock_qty
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+msgid "Stock"
+msgstr "المخزون"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_shipment_status_report__partner_id
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_shipment_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_shipment_status_report_search
+msgid "Supplier"
+msgstr "المورد"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_shipment_status_report__amount_total
+msgid "Total value of the purchase order (goods + freight)."
+msgstr "القيمة الإجمالية لأمر الشراء (البضاعة + الشحن)."
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,help:purchase_picking_custom.field_purchase_order__shipment_status
+msgid ""
+"Tracks the shipment/import status of the goods for this purchase order."
+msgstr "يتتبع حالة شحن/استيراد البضاعة الخاصة بأمر الشراء هذا."
+
+#. module: purchase_picking_custom
+#: model:ir.model,name:purchase_picking_custom.model_stock_picking
+msgid "Transfer"
+msgstr "تحويل"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__under_clearance_qty
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__under_clearance
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__under_clearance
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_order_form_inherit_custom
+msgid "Under Clearance"
+msgstr "تحت التخليص"
+
+#. module: purchase_picking_custom
+#: model:ir.model.fields,field_description:purchase_picking_custom.field_purchase_items_status_report__under_preparation_qty
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_order__shipment_status__under_preparation
+#: model:ir.model.fields.selection,name:purchase_picking_custom.selection__purchase_shipment_status_report__shipment_status__under_preparation
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.report_purchase_items_status_document
+#: model_terms:ir.ui.view,arch_db:purchase_picking_custom.view_purchase_items_status_report_list
+msgid "Under Preparation"
+msgstr "تحت التحضير"
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+msgid "Waiting"
+msgstr "قيد الانتظار"
+
+#. module: purchase_picking_custom
+#. odoo-python
+#: code:addons/purchase_picking_custom/models/stock_picking.py:0
+msgid "Waiting Another Operation"
+msgstr "في انتظار عملية أخرى"

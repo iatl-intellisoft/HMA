@@ -1,6 +1,6 @@
 {
     'name': 'Bank Trial Balance Report',
-    'version': '18.0.1.2.0',
+    'version': '18.0.1.3.0',
     'category': 'Accounting/Accounting',
     'summary': 'تقرير أرصدة إجمالية للبنوك خلال فترة معينة بدون تفاصيل الحركات',
     'description': """

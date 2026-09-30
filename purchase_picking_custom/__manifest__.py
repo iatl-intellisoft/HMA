@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Picking Custom States',
-    'version': '18.0.1.2.0',
+    'version': '18.0.1.3.0',
     'category': 'Inventory/Purchase',
     'summary': 'Add custom picking states and PO line quantity fields',
     'description': """
         This module adds:
-        - Custom picking states: Under Manufacturing, Under Shipping
+        - Custom picking states: Under Manufacturing, Under Shipping, Under Clearance
         - Rename 'Done' to 'Received' for Receipt operations
-        - PO line computed fields: Qty Under Manufacturing, Qty Under Shipping
+        - PO line computed fields: Qty Under Manufacturing, Qty Under Shipping,
+          Qty Under Clearance
         - New fields on picking: Bill of Lading Number, Number of Containers
         - "Shipment Details" tab on Purchase Order with:
           Shipment Status (Under Preparation, Loaded, In Transit,

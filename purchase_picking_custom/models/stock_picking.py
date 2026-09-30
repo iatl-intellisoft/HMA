@@ -10,10 +10,12 @@ class StockPicking(models.Model):
         selection_add=[
             ('under_manufacturing', 'تحت التصنيع'),
             ('under_shipping', 'تحت الشحن'),
+            ('under_clearance', 'تحت التخليص'),
         ],
         ondelete={
             'under_manufacturing': 'cascade',
             'under_shipping': 'cascade',
+            'under_clearance': 'cascade',
         },
     )
 
@@ -44,6 +46,7 @@ class StockPicking(models.Model):
         selection=[
             ('under_manufacturing', 'تحت التصنيع'),
             ('under_shipping', 'تحت الشحن'),
+            ('under_clearance', 'تحت التخليص'),
         ],
         string='Custom State',
         copy=False,
@@ -108,6 +111,20 @@ class StockPicking(models.Model):
             picking.custom_state = 'under_shipping'
             picking.state = 'under_shipping'
 
+    def action_set_under_clearance(self):
+        """Set custom state to Under Clearance (Receipt operations only)."""
+        for picking in self:
+            if picking.picking_type_code != 'incoming':
+                raise UserError(
+                    _('يمكن تطبيق حالة "تحت التخليص" على عمليات الاستلام فقط.')
+                )
+            if picking.state == 'cancel':
+                raise UserError(
+                    _('لا يمكن تغيير حالة عملية ملغاة.')
+                )
+            picking.custom_state = 'under_clearance'
+            picking.state = 'under_clearance'
+
     def action_reset_custom_state(self):
         """Reset custom state."""
         for picking in self:
@@ -119,6 +136,7 @@ class StockPicking(models.Model):
         labels = {
             'under_manufacturing': 'تحت التصنيع',
             'under_shipping': 'تحت الشحن',
+            'under_clearance': 'تحت التخليص',
         }
         return labels.get(self.custom_state, '')
    
@@ -128,6 +146,7 @@ class StockPicking(models.Model):
             ('assigned', 'Ready'),
             ('under_manufacturing', 'تحت التصنيع'),
             ('under_shipping', 'تحت الشحن'),
+            ('under_clearance', 'تحت التخليص'),
             ('done', 'Done'),
             ('cancel', 'Cancelled'),
         ],
@@ -149,6 +168,9 @@ class StockPicking(models.Model):
 
             elif rec.state == 'under_shipping':
                 rec.display_state = 'under_shipping'
+
+            elif rec.state == 'under_clearance':
+                rec.display_state = 'under_clearance'
 
             elif rec.state == 'done':
                 rec.display_state = 'done'

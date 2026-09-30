@@ -11,7 +11,7 @@
     <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code != 'incoming'"
-           statusbar_visible="draft,assigned,under_manufacturing,under_shipping,done,cancel"/>
+           statusbar_visible="draft,assigned,under_manufacturing,under_shipping,under_clearance,done,cancel"/>
    <!-- <field name="display_state"
            widget="statusbar"
            invisible="picking_type_code == 'incoming'"
@@ -43,6 +43,14 @@
                     class="btn-secondary"
                     invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
                     confirm="هل تريد تغيير الحالة إلى تحت الشحن؟"
+                />
+                <button
+                    name="action_set_under_clearance"
+                    string="تحت التخليص"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="picking_type_code != 'incoming' or state in ['done', 'cancel']"
+                    confirm="هل تريد تغيير الحالة إلى تحت التخليص؟"
                 />
                 <button
                     name="action_reset_custom_state"

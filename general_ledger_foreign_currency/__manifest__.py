@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'General Ledger – Display Foreign Currencies',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'summary': 'Show General Ledger balances grouped by original transaction currency',
     'category': 'Accounting/Accounting',
     'description': """

@@ -99,6 +99,49 @@ class GeneralLedgerForeignCurrencyHandler(models.AbstractModel):
             )
         return lines
 
+    def _get_account_search_domain(self, cg_options):
+        """
+        Mirror the base General Ledger's print-time account search-bar
+        filtering (see account_reports.GeneralLedgerCustomHandler._get_query_sums).
+
+        On screen, filtering by account via the search bar just hides rows
+        client-side. When printing there is no client to hide anything, so
+        the base report bakes the filter into the SQL domain instead. Our
+        own summary query below bypasses that base query entirely (it sums
+        amount_currency instead of company-currency amounts), so without
+        this we'd silently ignore the account filter and print every
+        account whenever "Display Foreign Currencies" is enabled.
+        """
+        if cg_options.get('export_mode') != 'print' or not cg_options.get('filter_search_bar'):
+            return []
+        search = cg_options['filter_search_bar']
+        if cg_options.get('hierarchy'):
+            return [
+                '|',
+                ('account_id', 'ilike', search),
+                ('account_id.id', 'in', SQL(
+                    """
+                    (SELECT distinct account_account.id
+                    FROM account_account
+                    LEFT JOIN account_group ON
+                        (
+                            LEFT(account_account.code_store->> '%(company_id)s', LENGTH(code_prefix_start)) BETWEEN
+                                code_prefix_start
+                            AND code_prefix_end
+                        )
+                    WHERE ( account_group.name->> %(lang)s  ILIKE %(filter_search_bar)s
+                        OR  account_group.code_prefix_start ILIKE %(filter_search_bar)s)
+                    )""",
+                    lang=self.env.lang,
+                    company_id=self.env.company.id,
+                    filter_search_bar="%" + search + "%")),
+            ]
+        return [
+            '|',
+            ('account_id', 'ilike', search),
+            ('account_id.code', 'like', search),
+        ]
+
     def _get_query_sums_by_currency(self, report, options) -> SQL:
         """
         Summary SQL grouped by (account_id, currency_id).
@@ -118,6 +161,7 @@ class GeneralLedgerForeignCurrencyHandler(models.AbstractModel):
                     ('date', '>=', fy_dates['date_from']),
                     ('account_id.include_initial_balance', '=', True),
                 ]
+            query_domain += self._get_account_search_domain(cg_options)
 
             query    = report._get_report_query(cg_options, sum_date_scope, domain=query_domain)
             date_from = options['date']['date_from']
